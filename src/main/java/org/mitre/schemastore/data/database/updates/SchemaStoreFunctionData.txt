@@ -1,0 +1,90 @@
+INSERT INTO data_type (id, type, description)
+440, 'Any', 'Any type of input'
+441, 'Number', 'An input formatted as a number'
+442, 'String', 'An input formatted as a string'
+443, 'DateTime', 'An input formatted as a date or time'
+
+INSERT INTO functions (id, name, description, expression, category, output_type)
+450, 'identity', 'Passes the value through un-changed', null, 'Basic', 440
+460, 'abs', 'Returns the absolute value of the input', null, 'Math', 441
+461, 'floor', 'Returns the next smallest integer', null, 'Math', 441
+462, 'ceiling', 'Returns the next largest integer', null, 'Math', 441
+463, 'round', 'Returns the nearest integer', null, 'Math', 441
+464, 'min', 'Returns the smallest value from all tuples in the table', null, 'Math', 441
+465, 'max', 'Returns the largest value from all tuples in the table', null, 'Math', 441
+466, 'sum', 'Returns the sum of all tuples in the table', null, 'Math', 441
+467, 'avg', 'Returns the average of all tuples in the table', null, 'Math', 441
+468, 'add', 'Numerical addition of two numbers', null, 'Math', 441
+469, 'sub', 'Numerical subtraction of two numbers', null, 'Math', 441
+470, 'mult', 'Numerical multiplication of two numbers', null, 'Math', 441
+480, 'concat', 'Takes in two fields and concatenates them together', null, 'String', 442
+481, 'lower', 'Returns the value with all letters in lower case', null, 'String', 442
+482, 'upper', 'Returns the value with all letters in upper case', null, 'String', 442
+483, 'trim', 'Returns the value with all leading and trailing whitespace removed', null, 'String', 442
+484, 'ltrim', 'Returns the value with all leading whitespace removed', null, 'String', 442
+485, 'rtrim', 'Returns the value with all trailing whitespace removed', null, 'String', 442
+486, 'length', 'Returns the length of the value', null, 'String', 441
+490, 'year', 'Extracts the year from the date field', null, 'Date', 441
+491, 'month', 'Extracts the year from the date field', null, 'Date', 441
+492, 'day', 'Extracts the month from the date field', null, 'Date', 441
+493, 'hour', 'Extracts the day from the date field', null, 'Date', 441
+494, 'minute', 'Extracts the minute from the date field', null, 'Date', 441
+495, 'second', 'Extracts the second from the date field', null, 'Date', 441
+
+INSERT INTO function_input (function_id, input_type, input_loc)
+450, 440, 1
+460, 441, 1
+461, 441, 1
+462, 441, 1
+463, 441, 1
+464, 441, 1
+465, 441, 1
+466, 441, 1
+467, 441, 1
+468, 441, 1
+468, 441, 2
+469, 441, 1
+469, 441, 2
+470, 441, 1
+470, 441, 2
+480, 442, 1
+480, 442, 2
+481, 442, 1
+482, 442, 1
+483, 442, 1
+484, 442, 1
+485, 442, 1
+486, 442, 1
+490, 443, 1
+491, 443, 1
+492, 443, 1
+493, 443, 1
+494, 443, 1
+495, 443, 1
+
+INSERT INTO function_implementation (function_id, language, dialect, implementation)
+450, 'SQL', null, '"$1"'
+460, 'SQL', null, 'ABS($1)'
+461, 'SQL', null, 'FLOOR($1)'
+462, 'SQL', null, 'CEILING($1)'
+463, 'SQL', null, 'FLOOR($1)'
+464, 'SQL', null, 'MIN($1)'
+465, 'SQL', null, 'MAX($1)'
+466, 'SQL', null, 'SUM($1)'
+467, 'SQL', null, 'AVG($1)'
+468, 'SQL', null, '$1 + $2'
+469, 'SQL', null, '$1 - $2'
+470, 'SQL', null, '$1 * $2'
+480, 'SQL', null, '$1 || " " || $2'
+481, 'SQL', null, 'LOWER($1)'
+482, 'SQL', null, 'UPPER($1)'
+483, 'SQL', null, 'LTRIM(RTEIM($1))'
+484, 'SQL', null, 'LTRIM($1)'
+485, 'SQL', null, 'RTRIM($1)'
+486, 'SQL', null, 'CHAR_LENGTH($1)'
+490, 'SQL', null, 'EXTRACT(YEAR FROM $1)'
+491, 'SQL', null, 'EXTRACT(MONTH FROM $1)'
+492, 'SQL', null, 'EXTRACT(DAY FROM $1)'
+493, 'SQL', null, 'EXTRACT(HOUR FROM $1)'
+494, 'SQL', null, 'EXTRACT(MINUTE FROM $1)'
+495, 'SQL', null, 'EXTRACT(SECOND FROM $1)'
