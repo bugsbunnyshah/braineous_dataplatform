@@ -45,3 +45,4 @@ src/main/resources/META-INF/resources/
 /src/main/resources/tensorflow/mlruns/
 remember.txt
 /mlruns/
+gitpush.sh
