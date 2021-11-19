@@ -1,0 +1,15 @@
+<harmony>
+  	<matchers>
+	    <matcher default="true" id="org.mitre.harmony.matchers.matchers.EditDistanceMatcher"/>
+	    <matcher default="true" id="org.mitre.harmony.matchers.matchers.documentationMatcher.DocumentationMatcher"/>
+	    <matcher default="true" id="org.mitre.harmony.matchers.matchers.MappingMatcher"/>
+	    <matcher default="true" id="org.mitre.harmony.matchers.matchers.ThesaurusMatcher"/>
+	    <matcher default="true" id="org.mitre.harmony.matchers.matchers.ExactMatcher"/>
+	    <matcher id="org.mitre.harmony.matchers.matchers.QuickMatcher"/>
+	    <matcher id="org.mitre.harmony.matchers.matchers.WordNetMatcher"/>
+	    <matcher hidden="true" id="org.mitre.harmony.matchers.matchers.EntityMatcher"/>
+  	</matchers>
+  	<mergers>
+	    <merger id="org.mitre.harmony.matchers.mergers.VoteMerger"/>
+  	</mergers>
+</harmony>
