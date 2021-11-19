@@ -1,0 +1,27 @@
+{
+    "firstname": "James",
+    "dob_year": 1980,
+    "gender": "M",
+    "middlename": "",
+    "dob_month": 1,
+    "ingestionId": "1",
+    "lastname": "Smith",
+    "addresses": {
+      "address": [
+        {
+          "city": "NewJersy",
+          "street": "123 ABC street",
+          "state": "NJ"
+        },
+        {
+          "city": "newark",
+          "street": "456 apple street",
+          "state": "DE"
+        }
+      ]
+    },
+    "salary": {
+    "currency": "Euro",
+    "content": 10000
+    }
+}

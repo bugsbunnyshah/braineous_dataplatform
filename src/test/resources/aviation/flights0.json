@@ -1,0 +1,4911 @@
+{
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "count": 100,
+    "total": 40557298
+  },
+  "data": [
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Donegal",
+        "timezone": "Europe/Dublin",
+        "iata": "CFN",
+        "icao": "EIDL",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:05:00+00:00",
+        "estimated": "2020-09-25T12:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Glasgow International",
+        "timezone": "Europe/London",
+        "iata": "GLA",
+        "icao": "EGPF",
+        "terminal": "M",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:05:00+00:00",
+        "estimated": "2020-09-25T13:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Loganair",
+        "iata": "LM",
+        "icao": "LOG"
+      },
+      "flight": {
+        "number": "204",
+        "iata": "LM204",
+        "icao": "LOG204",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Donegal",
+        "timezone": "Europe/Dublin",
+        "iata": "CFN",
+        "icao": "EIDL",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:05:00+00:00",
+        "estimated": "2020-09-25T12:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Glasgow International",
+        "timezone": "Europe/London",
+        "iata": "GLA",
+        "icao": "EGPF",
+        "terminal": "M",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:05:00+00:00",
+        "estimated": "2020-09-25T13:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "British Airways",
+        "iata": "BA",
+        "icao": "BAW"
+      },
+      "flight": {
+        "number": "4086",
+        "iata": "BA4086",
+        "icao": "BAW4086",
+        "codeshared": {
+          "airline_name": "loganair",
+          "airline_iata": "lm",
+          "airline_icao": "log",
+          "flight_number": "204",
+          "flight_iata": "lm204",
+          "flight_icao": "log204"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Leger",
+        "timezone": "Africa/Algiers",
+        "iata": "CBH",
+        "icao": "DAOC",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T10:05:00+00:00",
+        "estimated": "2020-09-25T10:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:05:00+00:00",
+        "estimated": "2020-09-25T12:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6135",
+        "iata": "AH6135",
+        "icao": "DAH6135",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Oued Irara Airport",
+        "timezone": "Africa/Algiers",
+        "iata": "HME",
+        "icao": "DAUH",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T09:30:00+00:00",
+        "estimated": "2020-09-25T09:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:10:00+00:00",
+        "estimated": "2020-09-25T11:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6227",
+        "iata": "AH6227",
+        "icao": "DAH6227",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:05:00+00:00",
+        "estimated": "2020-09-25T12:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Ain El Bey",
+        "timezone": "Africa/Algiers",
+        "iata": "CZL",
+        "icao": "DABC",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:10:00+00:00",
+        "estimated": "2020-09-25T13:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6022",
+        "iata": "AH6022",
+        "icao": "DAH6022",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:50:00+00:00",
+        "estimated": "2020-09-25T11:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Batna",
+        "timezone": "Africa/Algiers",
+        "iata": "BLJ",
+        "icao": "DABT",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:05:00+00:00",
+        "estimated": "2020-09-25T13:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6038",
+        "iata": "AH6038",
+        "icao": "DAH6038",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:30:00+00:00",
+        "estimated": "2020-09-25T11:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Es Senia",
+        "timezone": "Africa/Algiers",
+        "iata": "ORN",
+        "icao": "DAOO",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:45:00+00:00",
+        "estimated": "2020-09-25T12:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6182",
+        "iata": "AH6182",
+        "icao": "DAH6182",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:10:00+00:00",
+        "estimated": "2020-09-25T11:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Ain El Bey",
+        "timezone": "Africa/Algiers",
+        "iata": "CZL",
+        "icao": "DABC",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:15:00+00:00",
+        "estimated": "2020-09-25T12:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6192",
+        "iata": "AH6192",
+        "icao": "DAH6192",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Houari Boumediene",
+        "timezone": "Africa/Algiers",
+        "iata": "ALG",
+        "icao": "DAAG",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:10:00+00:00",
+        "estimated": "2020-09-25T11:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Les Salines",
+        "timezone": "Africa/Algiers",
+        "iata": "AAE",
+        "icao": "DABB",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:25:00+00:00",
+        "estimated": "2020-09-25T12:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Algerie",
+        "iata": "AH",
+        "icao": "DAH"
+      },
+      "flight": {
+        "number": "6172",
+        "iata": "AH6172",
+        "icao": "DAH6172",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "John C. Munroe",
+        "timezone": "America/Toronto",
+        "iata": "YHM",
+        "icao": "CYHM",
+        "terminal": null,
+        "gate": null,
+        "delay": 10,
+        "scheduled": "2020-09-25T01:30:00+00:00",
+        "estimated": "2020-09-25T01:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Halifax International",
+        "timezone": "America/Halifax",
+        "iata": "YHZ",
+        "icao": "CYHZ",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T04:22:00+00:00",
+        "estimated": "2020-09-25T04:22:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Cargojet",
+        "iata": "W8",
+        "icao": "CJT"
+      },
+      "flight": {
+        "number": "622",
+        "iata": "W8622",
+        "icao": "CJT622",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Alta",
+        "timezone": "Europe/Oslo",
+        "iata": "ALF",
+        "icao": "ENAT",
+        "terminal": null,
+        "gate": "22",
+        "delay": null,
+        "scheduled": "2020-09-25T12:10:00+00:00",
+        "estimated": "2020-09-25T12:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Gardermoen",
+        "timezone": "Europe/Oslo",
+        "iata": "OSL",
+        "icao": "ENGM",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T14:10:00+00:00",
+        "estimated": "2020-09-25T14:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Norwegian Air Shuttle",
+        "iata": "DY",
+        "icao": "NAX"
+      },
+      "flight": {
+        "number": "321",
+        "iata": "DY321",
+        "icao": "NAX321",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Barajas",
+        "timezone": "Europe/Madrid",
+        "iata": "MAD",
+        "icao": "LEMD",
+        "terminal": "4",
+        "gate": "K88",
+        "delay": null,
+        "scheduled": "2020-09-25T11:45:00+00:00",
+        "estimated": "2020-09-25T11:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Alicante El Altet",
+        "timezone": "Europe/Madrid",
+        "iata": "ALC",
+        "icao": "LEAL",
+        "terminal": "N",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:50:00+00:00",
+        "estimated": "2020-09-25T12:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "American Airlines",
+        "iata": "AA",
+        "icao": "AAL"
+      },
+      "flight": {
+        "number": "8583",
+        "iata": "AA8583",
+        "icao": "AAL8583",
+        "codeshared": {
+          "airline_name": "iberia",
+          "airline_iata": "ib",
+          "airline_icao": "ibe",
+          "flight_number": "8860",
+          "flight_iata": "ib8860",
+          "flight_icao": "ibe8860"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Barajas",
+        "timezone": "Europe/Madrid",
+        "iata": "MAD",
+        "icao": "LEMD",
+        "terminal": "4",
+        "gate": "K88",
+        "delay": null,
+        "scheduled": "2020-09-25T11:45:00+00:00",
+        "estimated": "2020-09-25T11:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Alicante El Altet",
+        "timezone": "Europe/Madrid",
+        "iata": "ALC",
+        "icao": "LEAL",
+        "terminal": "N",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:50:00+00:00",
+        "estimated": "2020-09-25T12:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Cathay Pacific",
+        "iata": "CX",
+        "icao": "CPA"
+      },
+      "flight": {
+        "number": "1821",
+        "iata": "CX1821",
+        "icao": "CPA1821",
+        "codeshared": {
+          "airline_name": "iberia",
+          "airline_iata": "ib",
+          "airline_icao": "ibe",
+          "flight_number": "8860",
+          "flight_iata": "ib8860",
+          "flight_icao": "ibe8860"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Barajas",
+        "timezone": "Europe/Madrid",
+        "iata": "MAD",
+        "icao": "LEMD",
+        "terminal": "4",
+        "gate": "K88",
+        "delay": null,
+        "scheduled": "2020-09-25T11:45:00+00:00",
+        "estimated": "2020-09-25T11:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Alicante El Altet",
+        "timezone": "Europe/Madrid",
+        "iata": "ALC",
+        "icao": "LEAL",
+        "terminal": "N",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:50:00+00:00",
+        "estimated": "2020-09-25T12:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Qatar Airways",
+        "iata": "QR",
+        "icao": "QTR"
+      },
+      "flight": {
+        "number": "6528",
+        "iata": "QR6528",
+        "icao": "QTR6528",
+        "codeshared": {
+          "airline_name": "iberia",
+          "airline_iata": "ib",
+          "airline_icao": "ibe",
+          "flight_number": "8860",
+          "flight_iata": "ib8860",
+          "flight_icao": "ibe8860"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Alicante El Altet",
+        "timezone": "Europe/Madrid",
+        "iata": "ALC",
+        "icao": "LEAL",
+        "terminal": "N",
+        "gate": "C47",
+        "delay": null,
+        "scheduled": "2020-09-25T13:00:00+00:00",
+        "estimated": "2020-09-25T13:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Bilbao",
+        "timezone": "Europe/Madrid",
+        "iata": "BIO",
+        "icao": "LEBB",
+        "terminal": "O",
+        "gate": null,
+        "baggage": "1",
+        "delay": null,
+        "scheduled": "2020-09-25T14:30:00+00:00",
+        "estimated": "2020-09-25T14:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Volotea",
+        "iata": "V7",
+        "icao": "VOE"
+      },
+      "flight": {
+        "number": "3535",
+        "iata": "V73535",
+        "icao": "VOE3535",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Alicante El Altet",
+        "timezone": "Europe/Madrid",
+        "iata": "ALC",
+        "icao": "LEAL",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:45:00+00:00",
+        "estimated": "2020-09-25T12:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Geneve-cointrin",
+        "timezone": "Europe/Zurich",
+        "iata": "GVA",
+        "icao": "LSGG",
+        "terminal": "1",
+        "gate": null,
+        "baggage": "5",
+        "delay": null,
+        "scheduled": "2020-09-25T14:45:00+00:00",
+        "estimated": "2020-09-25T14:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "easyJet",
+        "iata": "U2",
+        "icao": "EZY"
+      },
+      "flight": {
+        "number": "1426",
+        "iata": "U21426",
+        "icao": "EZY1426",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Alicante El Altet",
+        "timezone": "Europe/Madrid",
+        "iata": "ALC",
+        "icao": "LEAL",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:15:00+00:00",
+        "estimated": "2020-09-25T12:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brussels Airport",
+        "timezone": "Europe/Brussels",
+        "iata": "BRU",
+        "icao": "EBBR",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T14:45:00+00:00",
+        "estimated": "2020-09-25T14:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Brussels Airlines",
+        "iata": "SN",
+        "icao": "BEL"
+      },
+      "flight": {
+        "number": "3772",
+        "iata": "SN3772",
+        "icao": "BEL3772",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "C2",
+        "delay": null,
+        "scheduled": "2020-09-25T07:05:00+00:00",
+        "estimated": "2020-09-25T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Midway",
+        "timezone": "America/Chicago",
+        "iata": "MDW",
+        "icao": "KMDW",
+        "terminal": null,
+        "gate": "A15",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:20:00+00:00",
+        "estimated": "2020-09-25T08:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Southwest Airlines",
+        "iata": "WN",
+        "icao": "SWA"
+      },
+      "flight": {
+        "number": "596",
+        "iata": "WN596",
+        "icao": "SWA596",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "C3",
+        "delay": null,
+        "scheduled": "2020-09-25T06:30:00+00:00",
+        "estimated": "2020-09-25T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Baltimore/Washington International Thurgood Marshall",
+        "timezone": "America/New_York",
+        "iata": "BWI",
+        "icao": "KBWI",
+        "terminal": null,
+        "gate": "A9",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T07:50:00+00:00",
+        "estimated": "2020-09-25T07:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Southwest Airlines",
+        "iata": "WN",
+        "icao": "SWA"
+      },
+      "flight": {
+        "number": "738",
+        "iata": "WN738",
+        "icao": "SWA738",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "A4",
+        "delay": 6,
+        "scheduled": "2020-09-25T06:30:00+00:00",
+        "estimated": "2020-09-25T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chicago O'hare International",
+        "timezone": "America/Chicago",
+        "iata": "ORD",
+        "icao": "KORD",
+        "terminal": "1",
+        "gate": "B4",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:10:00+00:00",
+        "estimated": "2020-09-25T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "United Airlines",
+        "iata": "UA",
+        "icao": "UAL"
+      },
+      "flight": {
+        "number": "5686",
+        "iata": "UA5686",
+        "icao": "UAL5686",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "A4",
+        "delay": 6,
+        "scheduled": "2020-09-25T06:30:00+00:00",
+        "estimated": "2020-09-25T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chicago O'hare International",
+        "timezone": "America/Chicago",
+        "iata": "ORD",
+        "icao": "KORD",
+        "terminal": "1",
+        "gate": "B4",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:10:00+00:00",
+        "estimated": "2020-09-25T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "2008",
+        "iata": "NZ2008",
+        "icao": "ANZ2008",
+        "codeshared": {
+          "airline_name": "united airlines",
+          "airline_iata": "ua",
+          "airline_icao": "ual",
+          "flight_number": "5686",
+          "flight_iata": "ua5686",
+          "flight_icao": "ual5686"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "A4",
+        "delay": 6,
+        "scheduled": "2020-09-25T06:30:00+00:00",
+        "estimated": "2020-09-25T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chicago O'hare International",
+        "timezone": "America/Chicago",
+        "iata": "ORD",
+        "icao": "KORD",
+        "terminal": "1",
+        "gate": "B4",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:10:00+00:00",
+        "estimated": "2020-09-25T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "ANA",
+        "iata": "NH",
+        "icao": "ANA"
+      },
+      "flight": {
+        "number": "7425",
+        "iata": "NH7425",
+        "icao": "ANA7425",
+        "codeshared": {
+          "airline_name": "united airlines",
+          "airline_iata": "ua",
+          "airline_icao": "ual",
+          "flight_number": "5686",
+          "flight_iata": "ua5686",
+          "flight_icao": "ual5686"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "A4",
+        "delay": 6,
+        "scheduled": "2020-09-25T06:30:00+00:00",
+        "estimated": "2020-09-25T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chicago O'hare International",
+        "timezone": "America/Chicago",
+        "iata": "ORD",
+        "icao": "KORD",
+        "terminal": "1",
+        "gate": "B4",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:10:00+00:00",
+        "estimated": "2020-09-25T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Canada",
+        "iata": "AC",
+        "icao": "ACA"
+      },
+      "flight": {
+        "number": "5531",
+        "iata": "AC5531",
+        "icao": "ACA5531",
+        "codeshared": {
+          "airline_name": "united airlines",
+          "airline_iata": "ua",
+          "airline_icao": "ual",
+          "flight_number": "5686",
+          "flight_iata": "ua5686",
+          "flight_icao": "ual5686"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "B11",
+        "delay": 11,
+        "scheduled": "2020-09-25T06:27:00+00:00",
+        "estimated": "2020-09-25T06:27:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Ronald Reagan Washington National Airport",
+        "timezone": "America/New_York",
+        "iata": "DCA",
+        "icao": "KDCA",
+        "terminal": "C",
+        "gate": "35X",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:00:00+00:00",
+        "estimated": "2020-09-25T08:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "American Airlines",
+        "iata": "AA",
+        "icao": "AAL"
+      },
+      "flight": {
+        "number": "6167",
+        "iata": "AA6167",
+        "icao": "AAL6167",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Albany International",
+        "timezone": "America/New_York",
+        "iata": "ALB",
+        "icao": "KALB",
+        "terminal": null,
+        "gate": "B9",
+        "delay": 11,
+        "scheduled": "2020-09-25T06:12:00+00:00",
+        "estimated": "2020-09-25T06:12:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Charlotte Douglas",
+        "timezone": "America/New_York",
+        "iata": "CLT",
+        "icao": "KCLT",
+        "terminal": null,
+        "gate": "C3",
+        "baggage": "C",
+        "delay": null,
+        "scheduled": "2020-09-25T08:28:00+00:00",
+        "estimated": "2020-09-25T08:28:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "American Airlines",
+        "iata": "AA",
+        "icao": "AAL"
+      },
+      "flight": {
+        "number": "4712",
+        "iata": "AA4712",
+        "icao": "AAL4712",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Almaty",
+        "timezone": "Asia/Almaty",
+        "iata": "ALA",
+        "icao": "UAAA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T17:00:00+00:00",
+        "estimated": "2020-09-25T17:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Shimkent",
+        "timezone": "Asia/Almaty",
+        "iata": "CIT",
+        "icao": "UAII",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:40:00+00:00",
+        "estimated": "2020-09-25T18:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Qazaq Air",
+        "iata": "IQ",
+        "icao": "ZXZ"
+      },
+      "flight": {
+        "number": "377",
+        "iata": "IQ377",
+        "icao": "ZXZ377",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Almaty",
+        "timezone": "Asia/Almaty",
+        "iata": "ALA",
+        "icao": "UAAA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T17:00:00+00:00",
+        "estimated": "2020-09-25T17:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Shevchenko",
+        "timezone": "Asia/Aqtau",
+        "iata": "SCO",
+        "icao": "UATE",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:15:00+00:00",
+        "estimated": "2020-09-25T19:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Astana",
+        "iata": "KC",
+        "icao": "KZR"
+      },
+      "flight": {
+        "number": "8570",
+        "iata": "KC8570",
+        "icao": "KZR8570",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Almaty",
+        "timezone": "Asia/Almaty",
+        "iata": "ALA",
+        "icao": "UAAA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:45:00+00:00",
+        "estimated": "2020-09-25T16:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Aktyubinsk",
+        "timezone": "Asia/Aqtobe",
+        "iata": "AKX",
+        "icao": "UATT",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:15:00+00:00",
+        "estimated": "2020-09-25T18:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "SCAT Airlines",
+        "iata": "DV",
+        "icao": "VSV"
+      },
+      "flight": {
+        "number": "711",
+        "iata": "DV711",
+        "icao": "VSV711",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Almaty",
+        "timezone": "Asia/Almaty",
+        "iata": "ALA",
+        "icao": "UAAA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:35:00+00:00",
+        "estimated": "2020-09-25T16:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Pavlodar",
+        "timezone": "Asia/Almaty",
+        "iata": "PWQ",
+        "icao": "UASP",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:25:00+00:00",
+        "estimated": "2020-09-25T18:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Astana",
+        "iata": "KC",
+        "icao": "KZR"
+      },
+      "flight": {
+        "number": "7131",
+        "iata": "KC7131",
+        "icao": "KZR7131",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Almaty",
+        "timezone": "Asia/Almaty",
+        "iata": "ALA",
+        "icao": "UAAA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:10:00+00:00",
+        "estimated": "2020-09-25T16:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Sharjah",
+        "timezone": "Asia/Dubai",
+        "iata": "SHJ",
+        "icao": "OMSJ",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Arabia",
+        "iata": "G9",
+        "icao": "ABY"
+      },
+      "flight": {
+        "number": "256",
+        "iata": "G9256",
+        "icao": "ABY256",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2020-09-25T18:50:00+00:00",
+        "estimated": "2020-09-25T18:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chongqing Jiangbei International",
+        "timezone": "Asia/Shanghai",
+        "iata": "CKG",
+        "icao": "ZUCK",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T23:00:00+00:00",
+        "estimated": "2020-09-25T23:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Southern Airlines",
+        "iata": "CZ",
+        "icao": "CSN"
+      },
+      "flight": {
+        "number": "8671",
+        "iata": "CZ8671",
+        "icao": "CSN8671",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2020-09-25T18:50:00+00:00",
+        "estimated": "2020-09-25T18:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chongqing Jiangbei International",
+        "timezone": "Asia/Shanghai",
+        "iata": "CKG",
+        "icao": "ZUCK",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T23:00:00+00:00",
+        "estimated": "2020-09-25T23:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Xiamen Airlines",
+        "iata": "MF",
+        "icao": "CXA"
+      },
+      "flight": {
+        "number": "1891",
+        "iata": "MF1891",
+        "icao": "CXA1891",
+        "codeshared": {
+          "airline_name": "china southern airlines",
+          "airline_iata": "cz",
+          "airline_icao": "csn",
+          "flight_number": "8671",
+          "flight_iata": "cz8671",
+          "flight_icao": "csn8671"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T22:10:00+00:00",
+        "estimated": "2020-09-25T22:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Express Air",
+        "iata": "G5",
+        "icao": "HXA"
+      },
+      "flight": {
+        "number": "6661",
+        "iata": "G56661",
+        "icao": "HXA6661",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T22:10:00+00:00",
+        "estimated": "2020-09-25T22:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Shandong Airlines",
+        "iata": "SC",
+        "icao": "CDG"
+      },
+      "flight": {
+        "number": "8816",
+        "iata": "SC8816",
+        "icao": "CDG8816",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T22:10:00+00:00",
+        "estimated": "2020-09-25T22:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Shenzhen Airlines",
+        "iata": "ZH",
+        "icao": "CSZ"
+      },
+      "flight": {
+        "number": "3082",
+        "iata": "ZH3082",
+        "icao": "CSZ3082",
+        "codeshared": {
+          "airline_name": "shandong airlines",
+          "airline_iata": "sc",
+          "airline_icao": "cdg",
+          "flight_number": "8816",
+          "flight_iata": "sc8816",
+          "flight_icao": "cdg8816"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T22:10:00+00:00",
+        "estimated": "2020-09-25T22:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Tibet Airlines",
+        "iata": "TV",
+        "icao": "TBA"
+      },
+      "flight": {
+        "number": "6834",
+        "iata": "TV6834",
+        "icao": "TBA6834",
+        "codeshared": {
+          "airline_name": "shandong airlines",
+          "airline_iata": "sc",
+          "airline_icao": "cdg",
+          "flight_number": "8816",
+          "flight_iata": "sc8816",
+          "flight_icao": "cdg8816"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T22:10:00+00:00",
+        "estimated": "2020-09-25T22:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air China LTD",
+        "iata": "CA",
+        "icao": "CCA"
+      },
+      "flight": {
+        "number": "8816",
+        "iata": "CA8816",
+        "icao": "CCA8816",
+        "codeshared": {
+          "airline_name": "shandong airlines",
+          "airline_iata": "sc",
+          "airline_icao": "cdg",
+          "flight_number": "8816",
+          "flight_iata": "sc8816",
+          "flight_icao": "cdg8816"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T22:10:00+00:00",
+        "estimated": "2020-09-25T22:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Gestair",
+        "iata": "G5",
+        "icao": "GES"
+      },
+      "flight": {
+        "number": "8453",
+        "iata": "G58453",
+        "icao": "GES8453",
+        "codeshared": {
+          "airline_name": "shandong airlines",
+          "airline_iata": "sc",
+          "airline_icao": "cdg",
+          "flight_number": "8816",
+          "flight_iata": "sc8816",
+          "flight_icao": "cdg8816"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2020-09-25T18:15:00+00:00",
+        "estimated": "2020-09-25T18:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Urumqi",
+        "timezone": "Asia/Shanghai",
+        "iata": "URC",
+        "icao": "ZWWW",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:30:00+00:00",
+        "estimated": "2020-09-25T19:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Southern Airlines",
+        "iata": "CZ",
+        "icao": "CSN"
+      },
+      "flight": {
+        "number": "6868",
+        "iata": "CZ6868",
+        "icao": "CSN6868",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Aksu",
+        "timezone": "Asia/Shanghai",
+        "iata": "AKU",
+        "icao": "ZWAK",
+        "terminal": null,
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2020-09-25T18:15:00+00:00",
+        "estimated": "2020-09-25T18:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Urumqi",
+        "timezone": "Asia/Shanghai",
+        "iata": "URC",
+        "icao": "ZWWW",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:30:00+00:00",
+        "estimated": "2020-09-25T19:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Eastern Airlines",
+        "iata": "MU",
+        "icao": "CES"
+      },
+      "flight": {
+        "number": "3455",
+        "iata": "MU3455",
+        "icao": "CES3455",
+        "codeshared": {
+          "airline_name": "china southern airlines",
+          "airline_iata": "cz",
+          "airline_icao": "csn",
+          "flight_number": "6868",
+          "flight_iata": "cz6868",
+          "flight_icao": "csn6868"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Christchurch International",
+        "timezone": "Pacific/Auckland",
+        "iata": "CHC",
+        "icao": "NZCH",
+        "terminal": null,
+        "gate": "D17",
+        "delay": null,
+        "scheduled": "2020-09-25T18:10:00+00:00",
+        "estimated": "2020-09-25T18:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:25:00+00:00",
+        "estimated": "2020-09-25T19:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "674",
+        "iata": "NZ674",
+        "icao": "ANZ674",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Christchurch International",
+        "timezone": "Pacific/Auckland",
+        "iata": "CHC",
+        "icao": "NZCH",
+        "terminal": null,
+        "gate": "D17",
+        "delay": null,
+        "scheduled": "2020-09-25T18:10:00+00:00",
+        "estimated": "2020-09-25T18:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:25:00+00:00",
+        "estimated": "2020-09-25T19:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Qantas",
+        "iata": "QF",
+        "icao": "QFA"
+      },
+      "flight": {
+        "number": "8464",
+        "iata": "QF8464",
+        "icao": "QFA8464",
+        "codeshared": {
+          "airline_name": "air new zealand",
+          "airline_iata": "nz",
+          "airline_icao": "anz",
+          "flight_number": "674",
+          "flight_iata": "nz674",
+          "flight_icao": "anz674"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Christchurch International",
+        "timezone": "Pacific/Auckland",
+        "iata": "CHC",
+        "icao": "NZCH",
+        "terminal": null,
+        "gate": "D17",
+        "delay": null,
+        "scheduled": "2020-09-25T18:10:00+00:00",
+        "estimated": "2020-09-25T18:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:25:00+00:00",
+        "estimated": "2020-09-25T19:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Etihad Airways",
+        "iata": "EY",
+        "icao": "ETD"
+      },
+      "flight": {
+        "number": "4756",
+        "iata": "EY4756",
+        "icao": "ETD4756",
+        "codeshared": {
+          "airline_name": "air new zealand",
+          "airline_iata": "nz",
+          "airline_icao": "anz",
+          "flight_number": "674",
+          "flight_iata": "nz674",
+          "flight_icao": "anz674"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Christchurch International",
+        "timezone": "Pacific/Auckland",
+        "iata": "CHC",
+        "icao": "NZCH",
+        "terminal": null,
+        "gate": "D17",
+        "delay": null,
+        "scheduled": "2020-09-25T18:10:00+00:00",
+        "estimated": "2020-09-25T18:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:25:00+00:00",
+        "estimated": "2020-09-25T19:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "EVA Air",
+        "iata": "BR",
+        "icao": "EVA"
+      },
+      "flight": {
+        "number": "3250",
+        "iata": "BR3250",
+        "icao": "EVA3250",
+        "codeshared": {
+          "airline_name": "air new zealand",
+          "airline_iata": "nz",
+          "airline_icao": "anz",
+          "flight_number": "674",
+          "flight_iata": "nz674",
+          "flight_icao": "anz674"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "I",
+        "gate": "5",
+        "delay": null,
+        "scheduled": "2020-09-25T23:00:00+00:00",
+        "estimated": "2020-09-25T23:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Shanghai Pudong International",
+        "timezone": "Asia/Shanghai",
+        "iata": "PVG",
+        "icao": "ZSPD",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-26T07:15:00+00:00",
+        "estimated": "2020-09-26T07:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "289",
+        "iata": "NZ289",
+        "icao": "ANZ289",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "I",
+        "gate": "4C",
+        "delay": null,
+        "scheduled": "2020-09-25T23:00:00+00:00",
+        "estimated": "2020-09-25T23:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Los Angeles International",
+        "timezone": "America/Los_Angeles",
+        "iata": "LAX",
+        "icao": "KLAX",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:10:00+00:00",
+        "estimated": "2020-09-25T16:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "1006",
+        "iata": "NZ1006",
+        "icao": "ANZ1006",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Asahikawa",
+        "timezone": "Asia/Tokyo",
+        "iata": "AKJ",
+        "icao": "RJEC",
+        "terminal": null,
+        "gate": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T19:30:00+00:00",
+        "estimated": "2020-09-25T19:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T21:15:00+00:00",
+        "estimated": "2020-09-25T21:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Do",
+        "iata": "HD",
+        "icao": "ADO"
+      },
+      "flight": {
+        "number": "88",
+        "iata": "HD88",
+        "icao": "ADO88",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Asahikawa",
+        "timezone": "Asia/Tokyo",
+        "iata": "AKJ",
+        "icao": "RJEC",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:30:00+00:00",
+        "estimated": "2020-09-25T19:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Haneda Airport",
+        "timezone": "Asia/Tokyo",
+        "iata": "HND",
+        "icao": "RJTT",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T21:15:00+00:00",
+        "estimated": "2020-09-25T21:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "ANA",
+        "iata": "NH",
+        "icao": "ANA"
+      },
+      "flight": {
+        "number": "4788",
+        "iata": "NH4788",
+        "icao": "ANA4788",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Lamu",
+        "timezone": "Africa/Nairobi",
+        "iata": "LAU",
+        "icao": "HKLU",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:35:00+00:00",
+        "estimated": "2020-09-25T11:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:05:00+00:00",
+        "estimated": "2020-09-25T12:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Fly540",
+        "iata": "5H",
+        "icao": "FFV"
+      },
+      "flight": {
+        "number": "412",
+        "iata": "5H412",
+        "icao": "FFV412",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Lamu",
+        "timezone": "Africa/Nairobi",
+        "iata": "LAU",
+        "icao": "HKLU",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:35:00+00:00",
+        "estimated": "2020-09-25T11:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:05:00+00:00",
+        "estimated": "2020-09-25T12:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": null,
+        "iata": "H1",
+        "icao": "H1"
+      },
+      "flight": {
+        "number": "9709",
+        "iata": "H19709",
+        "icao": "H19709",
+        "codeshared": {
+          "airline_name": "fly540",
+          "airline_iata": "5h",
+          "airline_icao": "ffv",
+          "flight_number": "412",
+          "flight_iata": "5h412",
+          "flight_icao": "ffv412"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Rickenbacker",
+        "timezone": "America/New_York",
+        "iata": "LCK",
+        "icao": "KLCK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T02:00:00+00:00",
+        "estimated": "2020-09-25T02:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Seoul (Incheon)",
+        "timezone": "Asia/Seoul",
+        "iata": "ICN",
+        "icao": "RKSI",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-26T05:05:00+00:00",
+        "estimated": "2020-09-26T05:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Korean Air",
+        "iata": "KE",
+        "icao": "KAL"
+      },
+      "flight": {
+        "number": "9038",
+        "iata": "KE9038",
+        "icao": "KAL9038",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Ukunda",
+        "timezone": "Africa/Nairobi",
+        "iata": "UKA",
+        "icao": "HKUK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:00:00+00:00",
+        "estimated": "2020-09-25T08:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:15:00+00:00",
+        "estimated": "2020-09-25T08:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "empty",
+        "iata": null,
+        "icao": null
+      },
+      "flight": {
+        "number": "1",
+        "iata": null,
+        "icao": null,
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:25:00+00:00",
+        "estimated": "2020-09-25T12:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Jomo Kenyatta International",
+        "timezone": "Africa/Nairobi",
+        "iata": "NBO",
+        "icao": "HKJK",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:35:00+00:00",
+        "estimated": "2020-09-25T13:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Fly540",
+        "iata": "5H",
+        "icao": "FFV"
+      },
+      "flight": {
+        "number": "412",
+        "iata": "5H412",
+        "icao": "FFV412",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:25:00+00:00",
+        "estimated": "2020-09-25T12:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Jomo Kenyatta International",
+        "timezone": "Africa/Nairobi",
+        "iata": "NBO",
+        "icao": "HKJK",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:35:00+00:00",
+        "estimated": "2020-09-25T13:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": null,
+        "iata": "H1",
+        "icao": "H1"
+      },
+      "flight": {
+        "number": "9709",
+        "iata": "H19709",
+        "icao": "H19709",
+        "codeshared": {
+          "airline_name": "fly540",
+          "airline_iata": "5h",
+          "airline_icao": "ffv",
+          "flight_number": "412",
+          "flight_iata": "5h412",
+          "flight_icao": "ffv412"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:30:00+00:00",
+        "estimated": "2020-09-25T08:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Amboseli",
+        "timezone": "Africa/Nairobi",
+        "iata": "ASV",
+        "icao": "HKAM",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T09:15:00+00:00",
+        "estimated": "2020-09-25T09:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "empty",
+        "iata": null,
+        "icao": null
+      },
+      "flight": {
+        "number": "1",
+        "iata": null,
+        "icao": null,
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Ouani",
+        "timezone": "Indian/Comoro",
+        "iata": "AJN",
+        "icao": "FMCV",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:45:00+00:00",
+        "estimated": "2020-09-25T13:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Prince Said Ibrahim In",
+        "timezone": "Indian/Comoro",
+        "iata": "HAH",
+        "icao": "FMCH",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T14:15:00+00:00",
+        "estimated": "2020-09-25T14:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Batavia Air",
+        "iata": "Y6",
+        "icao": "BTV"
+      },
+      "flight": {
+        "number": "304",
+        "iata": "Y6304",
+        "icao": "BTV304",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Jouf",
+        "timezone": "Asia/Riyadh",
+        "iata": "AJF",
+        "icao": "OESK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T13:35:00+00:00",
+        "estimated": "2020-09-25T13:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "King Khaled International",
+        "timezone": "Asia/Riyadh",
+        "iata": "RUH",
+        "icao": "OERK",
+        "terminal": "5",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T15:10:00+00:00",
+        "estimated": "2020-09-25T15:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "flynas",
+        "iata": "XY",
+        "icao": "KNE"
+      },
+      "flight": {
+        "number": "148",
+        "iata": "XY148",
+        "icao": "KNE148",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Campo Dell Oro",
+        "timezone": "Europe/Paris",
+        "iata": "AJA",
+        "icao": "LFKJ",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:25:00+00:00",
+        "estimated": "2020-09-25T12:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Euroairport Swiss",
+        "timezone": "Europe/Zurich",
+        "iata": "BSL",
+        "icao": "LFSB",
+        "terminal": null,
+        "gate": null,
+        "baggage": "6",
+        "delay": null,
+        "scheduled": "2020-09-25T13:50:00+00:00",
+        "estimated": "2020-09-25T13:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "easyJet",
+        "iata": "U2",
+        "icao": "EZY"
+      },
+      "flight": {
+        "number": "1018",
+        "iata": "U21018",
+        "icao": "EZY1018",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "101",
+        "delay": null,
+        "scheduled": "2020-09-25T16:35:00+00:00",
+        "estimated": "2020-09-25T16:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Ahmedabad",
+        "timezone": "Asia/Kolkata",
+        "iata": "AMD",
+        "icao": "VAAH",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T19:25:00+00:00",
+        "estimated": "2020-09-25T19:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "IndiGo",
+        "iata": "6E",
+        "icao": "IGO"
+      },
+      "flight": {
+        "number": "6372",
+        "iata": "6E6372",
+        "icao": "IGO6372",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:30:00+00:00",
+        "estimated": "2020-09-25T16:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Suvarnabhumi International",
+        "timezone": "Asia/Bangkok",
+        "iata": "BKK",
+        "icao": "VTBS",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T21:00:00+00:00",
+        "estimated": "2020-09-25T21:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Thai Smile",
+        "iata": "WE",
+        "icao": "THD"
+      },
+      "flight": {
+        "number": "348",
+        "iata": "WE348",
+        "icao": "THD348",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:30:00+00:00",
+        "estimated": "2020-09-25T16:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Suvarnabhumi International",
+        "timezone": "Asia/Bangkok",
+        "iata": "BKK",
+        "icao": "VTBS",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T21:00:00+00:00",
+        "estimated": "2020-09-25T21:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Thai Airways International",
+        "iata": "TG",
+        "icao": "THA"
+      },
+      "flight": {
+        "number": "2348",
+        "iata": "TG2348",
+        "icao": "THA2348",
+        "codeshared": {
+          "airline_name": "thai smile",
+          "airline_iata": "we",
+          "airline_icao": "thd",
+          "flight_number": "348",
+          "flight_iata": "we348",
+          "flight_icao": "thd348"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "20",
+        "delay": null,
+        "scheduled": "2020-09-25T16:25:00+00:00",
+        "estimated": "2020-09-25T16:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Hyderabad Airport",
+        "timezone": "Asia/Kolkata",
+        "iata": "HYD",
+        "icao": "VOHS",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:45:00+00:00",
+        "estimated": "2020-09-25T18:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "IndiGo",
+        "iata": "6E",
+        "icao": "IGO"
+      },
+      "flight": {
+        "number": "6353",
+        "iata": "6E6353",
+        "icao": "IGO6353",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "18",
+        "delay": null,
+        "scheduled": "2020-09-25T16:25:00+00:00",
+        "estimated": "2020-09-25T16:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Vishakhapatnam",
+        "timezone": "Asia/Kolkata",
+        "iata": "VTZ",
+        "icao": "VOVZ",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T17:55:00+00:00",
+        "estimated": "2020-09-25T17:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "IndiGo",
+        "iata": "6E",
+        "icao": "IGO"
+      },
+      "flight": {
+        "number": "358",
+        "iata": "6E358",
+        "icao": "IGO358",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "23",
+        "delay": null,
+        "scheduled": "2020-09-25T16:15:00+00:00",
+        "estimated": "2020-09-25T16:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Madras International (Meenambakkam)",
+        "timezone": "Asia/Kolkata",
+        "iata": "MAA",
+        "icao": "VOMM",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:30:00+00:00",
+        "estimated": "2020-09-25T18:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air India",
+        "iata": "AI",
+        "icao": "AIC"
+      },
+      "flight": {
+        "number": "765",
+        "iata": "AI765",
+        "icao": "AIC765",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "19",
+        "delay": null,
+        "scheduled": "2020-09-25T16:10:00+00:00",
+        "estimated": "2020-09-25T16:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Bangalore International Airport",
+        "timezone": "Asia/Kolkata",
+        "iata": "BLR",
+        "icao": "VOBL",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:35:00+00:00",
+        "estimated": "2020-09-25T18:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "IndiGo",
+        "iata": "6E",
+        "icao": "IGO"
+      },
+      "flight": {
+        "number": "932",
+        "iata": "6E932",
+        "icao": "IGO932",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T16:05:00+00:00",
+        "estimated": "2020-09-25T16:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Suvarnabhumi International",
+        "timezone": "Asia/Bangkok",
+        "iata": "BKK",
+        "icao": "VTBS",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-26T16:05:00+00:00",
+        "estimated": "2020-09-26T16:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Bhutan Airlines",
+        "iata": "B3",
+        "icao": "BTN"
+      },
+      "flight": {
+        "number": "700",
+        "iata": "B3700",
+        "icao": "BTN700",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "102",
+        "delay": null,
+        "scheduled": "2020-09-25T16:00:00+00:00",
+        "estimated": "2020-09-25T16:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "North Lakhimpur",
+        "timezone": "Asia/Kolkata",
+        "iata": "IXI",
+        "icao": "VELR",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:25:00+00:00",
+        "estimated": "2020-09-25T18:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Alliance Air",
+        "iata": "9I",
+        "icao": "LLR"
+      },
+      "flight": {
+        "number": "751",
+        "iata": "9I751",
+        "icao": "LLR751",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "102",
+        "delay": null,
+        "scheduled": "2020-09-25T16:00:00+00:00",
+        "estimated": "2020-09-25T16:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "North Lakhimpur",
+        "timezone": "Asia/Kolkata",
+        "iata": "IXI",
+        "icao": "VELR",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:25:00+00:00",
+        "estimated": "2020-09-25T18:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air India",
+        "iata": "AI",
+        "icao": "AIC"
+      },
+      "flight": {
+        "number": "9751",
+        "iata": "AI9751",
+        "icao": "AIC9751",
+        "codeshared": {
+          "airline_name": "alliance air",
+          "airline_iata": "9i",
+          "airline_icao": "llr",
+          "flight_number": "751",
+          "flight_iata": "9i751",
+          "flight_icao": "llr751"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Netaji Subhas Chandra",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCU",
+        "icao": "VECC",
+        "terminal": null,
+        "gate": "22",
+        "delay": null,
+        "scheduled": "2020-09-25T15:55:00+00:00",
+        "estimated": "2020-09-25T15:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Lohegaon",
+        "timezone": "Asia/Kolkata",
+        "iata": "PNQ",
+        "icao": "VAPO",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T18:20:00+00:00",
+        "estimated": "2020-09-25T18:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "GoAir",
+        "iata": "G8",
+        "icao": "GOW"
+      },
+      "flight": {
+        "number": "395",
+        "iata": "G8395",
+        "icao": "GOW395",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Los Roques",
+        "timezone": "America/Caracas",
+        "iata": "LRV",
+        "icao": "SVRS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T05:35:00+00:00",
+        "estimated": "2020-09-25T05:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Simon Bolivar International Airport",
+        "timezone": "America/Caracas",
+        "iata": "CCS",
+        "icao": "SVMI",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T06:10:00+00:00",
+        "estimated": "2020-09-25T06:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Conviasa",
+        "iata": "V0",
+        "icao": "VCV"
+      },
+      "flight": {
+        "number": "2303",
+        "iata": "V02303",
+        "icao": "VCV2303",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Simon Bolivar International Airport",
+        "timezone": "America/Caracas",
+        "iata": "CCS",
+        "icao": "SVMI",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T07:00:00+00:00",
+        "estimated": "2020-09-25T07:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "La Chinita",
+        "timezone": "America/Caracas",
+        "iata": "MAR",
+        "icao": "SVMC",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T08:00:00+00:00",
+        "estimated": "2020-09-25T08:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "LASER Airlines",
+        "iata": "QL",
+        "icao": "LER"
+      },
+      "flight": {
+        "number": "940",
+        "iata": "QL940",
+        "icao": "LER940",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Simon Bolivar International Airport",
+        "timezone": "America/Caracas",
+        "iata": "CCS",
+        "icao": "SVMI",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T06:45:00+00:00",
+        "estimated": "2020-09-25T06:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Puerto Ordaz",
+        "timezone": "America/Caracas",
+        "iata": "PZO",
+        "icao": "SVPR",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T07:45:00+00:00",
+        "estimated": "2020-09-25T07:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "LASER Airlines",
+        "iata": "QL",
+        "icao": "LER"
+      },
+      "flight": {
+        "number": "1990",
+        "iata": "QL1990",
+        "icao": "LER1990",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Fertilia",
+        "timezone": "Europe/Rome",
+        "iata": "AHO",
+        "icao": "LIEA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:40:00+00:00",
+        "estimated": "2020-09-25T12:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Frederic Chopin",
+        "timezone": "Europe/Warsaw",
+        "iata": "WAW",
+        "icao": "EPWA",
+        "terminal": null,
+        "gate": null,
+        "baggage": "8",
+        "delay": null,
+        "scheduled": "2020-09-25T15:15:00+00:00",
+        "estimated": "2020-09-25T15:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Wizz Air",
+        "iata": "W6",
+        "icao": "WZZ"
+      },
+      "flight": {
+        "number": "1452",
+        "iata": "W61452",
+        "icao": "WZZ1452",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:10:00+00:00",
+        "estimated": "2020-09-25T12:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Lamu",
+        "timezone": "Africa/Nairobi",
+        "iata": "LAU",
+        "icao": "HKLU",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:40:00+00:00",
+        "estimated": "2020-09-25T12:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Fly540",
+        "iata": "5H",
+        "icao": "FFV"
+      },
+      "flight": {
+        "number": "1411",
+        "iata": "5H1411",
+        "icao": "FFV1411",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T10:45:00+00:00",
+        "estimated": "2020-09-25T10:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Lamu",
+        "timezone": "Africa/Nairobi",
+        "iata": "LAU",
+        "icao": "HKLU",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:15:00+00:00",
+        "estimated": "2020-09-25T11:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Fly540",
+        "iata": "5H",
+        "icao": "FFV"
+      },
+      "flight": {
+        "number": "411",
+        "iata": "5H411",
+        "icao": "FFV411",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Malindi",
+        "timezone": "Africa/Nairobi",
+        "iata": "MYD",
+        "icao": "HKML",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T10:45:00+00:00",
+        "estimated": "2020-09-25T10:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Lamu",
+        "timezone": "Africa/Nairobi",
+        "iata": "LAU",
+        "icao": "HKLU",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T11:15:00+00:00",
+        "estimated": "2020-09-25T11:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": null,
+        "iata": "H1",
+        "icao": "H1"
+      },
+      "flight": {
+        "number": "9708",
+        "iata": "H19708",
+        "icao": "H19708",
+        "codeshared": {
+          "airline_name": "fly540",
+          "airline_iata": "5h",
+          "airline_icao": "ffv",
+          "flight_number": "411",
+          "flight_iata": "5h411",
+          "flight_icao": "ffv411"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "1",
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2020-09-25T11:00:00+00:00",
+        "estimated": "2020-09-25T11:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": null,
+        "baggage": "6",
+        "delay": null,
+        "scheduled": "2020-09-25T13:05:00+00:00",
+        "estimated": "2020-09-25T13:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "United Airlines",
+        "iata": "UA",
+        "icao": "UAL"
+      },
+      "flight": {
+        "number": "7051",
+        "iata": "UA7051",
+        "icao": "UAL7051",
+        "codeshared": {
+          "airline_name": "sas",
+          "airline_iata": "sk",
+          "airline_icao": "sas",
+          "flight_number": "556",
+          "flight_iata": "sk556",
+          "flight_icao": "sas556"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Virgin Atlantic",
+        "iata": "VS",
+        "icao": "VIR"
+      },
+      "flight": {
+        "number": "5621",
+        "iata": "VS5621",
+        "icao": "VIR5621",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Malaysia Airlines",
+        "iata": "MH",
+        "icao": "MAS"
+      },
+      "flight": {
+        "number": "5637",
+        "iata": "MH5637",
+        "icao": "MAS5637",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Xiamen Airlines",
+        "iata": "MF",
+        "icao": "CXA"
+      },
+      "flight": {
+        "number": "9311",
+        "iata": "MF9311",
+        "icao": "CXA9311",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Kenya Airways",
+        "iata": "KQ",
+        "icao": "KQA"
+      },
+      "flight": {
+        "number": "1109",
+        "iata": "KQ1109",
+        "icao": "KQA1109",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Garuda Indonesia",
+        "iata": "GA",
+        "icao": "GIA"
+      },
+      "flight": {
+        "number": "9482",
+        "iata": "GA9482",
+        "icao": "GIA9482",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Etihad Airways",
+        "iata": "EY",
+        "icao": "ETD"
+      },
+      "flight": {
+        "number": "7343",
+        "iata": "EY7343",
+        "icao": "ETD7343",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "9276",
+        "iata": "DL9276",
+        "icao": "DAL9276",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Southern Airlines",
+        "iata": "CZ",
+        "icao": "CSN"
+      },
+      "flight": {
+        "number": "7920",
+        "iata": "CZ7920",
+        "icao": "CSN7920",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Schiphol",
+        "timezone": "Europe/Amsterdam",
+        "iata": "AMS",
+        "icao": "EHAM",
+        "terminal": "2",
+        "gate": "C16",
+        "delay": null,
+        "scheduled": "2020-09-25T10:55:00+00:00",
+        "estimated": "2020-09-25T10:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F33",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Alitalia",
+        "iata": "AZ",
+        "icao": "AZA"
+      },
+      "flight": {
+        "number": "2900",
+        "iata": "AZ2900",
+        "icao": "AZA2900",
+        "codeshared": {
+          "airline_name": "klm",
+          "airline_iata": "kl",
+          "airline_icao": "klm",
+          "flight_number": "1109",
+          "flight_iata": "kl1109",
+          "flight_icao": "klm1109"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Virgin Atlantic",
+        "iata": "VS",
+        "icao": "VIR"
+      },
+      "flight": {
+        "number": "6119",
+        "iata": "VS6119",
+        "icao": "VIR6119",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Austral",
+        "iata": "UU",
+        "icao": "REU"
+      },
+      "flight": {
+        "number": "8262",
+        "iata": "UU8262",
+        "icao": "REU8262",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Eastern Airlines",
+        "iata": "MU",
+        "icao": "CES"
+      },
+      "flight": {
+        "number": "8607",
+        "iata": "MU8607",
+        "icao": "CES8607",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air Mauritius",
+        "iata": "MK",
+        "icao": "MAU"
+      },
+      "flight": {
+        "number": "9630",
+        "iata": "MK9630",
+        "icao": "MAU9630",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Kenya Airways",
+        "iata": "KQ",
+        "icao": "KQA"
+      },
+      "flight": {
+        "number": "3124",
+        "iata": "KQ3124",
+        "icao": "KQA3124",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Gol",
+        "iata": "G3",
+        "icao": "GLO"
+      },
+      "flight": {
+        "number": "5207",
+        "iata": "G35207",
+        "icao": "GLO5207",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Delta Air Lines",
+        "iata": "DL",
+        "icao": "DAL"
+      },
+      "flight": {
+        "number": "8478",
+        "iata": "DL8478",
+        "icao": "DAL8478",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Southern Airlines",
+        "iata": "CZ",
+        "icao": "CSN"
+      },
+      "flight": {
+        "number": "7011",
+        "iata": "CZ7011",
+        "icao": "CSN7011",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Charles De Gaulle",
+        "timezone": "Europe/Paris",
+        "iata": "CDG",
+        "icao": "LFPG",
+        "terminal": "2F",
+        "gate": "F05",
+        "delay": null,
+        "scheduled": "2020-09-25T09:45:00+00:00",
+        "estimated": "2020-09-25T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "F39",
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2020-09-25T12:20:00+00:00",
+        "estimated": "2020-09-25T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Alitalia",
+        "iata": "AZ",
+        "icao": "AZA"
+      },
+      "flight": {
+        "number": "3634",
+        "iata": "AZ3634",
+        "icao": "AZA3634",
+        "codeshared": {
+          "airline_name": "air france",
+          "airline_iata": "af",
+          "airline_icao": "afr",
+          "flight_number": "1262",
+          "flight_iata": "af1262",
+          "flight_icao": "afr1262"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "3",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2020-09-25T12:55:00+00:00",
+        "estimated": "2020-09-25T12:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kramfors",
+        "timezone": "Europe/Stockholm",
+        "iata": "KRF",
+        "icao": "ESNK",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2020-09-25T14:00:00+00:00",
+        "estimated": "2020-09-25T14:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "FlexFlight",
+        "iata": "W2",
+        "icao": "FXT"
+      },
+      "flight": {
+        "number": "7678",
+        "iata": "W27678",
+        "icao": "FXT7678",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "46",
+        "delay": null,
+        "scheduled": "2020-09-25T12:45:00+00:00",
+        "estimated": "2020-09-25T12:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Helsinki-vantaa",
+        "timezone": "Europe/Helsinki",
+        "iata": "HEL",
+        "icao": "EFHK",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "22",
+        "delay": null,
+        "scheduled": "2020-09-25T15:00:00+00:00",
+        "estimated": "2020-09-25T15:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Finnair",
+        "iata": "AY",
+        "icao": "FIN"
+      },
+      "flight": {
+        "number": "808",
+        "iata": "AY808",
+        "icao": "FIN808",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "46",
+        "delay": null,
+        "scheduled": "2020-09-25T12:45:00+00:00",
+        "estimated": "2020-09-25T12:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Helsinki-vantaa",
+        "timezone": "Europe/Helsinki",
+        "iata": "HEL",
+        "icao": "EFHK",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "22",
+        "delay": null,
+        "scheduled": "2020-09-25T15:00:00+00:00",
+        "estimated": "2020-09-25T15:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Jet Linx Aviation",
+        "iata": "JL",
+        "icao": "JTL"
+      },
+      "flight": {
+        "number": "6896",
+        "iata": "JL6896",
+        "icao": "JTL6896",
+        "codeshared": {
+          "airline_name": "finnair",
+          "airline_iata": "ay",
+          "airline_icao": "fin",
+          "flight_number": "808",
+          "flight_iata": "ay808",
+          "flight_icao": "fin808"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "46",
+        "delay": null,
+        "scheduled": "2020-09-25T12:45:00+00:00",
+        "estimated": "2020-09-25T12:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Helsinki-vantaa",
+        "timezone": "Europe/Helsinki",
+        "iata": "HEL",
+        "icao": "EFHK",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "22",
+        "delay": null,
+        "scheduled": "2020-09-25T15:00:00+00:00",
+        "estimated": "2020-09-25T15:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "China Southern Airlines",
+        "iata": "CZ",
+        "icao": "CSN"
+      },
+      "flight": {
+        "number": "4368",
+        "iata": "CZ4368",
+        "icao": "CSN4368",
+        "codeshared": {
+          "airline_name": "finnair",
+          "airline_iata": "ay",
+          "airline_icao": "fin",
+          "flight_number": "808",
+          "flight_iata": "ay808",
+          "flight_icao": "fin808"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2020-09-25",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Arlanda",
+        "timezone": "Europe/Stockholm",
+        "iata": "ARN",
+        "icao": "ESSA",
+        "terminal": "5",
+        "gate": "46",
+        "delay": null,
+        "scheduled": "2020-09-25T12:45:00+00:00",
+        "estimated": "2020-09-25T12:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Helsinki-vantaa",
+        "timezone": "Europe/Helsinki",
+        "iata": "HEL",
+        "icao": "EFHK",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "22",
+        "delay": null,
+        "scheduled": "2020-09-25T15:00:00+00:00",
+        "estimated": "2020-09-25T15:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "British Airways",
+        "iata": "BA",
+        "icao": "BAW"
+      },
+      "flight": {
+        "number": "6050",
+        "iata": "BA6050",
+        "icao": "BAW6050",
+        "codeshared": {
+          "airline_name": "finnair",
+          "airline_iata": "ay",
+          "airline_icao": "fin",
+          "flight_number": "808",
+          "flight_iata": "ay808",
+          "flight_icao": "fin808"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    }
+  ]
+}
