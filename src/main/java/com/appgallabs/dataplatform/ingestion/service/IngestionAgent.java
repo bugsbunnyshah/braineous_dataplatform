@@ -3,7 +3,6 @@ package com.appgallabs.dataplatform.ingestion.service;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,8 @@ import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static io.restassured.RestAssured.given;
+
+//TODO
 
 public class IngestionAgent extends TimerTask implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(IngestionAgent.class);
@@ -69,9 +69,9 @@ public class IngestionAgent extends TimerTask implements Serializable {
             input.addProperty("destinationSchema", "");
             input.addProperty("sourceData", data.toString());
             input.addProperty("entity",entity);
-            Response response = given().body(input.toString()).when().post("/dataMapper/map/")
-                    .andReturn();
-            response.getBody().prettyPrint();
+            //Response response = given().body(input.toString()).when().post("/dataMapper/map/")
+            //        .andReturn();
+            //response.getBody().prettyPrint();
             //JsonObject ingestionResult = JsonParser.parseString(response.getBody().asString()).getAsJsonObject();
             //System.out.println("***************INGESTION_RESULT*******************");
             //System.out.println(ingestionResult);
@@ -92,9 +92,9 @@ public class IngestionAgent extends TimerTask implements Serializable {
             input.addProperty("destinationSchema", "");
             input.addProperty("sourceData", data.toString());
             input.addProperty("entity",entity);
-            Response response = given().body(input.toString()).when().post("/dataMapper/map/")
-                    .andReturn();
-            JsonObject ingestionResult = JsonParser.parseString(response.getBody().asString()).getAsJsonObject();
+            //Response response = given().body(input.toString()).when().post("/dataMapper/map/")
+            //        .andReturn();
+            //JsonObject ingestionResult = JsonParser.parseString(response.getBody().asString()).getAsJsonObject();
             //System.out.println("***************INGESTION_RESULT*******************");
             //System.out.println(ingestionResult);
             //System.out.println("**************************************************");
