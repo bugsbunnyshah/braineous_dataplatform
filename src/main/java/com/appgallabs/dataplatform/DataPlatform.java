@@ -6,11 +6,11 @@ import com.google.gson.JsonObject;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 
-@QuarkusMain
+@QuarkusMain(name="dataplatform")
 public class DataPlatform {
     public static void main(String[] args) throws Exception
     {
-        System.out.println("Braineous Started...");
+        System.out.println("Braineous DataPlatform started...");
         System.out.println("*******************************");
         System.out.println("STARTING_INGESTION");
         System.out.println("*******************************");

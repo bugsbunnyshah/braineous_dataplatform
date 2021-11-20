@@ -26,6 +26,8 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4
 ARG JAVA_PACKAGE=java-11-openjdk-headless
 ARG RUN_JAVA_VERSION=1.3.8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
+ENV mongodbHost='localhost'
+ENV mongodbPort='27017
 # Install java and the run-java script
 # Also set up permissions for user `1001`
 RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
@@ -47,6 +49,7 @@ COPY --chown=1001 target/quarkus-app/lib/ /deployments/lib/
 COPY --chown=1001 target/quarkus-app/*.jar /deployments/
 COPY --chown=1001 target/quarkus-app/app/ /deployments/app/
 COPY --chown=1001 target/quarkus-app/quarkus/ /deployments/quarkus/
+COPY --chown=1001:root deployments/aiplatform.json /deployments/
 
 EXPOSE 8080
 USER 1001

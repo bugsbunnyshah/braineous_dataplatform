@@ -26,6 +26,8 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4
 ARG JAVA_PACKAGE=java-11-openjdk-headless
 ARG RUN_JAVA_VERSION=1.3.8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
+ENV mongodbHost='localhost'
+ENV mongodbPort='27017
 # Install java and the run-java script
 # Also set up permissions for user `1001`
 RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
@@ -44,6 +46,7 @@ RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 COPY target/lib/* /deployments/lib/
 COPY target/*-runner.jar /deployments/app.jar
+COPY --chown=1001:root deployments/aiplatform.json /deployments/
 
 EXPOSE 8080
 USER 1001

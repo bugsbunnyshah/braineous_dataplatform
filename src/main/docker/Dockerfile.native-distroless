@@ -15,7 +15,12 @@
 #
 ###
 FROM quay.io/quarkus/quarkus-distroless-image:1.0
+
+ENV mongodbHost='localhost'
+ENV mongodbPort='27017
+
 COPY target/*-runner /application
+COPY --chown=1001:root deployments/aiplatform.json /deployments/
 
 EXPOSE 8080
 USER nonroot
