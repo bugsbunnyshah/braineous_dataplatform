@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.io.Serializable;
 
 public class StreamObject implements Serializable {
+    private String entity;
     private String principal;
     private String data;
     private String dataLakeId;
@@ -42,9 +43,21 @@ public class StreamObject implements Serializable {
         this.chainId = chainId;
     }
 
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
+
     public JsonObject toJson()
     {
         JsonObject json = new JsonObject();
+
+        if(this.entity != null) {
+            json.addProperty("entity", this.entity);
+        }
 
         if(this.principal != null){
             json.addProperty("principal",this.principal);

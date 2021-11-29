@@ -90,6 +90,7 @@ public class MapperService {
                 this.securityTokenContainer,
                 this.mongoDBJsonStore,
                 this.dataReplayService,
+                entity,
                 sourceData);
         return result;
 

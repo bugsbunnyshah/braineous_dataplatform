@@ -23,8 +23,8 @@ import java.util.Set;
 public class StreamIngesterContext implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(StreamIngesterContext.class);
 
-    private static StreamIngester streamIngester = new StreamIngester();
-    private static StreamIngesterContext streamIngesterContext = new StreamIngesterContext();
+    private static StreamIngester streamIngester;
+    private static StreamIngesterContext streamIngesterContext;
 
     private StreamIngesterQueue streamIngesterQueue;
 
@@ -43,9 +43,16 @@ public class StreamIngesterContext implements Serializable {
         this.chainIds = new HashMap<>();
     }
 
+    private void announce(){
+        logger.info("****************");
+        logger.info("STREAM_INGESTION_IS_ACTIVE....");
+        logger.info("****************");
+    }
+
     public static StreamIngester getStreamIngester()
     {
         if(StreamIngesterContext.streamIngester == null){
+            getStreamIngesterContext().announce();
             StreamIngesterContext.streamIngester = new StreamIngester();
         }
         return StreamIngesterContext.streamIngester;
@@ -88,7 +95,7 @@ public class StreamIngesterContext implements Serializable {
         return chainIds;
     }
 
-    public void ingestData(String principal,String dataLakeId, String chainId, JsonObject jsonObject)
+    public void ingestData(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject)
     {
         try {
             //JsonUtil.print(jsonObject);
@@ -105,6 +112,7 @@ public class StreamIngesterContext implements Serializable {
             JsonObject data = new JsonObject();
             data.addProperty("braineous_datalakeid", dataLakeId);
             data.addProperty("tenant", tenant.getPrincipal());
+            data.addProperty("entity",entity);
             data.addProperty("data", jsonObject.toString());
             data.addProperty("chainId", chainId);
             data.addProperty("dataLakeId", dataLakeId);
@@ -116,7 +124,7 @@ public class StreamIngesterContext implements Serializable {
             this.mongoDBJsonStore.storeIngestion(tenant, data);
             this.chainIds.put(dataLakeId, chainId);
 
-            BackgroundProcessListener.getInstance().decreaseThreshold(data);
+            BackgroundProcessListener.getInstance().decreaseThreshold(entity,dataLakeId,data);
 
             //Update DataHistory
             data.remove("data");

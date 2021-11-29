@@ -78,6 +78,7 @@ public class StreamIngester implements Serializable{
     public JsonObject submit(Tenant tenant, SecurityTokenContainer securityTokenContainer,
                              MongoDBJsonStore mongoDBJsonStore,
                              DataReplayService dataReplayService,
+                             String entity,
                              JsonArray sourceData)
     {
         JsonObject json = new JsonObject();
@@ -94,12 +95,14 @@ public class StreamIngester implements Serializable{
             String chainId = "/" + tenant.getPrincipal() + "/" + dataLakeId;
 
             StreamObject streamObject = new StreamObject();
+            streamObject.setEntity(entity);
             streamObject.setDataLakeId(dataLakeId);
             streamObject.setChainId(chainId);
             streamObject.setData(sourceData.toString());
             streamObject.setPrincipal(tenant.getPrincipal());
             StreamIngesterContext.getStreamIngesterContext().addStreamObject(streamObject);
 
+            json.addProperty("entity",entity);
             json.addProperty("dataLakeId", dataLakeId);
             json.addProperty("chainId",chainId);
             json.addProperty("tenant",tenant.getPrincipal());
@@ -127,6 +130,10 @@ public class StreamIngester implements Serializable{
                                         String principal = streamObject.get("principal").getAsString();
                                         String chainId = streamObject.get("chainId").getAsString();
                                         String data = streamObject.get("data").getAsString();
+                                        String entity = "not_specified";
+                                        if(streamObject.has("entity") && !streamObject.get("entity").isJsonNull()) {
+                                            entity = streamObject.get("entity").getAsString();
+                                        }
 
                                         JsonElement root = JsonParser.parseString(data);
                                         //JsonUtil.print(root);
@@ -152,7 +159,7 @@ public class StreamIngester implements Serializable{
                                         //logger.info("*************************************");
 
                                         JsonObject local = MapperService.performMapping(scores, root.toString());
-                                        StreamIngesterContext.getStreamIngesterContext().ingestData(principal, dataLakeId, chainId, local);
+                                        StreamIngesterContext.getStreamIngesterContext().ingestData(principal,entity, dataLakeId, chainId, local);
                                     }
                                     catch (Exception e){
                                         logger.error(e.getMessage(),e);
