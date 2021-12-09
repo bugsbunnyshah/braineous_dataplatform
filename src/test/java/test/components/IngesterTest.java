@@ -17,7 +17,6 @@ public abstract class IngesterTest extends BaseTest
     public void setUp() throws Exception
     {
         super.setUp();
-        BackgroundProcessListener.getInstance().setThreshold(1); //TODO
         BGNotificationReceiver receiver = new BGNotificationReceiver();
         BackgroundProcessListener.getInstance().setReceiver(receiver);
 

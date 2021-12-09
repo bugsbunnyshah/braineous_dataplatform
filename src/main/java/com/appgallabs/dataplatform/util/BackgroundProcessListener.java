@@ -62,7 +62,7 @@ public class BackgroundProcessListener {
 
         if(this.receiver != null && this.receiver.getData() != null) {
             this.receiver.getData().add(jsonObject);
-            JsonUtil.print(this.receiver.getData());
+            //System.out.println(this.receiver.getData());
             String local = jsonObject.get("braineous_datalakeid").getAsString();
             if(this.entityToIdMap.get(entity).contains(local))
             {
