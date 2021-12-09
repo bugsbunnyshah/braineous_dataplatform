@@ -31,6 +31,8 @@ public class MapperServiceSimpleSourceTests extends IngesterTest{
         JsonObject result = this.mapperService.map("testEntity",jsonArray);
         System.out.println(result);
 
+        BackgroundProcessListener.getInstance().setThreshold(jsonArray.size());
+
         System.out.println("*****WAITING********");
         synchronized (BackgroundProcessListener.getInstance().getReceiver()) {
             BackgroundProcessListener.getInstance().getReceiver().wait();
