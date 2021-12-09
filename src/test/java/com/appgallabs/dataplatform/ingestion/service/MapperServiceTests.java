@@ -30,6 +30,8 @@ public class MapperServiceTests extends IngesterTest{
         JsonObject json = JsonParser.parseString(sourceData).getAsJsonObject();
         JsonArray array = json.get("data").getAsJsonArray();
 
+        BackgroundProcessListener.getInstance().setThreshold(array.size());
+
 
         JsonObject result = this.mapperService.map("flight",array);
         System.out.println(result);
