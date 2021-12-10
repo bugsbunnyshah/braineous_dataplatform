@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.*;
@@ -64,6 +65,13 @@ public class ObjectGraphQueryService {
         this.g = TinkerGraph.open();
         this.server = new SparqlTraversalSource(g);
         this.graphData = new LocalGraphData(server);
+    }
+
+    @PreDestroy
+    public void onStop(){
+        this.g = null;
+        this.server = null;
+        this.graphData = null;
     }
 
     public void setGraphData(GraphData graphData)

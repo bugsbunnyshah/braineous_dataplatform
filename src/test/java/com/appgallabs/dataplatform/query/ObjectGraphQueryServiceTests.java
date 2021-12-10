@@ -9,6 +9,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class ObjectGraphQueryServiceTests {
     @BeforeEach
     public void setUp()
     {
-        JsonObject ausJson = new JsonObject();
+        /*JsonObject ausJson = new JsonObject();
         ausJson.addProperty("code","aus");
         ausJson.addProperty("description", "AUS");
         ausJson.addProperty("size", 100);
@@ -45,18 +46,31 @@ public class ObjectGraphQueryServiceTests {
         flight.addProperty("description", "SouthWest");
 
         Vertex ausV = this.service.saveObjectGraph("airport",ausJson,null,false);
-        System.out.println(ausV.graph());
+        System.out.println(ausV.graph());*/
+        this.service.start();
+    }
+
+    @AfterEach
+    public void tearDown(){
+        this.service.onStop();
     }
 
     @Test
     public void queryByCriteria() throws Exception
     {
+        JsonObject ausJson = new JsonObject();
+        ausJson.addProperty("code","aus");
+        ausJson.addProperty("description", "AUS");
+        ausJson.addProperty("size", 100);
+        Vertex ausV = this.service.saveObjectGraph("airport",ausJson,null,false);
+        System.out.println(ausV.graph());
+
         JsonObject criteria = new JsonObject();
         criteria.addProperty("size", 100);
         //criteria.addProperty("code", "aus");
 
         JsonArray array = service.queryByCriteria("airport", criteria);
-        JsonUtil.print(array);
+        System.out.println(array);
         assertTrue(array.size()> 0);
     }
 
