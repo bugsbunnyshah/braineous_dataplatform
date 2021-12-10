@@ -3,7 +3,9 @@ package com.appgallabs.dataplatform.query;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
+import org.apache.commons.io.IOUtils;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -87,6 +92,29 @@ public class ObjectGraphQueryServiceTests {
         arrivalCriteria.addProperty("code","lax");
         array = this.service.navigateByCriteria("flight",
                 "arrival",arrivalCriteria);
+        JsonUtil.print(array);
+    }
+
+    @Test
+    public void queryByDeparture() throws Exception{
+        String data = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                getResourceAsStream("query/flights.json"), StandardCharsets.UTF_8);
+
+        JsonObject json = JsonParser.parseString(data).getAsJsonObject();
+        JsonArray dataArray = json.get("data").getAsJsonArray();
+        System.out.println("# of Flights: "+dataArray.size());
+
+        for(int i=0; i<dataArray.size(); i++){
+            JsonObject flightJson = dataArray.get(i).getAsJsonObject();
+            flightJson.addProperty("oid",UUID.randomUUID().toString());
+            Vertex v = this.service.saveObjectGraph("flight",flightJson,null,false);
+            System.out.println(v.graph());
+        }
+
+        JsonObject departureCriteria = new JsonObject();
+        departureCriteria.addProperty("airport","Auckland International");
+        JsonArray array = this.service.navigateByCriteria("flight",
+                "departure",departureCriteria);
         JsonUtil.print(array);
     }
 }

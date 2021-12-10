@@ -105,15 +105,20 @@ public class ObjectGraphQueryService {
 
         String navQuery = this.graphQueryGenerator.generateNavigationQuery(entity,
                 relationship,criteria);
+        System.out.println(navQuery);
 
         GraphTraversal result = this.graphQueryProcessor.navigate(this.graphData,navQuery);
         Iterator<Map> itr = result.toSet().iterator();
         while(itr.hasNext())
         {
             Map map = itr.next();
+            //System.out.println(map);
             Vertex edge = (Vertex) map.get(relationship);
-            JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
-            response.add(edgeJson);
+            System.out.println(edge.label());
+            if(edge.label().equals(entity)) {
+                JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
+                response.add(edgeJson);
+            }
         }
 
         return response;
