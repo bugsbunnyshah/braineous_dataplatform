@@ -39,7 +39,7 @@ public class ObjectGraphQueryService {
     private SparqlTraversalSource server;
 
     @PostConstruct
-    public void start()
+    public void onStart()
     {
         //TODO: instantiate with a RemoteGraphData
         /*BaseConfiguration configuration = new BaseConfiguration();
@@ -105,7 +105,6 @@ public class ObjectGraphQueryService {
 
         String navQuery = this.graphQueryGenerator.generateNavigationQuery(entity,
                 relationship,criteria);
-        System.out.println(navQuery);
 
         GraphTraversal result = this.graphQueryProcessor.navigate(this.graphData,navQuery);
         Iterator<Map> itr = result.toSet().iterator();
@@ -161,18 +160,9 @@ public class ObjectGraphQueryService {
 
         for(Vertex local:children)
         {
-            System.out.println(local.label());
             vertex.addEdge(local.label(), local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
         }
 
         return vertex;
-
-        /*final Vertex vertex = this.g.addVertex(T.label, entity);
-        vertex.property("code",parent.get("code").getAsString());
-        vertex.property("description",parent.get("description").getAsString());
-        vertex.property("size", parent.get("size").getAsInt());
-        vertex.property("source",parent.toString());
-        vertex.property("vertexId", UUID.randomUUID().toString());
-        return vertex;*/
     }
 }

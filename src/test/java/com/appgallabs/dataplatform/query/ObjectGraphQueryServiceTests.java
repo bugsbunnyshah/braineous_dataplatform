@@ -4,11 +4,7 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
-import org.apache.tinkerpop.gremlin.sparql.process.traversal.dsl.sparql.SparqlTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,23 +26,7 @@ public class ObjectGraphQueryServiceTests {
     @BeforeEach
     public void setUp()
     {
-        /*JsonObject ausJson = new JsonObject();
-        ausJson.addProperty("code","aus");
-        ausJson.addProperty("description", "AUS");
-        ausJson.addProperty("size", 100);
-
-        JsonObject laxJson = new JsonObject();
-        laxJson.addProperty("code","lax");
-        laxJson.addProperty("description", "LAX");
-        laxJson.addProperty("size", 1000);
-
-        JsonObject flight = new JsonObject();
-        flight.addProperty("flightId","123");
-        flight.addProperty("description", "SouthWest");
-
-        Vertex ausV = this.service.saveObjectGraph("airport",ausJson,null,false);
-        System.out.println(ausV.graph());*/
-        this.service.start();
+        this.service.onStart();
     }
 
     @AfterEach
@@ -104,10 +83,10 @@ public class ObjectGraphQueryServiceTests {
                 "departure",departureCriteria);
         JsonUtil.print(array);
 
-        /*JsonObject arrivalCriteria = new JsonObject();
+        JsonObject arrivalCriteria = new JsonObject();
         arrivalCriteria.addProperty("code","lax");
-        array = this.service.navigateByCriteria("airport","flight",
+        array = this.service.navigateByCriteria("flight",
                 "arrival",arrivalCriteria);
-        JsonUtil.print(array);*/
+        JsonUtil.print(array);
     }
 }
