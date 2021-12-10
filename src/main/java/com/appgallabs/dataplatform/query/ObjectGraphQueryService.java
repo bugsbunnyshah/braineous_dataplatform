@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.sparql.process.traversal.dsl.sparql.SparqlTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.slf4j.Logger;
@@ -14,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @ApplicationScoped
 public class ObjectGraphQueryService {
@@ -30,7 +30,12 @@ public class ObjectGraphQueryService {
     @Inject
     private  GraphQueryProcessor graphQueryProcessor;
 
+
+    private TinkerGraph g;
+
     private GraphData graphData;
+
+    private SparqlTraversalSource server;
 
     @PostConstruct
     public void start()
@@ -56,8 +61,8 @@ public class ObjectGraphQueryService {
 
         RemoteConnection remoteConnection = RemoteConnection.from(configuration);
         SparqlTraversalSource server = new SparqlTraversalSource(remoteConnection);*/
-        TinkerGraph g = TinkerGraph.open();
-        SparqlTraversalSource server = new SparqlTraversalSource(g);
+        this.g = TinkerGraph.open();
+        this.server = new SparqlTraversalSource(g);
         this.graphData = new LocalGraphData(server);
     }
 
@@ -110,8 +115,6 @@ public class ObjectGraphQueryService {
                 continue;
             }
 
-            //logger.info(end.label());
-
             JsonObject row = new JsonObject();
 
             JsonObject startJson = JsonParser.parseString(start.property("source").value().toString()).getAsJsonObject();
@@ -125,5 +128,60 @@ public class ObjectGraphQueryService {
         }
 
         return response;
+    }
+
+    public Vertex saveObjectGraph(String entity,
+                                  JsonObject parent,JsonObject child,boolean isProperty)
+    {
+        Vertex vertex;
+        if(!isProperty)
+        {
+            vertex = this.g.addVertex(T.label,entity);
+        }
+        else
+        {
+            vertex = this.g.addVertex(T.label, "entity_"+entity);
+        }
+
+        JsonObject json = parent;
+        if(child != null)
+        {
+            json = child;
+        }
+
+        Set<String> properties = json.keySet();
+        List<Vertex> children = new ArrayList<>();
+        for(String property:properties)
+        {
+            if(json.get(property).isJsonObject())
+            {
+                JsonObject propertyObject = json.getAsJsonObject(property);
+                Vertex propertyVertex = this.saveObjectGraph(property,parent,propertyObject,true);
+                children.add(propertyVertex);
+            }
+            else if(json.get(property).isJsonPrimitive())
+            {
+                String value = json.get(property).getAsString();
+                vertex.property(property,value);
+            }
+        }
+
+        vertex.property("source",json.toString());
+        vertex.property("vertexId",UUID.randomUUID().toString());
+
+        for(Vertex local:children)
+        {
+            vertex.addEdge("has", local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
+        }
+
+        return vertex;
+
+        /*final Vertex vertex = this.g.addVertex(T.label, entity);
+        vertex.property("code",parent.get("code").getAsString());
+        vertex.property("description",parent.get("description").getAsString());
+        vertex.property("size", parent.get("size").getAsInt());
+        vertex.property("source",parent.toString());
+        vertex.property("vertexId", UUID.randomUUID().toString());
+        return vertex;*/
     }
 }

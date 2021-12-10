@@ -44,4 +44,28 @@ public class MapperServiceTests extends IngesterTest{
         System.out.println("*****TERMINATING********");
         System.out.println(BackgroundProcessListener.getInstance().getReceiver().getData());
     }
+
+    @Test
+    public void testMapAirlineDataQueryGraph() throws Exception
+    {
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                "aviation/flights_small.json"),
+                StandardCharsets.UTF_8);
+        JsonObject json = JsonParser.parseString(sourceData).getAsJsonObject();
+        JsonArray array = json.get("data").getAsJsonArray();
+
+        BackgroundProcessListener.getInstance().setThreshold(array.size());
+
+
+        JsonObject result = this.mapperService.map("flight",array);
+        System.out.println(result);
+
+        System.out.println("*****WAITING********");
+        synchronized (BackgroundProcessListener.getInstance().getReceiver()) {
+            BackgroundProcessListener.getInstance().getReceiver().wait();
+        }
+
+        System.out.println("*****TERMINATING********");
+        System.out.println(BackgroundProcessListener.getInstance().getReceiver().getData());
+    }
 }

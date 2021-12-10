@@ -29,14 +29,15 @@ public class GraphQueryGenerator {
             {
                 JsonPrimitive primitive = element.getAsJsonPrimitive();
                 right = primitive.getAsString();
-                if(primitive.isString())
+                /*if(primitive.isString())
                 {
                     queryBuilder.append("?element "+left+" \""+right+"\" . ");
                 }
                 else
                 {
                     queryBuilder.append("?element " + left + " " + right + " . ");
-                }
+                }*/
+                queryBuilder.append("?element "+left+" \""+right+"\" . ");
             }
         }
         queryBuilder.append("}");

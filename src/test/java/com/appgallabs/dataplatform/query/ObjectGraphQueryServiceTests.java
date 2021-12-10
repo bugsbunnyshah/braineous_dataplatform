@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class ObjectGraphQueryServiceTests {
@@ -23,13 +26,9 @@ public class ObjectGraphQueryServiceTests {
     @Inject
     private ObjectGraphQueryService service;
 
-    private Graph graph;
-
     @BeforeEach
     public void setUp()
     {
-        this.graph = TinkerGraph.open();
-
         JsonObject ausJson = new JsonObject();
         ausJson.addProperty("code","aus");
         ausJson.addProperty("description", "AUS");
@@ -44,22 +43,8 @@ public class ObjectGraphQueryServiceTests {
         flight.addProperty("flightId","123");
         flight.addProperty("description", "SouthWest");
 
-
-
-        final Vertex aus = this.graph.addVertex(T.id, 1, T.label, "airport", "code", "aus",
-                "description", "AUS", "size", 100 ,
-                "source", ausJson.toString());
-        final Vertex lax = this.graph.addVertex(T.id, 2, T.label, "airport", "code", "lax",
-                "description", "LAX", "size", 1000,
-                "source", laxJson.toString());
-        final Vertex ausToLax = this.graph.addVertex(T.id, 3, T.label, "flight", "flightId", "123", "description", "SouthWest",
-                "source",flight.toString());
-        aus.addEdge("departure", ausToLax, T.id, 4, "weight", 0.5d);
-        lax.addEdge("arrival",ausToLax,T.id, 5, "weight", 0.5d);
-
-        SparqlTraversalSource server = new SparqlTraversalSource(this.graph);
-        GraphData graphData = new LocalGraphData(server);
-        this.service.setGraphData(graphData);
+        Vertex ausV = this.service.saveObjectGraph("airport",ausJson,null,false);
+        System.out.println(ausV.graph());
     }
 
     @Test
@@ -71,6 +56,7 @@ public class ObjectGraphQueryServiceTests {
 
         JsonArray array = service.queryByCriteria("airport", criteria);
         JsonUtil.print(array);
+        assertEquals(1, array.size());
     }
 
     @Test
