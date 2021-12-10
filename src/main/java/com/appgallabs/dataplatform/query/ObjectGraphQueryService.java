@@ -99,40 +99,22 @@ public class ObjectGraphQueryService {
         return response;
     }
 
-    public JsonArray navigateByCriteria(String startEntity, String destinationEntity, String relationship, JsonObject criteria) throws Exception
+    public JsonArray navigateByCriteria(String entity, String relationship, JsonObject criteria) throws Exception
     {
         JsonArray response = new JsonArray();
 
-        String navQuery = this.graphQueryGenerator.generateNavigationQuery(startEntity,destinationEntity,
+        String navQuery = this.graphQueryGenerator.generateNavigationQuery(entity,
                 relationship,criteria);
+        System.out.println(navQuery);
 
         GraphTraversal result = this.graphQueryProcessor.navigate(this.graphData,navQuery);
         Iterator<Map> itr = result.toSet().iterator();
         while(itr.hasNext())
         {
             Map map = itr.next();
-            Vertex start = (Vertex) map.get(startEntity);
-            Vertex end = (Vertex) map.get(destinationEntity);
-
-            if(start == null || end == null)
-            {
-                continue;
-            }
-            if(!end.label().equals(destinationEntity))
-            {
-                continue;
-            }
-
-            JsonObject row = new JsonObject();
-
-            JsonObject startJson = JsonParser.parseString(start.property("source").value().toString()).getAsJsonObject();
-            JsonObject endJson = JsonParser.parseString(end.property("source").value().toString()).getAsJsonObject();
-
-            row.add(startEntity,startJson);
-            row.add(destinationEntity,endJson);
-            row.addProperty("relationship",relationship);
-
-            response.add(row);
+            Vertex edge = (Vertex) map.get(relationship);
+            JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
+            response.add(edgeJson);
         }
 
         return response;
@@ -148,7 +130,7 @@ public class ObjectGraphQueryService {
         }
         else
         {
-            vertex = this.g.addVertex(T.label, "entity_"+entity);
+            vertex = this.g.addVertex(T.label, entity);
         }
 
         JsonObject json = parent;
@@ -179,7 +161,8 @@ public class ObjectGraphQueryService {
 
         for(Vertex local:children)
         {
-            vertex.addEdge("has", local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
+            System.out.println(local.label());
+            vertex.addEdge(local.label(), local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
         }
 
         return vertex;

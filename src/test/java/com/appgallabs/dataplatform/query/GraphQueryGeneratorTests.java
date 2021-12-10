@@ -91,7 +91,7 @@ public class GraphQueryGeneratorTests {
 
         JsonObject departureCriteria = new JsonObject();
         departureCriteria.addProperty("code","aus");
-        String navQuery = this.graphQueryGenerator.generateNavigationQuery("airport","flight",
+        String navQuery = this.graphQueryGenerator.generateNavigationQuery("flight",
                 "departure",departureCriteria);
         logger.info(navQuery);
 
@@ -205,7 +205,7 @@ public class GraphQueryGeneratorTests {
 
         JsonObject departureCriteria = new JsonObject();
         departureCriteria.addProperty("code","aus");
-        String query = this.graphQueryGenerator.generateNavigationQuery("airport","flight",
+        String query = this.graphQueryGenerator.generateNavigationQuery("flight",
                 "departure",departureCriteria);
         GraphTraversal result = sparqlTraversalSource.sparql(query);
         Iterator<Map> itr = result.toSet().iterator();
@@ -231,7 +231,7 @@ public class GraphQueryGeneratorTests {
                 "         {?airport v:code \"lax\" .} }";*/
         JsonObject arrivalCriteria = new JsonObject();
         arrivalCriteria.addProperty("code","lax");
-        query = this.graphQueryGenerator.generateNavigationQuery("airport","flight",
+        query = this.graphQueryGenerator.generateNavigationQuery("flight",
                 "arrival",arrivalCriteria);
         result = sparqlTraversalSource.sparql(query);
         itr = result.toSet().iterator();

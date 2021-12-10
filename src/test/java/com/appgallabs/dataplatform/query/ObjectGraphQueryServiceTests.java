@@ -77,17 +77,37 @@ public class ObjectGraphQueryServiceTests {
     @Test
     public void navigateByCriteria() throws Exception
     {
+        JsonObject ausJson = new JsonObject();
+        ausJson.addProperty("code","aus");
+        ausJson.addProperty("description", "AUS");
+        ausJson.addProperty("size", 100);
+
+        JsonObject laxJson = new JsonObject();
+        laxJson.addProperty("code","lax");
+        laxJson.addProperty("description", "LAX");
+        laxJson.addProperty("size", 150);
+
+        JsonObject flight = new JsonObject();
+        flight.addProperty("flightId","123");
+        flight.addProperty("description", "SouthWest");
+        flight.add("departure", ausJson);
+        flight.add("arrival", laxJson);
+
+        JsonUtil.print(flight);
+
+        Vertex v = this.service.saveObjectGraph("flight",flight,null,false);
+        System.out.println(v.graph());
+
         JsonObject departureCriteria = new JsonObject();
         departureCriteria.addProperty("code","aus");
-        JsonArray array = this.service.navigateByCriteria("airport","flight",
+        JsonArray array = this.service.navigateByCriteria("flight",
                 "departure",departureCriteria);
-
         JsonUtil.print(array);
 
-        JsonObject arrivalCriteria = new JsonObject();
+        /*JsonObject arrivalCriteria = new JsonObject();
         arrivalCriteria.addProperty("code","lax");
         array = this.service.navigateByCriteria("airport","flight",
                 "arrival",arrivalCriteria);
-        JsonUtil.print(array);
+        JsonUtil.print(array);*/
     }
 }

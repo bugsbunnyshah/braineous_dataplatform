@@ -83,7 +83,7 @@ public class GraphQueryTests extends BaseTest {
 
         JsonObject departureCriteria = new JsonObject();
         departureCriteria.addProperty("flight_status","scheduled");
-        data = this.queryService.navigateByCriteria("entity_flight","flight","has"
+        data = this.queryService.navigateByCriteria("flight","has"
         ,departureCriteria);
         JsonUtil.print(data);
     }

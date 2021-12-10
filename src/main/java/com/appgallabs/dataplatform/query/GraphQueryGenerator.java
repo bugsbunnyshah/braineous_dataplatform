@@ -29,14 +29,6 @@ public class GraphQueryGenerator {
             {
                 JsonPrimitive primitive = element.getAsJsonPrimitive();
                 right = primitive.getAsString();
-                /*if(primitive.isString())
-                {
-                    queryBuilder.append("?element "+left+" \""+right+"\" . ");
-                }
-                else
-                {
-                    queryBuilder.append("?element " + left + " " + right + " . ");
-                }*/
                 queryBuilder.append("?element "+left+" \""+right+"\" . ");
             }
         }
@@ -44,11 +36,11 @@ public class GraphQueryGenerator {
         return queryBuilder.toString();
     }
 
-    public String generateNavigationQuery(String startEntity, String destinationEntity, String relationship, JsonObject criteria)
+    public String generateNavigationQuery(String entity, String relationship, JsonObject criteria)
     {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT * WHERE {");
-        queryBuilder.append("{?"+startEntity+" e:"+relationship+" ?"+destinationEntity+" .}");
+        queryBuilder.append("{?"+relationship+" e:"+relationship+" ?"+entity+" .}");
         queryBuilder.append(" UNION ");
         StringBuilder criteriaBuilder = new StringBuilder();
         criteriaBuilder.append("{");
@@ -63,14 +55,7 @@ public class GraphQueryGenerator {
             {
                 JsonPrimitive primitive = element.getAsJsonPrimitive();
                 right = primitive.getAsString();
-                if(primitive.isString())
-                {
-                    criteriaBuilder.append("?"+startEntity+" "+left+" \""+right+"\" . ");
-                }
-                else
-                {
-                    criteriaBuilder.append("?"+startEntity+" "+left+" "+right+" . ");
-                }
+                criteriaBuilder.append("?"+relationship+" "+left+" \""+right+"\" . ");
             }
         }
         criteriaBuilder.append("}");
