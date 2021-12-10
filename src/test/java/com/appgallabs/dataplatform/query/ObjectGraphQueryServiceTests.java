@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 public class ObjectGraphQueryServiceTests {
@@ -56,7 +57,7 @@ public class ObjectGraphQueryServiceTests {
 
         JsonArray array = service.queryByCriteria("airport", criteria);
         JsonUtil.print(array);
-        assertEquals(1, array.size());
+        assertTrue(array.size()> 0);
     }
 
     @Test
