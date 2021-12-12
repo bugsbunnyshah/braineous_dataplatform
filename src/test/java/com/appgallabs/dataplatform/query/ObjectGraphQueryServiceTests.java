@@ -51,7 +51,6 @@ public class ObjectGraphQueryServiceTests {
 
         JsonObject criteria = new JsonObject();
         criteria.addProperty("size", 100);
-        //criteria.addProperty("code", "aus");
 
         JsonArray array = service.queryByCriteria("airport", criteria);
         System.out.println(array);

@@ -54,11 +54,10 @@ public class ObjectGraphQueryEndpoint
         try
         {
             JsonObject json = JsonParser.parseString(requestJson).getAsJsonObject();
-            String startEntity = json.get("startEntity").getAsString();
-            String destinationEntity = json.get("destinationEntity").getAsString();
+            String entity = json.get("entity").getAsString();
             String relationship = json.get("relationship").getAsString();
             JsonObject criteria = json.get("criteria").getAsJsonObject();
-            JsonArray array = this.objectGraphQueryService.navigateByCriteria(destinationEntity,relationship,
+            JsonArray array = this.objectGraphQueryService.navigateByCriteria(entity,relationship,
                     criteria);
             return Response.ok(array.toString()).build();
         }

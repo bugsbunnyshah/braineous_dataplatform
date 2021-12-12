@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.query.GraphData;
 import com.appgallabs.dataplatform.query.LocalGraphData;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -14,6 +15,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -31,13 +33,44 @@ public class ObjectGraphQueryEndpointTests {
     @Inject
     private ObjectGraphQueryService service;
 
-    private Graph graph;
-
     @BeforeEach
     public void setUp()
     {
-        this.graph = TinkerGraph.open();
+        this.service.onStart();
+    }
 
+    @AfterEach
+    public void tearDown(){
+        this.service.onStop();
+    }
+
+    @Test
+    public void queryByCriteria() throws Exception
+    {
+        JsonObject ausJson = new JsonObject();
+        ausJson.addProperty("code","aus");
+        ausJson.addProperty("description", "AUS");
+        ausJson.addProperty("size", 100);
+        Vertex ausV = this.service.saveObjectGraph("airport",ausJson,null,false);
+        System.out.println(ausV.graph());
+
+        JsonObject json = new JsonObject();
+        json.addProperty("entity","airport");
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("size", 100);
+        json.add("criteria",criteria);
+
+        Response response = given().body(json.toString()).when().post("/graph/query/criteria").andReturn();
+        String jsonString = response.getBody().print();
+        JsonArray responseJson = JsonParser.parseString(jsonString).getAsJsonArray();
+        assertEquals(200, response.getStatusCode());
+        JsonUtil.print(responseJson);
+        assertEquals(1, responseJson.size());
+    }
+
+    @Test
+    public void navigateByCriteria() throws Exception
+    {
         JsonObject ausJson = new JsonObject();
         ausJson.addProperty("code","aus");
         ausJson.addProperty("description", "AUS");
@@ -46,65 +79,31 @@ public class ObjectGraphQueryEndpointTests {
         JsonObject laxJson = new JsonObject();
         laxJson.addProperty("code","lax");
         laxJson.addProperty("description", "LAX");
-        laxJson.addProperty("size", 1000);
+        laxJson.addProperty("size", 150);
 
         JsonObject flight = new JsonObject();
         flight.addProperty("flightId","123");
         flight.addProperty("description", "SouthWest");
+        flight.add("departure", ausJson);
+        flight.add("arrival", laxJson);
 
+        JsonUtil.print(flight);
 
-
-        final Vertex aus = this.graph.addVertex(T.id, 1, T.label, "airport", "code", "aus",
-                "description", "AUS", "size", 100 ,
-                "source", ausJson.toString());
-        final Vertex lax = this.graph.addVertex(T.id, 2, T.label, "airport", "code", "lax",
-                "description", "LAX", "size", 1000,
-                "source", laxJson.toString());
-        final Vertex ausToLax = this.graph.addVertex(T.id, 3, T.label, "flight", "flightId", "123", "description", "SouthWest",
-                "source",flight.toString());
-        aus.addEdge("departure", ausToLax, T.id, 4, "weight", 0.5d);
-        lax.addEdge("arrival",ausToLax,T.id, 5, "weight", 0.5d);
-
-        SparqlTraversalSource server = new SparqlTraversalSource(this.graph);
-        GraphData graphData = new LocalGraphData(server);
-        this.service.setGraphData(graphData);
-    }
-
-
-    @Test
-    public void queryByCriteria() throws Exception
-    {
-        JsonObject criteria = new JsonObject();
-        criteria.addProperty("size", 100);
-        //criteria.addProperty("code", "aus");
+        Vertex v = this.service.saveObjectGraph("flight",flight,null,false);
+        System.out.println(v.graph());
 
         JsonObject json = new JsonObject();
-        json.addProperty("entity","airport");
-        json.add("criteria",criteria);
-
-        Response response = given().body(json.toString()).when().post("/graph/query/criteria").andReturn();
-        String jsonString = response.getBody().print();
-        JsonElement responseJson = JsonParser.parseString(jsonString);
-        assertEquals(200, response.getStatusCode());
-        JsonUtil.print(responseJson);
-    }
-
-    @Test
-    public void navigateByCriteria() throws Exception
-    {
-        JsonObject criteria = new JsonObject();
-        criteria.addProperty("code","lax");
-
-        JsonObject json = new JsonObject();
-        json.addProperty("startEntity","airport");
-        json.addProperty("destinationEntity","flight");
-        json.addProperty("relationship","arrival");
-        json.add("criteria",criteria);
+        json.addProperty("entity","flight");
+        json.addProperty("relationship", "departure");
+        JsonObject departureCriteria = new JsonObject();
+        departureCriteria.addProperty("code","aus");
+        json.add("criteria",departureCriteria);
 
         Response response = given().body(json.toString()).when().post("/graph/query/navigate").andReturn();
         String jsonString = response.getBody().print();
-        JsonElement responseJson = JsonParser.parseString(jsonString);
+        JsonArray responseJson = JsonParser.parseString(jsonString).getAsJsonArray();
         assertEquals(200, response.getStatusCode());
         JsonUtil.print(responseJson);
+        assertEquals(1, responseJson.size());
     }
 }
