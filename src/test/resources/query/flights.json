@@ -7,7 +7,7 @@
   },
   "data": [
     {
-      "flight_date": "2021-01-28",
+      "flight_date": "2021-01-29",
       "flight_status": "scheduled",
       "departure": {
         "airport": "Auckland International",
@@ -42,12 +42,6 @@
         "name": "Air New Zealand",
         "iata": "NZ",
         "icao": "ANZ"
-      },
-      "flight": {
-        "number": "431",
-        "iata": "NZ431",
-        "icao": "ANZ431",
-        "codeshared": null
       },
       "aircraft": null,
       "live": null
@@ -88,12 +82,6 @@
         "name": "Air New Zealand",
         "iata": "NZ",
         "icao": "ANZ"
-      },
-      "flight": {
-        "number": "431",
-        "iata": "NZ431",
-        "icao": "ANZ431",
-        "codeshared": null
       },
       "aircraft": null,
       "live": null
@@ -134,12 +122,6 @@
         "name": "Air New Zealand",
         "iata": "NZ",
         "icao": "ANZ"
-      },
-      "flight": {
-        "number": "431",
-        "iata": "NZ431",
-        "icao": "ANZ431",
-        "codeshared": null
       },
       "aircraft": null,
       "live": null

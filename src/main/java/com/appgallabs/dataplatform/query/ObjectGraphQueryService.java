@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.query;
 
 import com.appgallabs.dataplatform.ingestion.service.MapperService;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -88,6 +89,7 @@ public class ObjectGraphQueryService {
     {
         JsonArray response = new JsonArray();
         String query = this.graphQueryGenerator.generateQueryByCriteria(entity,criteria);
+
         GraphTraversal result = this.graphQueryProcessor.query(this.graphData, query);
         Iterator<Vertex> itr = result.toSet().iterator();
         while(itr.hasNext())
@@ -105,19 +107,25 @@ public class ObjectGraphQueryService {
 
         String navQuery = this.graphQueryGenerator.generateNavigationQuery(entity,
                 relationship,criteria);
-        System.out.println(navQuery);
 
         GraphTraversal result = this.graphQueryProcessor.navigate(this.graphData,navQuery);
+        //result = result.flatMap(result);
+        //System.out.println(result);
         Iterator<Map> itr = result.toSet().iterator();
         while(itr.hasNext())
         {
             Map map = itr.next();
-            //System.out.println(map);
-            Vertex edge = (Vertex) map.get(relationship);
-            System.out.println(edge.label());
-            if(edge.label().equals(entity)) {
-                JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
-                response.add(edgeJson);
+            Vertex edge = (Vertex) map.get(entity);
+            if(edge != null) {
+                System.out.println(edge.label());
+                if (edge.label().equals(entity)) {
+                    JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
+                    response.add(edgeJson);
+                }
+            }
+            else
+            {
+                System.out.println("NOT_fOUND");
             }
         }
 
@@ -165,7 +173,7 @@ public class ObjectGraphQueryService {
 
         for(Vertex local:children)
         {
-            vertex.addEdge(local.label(), local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
+            vertex.addEdge("edge_"+local.label(), local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
         }
 
         return vertex;

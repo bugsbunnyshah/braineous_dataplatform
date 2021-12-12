@@ -40,10 +40,9 @@ public class GraphQueryGenerator {
     {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("SELECT * WHERE {");
-        queryBuilder.append("{?"+relationship+" e:"+relationship+" ?"+entity+" .}");
-        queryBuilder.append(" UNION ");
+        queryBuilder.append("?"+entity+" v:label \""+entity+"\" . ");
+        queryBuilder.append("?"+entity+" e:edge_"+relationship+" ?"+relationship+" . ");
         StringBuilder criteriaBuilder = new StringBuilder();
-        criteriaBuilder.append("{");
         Set<Map.Entry<String, JsonElement>> entrySet = criteria.entrySet();
         for(Map.Entry<String,JsonElement> entry:entrySet)
         {
@@ -58,9 +57,9 @@ public class GraphQueryGenerator {
                 criteriaBuilder.append("?"+relationship+" "+left+" \""+right+"\" . ");
             }
         }
-        criteriaBuilder.append("}");
         queryBuilder.append(criteriaBuilder);
         queryBuilder.append("}");
+
         return queryBuilder.toString();
     }
 }

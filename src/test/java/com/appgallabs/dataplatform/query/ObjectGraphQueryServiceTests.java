@@ -87,34 +87,13 @@ public class ObjectGraphQueryServiceTests {
         JsonArray array = this.service.navigateByCriteria("flight",
                 "departure",departureCriteria);
         JsonUtil.print(array);
+        assertEquals(1,array.size());
 
         JsonObject arrivalCriteria = new JsonObject();
         arrivalCriteria.addProperty("code","lax");
         array = this.service.navigateByCriteria("flight",
                 "arrival",arrivalCriteria);
         JsonUtil.print(array);
-    }
-
-    @Test
-    public void queryByDeparture() throws Exception{
-        String data = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                getResourceAsStream("query/flights.json"), StandardCharsets.UTF_8);
-
-        JsonObject json = JsonParser.parseString(data).getAsJsonObject();
-        JsonArray dataArray = json.get("data").getAsJsonArray();
-        System.out.println("# of Flights: "+dataArray.size());
-
-        for(int i=0; i<dataArray.size(); i++){
-            JsonObject flightJson = dataArray.get(i).getAsJsonObject();
-            flightJson.addProperty("oid",UUID.randomUUID().toString());
-            Vertex v = this.service.saveObjectGraph("flight",flightJson,null,false);
-            System.out.println(v.graph());
-        }
-
-        JsonObject departureCriteria = new JsonObject();
-        departureCriteria.addProperty("airport","Auckland International");
-        JsonArray array = this.service.navigateByCriteria("flight",
-                "departure",departureCriteria);
-        JsonUtil.print(array);
+        assertEquals(1,array.size());
     }
 }
