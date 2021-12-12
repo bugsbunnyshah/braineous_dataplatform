@@ -6,9 +6,11 @@ import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.appgallabs.dataplatform.util.BackgroundProcessListener;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,8 @@ public class StreamIngesterContext implements Serializable {
     private SecurityTokenContainer securityTokenContainer;
 
     private Map<String,String> chainIds;
+
+    private ObjectGraphQueryService queryService;
 
 
     private StreamIngesterContext()
@@ -81,7 +85,6 @@ public class StreamIngesterContext implements Serializable {
         this.streamIngesterQueue.add(streamObject);
     }
 
-
     public Queue<StreamObject> getDataLakeQueue(String dataLakeId){
         return this.streamIngesterQueue.getDataLakeQueue(dataLakeId);
     }
@@ -124,6 +127,10 @@ public class StreamIngesterContext implements Serializable {
             this.mongoDBJsonStore.storeIngestion(tenant, data);
             this.chainIds.put(dataLakeId, chainId);
 
+            //Update the ObjectGraph service
+            Vertex object = this.queryService.saveObjectGraph(entity, jsonObject, null, false);
+            System.out.println(object.graph());
+
             BackgroundProcessListener.getInstance().decreaseThreshold(entity,dataLakeId,data);
 
             //Update DataHistory
@@ -133,6 +140,10 @@ public class StreamIngesterContext implements Serializable {
         catch(Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+    public void setQueryService(ObjectGraphQueryService queryService) {
+        this.queryService = queryService;
     }
 
     public void setDataReplayService(DataReplayService dataReplayService){

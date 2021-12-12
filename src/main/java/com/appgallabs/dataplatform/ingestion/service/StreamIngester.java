@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.history.service.DataReplayService;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -78,6 +79,7 @@ public class StreamIngester implements Serializable{
     public JsonObject submit(Tenant tenant, SecurityTokenContainer securityTokenContainer,
                              MongoDBJsonStore mongoDBJsonStore,
                              DataReplayService dataReplayService,
+                             ObjectGraphQueryService queryService,
                              String entity,
                              JsonArray sourceData)
     {
@@ -89,6 +91,7 @@ public class StreamIngester implements Serializable{
                 streamIngesterContext.setSecurityTokenContainer(securityTokenContainer);
                 streamIngesterContext.setDataReplayService(dataReplayService);
                 streamIngesterContext.setMongoDBJsonStore(mongoDBJsonStore);
+                streamIngesterContext.setQueryService(queryService);
             }
 
             String dataLakeId = UUID.randomUUID().toString();;

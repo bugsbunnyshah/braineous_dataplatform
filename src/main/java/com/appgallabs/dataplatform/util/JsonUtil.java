@@ -41,6 +41,15 @@ public class JsonUtil {
         logger.info(gson.toJson(jsonElement));
     }
 
+    public static void printStdOut(JsonElement jsonElement)
+    {
+        if(jsonElement.isJsonArray())
+        {
+            System.out.println("******ARRAY_SIZE: "+jsonElement.getAsJsonArray().size()+"**********");
+        }
+        System.out.println(gson.toJson(jsonElement));
+    }
+
     public static String getJsonHash(JsonObject jsonObject) throws NoSuchAlgorithmException {
         Map<String, Object> jsonMap = JsonFlattener.flattenAsMap(jsonObject.toString());
         Map<String,Object> sortedMap = new TreeMap<>();

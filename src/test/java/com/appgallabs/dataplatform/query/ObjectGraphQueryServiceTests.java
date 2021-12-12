@@ -95,4 +95,25 @@ public class ObjectGraphQueryServiceTests {
         JsonUtil.print(array);
         assertEquals(1,array.size());
     }
+
+    @Test
+    public void navigateByCriteriaRealData() throws Exception{
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                "aviation/flights_small.json"),
+                StandardCharsets.UTF_8);
+        JsonObject json = JsonParser.parseString(sourceData).getAsJsonObject();
+        JsonArray array = json.get("data").getAsJsonArray();
+
+        for(int i=0; i<array.size();i++){
+            JsonObject cour = array.get(i).getAsJsonObject();
+            this.service.saveObjectGraph("flight",cour,null,false);
+        }
+
+        JsonObject departureCriteria = new JsonObject();
+        departureCriteria.addProperty("airport","Auckland International");
+        array = this.service.navigateByCriteria("flight",
+                "departure",departureCriteria);
+        JsonUtil.print(array);
+        assertEquals(5, array.size());
+    }
 }
