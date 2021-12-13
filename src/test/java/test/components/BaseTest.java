@@ -35,9 +35,11 @@ public abstract class BaseTest
                 this.mongoDBJsonStore = new MongoDBJsonStore();
             }
             this.mongoDBJsonStore.start();
-            String principal = this.securityTokenContainer.getTenant().getPrincipal();
-            String databaseName = principal + "_" + "aiplatform";
-            this.mongoDBJsonStore.getMongoClient().getDatabase(databaseName).drop();
+            if(this.securityTokenContainer != null && this.securityTokenContainer.getSecurityToken()!= null) {
+                String principal = this.securityTokenContainer.getTenant().getPrincipal();
+                String databaseName = principal + "_" + "aiplatform";
+                this.mongoDBJsonStore.getMongoClient().getDatabase(databaseName).drop();
+            }
         }
         catch (Exception e)
         {

@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import test.components.BaseTest;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -31,7 +32,7 @@ public class DataIngesterTests extends BaseTest
         input.addProperty("agentId", "ian");
         input.addProperty("entity", "flight");
 
-
+        JsonUtil.print(input);
         Response response = given().body(input.toString()).when().post("/dataIngester/fetch")
                 .andReturn();
 

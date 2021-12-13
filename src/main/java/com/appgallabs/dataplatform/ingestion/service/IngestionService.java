@@ -2,14 +2,19 @@ package com.appgallabs.dataplatform.ingestion.service;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +32,20 @@ public class IngestionService implements Serializable {
 
     public IngestionService(){
         this.ingestionAgents = new HashMap<>();
+    }
+
+    @PostConstruct
+    public void onStart(){
+        try {
+            String agentRegistrationJson = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                            getResourceAsStream("ingestionAgents.json"),
+                    StandardCharsets.UTF_8);
+            JsonArray jsonArray = JsonParser.parseString(agentRegistrationJson).getAsJsonArray();
+            JsonUtil.print(jsonArray);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     public JsonObject ingestDevModelData(String data)
