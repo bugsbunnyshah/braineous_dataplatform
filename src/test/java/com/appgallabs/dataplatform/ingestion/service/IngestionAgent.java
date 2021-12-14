@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,13 +18,26 @@ public class IngestionAgent extends TimerTask implements Serializable,FetchAgent
 
     private Timer timer;
     private String entity;
+    private MapperService mapperService;
+    private Tenant tenant;
+    private SecurityTokenContainer securityTokenContainer;
 
     public IngestionAgent() {
     }
 
+    @Override
+    public void setSecurityTokenContainer(SecurityTokenContainer securityTokenContainer) {
+        this.securityTokenContainer = securityTokenContainer;
+    }
 
+    @Override
     public void setEntity(String entity) {
         this.entity = entity;
+    }
+
+    @Override
+    public void setMapperService(MapperService mapperService) {
+        this.mapperService = mapperService;
     }
 
     public void receiveData(JsonArray data){
@@ -58,6 +73,11 @@ public class IngestionAgent extends TimerTask implements Serializable,FetchAgent
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     @Override

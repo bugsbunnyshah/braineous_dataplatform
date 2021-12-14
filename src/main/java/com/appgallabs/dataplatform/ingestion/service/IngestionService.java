@@ -27,6 +27,9 @@ public class IngestionService implements Serializable {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
+    @Inject
+    private MapperService mapperService;
+
     private Map<String,FetchAgent> fetchAgents;
 
     private Map<String,PushAgent> pushAgents;
@@ -81,14 +84,20 @@ public class IngestionService implements Serializable {
     public void ingestData(String agentId, String entity){
         FetchAgent fetchAgent = this.fetchAgents.get(agentId);
         if(!fetchAgent.isStarted()) {
+            fetchAgent.setSecurityTokenContainer(this.securityTokenContainer);
+            fetchAgent.setTenant(this.securityTokenContainer.getTenant());
             fetchAgent.setEntity(entity);
+            fetchAgent.setMapperService(this.mapperService);
             fetchAgent.startFetch();
         }
     }
 
     public void ingestData(String agentId, String entity,JsonArray data){
         PushAgent pushAgent = this.pushAgents.get(agentId);
+        pushAgent.setSecurityTokenContainer(securityTokenContainer);
+        pushAgent.setTenant(this.securityTokenContainer.getTenant());
         pushAgent.setEntity(entity);
+        pushAgent.setMapperService(this.mapperService);
         pushAgent.receiveData(data);
     }
 }
