@@ -28,10 +28,13 @@ public class IngestionService implements Serializable {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    private Map<String,IngestionAgent> ingestionAgents;
+    private Map<String,FetchAgent> fetchAgents;
+
+    private Map<String,PushAgent> pushAgents;
 
     public IngestionService(){
-        this.ingestionAgents = new HashMap<>();
+        this.fetchAgents = new HashMap<>();
+        this.pushAgents = new HashMap<>();
     }
 
     @PostConstruct
@@ -41,7 +44,18 @@ public class IngestionService implements Serializable {
                             getResourceAsStream("ingestionAgents.json"),
                     StandardCharsets.UTF_8);
             JsonArray jsonArray = JsonParser.parseString(agentRegistrationJson).getAsJsonArray();
-            JsonUtil.print(jsonArray);
+            for(int i=0; i<jsonArray.size(); i++){
+                JsonObject json = jsonArray.get(i).getAsJsonObject();
+                String id = json.get("id").getAsString();
+                String fetchAgent = json.get("fetchAgent").getAsString();
+                String pushAgent = json.get("pushAgent").getAsString();
+
+                Class fetchAgentClass = Thread.currentThread().getContextClassLoader().loadClass(fetchAgent);
+                Class pushAgentClass = Thread.currentThread().getContextClassLoader().loadClass(pushAgent);
+
+                this.fetchAgents.put(id, (FetchAgent) fetchAgentClass.getDeclaredConstructor().newInstance());
+                this.pushAgents.put(id, (PushAgent) pushAgentClass.getDeclaredConstructor().newInstance());
+            }
         }
         catch (Exception e){
             throw new RuntimeException(e);
@@ -65,17 +79,17 @@ public class IngestionService implements Serializable {
         return ingestion;
     }
 
-    public void ingestData(String agentId, String entity, DataFetchAgent dataFetchAgent){
-        if(this.ingestionAgents.get(agentId)==null){
-            this.ingestionAgents.put(agentId, new IngestionAgent(entity,dataFetchAgent));
-            this.ingestionAgents.get(agentId).start();
+    public void ingestData(String agentId, String entity){
+        FetchAgent fetchAgent = this.fetchAgents.get(agentId);
+        if(!fetchAgent.isStarted()) {
+            fetchAgent.setEntity(entity);
+            fetchAgent.startFetch();
         }
     }
 
-    public void ingestData(String agentId, String entity, DataPushAgent dataPushAgent,JsonArray data){
-        if(this.ingestionAgents.get(agentId)==null){
-            this.ingestionAgents.put(agentId, new IngestionAgent(entity,dataPushAgent));
-        }
-        this.ingestionAgents.get(agentId).receiveData(data);
+    public void ingestData(String agentId, String entity,JsonArray data){
+        PushAgent pushAgent = this.pushAgents.get(agentId);
+        pushAgent.setEntity(entity);
+        pushAgent.receiveData(data);
     }
 }

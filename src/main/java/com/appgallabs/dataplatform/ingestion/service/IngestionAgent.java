@@ -11,36 +11,58 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-//TODO
-
-public class IngestionAgent extends TimerTask implements Serializable {
+public class IngestionAgent extends TimerTask implements Serializable,FetchAgent,PushAgent {
     private static Logger logger = LoggerFactory.getLogger(IngestionAgent.class);
 
     private Timer timer;
     private String entity;
-    private DataFetchAgent dataFetchAgent;
-    private DataPushAgent dataPushAgent;
 
-    public IngestionAgent(String entity,DataFetchAgent dataFetchAgent){
-        this.entity = entity;
-        this.dataFetchAgent = dataFetchAgent;
+    public IngestionAgent() {
     }
 
-    public IngestionAgent(String entity,DataPushAgent dataPushAgent){
+
+    public void setEntity(String entity) {
         this.entity = entity;
-        this.dataPushAgent = dataPushAgent;
     }
 
-    public void start(){
+    public void receiveData(JsonArray data){
+        try {
+            /*this.receiveData(data);
+
+            JsonObject input = new JsonObject();
+            input.addProperty("sourceSchema", "");
+            input.addProperty("destinationSchema", "");
+            input.addProperty("sourceData", data.toString());
+            input.addProperty("entity",entity);
+            //Response response = given().body(input.toString()).when().post("/dataMapper/map/")
+            //        .andReturn();
+            //JsonObject ingestionResult = JsonParser.parseString(response.getBody().asString()).getAsJsonObject();
+            //System.out.println("***************INGESTION_RESULT*******************");
+            //System.out.println(ingestionResult);
+            //System.out.println("**************************************************");*/
+        }
+        catch(Exception pushException){
+            throw new RuntimeException(pushException);
+        }
+    }
+
+    @Override
+    public void startFetch() {
         this.timer = new Timer(true);
         this.timer.schedule(this, 1000, 15*60*1000);
     }
 
     @Override
+    public boolean isStarted() {
+        if(this.entity == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void run() {
         try {
-            JsonArray data = this.dataFetchAgent.fetchData();
-
             //TODO: investigate the Security Aspect and Networking Aspect
             /*JsonObject json = new JsonObject();
             json.addProperty("sourceSchema", "");
@@ -64,11 +86,11 @@ public class IngestionAgent extends TimerTask implements Serializable {
             System.out.println("***************INGESTION_RESULT*******************");
             System.out.println(ingestionResult);
             System.out.println("**************************************************");*/
-            JsonObject input = new JsonObject();
+            /*JsonObject input = new JsonObject();
             input.addProperty("sourceSchema", "");
             input.addProperty("destinationSchema", "");
             input.addProperty("sourceData", data.toString());
-            input.addProperty("entity",entity);
+            input.addProperty("entity",entity);*/
             //Response response = given().body(input.toString()).when().post("/dataMapper/map/")
             //        .andReturn();
             //response.getBody().prettyPrint();
@@ -80,27 +102,6 @@ public class IngestionAgent extends TimerTask implements Serializable {
         catch (Exception fetchException)
         {
             logger.error(fetchException.getMessage(),fetchException);
-        }
-    }
-
-    public void receiveData(JsonArray data){
-        try {
-            this.dataPushAgent.receiveData(data);
-
-            JsonObject input = new JsonObject();
-            input.addProperty("sourceSchema", "");
-            input.addProperty("destinationSchema", "");
-            input.addProperty("sourceData", data.toString());
-            input.addProperty("entity",entity);
-            //Response response = given().body(input.toString()).when().post("/dataMapper/map/")
-            //        .andReturn();
-            //JsonObject ingestionResult = JsonParser.parseString(response.getBody().asString()).getAsJsonObject();
-            //System.out.println("***************INGESTION_RESULT*******************");
-            //System.out.println(ingestionResult);
-            //System.out.println("**************************************************");
-        }
-        catch(Exception pushException){
-            throw new RuntimeException(pushException);
         }
     }
 }

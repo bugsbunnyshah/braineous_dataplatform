@@ -1,10 +1,8 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
-import com.appgallabs.dataplatform.ingestion.service.DataFetchAgent;
-import com.appgallabs.dataplatform.ingestion.service.DataPushAgent;
 import com.appgallabs.dataplatform.ingestion.service.FetchException;
 import com.appgallabs.dataplatform.ingestion.service.IngestionService;
-import com.appgallabs.dataplatform.ingestion.service.IngestionService;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,6 +26,9 @@ public class DataIngester {
     @Inject
     private IngestionService ingestionService;
 
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
+
     @Path("fetch")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,11 +37,9 @@ public class DataIngester {
         {
             JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
-            String agentId = jsonObject.get("agentId").getAsString();
             String entity = jsonObject.get("entity").getAsString();
 
-            FlightAgent flightAgent = new FlightAgent();
-            this.ingestionService.ingestData(agentId,entity,flightAgent);
+            this.ingestionService.ingestData(this.securityTokenContainer.getTenant().getPrincipal(),entity);
 
 
             JsonObject responseJson = new JsonObject();
@@ -54,32 +53,6 @@ public class DataIngester {
             JsonObject error = new JsonObject();
             error.addProperty("exception", e.getMessage());
             return Response.status(500).entity(error.toString()).build();
-        }
-    }
-
-
-    //TODO
-    private static class FlightAgent implements DataFetchAgent, DataPushAgent {
-
-        @Override
-        public JsonArray fetchData() throws FetchException {
-            try {
-                String responseJson = IOUtils.resourceToString("aviation/flights0.json", StandardCharsets.UTF_8,
-                        Thread.currentThread().getContextClassLoader());
-                JsonArray jsonArray = JsonParser.parseString(responseJson).getAsJsonObject().getAsJsonArray("data");
-
-                System.out.println("************FETCHING_DATA************");
-
-                return jsonArray;
-            }
-            catch(Exception e){
-                throw new FetchException(e);
-            }
-        }
-
-        @Override
-        public void receiveData(JsonArray json) throws FetchException {
-            System.out.println("************PUSH_RECEIVED************");
         }
     }
 }
