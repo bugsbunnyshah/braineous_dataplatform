@@ -29,7 +29,6 @@ public class DataIngesterTests extends BaseTest
     public void testFetch() throws Exception {
         //TODO: Add sourceSchema and destinationSchema concepts
         JsonObject input = new JsonObject();
-        input.addProperty("agentId", "ian");
         input.addProperty("entity", "flight");
 
         JsonUtil.print(input);

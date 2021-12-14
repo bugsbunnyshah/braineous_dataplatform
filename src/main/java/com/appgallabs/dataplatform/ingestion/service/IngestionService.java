@@ -2,7 +2,6 @@ package com.appgallabs.dataplatform.ingestion.service;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
