@@ -129,7 +129,7 @@ public class StreamIngesterContext implements Serializable {
 
             //Update the ObjectGraph service
             Vertex object = this.queryService.saveObjectGraph(entity, jsonObject, null, false);
-            System.out.println(object.graph());
+            //System.out.println(object.graph());
 
             BackgroundProcessListener.getInstance().decreaseThreshold(entity,dataLakeId,data);
 

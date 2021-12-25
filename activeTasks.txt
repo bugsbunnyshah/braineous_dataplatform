@@ -1,0 +1,4 @@
+ObjectQuery
+-------------
+
+//TODO: instantiate with a RemoteGraphData (JanusGraph)
