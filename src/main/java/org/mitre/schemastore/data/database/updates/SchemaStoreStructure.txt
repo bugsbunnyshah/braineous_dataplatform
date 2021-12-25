@@ -1,0 +1,391 @@
+//-----------------
+// Generate Tables
+//-----------------
+
+CREATE TABLE alias (
+	id integer NOT NULL,
+	name character varying(100),
+	element_id integer NOT NULL,
+	schema_id integer NOT NULL
+);
+
+CREATE TABLE annotation (
+	element_id integer NOT NULL,
+	group_id integer,
+	attribute character varying(50) NOT NULL,
+	value character varying(4096)
+);
+
+CREATE TABLE attribute (
+	id integer NOT NULL,
+	name character varying(100) NOT NULL,
+	description character varying(4096),
+	entity_id integer NOT NULL,
+	domain_id integer NOT NULL,
+	"min" integer,
+	"max" integer,
+    "key" character NOT NULL,
+	schema_id integer NOT NULL
+);
+
+CREATE TABLE containment (
+	id integer NOT NULL,
+    name character varying(100),
+    description character varying(4096),
+	parent_id integer,
+	child_id integer NOT NULL,
+    "min" integer,
+    "max" integer,
+	schema_id integer NOT NULL
+);
+
+CREATE TABLE data_source (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    url character varying(200) NOT NULL,
+    schema_id integer NOT NULL,
+    element_id integer
+);
+
+CREATE TABLE "domain" (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    description character varying(4096),
+	schema_id integer
+);
+
+CREATE TABLE domainvalue (
+    id integer NOT NULL,
+    value character varying(100) NOT NULL,
+    description character varying(4096),
+    domain_id integer NOT NULL,
+    schema_id integer NOT NULL
+);
+
+CREATE TABLE entity (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    description character varying(4096),
+    schema_id integer NOT NULL
+);
+
+CREATE TABLE extensions (
+    schema_id integer NOT NULL,
+    base_id integer NOT NULL
+);
+
+CREATE TABLE tags (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    parent_id integer
+);
+
+CREATE TABLE project (
+    id integer NOT NULL,
+    name character varying(100),
+    author character varying(100),
+    description character varying(4096),
+    vocabulary_id integer
+);
+
+CREATE TABLE data_type (
+	id integer NOT NULL,
+	type character varying(30) NOT NULL,
+	description character varying(500)
+);
+
+CREATE TABLE functions (
+	id integer NOT NULL,
+	name character varying(50) NOT NULL,
+	description character varying(4096),
+	expression character varying(200),
+	category character varying(100),
+	output_type integer NOT NULL
+);
+
+CREATE TABLE function_input (
+    function_id integer NOT NULL,
+    input_type integer NOT NULL,
+    input_loc integer NOT NULL
+);
+
+CREATE TABLE function_implementation (
+	function_id integer NOT NULL,
+	language character varying(50) NOT NULL,
+	dialect character varying(50),
+	implementation character varying(500) NOT NULL
+);
+
+CREATE TABLE mapping (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    source_id integer NOT NULL,
+    target_id integer NOT NULL
+);
+
+CREATE TABLE mapping_cell (
+	id integer NOT NULL,
+	mapping_id integer NOT NULL,
+	input_ids character varying(200) NOT NULL,
+	output_id integer NOT NULL,
+	score numeric(6,3) NOT NULL,
+	function_id integer,
+	author character varying(400),
+	modification_date date,
+	notes character varying(4096)
+);
+
+CREATE TABLE project_schema (
+    project_id integer NOT NULL,
+    schema_id integer NOT NULL,
+    model character varying(256)
+);
+
+CREATE TABLE relationship (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    description character varying(4096),
+    left_id integer NOT NULL,
+    left_min integer,
+    left_max integer,
+    right_id integer NOT NULL,
+    right_min integer,
+    right_max integer,
+    schema_id integer NOT NULL
+);
+
+CREATE TABLE "schema" (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    author character varying(100),
+    source character varying(200),
+    "type" character varying(100),
+    description character varying(4096),
+    locked character NOT NULL
+);
+
+CREATE TABLE schema_tag (
+    tag_id integer NOT NULL,
+    schema_id integer NOT NULL
+);
+
+CREATE TABLE subtype (
+    id integer NOT NULL,
+    parent_id integer NOT NULL,
+    child_id integer NOT NULL,
+    schema_id integer NOT NULL
+);
+
+CREATE TABLE synonym (
+	id integer NOT NULL,
+	name character varying(100) NOT NULL,
+	description character varying(4096),
+	element_id integer NOT NULL,
+	schema_id integer NOT NULL
+); 
+
+CREATE TABLE universal_id (
+	id integer NOT NULL
+);
+
+CREATE TABLE version (
+	id integer NOT NULL
+);
+
+//-----------------------
+// Generate Primary Keys
+//-----------------------
+
+ALTER TABLE alias
+    ADD CONSTRAINT alias_pkey PRIMARY KEY (id);
+
+ALTER TABLE attribute
+    ADD CONSTRAINT attribute_pkey PRIMARY KEY (id);
+
+ALTER TABLE containment
+    ADD CONSTRAINT containment_pkey PRIMARY KEY (id);
+
+ALTER TABLE "domain"
+    ADD CONSTRAINT domain_pkey PRIMARY KEY (id);
+
+ALTER TABLE domainvalue
+    ADD CONSTRAINT domainvalue_pkey PRIMARY KEY (id);
+
+ALTER TABLE entity
+    ADD CONSTRAINT entity_pkey PRIMARY KEY (id);
+
+ALTER TABLE tags
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+ALTER TABLE data_source
+    ADD CONSTRAINT instance_pkey PRIMARY KEY (id);
+
+ALTER TABLE mapping_cell
+    ADD CONSTRAINT mappingcell_pkey PRIMARY KEY (id);
+
+ALTER TABLE project
+    ADD CONSTRAINT project_pkey PRIMARY KEY (id);
+
+ALTER TABLE mapping
+    ADD CONSTRAINT mapping_pkey PRIMARY KEY (id);
+
+ALTER TABLE relationship
+    ADD CONSTRAINT relationship_pkey PRIMARY KEY (id);
+
+ALTER TABLE "schema"
+    ADD CONSTRAINT schema_pkey PRIMARY KEY (id);
+
+ALTER TABLE synonym
+    ADD CONSTRAINT synonym_pkey PRIMARY KEY (id);
+
+ALTER TABLE data_type
+    ADD CONSTRAINT datatype_pkey PRIMARY KEY (id);
+
+ALTER TABLE functions
+    ADD CONSTRAINT function_pkey PRIMARY KEY (id);
+
+//-----------------------
+// Generate Foreign Keys
+//-----------------------
+
+ALTER TABLE extensions
+    ADD CONSTRAINT extensions_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE extensions
+    ADD CONSTRAINT extensions_base_fkey FOREIGN KEY (base_id) REFERENCES "schema"(id);
+
+ALTER TABLE attribute
+    ADD CONSTRAINT attribute_entity_fkey FOREIGN KEY (entity_id) REFERENCES entity(id);
+
+ALTER TABLE attribute
+    ADD CONSTRAINT attribute_domain_fkey FOREIGN KEY (domain_id) REFERENCES "domain"(id);
+
+ALTER TABLE domainvalue
+    ADD CONSTRAINT domainvalue_domain_fkey FOREIGN KEY (domain_id) REFERENCES "domain"(id);
+
+ALTER TABLE relationship
+    ADD CONSTRAINT relationship_leftentity_fkey FOREIGN KEY (left_id) REFERENCES entity(id);
+
+ALTER TABLE relationship
+    ADD CONSTRAINT relationship_rightentity_fkey FOREIGN KEY (right_id) REFERENCES entity(id);
+
+ALTER TABLE data_source
+    ADD CONSTRAINT datasource_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE tags
+    ADD CONSTRAINT tags_tags_fkey FOREIGN KEY (parent_id) REFERENCES tags(id);
+
+ALTER TABLE schema_tag
+    ADD CONSTRAINT schematag_tags_fkey FOREIGN KEY (tag_id) REFERENCES tags(id);
+
+ALTER TABLE schema_tag
+    ADD CONSTRAINT schematag_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE mapping_cell
+    ADD CONSTRAINT mappingcell_mapping_id_fkey FOREIGN KEY (mapping_id) REFERENCES mapping(id);
+
+ALTER TABLE mapping_cell
+	ADD CONSTRAINT mappingcell_function_id_fkey FOREIGN KEY (function_id) REFERENCES functions(id);
+
+ALTER TABLE project
+    ADD CONSTRAINT project_schema_fkey FOREIGN KEY (vocabulary_id) REFERENCES "schema"(id);
+
+ALTER TABLE project_schema
+    ADD CONSTRAINT projectschema_project_fkey FOREIGN KEY (project_id) REFERENCES project(id);
+
+ALTER TABLE project_schema
+    ADD CONSTRAINT projectschema_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE alias
+    ADD CONSTRAINT alias_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE attribute
+    ADD CONSTRAINT attribute_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE containment
+	ADD CONSTRAINT containment_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE "domain"
+    ADD CONSTRAINT domain_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE domainvalue
+    ADD CONSTRAINT domainvalue_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE entity
+    ADD CONSTRAINT entity_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE relationship
+    ADD CONSTRAINT relationship_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE subtype
+    ADD CONSTRAINT subtype_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE synonym
+    ADD CONSTRAINT synonym_schema_fkey FOREIGN KEY (schema_id) REFERENCES "schema"(id);
+
+ALTER TABLE functions
+    ADD CONSTRAINT function_output_fkey FOREIGN KEY (output_type) REFERENCES data_type(id);
+
+ALTER TABLE function_input
+    ADD CONSTRAINT functioninput_function_id_fkey FOREIGN KEY (function_id) REFERENCES functions(id);
+
+ALTER TABLE function_input
+    ADD CONSTRAINT functioninput_input_fkey FOREIGN KEY (input_type) REFERENCES data_type(id);
+
+ALTER TABLE function_implementation
+    ADD CONSTRAINT functionimp_function_id_fkey FOREIGN KEY (function_id) REFERENCES functions(id);
+
+//------------------
+// Generate Indexes
+//------------------
+
+CREATE UNIQUE INDEX schema_tag_idx ON schema_tag (schema_id, tag_id);
+
+CREATE INDEX alias_schema_idx ON alias (schema_id);
+
+CREATE INDEX attribute_schema_idx ON attribute (schema_id);
+
+CREATE INDEX containment_schema_idx ON containment (schema_id);
+
+CREATE INDEX domain_schema_idx ON "domain" (schema_id);
+
+CREATE INDEX domainvalue_schema_idx ON domainvalue (schema_id);
+
+CREATE INDEX entity_schema_idx ON entity (schema_id);
+
+CREATE INDEX relationship_schema_idx ON relationship (schema_id);
+
+CREATE INDEX subtype_schema_idx ON subtype (schema_id);
+
+CREATE INDEX synonym_schema_idx ON synonym (schema_id);
+
+CREATE INDEX mappingcell_function_idx ON mapping_cell (function_id);
+
+CREATE UNIQUE INDEX function_name_idx ON functions (name);
+
+CREATE UNIQUE INDEX function_implementation_idx ON function_implementation (function_id, language, dialect);
+
+CREATE INDEX annotation_element_idx ON annotation(element_id);
+
+CREATE INDEX annotation_group_idx ON annotation(group_id);
+
+//--------------
+// Create Views
+//--------------
+
+CREATE VIEW schema_elements (id,name,description,"type",schema_id) AS
+  SELECT id,name,'','alias',schema_id FROM alias
+    UNION ALL
+  SELECT id,name,description,'attribute',schema_id FROM attribute
+    UNION ALL
+  SELECT id,name,description,'containment',schema_id FROM containment
+    UNION ALL
+  SELECT id,name,description,'domain',schema_id FROM "domain"
+    UNION ALL
+  SELECT id,value,description,'domainvalue',schema_id FROM domainvalue
+    UNION ALL
+  SELECT id,name,description,'entity',schema_id FROM entity
+    UNION ALL
+  SELECT id,name,'','relationship',schema_id FROM relationship
+    UNION ALL
+  SELECT id,'','','subtype',schema_id FROM subtype;

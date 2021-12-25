@@ -1,0 +1,28 @@
+####
+# This Dockerfile is used in order to build a distroless container that runs the Quarkus application in native (no JVM) mode
+#
+# Before building the container image run:
+#
+# ./mvnw package -Pnative
+#
+# Then, build the image with:
+#
+# docker build -f src/main/docker/Dockerfile.native-distroless -t quarkus/my-artifactId .
+#
+# Then run the container using:
+#
+# docker run -i --rm -p 8080:8080 quarkus/my-artifactId
+#
+###
+FROM quay.io/quarkus/quarkus-distroless-image:1.0
+
+ENV mongodbHost='localhost'
+ENV mongodbPort='27017
+
+COPY target/*-runner /application
+COPY --chown=1001:root deployments/aiplatform.json /deployments/
+
+EXPOSE 8080
+USER nonroot
+
+CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]

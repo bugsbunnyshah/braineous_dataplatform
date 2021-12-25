@@ -1,0 +1,240 @@
+{
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "count": 100,
+    "total": 10917235
+  },
+  "data": [
+    {
+      "flight_date": "2021-01-28",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "32",
+        "delay": null,
+        "scheduled": "2021-01-28T13:15:00+00:00",
+        "estimated": "2021-01-28T13:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Wellington International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2021-01-28T14:25:00+00:00",
+        "estimated": "2021-01-28T14:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "431",
+        "iata": "NZ431",
+        "icao": "ANZ431",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2021-01-28",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "32",
+        "delay": null,
+        "scheduled": "2021-01-28T13:15:00+00:00",
+        "estimated": "2021-01-28T13:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Wellington International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2021-01-28T14:25:00+00:00",
+        "estimated": "2021-01-28T14:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "431",
+        "iata": "NZ431",
+        "icao": "ANZ431",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2021-01-28",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "32",
+        "delay": null,
+        "scheduled": "2021-01-28T13:15:00+00:00",
+        "estimated": "2021-01-28T13:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Wellington International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2021-01-28T14:25:00+00:00",
+        "estimated": "2021-01-28T14:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "431",
+        "iata": "NZ431",
+        "icao": "ANZ431",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2021-01-28",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "32",
+        "delay": null,
+        "scheduled": "2021-01-28T13:15:00+00:00",
+        "estimated": "2021-01-28T13:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Wellington International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2021-01-28T14:25:00+00:00",
+        "estimated": "2021-01-28T14:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "431",
+        "iata": "NZ431",
+        "icao": "ANZ431",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2021-01-28",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "32",
+        "delay": null,
+        "scheduled": "2021-01-28T13:15:00+00:00",
+        "estimated": "2021-01-28T13:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Wellington International",
+        "timezone": "Pacific\/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": "D",
+        "gate": "28",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2021-01-28T14:25:00+00:00",
+        "estimated": "2021-01-28T14:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Air New Zealand",
+        "iata": "NZ",
+        "icao": "ANZ"
+      },
+      "flight": {
+        "number": "431",
+        "iata": "NZ431",
+        "icao": "ANZ431",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    }
+  ]
+}

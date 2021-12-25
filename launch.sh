@@ -1,0 +1,1 @@
+./mvnw clean package -Dquarkus.package.main-class=dataplatform -DskipTests && java -jar -Dquarkus.http.port=80 target/quarkus-app/quarkus-run.jar

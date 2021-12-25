@@ -1,0 +1,40 @@
+{
+  "required": [
+    "Id",
+    "Rcvr",
+    "HasSig"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "Id": {
+      "$id": "#/properties/Id",
+      "type": "integer",
+      "title": "The Id schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        123456789
+      ]
+    },
+    "Rcvr": {
+      "$id": "#/properties/Rcvr",
+      "type": "integer",
+      "title": "The Rcvr schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": 0,
+      "examples": [
+        1234567
+      ]
+    },
+    "HasSig": {
+      "$id": "#/properties/HasSig",
+      "type": "boolean",
+      "title": "The HasSig schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": false,
+      "examples": [
+        true
+      ]
+    }
+  }
+}

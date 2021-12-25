@@ -1,0 +1,98 @@
+<rootXml>
+    <persons>
+        <person id="1">
+                <firstname id="">James</firstname>
+                <lastname>Smith</lastname>
+                <middlename></middlename>
+                <dob_year>1965</dob_year>
+                <dob_month>1</dob_month>
+                <gender>M</gender>
+                <salary currency="Euro">10000</salary>
+                <addresses>
+                    <address>
+                        <street>123 ABC street</street>
+                        <city>NewJersy</city>
+                        <state>NJ</state>
+                        <zip>12345</zip>
+                    </address>
+                </addresses>
+        </person>
+        <person id="2">
+                <firstname>MSD</firstname>
+                <lastname>Dhoni</lastname>
+                <middlename></middlename>
+                <dob_year>1983</dob_year>
+                <dob_month>1</dob_month>
+                <gender>M</gender>
+                <salary currency="Euro">10000</salary>
+                <addresses>
+                    <address>
+                        <street>Blah Street</street>
+                        <city>Ranchi</city>
+                        <state>Blah</state>
+                    </address>
+                    <address>
+                        <street>Sydney Street</street>
+                        <city>Sydney</city>
+                        <state>Australia</state>
+                    </address>
+                </addresses>
+        </person>
+        <person id="3">
+            <firstname>Virat</firstname>
+            <lastname>Kohli</lastname>
+            <middlename></middlename>
+            <dob_year>1990</dob_year>
+            <dob_month>1</dob_month>
+            <gender>M</gender>
+            <salary currency="Rupees">10000</salary>
+            <addresses>
+                <address>
+                    <street>Blah Street</street>
+                    <city>Delhi</city>
+                    <state>Haryana</state>
+                </address>
+            </addresses>
+        </person>
+    </persons>
+    <flights>
+        <flight>
+            <id>12345</id>
+            <id>123456</id>
+        </flight>
+    </flights>
+    <times>
+        <flight>
+            <schdedued>blah1</schdedued>
+            <estimated>blah2</estimated>
+            <actual>blah3</actual>
+        </flight>
+        <flight>
+            <schdedued>blah4</schdedued>
+            <estimated>blah5</estimated>
+            <actual>blah6</actual>
+        </flight>
+        <flight>
+            <schdedued>blah7</schdedued>
+            <estimated>blah8</estimated>
+            <actual>blah9</actual>
+        </flight>
+    </times>
+    <mockLabel>
+        <flight>
+            <schdedued>blah1</schdedued>
+            <estimated>blah2</estimated>
+            <actual>blah3</actual>
+        </flight>
+        <flight>
+            <schdedued>blah4</schdedued>
+            <estimated>blah5</estimated>
+            <actual>blah6</actual>
+        </flight>
+        <flight>
+            <schdedued>blah7</schdedued>
+            <estimated>blah8</estimated>
+            <actual>blah9</actual>
+        </flight>
+    </mockLabel>
+</rootXml>
