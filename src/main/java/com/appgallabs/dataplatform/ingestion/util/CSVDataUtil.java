@@ -99,10 +99,14 @@ public class CSVDataUtil {
         Map<String, Object> fieldMap = JsonFlattener.flattenAsMap(jsonArray.get(0).getAsJsonObject().toString());
         Set<String> columnNames = fieldMap.keySet();
         Set<String> realColumns = new LinkedHashSet<>();
+        Set<String> arrayFields = new LinkedHashSet<>();
         for(String col:columnNames){
             //String[] tokens = col.split("\\.");
             if(!col.contains("[")) {
                 realColumns.add(col);
+            }
+            else {
+                arrayFields.add(col);
             }
         }
         csvBuilder.append(CSVDataUtil.getHeader(realColumns)+"\n");
@@ -139,7 +143,19 @@ public class CSVDataUtil {
             csvBuilder.append(row.toCsv()+"\n");
         }
 
+        processArrays(objectMap,arrayFields);
+
         return csvBuilder.toString();
+    }
+
+    private static void processArrays(Map<String, Object> objectMap,Set<String> arrayFields){
+        System.out.println(arrayFields);
+        for(String field:arrayFields){
+            String[] tokens = field.split("\\.");
+            if(tokens[0].contains("[")){
+                System.out.println(field);
+            }
+        }
     }
 
     private static String getHeader(Set<String> columnNames){

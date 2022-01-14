@@ -37,14 +37,22 @@ public class CSVDataUtilTests {
             JsonArray l1 = this.arrayField();
             JsonArray l2 = this.arrayField();
             JsonObject json = new JsonObject();
+            json.add("l0",l0);
             json.addProperty("col0","blah"+i);
             json.addProperty("col1", "blah"+(i+1));
             json.add("object1",this.objectField(l1,l2));
             json.add("object2",this.objectField(l1,l2));
-            json.add("l0",l0);
             array.add(json);
         }
 
+        String csv = CSVDataUtil.convertJsonToCsv(array);
+        System.out.println(csv);
+    }
+
+    @Test
+    public void convertJsonToCsvComplex() throws Exception{
+        String dataset = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("ingestion/solution1.json"), StandardCharsets.UTF_8);
+        JsonArray array = JsonParser.parseString(dataset).getAsJsonArray();
         String csv = CSVDataUtil.convertJsonToCsv(array);
         System.out.println(csv);
     }
@@ -75,13 +83,5 @@ public class CSVDataUtilTests {
             array.add(json);
         }
         return array;
-    }
-
-    @Test
-    public void convertJsonToCsvComplex() throws Exception{
-        String dataset = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("ingestion/solution1.json"), StandardCharsets.UTF_8);
-        JsonArray array = JsonParser.parseString(dataset).getAsJsonArray();
-        String csv = CSVDataUtil.convertJsonToCsv(array);
-        System.out.println(csv);
     }
 }
