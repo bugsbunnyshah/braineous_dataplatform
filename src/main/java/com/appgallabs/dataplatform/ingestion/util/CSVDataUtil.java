@@ -1,21 +1,22 @@
 package com.appgallabs.dataplatform.ingestion.util;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CSVDataUtil {
     private static Logger logger = LoggerFactory.getLogger(CSVDataUtil.class);
 
-    public JsonArray convert(String csvData)
+    public static JsonArray convert(String csvData)
     {
         JsonArray array = new JsonArray();
 
@@ -41,7 +42,7 @@ public class CSVDataUtil {
         return array;
     }
 
-    public JsonObject convert(JsonArray data)
+    public static JsonObject convert(JsonArray data)
     {
         //logger.info("*********************************");
         //logger.info("ARRAY: "+data.toString());
@@ -87,5 +88,87 @@ public class CSVDataUtil {
         jsonObject.addProperty("columns", columnCount);
         jsonObject.addProperty("data", csvBuilder.toString());
         return jsonObject;
+    }
+
+    public static String convertJsonToCsv(JsonArray jsonArray){
+        StringBuilder csvBuilder = new StringBuilder();
+        if(jsonArray == null || jsonArray.size()==0){
+            return csvBuilder.toString();
+        }
+
+        Map<String, Object> fieldMap = JsonFlattener.flattenAsMap(jsonArray.get(0).getAsJsonObject().toString());
+        Set<String> columnNames = fieldMap.keySet();
+        csvBuilder.append(CSVDataUtil.getHeader(columnNames)+"\n");
+
+        List<Row> rows = new ArrayList<>();
+        Map<String, List<String>> conversion = new HashMap<>();
+        Map<String, Object> objectMap = JsonFlattener.flattenAsMap(jsonArray.toString());
+        Set<Map.Entry<String,Object>> entries = objectMap.entrySet();
+        int currentRowIndex = -1;
+        Row currentRow = null;
+        for (Map.Entry<String,Object> entry:entries){
+            String field = entry.getKey();
+            Object value = entry.getValue();
+
+            int start = field.indexOf("[");
+            int end = field.indexOf("]");
+            int rowIndex = Integer.parseInt(field.substring(start+1,end));
+            if(rowIndex != currentRowIndex){
+                //Create a new Row
+                Row row = new Row();
+                rows.add(row);
+                currentRow = row;
+                currentRowIndex++;
+            }
+
+            //Process the current Row
+            String[] tokens = field.split("\\.");
+            String realField = tokens[tokens.length-1];
+            currentRow.addColumn(realField,value);
+        }
+
+        for(Row row: rows){
+            csvBuilder.append(row.toCsv()+"\n");
+        }
+
+        return csvBuilder.toString();
+    }
+
+    private static String getHeader(Set<String> columnNames){
+        StringBuilder headerBuilder = new StringBuilder();
+        for(String cour: columnNames){
+            headerBuilder.append(cour+",");
+        }
+
+        String header = headerBuilder.toString();
+        String result = header.substring(0, header.length()-1);
+        return result;
+    }
+
+    private static class Row{
+        Map<String,Object> columns;
+
+        private Row(){
+            this.columns = new LinkedHashMap<>();
+        }
+
+        public void addColumn(String field,Object value){
+            columns.put(field,value);
+        }
+
+        @Override
+        public String toString() {
+            return "Row{" +
+                    "columns=" + columns +
+                    '}';
+        }
+
+        public String toCsv(){
+            StringBuilder csv = new StringBuilder();
+            for(Object column:columns.values()){
+                csv.append(column.toString()+",");
+            }
+            return csv.substring(0,csv.toString().length()-1);
+        }
     }
 }

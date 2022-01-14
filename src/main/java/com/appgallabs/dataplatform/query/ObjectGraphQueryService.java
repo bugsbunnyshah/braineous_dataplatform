@@ -5,8 +5,11 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.tinkerpop.gremlin.process.remote.RemoteConnection;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.sparql.process.traversal.dsl.sparql.SparqlTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
@@ -33,7 +36,7 @@ public class ObjectGraphQueryService {
     private  GraphQueryProcessor graphQueryProcessor;
 
 
-    private TinkerGraph g;
+    private Graph g;
 
     private GraphData graphData;
 
@@ -43,7 +46,7 @@ public class ObjectGraphQueryService {
     public void onStart()
     {
         //TODO: instantiate with a RemoteGraphData
-        /*BaseConfiguration configuration = new BaseConfiguration();
+        BaseConfiguration configuration = new BaseConfiguration();
         configuration.addProperty("port", 8182);
         configuration.addProperty("hosts", Arrays.asList("gremlin-server"));
         configuration.addProperty("gremlin.remote.remoteConnectionClass","org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection");
@@ -62,10 +65,12 @@ public class ObjectGraphQueryService {
                 "org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV3d0");
 
         RemoteConnection remoteConnection = RemoteConnection.from(configuration);
-        SparqlTraversalSource server = new SparqlTraversalSource(remoteConnection);*/
+        this.server = new SparqlTraversalSource(remoteConnection);
         this.g = TinkerGraph.open();
-        this.server = new SparqlTraversalSource(g);
-        this.graphData = new LocalGraphData(server);
+
+        //this.g = TinkerGraph.open();
+        //this.server = new SparqlTraversalSource(g);
+        this.graphData = new LocalGraphData(this.server);
     }
 
     @PreDestroy
