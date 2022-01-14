@@ -1,0 +1,1124 @@
+[
+  {
+    "crewMember": {
+      "oid": "8d3836bd-84aa-4bc6-9e74-e2f6ab1fb158",
+      "email": "8d3836bd-84aa-4bc6-9e74-e2f6ab1fb158@Air New Zealand.com",
+      "hours": [
+        {
+          "oid": "51fce32b-a4bf-4ccb-b6e5-894ab1465dd0",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "59b64e19-ff17-443f-b7a7-b691e1e35bcc",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "9dc57647-d3b4-4681-9f24-7adda8399896",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "6365621f-88cd-4100-bec9-831541268c49",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "f87b1e9d-e4dd-4958-83b8-fe0e541fb68f",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "84ecd555-3cf2-445e-8729-218918619323",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        }
+      ],
+      "tours": [
+        {
+          "oid": "b1fb65a0-7310-443e-b499-d723a9271e12",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "1da4dd29-02c9-4d79-9fff-162336458b34",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "8a68acc1-9290-44e0-aca9-67ac3e6b0744",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "ef4658c7-9d03-46ee-b4e0-398392d08463",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "9301502f-5ac5-4d9d-b685-f32d157a1495",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        }
+      ],
+      "activeTour": {
+        "oid": "c5c90567-7a22-4d37-9483-31a2784a62bd",
+        "journey": [
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        ],
+        "base": {
+          "location": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        "currentStop": {
+          "name": "Mangshi",
+          "iata": "LUM",
+          "icao": "ZPLX",
+          "timezone": "Asia/Shanghai"
+        }
+      },
+      "hoursAllowed": 500,
+      "captain": true
+    },
+    "reason": "reserved",
+    "isDeadHead": true
+  },
+  {
+    "crewMember": {
+      "oid": "f5b8e58a-4e6e-4039-98ae-121c68afb1f9",
+      "email": "f5b8e58a-4e6e-4039-98ae-121c68afb1f9@Air New Zealand.com",
+      "hours": [
+        {
+          "oid": "51fce32b-a4bf-4ccb-b6e5-894ab1465dd0",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "59b64e19-ff17-443f-b7a7-b691e1e35bcc",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "9dc57647-d3b4-4681-9f24-7adda8399896",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "6365621f-88cd-4100-bec9-831541268c49",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "f87b1e9d-e4dd-4958-83b8-fe0e541fb68f",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "84ecd555-3cf2-445e-8729-218918619323",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        }
+      ],
+      "tours": [
+        {
+          "oid": "b1fb65a0-7310-443e-b499-d723a9271e12",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "1da4dd29-02c9-4d79-9fff-162336458b34",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "8a68acc1-9290-44e0-aca9-67ac3e6b0744",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "ef4658c7-9d03-46ee-b4e0-398392d08463",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "9301502f-5ac5-4d9d-b685-f32d157a1495",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        }
+      ],
+      "activeTour": {
+        "oid": "1314eb1c-ba96-4265-89a2-916cbee342e1",
+        "journey": [
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        ],
+        "base": {
+          "location": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        "currentStop": {
+          "name": "Cairns",
+          "iata": "CNS",
+          "icao": "YBCS",
+          "timezone": "Australia/Brisbane"
+        }
+      },
+      "hoursAllowed": 500,
+      "captain": true
+    },
+    "reason": "reserved",
+    "isDeadHead": true
+  },
+  {
+    "crewMember": {
+      "oid": "cb7c227c-88d2-4b22-acfa-edb30aec7fbf",
+      "email": "cb7c227c-88d2-4b22-acfa-edb30aec7fbf@Air New Zealand.com",
+      "hours": [
+        {
+          "oid": "51fce32b-a4bf-4ccb-b6e5-894ab1465dd0",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "59b64e19-ff17-443f-b7a7-b691e1e35bcc",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "9dc57647-d3b4-4681-9f24-7adda8399896",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "6365621f-88cd-4100-bec9-831541268c49",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "f87b1e9d-e4dd-4958-83b8-fe0e541fb68f",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        },
+        {
+          "oid": "84ecd555-3cf2-445e-8729-218918619323",
+          "start": 1637699664,
+          "end": 1637699674,
+          "duration": 14,
+          "hours": 80,
+          "workTypes": [
+            "resting",
+            "flying"
+          ]
+        }
+      ],
+      "tours": [
+        {
+          "oid": "b1fb65a0-7310-443e-b499-d723a9271e12",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "1da4dd29-02c9-4d79-9fff-162336458b34",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "8a68acc1-9290-44e0-aca9-67ac3e6b0744",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "ef4658c7-9d03-46ee-b4e0-398392d08463",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        {
+          "oid": "9301502f-5ac5-4d9d-b685-f32d157a1495",
+          "journey": [
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            },
+            {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          ],
+          "base": {
+            "location": {
+              "name": "Anaa",
+              "iata": "AAA",
+              "icao": "NTGA",
+              "timezone": "Pacific/Tahiti"
+            }
+          },
+          "currentStop": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        }
+      ],
+      "activeTour": {
+        "oid": "6064b404-89ca-4f8b-9bc4-34b34c1065ee",
+        "journey": [
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          },
+          {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        ],
+        "base": {
+          "location": {
+            "name": "Anaa",
+            "iata": "AAA",
+            "icao": "NTGA",
+            "timezone": "Pacific/Tahiti"
+          }
+        },
+        "currentStop": {
+          "name": "Wellington International",
+          "iata": "WLG",
+          "icao": "NZWN",
+          "timezone": "Pacific/Auckland"
+        }
+      },
+      "hoursAllowed": 500,
+      "captain": true
+    },
+    "reason": "reserved",
+    "isDeadHead": false
+  }
+]
