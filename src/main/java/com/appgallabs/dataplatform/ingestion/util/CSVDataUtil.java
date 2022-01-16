@@ -104,7 +104,14 @@ public class CSVDataUtil {
         for(String col:objectMap.keySet()){
             //String[] tokens = col.split("\\.");
             int eraseIndex = col.indexOf("]") + 2;
-            String objColumn = col.substring(eraseIndex);
+            String objColumn=null;
+            try
+            {
+                objColumn = col.substring(eraseIndex);
+            }
+            catch (Exception e){
+                continue;
+            }
             if(!objColumn.contains("[")) {
                 objectColumns.add(objColumn);
             }else{
@@ -133,7 +140,11 @@ public class CSVDataUtil {
             }
 
             //Process the current Row
-            field = field.substring(end+2);
+            if(field == null || field.trim().length()==0 || !field.contains(".")){
+                continue;
+            }
+            field = field.substring(end + 2);
+
             //String[] tokens = field.split("\\.");
             if(objectColumns.contains(field)) {
                 currentRow.addColumn(field, value);
@@ -141,7 +152,10 @@ public class CSVDataUtil {
         }
 
         for(Row row: rows){
-            csvBuilder.append(row.toCsv()+"\n");
+            String csv = row.toCsv();
+            if(csv != null) {
+                csvBuilder.append(csv + "\n");
+            }
         }
         csvs.add(csvBuilder.toString());
 
@@ -204,6 +218,10 @@ public class CSVDataUtil {
         }
 
         String header = headerBuilder.toString();
+        if(header.trim().length()==0){
+            return "";
+        }
+
         String result = header.substring(0, header.length()-1);
         return result;
     }
@@ -228,10 +246,15 @@ public class CSVDataUtil {
 
         public String toCsv(){
             StringBuilder csv = new StringBuilder();
-            for(Object column:columns.values()){
-                csv.append(column.toString()+",");
+            for (Object column : columns.values()) {
+                csv.append(column.toString() + ",");
             }
-            return csv.substring(0,csv.toString().length()-1);
+
+            if(csv.toString().trim().length()==0){
+                return null;
+            }
+
+            return csv.substring(0, csv.toString().length() - 1);
         }
     }
 }

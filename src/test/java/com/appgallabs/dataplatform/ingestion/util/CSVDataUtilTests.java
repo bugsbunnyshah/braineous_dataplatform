@@ -55,7 +55,9 @@ public class CSVDataUtilTests {
 
     @Test
     public void convertJsonToCsvComplex() throws Exception{
-        String dataset = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("ingestion/solution1.json"), StandardCharsets.UTF_8);
+        String dataset = IOUtils.toString(Thread.currentThread().
+                getContextClassLoader().getResourceAsStream("ingestion/solution1.json"),
+                StandardCharsets.UTF_8);
         JsonArray array = JsonParser.parseString(dataset).getAsJsonArray();
         Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
         System.out.println(csv);
