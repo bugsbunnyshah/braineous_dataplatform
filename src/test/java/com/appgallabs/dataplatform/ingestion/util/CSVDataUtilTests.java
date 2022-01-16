@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.util;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
+import java.util.UUID;
 
 public class CSVDataUtilTests {
     public static Logger logger = LoggerFactory.getLogger(CSVDataUtilTests.class);
@@ -24,7 +27,7 @@ public class CSVDataUtilTests {
             array.add(json);
         }
 
-        String csv = CSVDataUtil.convertJsonToCsv(array);
+        Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
         System.out.println(csv);
     }
 
@@ -32,7 +35,7 @@ public class CSVDataUtilTests {
     public void convertJsonToCsvObject() throws Exception{
         JsonArray array = new JsonArray();
 
-        for(int i=0; i<2; i++){
+        for(int i=0; i<1; i++){
             JsonArray l0 = this.arrayField();
             JsonArray l1 = this.arrayField();
             JsonArray l2 = this.arrayField();
@@ -44,8 +47,9 @@ public class CSVDataUtilTests {
             json.add("object2",this.objectField(l1,l2));
             array.add(json);
         }
+        JsonUtil.printStdOut(array);
 
-        String csv = CSVDataUtil.convertJsonToCsv(array);
+        Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
         System.out.println(csv);
     }
 
@@ -53,7 +57,7 @@ public class CSVDataUtilTests {
     public void convertJsonToCsvComplex() throws Exception{
         String dataset = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("ingestion/solution1.json"), StandardCharsets.UTF_8);
         JsonArray array = JsonParser.parseString(dataset).getAsJsonArray();
-        String csv = CSVDataUtil.convertJsonToCsv(array);
+        Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
         System.out.println(csv);
     }
 
@@ -78,8 +82,8 @@ public class CSVDataUtilTests {
         JsonArray array = new JsonArray();
         for(int i=0; i<2; i++){
             JsonObject json = new JsonObject();
-            json.addProperty("col0","blah"+i);
-            json.addProperty("col1", "blah"+(i+1));
+            json.addProperty("col0","blah"+ UUID.randomUUID());
+            json.addProperty("col1", "blah"+UUID.randomUUID());
             array.add(json);
         }
         return array;

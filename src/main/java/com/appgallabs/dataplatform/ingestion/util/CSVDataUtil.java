@@ -90,29 +90,30 @@ public class CSVDataUtil {
         return jsonObject;
     }
 
-    public static String convertJsonToCsv(JsonArray jsonArray){
+    public static Set<String> convertJsonToCsv(JsonArray jsonArray){
+        Set<String> csvs = new LinkedHashSet<>();
+
         StringBuilder csvBuilder = new StringBuilder();
         if(jsonArray == null || jsonArray.size()==0){
-            return csvBuilder.toString();
+            return csvs;
         }
 
-        Map<String, Object> fieldMap = JsonFlattener.flattenAsMap(jsonArray.get(0).getAsJsonObject().toString());
-        Set<String> columnNames = fieldMap.keySet();
-        Set<String> realColumns = new LinkedHashSet<>();
+        Map<String, Object> objectMap = JsonFlattener.flattenAsMap(jsonArray.toString());
+        Set<String> objectColumns = new LinkedHashSet<>();
         Set<String> arrayFields = new LinkedHashSet<>();
-        for(String col:columnNames){
+        for(String col:objectMap.keySet()){
             //String[] tokens = col.split("\\.");
-            if(!col.contains("[")) {
-                realColumns.add(col);
-            }
-            else {
+            int eraseIndex = col.indexOf("]") + 2;
+            String objColumn = col.substring(eraseIndex);
+            if(!objColumn.contains("[")) {
+                objectColumns.add(objColumn);
+            }else{
                 arrayFields.add(col);
             }
         }
-        csvBuilder.append(CSVDataUtil.getHeader(realColumns)+"\n");
+        csvBuilder.append(CSVDataUtil.getHeader(objectColumns)+"\n");
 
         List<Row> rows = new ArrayList<>();
-        Map<String, Object> objectMap = JsonFlattener.flattenAsMap(jsonArray.toString());
         Set<Map.Entry<String,Object>> entries = objectMap.entrySet();
         int currentRowIndex = -1;
         Row currentRow = null;
@@ -134,7 +135,7 @@ public class CSVDataUtil {
             //Process the current Row
             field = field.substring(end+2);
             //String[] tokens = field.split("\\.");
-            if(realColumns.contains(field)) {
+            if(objectColumns.contains(field)) {
                 currentRow.addColumn(field, value);
             }
         }
@@ -142,20 +143,58 @@ public class CSVDataUtil {
         for(Row row: rows){
             csvBuilder.append(row.toCsv()+"\n");
         }
+        csvs.add(csvBuilder.toString());
 
-        processArrays(objectMap,arrayFields);
+        Set<String> arrayCsvs = processArrays(jsonArray,objectMap,arrayFields);
+        csvs.addAll(arrayCsvs);
 
-        return csvBuilder.toString();
+        return csvs;
     }
 
-    private static void processArrays(Map<String, Object> objectMap,Set<String> arrayFields){
-        System.out.println(arrayFields);
-        for(String field:arrayFields){
-            String[] tokens = field.split("\\.");
-            if(tokens[0].contains("[")){
-                System.out.println(field);
+    private static Set<String> processArrays(JsonArray array,Map<String, Object> objectMap,Set<String> arrayFields){
+        Set<String> csvs = new LinkedHashSet<>();
+        int currentIndex = 0;
+        for (String arrayField : arrayFields) {
+            int activeIndex = Integer.parseInt(arrayField.substring(arrayField.indexOf("[") + 1, arrayField.indexOf("]")));
+            int parentIndex = arrayField.indexOf(".") + 1;
+            int arrayIndex = arrayField.indexOf("[", parentIndex);
+            int arrayCounter = Integer.parseInt(arrayField.substring(arrayIndex+1,arrayField.indexOf("]", parentIndex)));
+            String object = arrayField.substring(parentIndex,
+                    arrayIndex);
+
+            JsonArray children = new JsonArray();
+            String[] objectPathTokens = object.split("\\.");
+            JsonObject parent = array.get(activeIndex).getAsJsonObject();
+            JsonArray arrayToProcess = null;
+            for(String pathToken:objectPathTokens){
+                if(pathToken.contains("[")){
+                    pathToken = pathToken.substring(0,pathToken.indexOf("["));
+                }
+                JsonElement o = parent.get(pathToken);
+                if(o!= null){
+                    if(o.isJsonArray()) {
+                        arrayToProcess = o.getAsJsonArray();
+                        break;
+                    }else if(o.isJsonObject()){
+                        parent = o.getAsJsonObject();
+                    }
+                }else{
+                    break;
+                }
+            }
+            if(arrayToProcess == null){
+                continue;
+            }
+
+            children.add(arrayToProcess.get(arrayCounter));
+            Set<String> csv = CSVDataUtil.convertJsonToCsv(children);
+            csvs.addAll(csv);
+
+            if (activeIndex != currentIndex) {
+                currentIndex = activeIndex;
             }
         }
+        return csvs;
     }
 
     private static String getHeader(Set<String> columnNames){
