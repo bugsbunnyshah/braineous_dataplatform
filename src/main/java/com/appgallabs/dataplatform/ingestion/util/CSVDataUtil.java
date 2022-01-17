@@ -219,19 +219,11 @@ public class CSVDataUtil {
             }
 
             String owner = objectPathTokens[objectPathTokens.length-1];
-
-            Set<String> csv = null;
+            Set<String> csv;
             JsonElement value = arrayToProcess.get(arrayCounter);
             if(value.isJsonPrimitive()){
-                JsonObject child = new JsonObject();
-                //child.add(arrayField,arrayToProcess);
-                child.addProperty("","hello2");
-
-                //child.add(owner,arrayToProcess.get(arrayCounter));
-                children.add(child);
-
-                csv = CSVDataUtil.convertJsonToCsv(owner,children);
-                csvs.addAll(csv);
+                String blah = flattenToCsv(arrayToProcess);
+                csvs.add(blah);
             }else {
                 children.add(arrayToProcess.get(arrayCounter));
                 csv = CSVDataUtil.convertJsonToCsv(owner,children);
@@ -255,7 +247,7 @@ public class CSVDataUtil {
         StringBuilder csvBuilder = new StringBuilder();
         for(int i=0; i<primitiveArray.size();i++)
         {
-            csvBuilder.append("_col"+i+",");
+            csvBuilder.append("_column_"+UUID.randomUUID()+",");
         }
         String header = csvBuilder.toString();
         int size = header.length();

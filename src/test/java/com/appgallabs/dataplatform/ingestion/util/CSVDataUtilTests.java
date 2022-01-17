@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.ingestion.util;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -86,7 +85,6 @@ public class CSVDataUtilTests {
                 getContextClassLoader().getResourceAsStream("ingestion/solution1.json"),
                 StandardCharsets.UTF_8);
         JsonArray array = JsonParser.parseString(dataset).getAsJsonArray();
-        JsonUtil.printStdOut(array);
         Set<String> csv = CSVDataUtil.convertJsonToCsv("solution",array);
         System.out.println(csv);
     }
