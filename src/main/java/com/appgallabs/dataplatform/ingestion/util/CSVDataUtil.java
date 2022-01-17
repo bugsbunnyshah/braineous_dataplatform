@@ -153,7 +153,7 @@ public class CSVDataUtil {
 
         for(Row row: rows){
             String csv = row.toCsv();
-            if(csv != null) {
+            if(csv != null && csv.trim().length()!=0) {
                 csvBuilder.append(csv + "\n");
             }
         }
@@ -162,7 +162,18 @@ public class CSVDataUtil {
         Set<String> arrayCsvs = processArrays(jsonArray,objectMap,arrayFields);
         csvs.addAll(arrayCsvs);
 
-        return csvs;
+
+        Set<String> finalCsvs = new LinkedHashSet<>();
+        Iterator<String> iterator = csvs.iterator();
+        while(iterator.hasNext()){
+            String data = iterator.next();
+            if(data == null || data.trim().length()==0){
+                continue;
+            }
+            finalCsvs.add(data);
+        }
+
+        return finalCsvs;
     }
 
     private static Set<String> processArrays(JsonArray array,Map<String, Object> objectMap,Set<String> arrayFields){
@@ -305,7 +316,11 @@ public class CSVDataUtil {
         public String toCsv(){
             StringBuilder csv = new StringBuilder();
             for (Object column : columns.values()) {
-                csv.append(column.toString() + ",");
+                if(column != null) {
+                    csv.append(column + ",");
+                }else{
+                    csv.append("NaN"+",");
+                }
             }
 
             if(csv.toString().trim().length()==0){

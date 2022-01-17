@@ -1,0 +1,100 @@
+[
+  {
+    "minCostSolution": [
+      {
+        "option": {
+          "oid": "ffb63674-23a8-4f42-a155-82328c328c09",
+          "flight_date": "2021-01-28",
+          "flight_status": "scheduled",
+          "airline": {
+            "name": "Air New Zealand",
+            "iata": "NZ",
+            "icao": "ANZ"
+          },
+          "departure": {
+            "terminal": "D",
+            "gate": "28",
+            "scheduled": "2021-01-28T14:25:00+00:00",
+            "estimated": "2021-01-28T14:25:00+00:00",
+            "airport": "Wellington International"
+          },
+          "arrival": {
+            "scheduled": "2021-01-28T07:00:00+00:00",
+            "estimated": "2021-01-28T07:00:00+00:00",
+            "airport": "Mangshi"
+          },
+          "itineraries": [
+            {
+              "oid": "0348dbc0-56fc-487e-8808-e0ef4b081f3a",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "d5d855a2-1ce5-4f08-b420-22370061e660",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "c8477630-e2df-4aca-973c-81895e839772",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "b8d9fec0-394b-45d5-96aa-1fccf01ca6b1",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "9260e66d-aa0b-4650-99e3-d132dd9935e0",
+              "itineraryClass": "ECONOMY"
+            }
+          ]
+        }
+      }
+    ],
+    "maxConvenienceSolution": [
+      {
+        "option": {
+          "oid": "ffb63674-23a8-4f42-a155-82328c328c09",
+          "flight_date": "2021-01-28",
+          "flight_status": "scheduled",
+          "airline": {
+            "name": "Air New Zealand",
+            "iata": "NZ",
+            "icao": "ANZ"
+          },
+          "departure": {
+            "terminal": "D",
+            "gate": "28",
+            "scheduled": "2021-01-28T14:25:00+00:00",
+            "estimated": "2021-01-28T14:25:00+00:00",
+            "airport": "Wellington International"
+          },
+          "arrival": {
+            "scheduled": "2021-01-28T07:00:00+00:00",
+            "estimated": "2021-01-28T07:00:00+00:00",
+            "airport": "Mangshi"
+          },
+          "itineraries": [
+            {
+              "oid": "0348dbc0-56fc-487e-8808-e0ef4b081f3a",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "d5d855a2-1ce5-4f08-b420-22370061e660",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "c8477630-e2df-4aca-973c-81895e839772",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "b8d9fec0-394b-45d5-96aa-1fccf01ca6b1",
+              "itineraryClass": "ECONOMY"
+            },
+            {
+              "oid": "9260e66d-aa0b-4650-99e3-d132dd9935e0",
+              "itineraryClass": "ECONOMY"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
