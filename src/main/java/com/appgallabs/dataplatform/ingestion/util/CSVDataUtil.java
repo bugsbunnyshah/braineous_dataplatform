@@ -255,12 +255,16 @@ public class CSVDataUtil {
         StringBuilder finalCsv = new StringBuilder();
         finalCsv.append(header.substring(0,size-1)+"\n");
 
+        StringBuilder dataBuilder = new StringBuilder();
         for(int i=0; i<primitiveArray.size();i++)
         {
-            finalCsv.append(primitiveArray.get(i)+",");
+            dataBuilder.append(primitiveArray.get(i)+",");
         }
 
-        finalCsv.append("\n");
+        String data = dataBuilder.toString();
+        size = data.length();
+        data = data.substring(0,size-1);
+        finalCsv.append(data+"\n");
 
         return finalCsv.toString();
     }
