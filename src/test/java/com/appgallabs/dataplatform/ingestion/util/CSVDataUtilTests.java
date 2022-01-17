@@ -27,7 +27,28 @@ public class CSVDataUtilTests {
             array.add(json);
         }
 
-        Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
+        Set<String> csv = CSVDataUtil.convertJsonToCsv("simple",array);
+        System.out.println(csv);
+    }
+
+    @Test
+    public void convertJsonToCsvWithPrimitiveArray() throws Exception{
+        JsonArray array = new JsonArray();
+        JsonArray primitiveArray = new JsonArray();
+        primitiveArray.add("hello");
+        primitiveArray.add("world");
+        primitiveArray.add("true");
+        for(int i=0; i<1; i++){
+            JsonObject json = new JsonObject();
+            json.add("pr",primitiveArray);
+            array.add(json);
+        }
+        //System.out.println(primitiveArray);
+
+        //Set<String> csv = CSVDataUtil.convertJsonToCsv("simple",primitiveArray);
+        //System.out.println(csv);
+
+        Set<String> csv = CSVDataUtil.convertJsonToCsv("simple",array);
         System.out.println(csv);
     }
 
@@ -39,17 +60,23 @@ public class CSVDataUtilTests {
             JsonArray l0 = this.arrayField();
             JsonArray l1 = this.arrayField();
             JsonArray l2 = this.arrayField();
+            JsonArray primitiveArray = new JsonArray();
+            primitiveArray.add("hello");
+            primitiveArray.add("world");
+            /*for(int j=0; j<5; j++){
+                primitiveArray.add(j);
+            }*/
             JsonObject json = new JsonObject();
             json.add("l0",l0);
             json.addProperty("col0","blah"+i);
             json.addProperty("col1", "blah"+(i+1));
             json.add("object1",this.objectField(l1,l2));
             json.add("object2",this.objectField(l1,l2));
+            json.add("primitiveArray", primitiveArray);
             array.add(json);
         }
-        JsonUtil.printStdOut(array);
 
-        Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
+        Set<String> csv = CSVDataUtil.convertJsonToCsv("objectGraph",array);
         System.out.println(csv);
     }
 
@@ -59,7 +86,8 @@ public class CSVDataUtilTests {
                 getContextClassLoader().getResourceAsStream("ingestion/solution1.json"),
                 StandardCharsets.UTF_8);
         JsonArray array = JsonParser.parseString(dataset).getAsJsonArray();
-        Set<String> csv = CSVDataUtil.convertJsonToCsv(array);
+        JsonUtil.printStdOut(array);
+        Set<String> csv = CSVDataUtil.convertJsonToCsv("solution",array);
         System.out.println(csv);
     }
 
@@ -82,7 +110,7 @@ public class CSVDataUtilTests {
 
     private JsonArray arrayField(){
         JsonArray array = new JsonArray();
-        for(int i=0; i<2; i++){
+        for(int i=0; i<3; i++){
             JsonObject json = new JsonObject();
             json.addProperty("col0","blah"+ UUID.randomUUID());
             json.addProperty("col1", "blah"+UUID.randomUUID());

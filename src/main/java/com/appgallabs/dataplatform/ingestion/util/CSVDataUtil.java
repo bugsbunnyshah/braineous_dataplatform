@@ -1,11 +1,9 @@
 package com.appgallabs.dataplatform.ingestion.util;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,7 +88,7 @@ public class CSVDataUtil {
         return jsonObject;
     }
 
-    public static Set<String> convertJsonToCsv(JsonArray jsonArray){
+    public static Set<String> convertJsonToCsv(String owner,JsonArray jsonArray){
         Set<String> csvs = new LinkedHashSet<>();
 
         StringBuilder csvBuilder = new StringBuilder();
@@ -102,16 +100,18 @@ public class CSVDataUtil {
         Set<String> objectColumns = new LinkedHashSet<>();
         Set<String> arrayFields = new LinkedHashSet<>();
         for(String col:objectMap.keySet()){
-            //String[] tokens = col.split("\\.");
             int eraseIndex = col.indexOf("]") + 2;
+            //String objColumn = col.substring(eraseIndex);
             String objColumn=null;
             try
             {
                 objColumn = col.substring(eraseIndex);
             }
             catch (Exception e){
-                continue;
+                //This is an array_index
+                objColumn = col;
             }
+
             if(!objColumn.contains("[")) {
                 objectColumns.add(objColumn);
             }else{
@@ -168,6 +168,7 @@ public class CSVDataUtil {
     private static Set<String> processArrays(JsonArray array,Map<String, Object> objectMap,Set<String> arrayFields){
         Set<String> csvs = new LinkedHashSet<>();
         int currentIndex = 0;
+        JsonArray activePrimitiveArray = new JsonArray();
         for (String arrayField : arrayFields) {
             int activeIndex = Integer.parseInt(arrayField.substring(arrayField.indexOf("[") + 1, arrayField.indexOf("]")));
             int parentIndex = arrayField.indexOf(".") + 1;
@@ -178,7 +179,24 @@ public class CSVDataUtil {
 
             JsonArray children = new JsonArray();
             String[] objectPathTokens = object.split("\\.");
-            JsonObject parent = array.get(activeIndex).getAsJsonObject();
+
+            JsonElement currentObject = array.get(activeIndex);
+            JsonObject parent = null;
+            if(currentObject.isJsonObject()){
+                parent = array.get(activeIndex).getAsJsonObject();
+                //process a previous primitive array if active
+                if(activePrimitiveArray.size() > 0){
+                    String csv = flattenToCsv(activePrimitiveArray);
+                    csvs.add(csv);
+                    activePrimitiveArray = null;
+                }
+            }
+            else if(currentObject.isJsonPrimitive()){
+                //we are at a primitive array index
+                activePrimitiveArray.add(currentObject);
+                continue;
+            }
+
             JsonArray arrayToProcess = null;
             for(String pathToken:objectPathTokens){
                 if(pathToken.contains("[")){
@@ -200,15 +218,59 @@ public class CSVDataUtil {
                 continue;
             }
 
-            children.add(arrayToProcess.get(arrayCounter));
-            Set<String> csv = CSVDataUtil.convertJsonToCsv(children);
-            csvs.addAll(csv);
+            String owner = objectPathTokens[objectPathTokens.length-1];
+
+            Set<String> csv = null;
+            JsonElement value = arrayToProcess.get(arrayCounter);
+            if(value.isJsonPrimitive()){
+                JsonObject child = new JsonObject();
+                //child.add(arrayField,arrayToProcess);
+                child.addProperty("","hello2");
+
+                //child.add(owner,arrayToProcess.get(arrayCounter));
+                children.add(child);
+
+                csv = CSVDataUtil.convertJsonToCsv(owner,children);
+                csvs.addAll(csv);
+            }else {
+                children.add(arrayToProcess.get(arrayCounter));
+                csv = CSVDataUtil.convertJsonToCsv(owner,children);
+                csvs.addAll(csv);
+            }
 
             if (activeIndex != currentIndex) {
                 currentIndex = activeIndex;
             }
         }
+        //process a previous primitive array if active
+        if(activePrimitiveArray.size() > 0){
+            String csv = flattenToCsv(activePrimitiveArray);
+            csvs.add(csv);
+        }
+
         return csvs;
+    }
+
+    private static String flattenToCsv(JsonArray primitiveArray){
+        StringBuilder csvBuilder = new StringBuilder();
+        for(int i=0; i<primitiveArray.size();i++)
+        {
+            csvBuilder.append("_col"+i+",");
+        }
+        String header = csvBuilder.toString();
+        int size = header.length();
+
+        StringBuilder finalCsv = new StringBuilder();
+        finalCsv.append(header.substring(0,size-1)+"\n");
+
+        for(int i=0; i<primitiveArray.size();i++)
+        {
+            finalCsv.append(primitiveArray.get(i)+",");
+        }
+
+        finalCsv.append("\n");
+
+        return finalCsv.toString();
     }
 
     private static String getHeader(Set<String> columnNames){
