@@ -36,7 +36,7 @@ public class SolutionGeneratorDataPlatformTests extends IngesterTest {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    @Test
+    //@Test
     public void calculateSolutionForArrivalDelaySmallDataSet() throws Exception {
         String data = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                 getResourceAsStream("crew/optimizeCrew.json"), StandardCharsets.UTF_8);

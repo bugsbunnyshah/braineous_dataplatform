@@ -28,7 +28,7 @@ public class MapperServiceTests extends IngesterTest{
     @Inject
     private ObjectGraphQueryService queryService;
 
-    @Test
+    //@Test
     public void testMapAirlineData() throws Exception
     {
         String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
