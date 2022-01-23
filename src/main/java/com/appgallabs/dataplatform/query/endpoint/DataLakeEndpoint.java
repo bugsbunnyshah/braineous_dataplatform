@@ -2,11 +2,10 @@ package com.appgallabs.dataplatform.query.endpoint;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
