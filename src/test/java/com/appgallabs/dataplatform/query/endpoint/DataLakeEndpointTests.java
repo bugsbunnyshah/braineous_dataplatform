@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.query.endpoint;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
@@ -16,8 +17,9 @@ public class DataLakeEndpointTests {
 
     @Test
     public void all() throws Exception{
-        String restUrl = "http://localhost:8080/data/lake/?entity=flight";
+        String restUrl = "/data/lake/?entity=flight";
         Response response = given().get(restUrl).andReturn();
-        JsonUtil.printStdOut(JsonParser.parseString(response.body().asString()));
+        JsonArray flightIngestion = JsonParser.parseString(response.body().asString()).getAsJsonArray();
+        JsonUtil.printStdOut(flightIngestion);
     }
 }
