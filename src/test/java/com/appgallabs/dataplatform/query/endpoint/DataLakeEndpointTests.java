@@ -18,7 +18,6 @@ public class DataLakeEndpointTests {
     public void all() throws Exception{
         String restUrl = "http://localhost:8080/data/lake/?entity=flight";
         Response response = given().get(restUrl).andReturn();
-        System.out.println(response.statusCode());
         JsonUtil.printStdOut(JsonParser.parseString(response.body().asString()));
     }
 }
