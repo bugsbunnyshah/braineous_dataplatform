@@ -130,4 +130,11 @@ public class MongoDBJsonStoreTests extends BaseTest {
         JsonArray metaData = this.mongoDBJsonStore.getIngestedDataSetsMetaData(cour);
         JsonUtil.print(metaData);
     }
+
+    @Test
+    public void readByEntity() throws Exception{
+        String entity = "flight";
+        JsonArray data = this.mongoDBJsonStore.readByEntity(this.securityTokenContainer.getTenant(),entity);
+        JsonUtil.printStdOut(data);
+    }
 }

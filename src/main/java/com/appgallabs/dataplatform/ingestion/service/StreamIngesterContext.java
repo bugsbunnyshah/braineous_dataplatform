@@ -121,9 +121,9 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("dataLakeId", dataLakeId);
             data.addProperty("timestamp", ingestionTime.toEpochSecond());
             data.addProperty("objectHash", objectHash);
-            logger.info("************PERSISTING-" + dataLakeId + "******************");
-            logger.info(data.toString());
-            logger.info("****************************************");
+            //System.out.println("************PERSISTING-" + dataLakeId + "******************");
+            //System.out.println(data.toString());
+            //System.out.println("****************************************");
             this.mongoDBJsonStore.storeIngestion(tenant, data);
             this.chainIds.put(dataLakeId, chainId);
 

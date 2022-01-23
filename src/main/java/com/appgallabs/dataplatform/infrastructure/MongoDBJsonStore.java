@@ -30,6 +30,9 @@ public class MongoDBJsonStore implements Serializable
     @Inject
     private DataHistoryStore dataHistoryStore;
 
+    @Inject
+    private DataLakeStore dataLakeStore;
+
     private MongoClient mongoClient;
     private Map<String,MongoDatabase> databaseMap;
 
@@ -544,5 +547,9 @@ public class MongoDBJsonStore implements Serializable
 
     public JsonArray readHistory(Tenant tenant, OffsetDateTime endTime){
         return this.dataHistoryStore.readHistory(tenant, this.mongoClient,endTime);
+    }
+    //--DataLake------------------------------
+    public JsonArray readByEntity(Tenant tenant, String entity){
+        return this.dataLakeStore.readByEntity(tenant,this.mongoClient,entity);
     }
 }

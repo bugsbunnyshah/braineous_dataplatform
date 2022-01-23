@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -127,8 +128,8 @@ public class StreamIngester implements Serializable{
                         stringJavaRDD.foreach(s -> {
                                     try {
                                         JsonObject streamObject = JsonParser.parseString(s).getAsJsonObject();
-                                        //System.out.println("*****CALL*******");
-                                        //JsonUtil.print(streamObject);
+                                        System.out.println("*****CALL*******");
+                                        JsonUtil.printStdOut(streamObject);
                                         String dataLakeId = streamObject.get("dataLakeId").getAsString();
                                         String principal = streamObject.get("principal").getAsString();
                                         String chainId = streamObject.get("chainId").getAsString();
@@ -277,17 +278,18 @@ public class StreamIngester implements Serializable{
         @Override
         public void run() {
             try {
-                //System.out.println("*******QUEUE_PROCESSOR********");
-                //System.out.println("DataLakeId: "+dataLakeId);
-                //System.out.println(this.queue);
-                //System.out.println(StreamIngesterContext.getStreamIngesterContext().activeDataLakeIds());
-                //System.out.println("*******************************");
+                System.out.println("*******QUEUE_PROCESSOR********");
+                System.out.println("DataLakeId: "+dataLakeId);
+                System.out.println(this.queue);
+                System.out.println(StreamIngesterContext.getStreamIngesterContext().activeDataLakeIds());
+                System.out.println("*******************************");
                 while (!this.queue.isEmpty()) {
                     StreamObject streamObject = this.queue.poll();
                     //JsonUtil.print(streamObject.toJson());
                     if(streamObject != null) {
                         JsonObject jsonObject = streamObject.toJson();
                         if(this.streamReceiver.isStarted()) {
+                            System.out.println("SUBMITTING_TO_SPARK");
                             this.streamReceiver.store(jsonObject.toString());
                         }
                     }
