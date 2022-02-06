@@ -64,12 +64,12 @@ public class ObjectGraphQueryService {
         configuration.addProperty("serializer.className",
                 "org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV3d0");
 
-        RemoteConnection remoteConnection = RemoteConnection.from(configuration);
+        /*RemoteConnection remoteConnection = RemoteConnection.from(configuration);
         this.server = new SparqlTraversalSource(remoteConnection);
-        this.g = TinkerGraph.open();
+        this.g = TinkerGraph.open();*/
 
-        //this.g = TinkerGraph.open();
-        //this.server = new SparqlTraversalSource(g);
+        this.g = TinkerGraph.open();
+        this.server = new SparqlTraversalSource(g);
         this.graphData = new LocalGraphData(this.server);
     }
 
@@ -122,16 +122,16 @@ public class ObjectGraphQueryService {
             Map map = itr.next();
             Vertex edge = (Vertex) map.get(entity);
             if(edge != null) {
-                System.out.println(edge.label());
+                //System.out.println(edge.label());
                 if (edge.label().equals(entity)) {
                     JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
                     response.add(edgeJson);
                 }
             }
-            else
+            /*else
             {
                 System.out.println("NOT_fOUND");
-            }
+            }*/
         }
 
         return response;
