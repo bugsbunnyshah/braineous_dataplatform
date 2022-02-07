@@ -129,7 +129,6 @@ public class StreamIngester implements Serializable{
                                     try {
                                         JsonObject streamObject = JsonParser.parseString(s).getAsJsonObject();
                                         System.out.println("*****CALL*******");
-                                        JsonUtil.printStdOut(streamObject);
                                         String dataLakeId = streamObject.get("dataLakeId").getAsString();
                                         String principal = streamObject.get("principal").getAsString();
                                         String chainId = streamObject.get("chainId").getAsString();

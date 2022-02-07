@@ -100,9 +100,14 @@ public class StreamIngesterContext implements Serializable {
 
     public void ingestData(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject)
     {
-        try {
-            //JsonUtil.print(jsonObject);
+        Thread worker = new Thread(() -> {
+            this.ingestOnThread(principal,entity,dataLakeId,chainId,jsonObject);
+        });
+        worker.start();
+    }
 
+    private void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject){
+        try {
             Tenant tenant = new Tenant();
             tenant.setPrincipal(principal);
             SecurityToken securityToken = new SecurityToken();
@@ -121,24 +126,23 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("dataLakeId", dataLakeId);
             data.addProperty("timestamp", ingestionTime.toEpochSecond());
             data.addProperty("objectHash", objectHash);
-            //System.out.println("************PERSISTING-" + dataLakeId + "******************");
-            //System.out.println(data.toString());
-            //System.out.println("****************************************");
+            logger.info("************PERSISTING-" + dataLakeId + "******************");
+            logger.info(data.toString());
+            logger.info("****************************************");
             this.mongoDBJsonStore.storeIngestion(tenant, data);
             this.chainIds.put(dataLakeId, chainId);
 
             //Update the ObjectGraph service
             Vertex object = this.queryService.saveObjectGraph(entity, jsonObject, null, false);
-            //System.out.println(object.graph());
 
             BackgroundProcessListener.getInstance().decreaseThreshold(entity,dataLakeId,data);
 
-            //Update DataHistory
-            data.remove("data");
-            this.mongoDBJsonStore.storeHistoryObject(tenant, data);
+            //TODO: Update DataHistory
+            //data.remove("data");
+            //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
         }
         catch(Exception e){
-            throw new RuntimeException(e);
+            logger.error(e.getMessage(),e);
         }
     }
 

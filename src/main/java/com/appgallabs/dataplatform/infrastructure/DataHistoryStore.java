@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -30,6 +31,7 @@ public class DataHistoryStore {
     }
 
     private boolean exists(Tenant tenant, MongoClient mongoClient, JsonObject json){
+        JsonUtil.printStdOut(json);
         boolean exists = false;
 
         String principal = tenant.getPrincipal();
