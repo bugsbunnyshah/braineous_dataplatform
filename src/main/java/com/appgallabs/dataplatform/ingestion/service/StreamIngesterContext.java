@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StreamIngesterContext implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(StreamIngesterContext.class);
@@ -40,11 +42,14 @@ public class StreamIngesterContext implements Serializable {
 
     private ObjectGraphQueryService queryService;
 
+    private ExecutorService executorService;
+
 
     private StreamIngesterContext()
     {
         this.streamIngesterQueue = new StreamIngesterQueue();
         this.chainIds = new HashMap<>();
+        this.executorService = Executors.newFixedThreadPool(1000);
     }
 
     private void announce(){
@@ -100,10 +105,13 @@ public class StreamIngesterContext implements Serializable {
 
     public void ingestData(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject)
     {
-        Thread worker = new Thread(() -> {
+        /*Thread worker = new Thread(() -> {
             this.ingestOnThread(principal,entity,dataLakeId,chainId,jsonObject);
         });
-        worker.start();
+        worker.start();*/
+        executorService.execute(() -> {
+            this.ingestOnThread(principal,entity,dataLakeId,chainId,jsonObject);
+        });
     }
 
     private void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject){
