@@ -88,6 +88,7 @@ public class IngestionService implements Serializable {
             fetchAgent.setTenant(this.securityTokenContainer.getTenant());
             fetchAgent.setEntity(entity);
             fetchAgent.setMapperService(this.mapperService);
+            fetchAgent.setMongoDBJsonStore(this.mongoDBJsonStore);
             fetchAgent.startFetch();
         }
     }
@@ -98,6 +99,7 @@ public class IngestionService implements Serializable {
         pushAgent.setTenant(this.securityTokenContainer.getTenant());
         pushAgent.setEntity(entity);
         pushAgent.setMapperService(this.mapperService);
+        pushAgent.setMongoDBJsonStore(this.mongoDBJsonStore);
         pushAgent.receiveData(data);
     }
 }

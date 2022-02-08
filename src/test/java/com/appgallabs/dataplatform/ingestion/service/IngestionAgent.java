@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
@@ -21,6 +22,7 @@ public class IngestionAgent extends TimerTask implements Serializable,FetchAgent
     private MapperService mapperService;
     private Tenant tenant;
     private SecurityTokenContainer securityTokenContainer;
+    private MongoDBJsonStore mongoDBJsonStore;
 
     public IngestionAgent() {
     }
@@ -38,6 +40,11 @@ public class IngestionAgent extends TimerTask implements Serializable,FetchAgent
     @Override
     public void setMapperService(MapperService mapperService) {
         this.mapperService = mapperService;
+    }
+
+    @Override
+    public void setMongoDBJsonStore(MongoDBJsonStore mongoDBJsonStore) {
+        this.mongoDBJsonStore = mongoDBJsonStore;
     }
 
     public void receiveData(JsonArray data){
