@@ -552,4 +552,8 @@ public class MongoDBJsonStore implements Serializable
     public JsonArray readByEntity(Tenant tenant, String entity){
         return this.dataLakeStore.readByEntity(tenant,this.mongoClient,entity);
     }
+
+    public boolean entityExists(Tenant tenant, JsonObject entity){
+        return this.dataLakeStore.entityExists(tenant,this.mongoClient,entity);
+    }
 }

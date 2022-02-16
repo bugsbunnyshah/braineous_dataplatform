@@ -138,17 +138,19 @@ public class StreamIngesterContext implements Serializable {
             //logger.info("************PERSISTING-" + dataLakeId + "******************");
             //logger.info(data.toString());
             //logger.info("****************************************");
-            this.mongoDBJsonStore.storeIngestion(tenant, data);
-            this.chainIds.put(dataLakeId, chainId);
+            if(!this.mongoDBJsonStore.entityExists(tenant,data)) {
+                this.mongoDBJsonStore.storeIngestion(tenant, data);
+                this.chainIds.put(dataLakeId, chainId);
 
-            //Update the ObjectGraph service
-            Vertex object = this.queryService.saveObjectGraph(entity, jsonObject, null, false);
+                //Update the ObjectGraph service
+                Vertex object = this.queryService.saveObjectGraph(entity, jsonObject, null, false);
 
-            BackgroundProcessListener.getInstance().decreaseThreshold(entity,dataLakeId,data);
+                BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
 
-            //TODO: Update DataHistory
-            //data.remove("data");
-            //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
+                //TODO: Update DataHistory
+                //data.remove("data");
+                //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
+            }
         }
         catch(Exception e){
             logger.error(e.getMessage(),e);

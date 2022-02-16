@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,5 +39,23 @@ public class DataLakeStore {
         }
 
         return entities;
+    }
+
+    public boolean entityExists(Tenant tenant, MongoClient mongoClient, JsonObject json){
+        boolean exists = false;
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+
+        MongoCollection<Document> collection = database.getCollection("datalake");
+
+        String objectHash = json.get("objectHash").getAsString();
+        String queryJson = "{\"objectHash\":\""+objectHash+"\"}";
+        Bson bson = Document.parse(queryJson);
+        FindIterable<Document> iterable = collection.find(bson);
+        exists = iterable.iterator().hasNext();
+
+        return exists;
     }
 }
