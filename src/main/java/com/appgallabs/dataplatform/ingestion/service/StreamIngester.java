@@ -128,7 +128,6 @@ public class StreamIngester implements Serializable{
                         stringJavaRDD.foreach(s -> {
                                     try {
                                         JsonObject streamObject = JsonParser.parseString(s).getAsJsonObject();
-                                        System.out.println("*****CALL*******");
                                         String dataLakeId = streamObject.get("dataLakeId").getAsString();
                                         String principal = streamObject.get("principal").getAsString();
                                         String chainId = streamObject.get("chainId").getAsString();
@@ -279,8 +278,8 @@ public class StreamIngester implements Serializable{
             try {
                 System.out.println("*******QUEUE_PROCESSOR********");
                 System.out.println("DataLakeId: "+dataLakeId);
-                System.out.println(this.queue);
-                System.out.println(StreamIngesterContext.getStreamIngesterContext().activeDataLakeIds());
+                //System.out.println(this.queue);
+                //System.out.println(StreamIngesterContext.getStreamIngesterContext().activeDataLakeIds());
                 System.out.println("*******************************");
                 while (!this.queue.isEmpty()) {
                     StreamObject streamObject = this.queue.poll();
@@ -288,7 +287,7 @@ public class StreamIngester implements Serializable{
                     if(streamObject != null) {
                         JsonObject jsonObject = streamObject.toJson();
                         if(this.streamReceiver.isStarted()) {
-                            System.out.println("SUBMITTING_TO_SPARK");
+                            //System.out.println("SUBMITTING_TO_SPARK");
                             this.streamReceiver.store(jsonObject.toString());
                         }
                     }
