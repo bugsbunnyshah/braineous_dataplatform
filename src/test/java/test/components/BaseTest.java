@@ -38,7 +38,7 @@ public abstract class BaseTest
             if(this.securityTokenContainer != null && this.securityTokenContainer.getSecurityToken()!= null) {
                 String principal = this.securityTokenContainer.getTenant().getPrincipal();
                 String databaseName = principal + "_" + "aiplatform";
-                //this.mongoDBJsonStore.getMongoClient().getDatabase(databaseName).drop();
+                this.mongoDBJsonStore.getMongoClient().getDatabase(databaseName).drop();
             }
         }
         catch (Exception e)

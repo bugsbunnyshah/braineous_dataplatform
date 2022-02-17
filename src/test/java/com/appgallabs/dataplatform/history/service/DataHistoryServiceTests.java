@@ -38,7 +38,7 @@ public class DataHistoryServiceTests extends BaseTest {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    @Test
+    //@Test
     public void getDataSnapShot() throws Exception {
         //ingestion0
         OffsetDateTime ingestion0Time = OffsetDateTime.now(ZoneOffset.UTC);
@@ -93,7 +93,7 @@ public class DataHistoryServiceTests extends BaseTest {
         assertEquals(10,snapShot.size());
     }
 
-    @Test
+    //@Test
     public void getDataSnapShotRepeatingData() throws Exception {
         Map<Integer,String> oids = new HashMap<>();
         oids.put(0,UUID.randomUUID().toString());
