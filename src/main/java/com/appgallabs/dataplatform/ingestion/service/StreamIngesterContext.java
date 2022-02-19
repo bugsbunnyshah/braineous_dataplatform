@@ -17,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -122,9 +119,10 @@ public class StreamIngesterContext implements Serializable {
             securityToken.setPrincipal(principal);
             this.securityTokenContainer.setSecurityToken(securityToken);
 
-
             OffsetDateTime ingestionTime = OffsetDateTime.now(ZoneOffset.UTC);
             String objectHash = JsonUtil.getJsonHash(jsonObject);
+            jsonObject.addProperty("objectHash",objectHash);
+
             JsonObject data = new JsonObject();
             data.addProperty("braineous_datalakeid", dataLakeId);
             data.addProperty("tenant", tenant.getPrincipal());
