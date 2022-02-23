@@ -58,4 +58,26 @@ public class DataLakeStore {
 
         return exists;
     }
+
+    public JsonObject readEntity(Tenant tenant, MongoClient mongoClient,String objectHash) {
+        JsonObject result = null;
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+
+        MongoCollection<Document> collection = database.getCollection("datalake");
+
+        String queryJson = "{\"objectHash\":\"" + objectHash + "\"}";
+        Bson bson = Document.parse(queryJson);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        if (cursor.hasNext()) {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+            result = JsonParser.parseString(documentJson).getAsJsonObject();
+        }
+
+        return result;
+    }
 }

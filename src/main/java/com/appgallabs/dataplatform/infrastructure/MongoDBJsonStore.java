@@ -556,4 +556,8 @@ public class MongoDBJsonStore implements Serializable
     public boolean entityExists(Tenant tenant, JsonObject entity){
         return this.dataLakeStore.entityExists(tenant,this.mongoClient,entity);
     }
+
+    public JsonObject readEntity(Tenant tenant,String objectHash){
+        return this.dataLakeStore.readEntity(tenant, this.mongoClient, objectHash);
+    }
 }
