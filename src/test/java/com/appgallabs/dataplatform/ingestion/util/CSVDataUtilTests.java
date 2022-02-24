@@ -99,6 +99,17 @@ public class CSVDataUtilTests {
         System.out.println(csv);
     }
 
+    @Test
+    public void convertJsonToDataSet() throws Exception{
+        String dataset = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("aviation/flights.json"),
+                StandardCharsets.UTF_8);
+        JsonObject json = JsonParser.parseString(dataset).getAsJsonObject();
+        JsonArray dataArray = json.get("data").getAsJsonArray();
+        Set<String> csv = CSVDataUtil.convertJsonToDataSet("flight",dataArray);
+        System.out.println(csv);
+    }
+
     private JsonObject objectField(JsonArray l1,JsonArray l2){
         JsonObject json = new JsonObject();
         json.addProperty("o1","123");
