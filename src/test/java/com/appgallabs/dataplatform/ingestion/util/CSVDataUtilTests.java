@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -107,6 +109,33 @@ public class CSVDataUtilTests {
         JsonObject json = JsonParser.parseString(dataset).getAsJsonObject();
         JsonArray dataArray = json.get("data").getAsJsonArray();
         Set<String> csv = CSVDataUtil.convertJsonToDataSet("flight",dataArray);
+        System.out.println(csv);
+    }
+
+    @Test
+    public void convertJsonToDataSetColumnFilter() throws Exception{
+        String dataset = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("aviation/flights.json"),
+                StandardCharsets.UTF_8);
+        JsonObject json = JsonParser.parseString(dataset).getAsJsonObject();
+        JsonArray dataArray = json.get("data").getAsJsonArray();
+
+        String[] columns = {"flight_status","departure.scheduled"};
+        Set<String> csv = CSVDataUtil.convertJsonToDataSet("flight", columns,dataArray);
+        System.out.println(csv);
+    }
+
+    @Test
+    public void convertJsonToDataSetColumnFilterWithNormalizer() throws Exception{
+        String dataset = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("aviation/flights.json"),
+                StandardCharsets.UTF_8);
+        JsonObject json = JsonParser.parseString(dataset).getAsJsonObject();
+        JsonArray dataArray = json.get("data").getAsJsonArray();
+
+        String[] columns = {"flight_status","departure.scheduled"};
+        String[] skipTransform = {"flight_status"};
+        Set<String> csv = CSVDataUtil.convertJsonToDataSet("flight", columns,skipTransform,dataArray);
         System.out.println(csv);
     }
 

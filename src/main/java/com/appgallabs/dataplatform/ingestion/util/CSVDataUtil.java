@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -87,6 +88,94 @@ public class CSVDataUtil {
         jsonObject.addProperty("columns", columnCount);
         jsonObject.addProperty("data", csvBuilder.toString());
         return jsonObject;
+    }
+
+    public static Set<String> convertJsonToCsv(String owner,JsonArray jsonArray){
+        Set<String> csvs = new LinkedHashSet<>();
+
+        StringBuilder csvBuilder = new StringBuilder();
+        if(jsonArray == null || jsonArray.size()==0){
+            return csvs;
+        }
+
+        Map<String, Object> objectMap = JsonFlattener.flattenAsMap(jsonArray.toString());
+        Set<String> objectColumns = new LinkedHashSet<>();
+        Set<String> arrayFields = new LinkedHashSet<>();
+        for(String col:objectMap.keySet()){
+            int eraseIndex = col.indexOf("]") + 2;
+            //String objColumn = col.substring(eraseIndex);
+            String objColumn=null;
+            try
+            {
+                objColumn = col.substring(eraseIndex);
+            }
+            catch (Exception e){
+                //This is an array_index
+                objColumn = col;
+            }
+
+            if(!objColumn.contains("[")) {
+                objectColumns.add(objColumn);
+            }else{
+                arrayFields.add(col);
+            }
+        }
+        csvBuilder.append(CSVDataUtil.getHeader(objectColumns)+"\n");
+
+        List<Row> rows = new ArrayList<>();
+        Set<Map.Entry<String,Object>> entries = objectMap.entrySet();
+        int currentRowIndex = -1;
+        Row currentRow = null;
+        for (Map.Entry<String,Object> entry:entries){
+            String field = entry.getKey();
+            Object value = entry.getValue();
+
+            int start = field.indexOf("[");
+            int end = field.indexOf("]");
+            int rowIndex = Integer.parseInt(field.substring(start+1,end));
+            if(rowIndex != currentRowIndex){
+                //Create a new Row
+                Row row = new Row();
+                rows.add(row);
+                currentRow = row;
+                currentRowIndex++;
+            }
+
+            //Process the current Row
+            if(field == null || field.trim().length()==0 || !field.contains(".")){
+                continue;
+            }
+            field = field.substring(end + 2);
+
+            //String[] tokens = field.split("\\.");
+            if(objectColumns.contains(field)) {
+                currentRow.addColumn(field, value);
+            }
+        }
+
+        for(Row row: rows){
+            String csv = row.toCsv();
+            if(csv != null && csv.trim().length()!=0) {
+                csvBuilder.append(csv + "\n");
+            }
+        }
+        csvs.add(csvBuilder.toString());
+
+        Set<String> arrayCsvs = processArrays(jsonArray,objectMap,arrayFields);
+        csvs.addAll(arrayCsvs);
+
+
+        Set<String> finalCsvs = new LinkedHashSet<>();
+        Iterator<String> iterator = csvs.iterator();
+        while(iterator.hasNext()){
+            String data = iterator.next();
+            if(data == null || data.trim().length()==0){
+                continue;
+            }
+            finalCsvs.add(data);
+        }
+
+        return finalCsvs;
     }
 
     public static Set<String> convertJsonToDataSet(String owner,JsonArray jsonArray){
@@ -178,8 +267,12 @@ public class CSVDataUtil {
         return finalCsvs;
     }
 
-    public static Set<String> convertJsonToCsv(String owner,JsonArray jsonArray){
+    public static Set<String> convertJsonToDataSet(String owner, String[] columns,JsonArray jsonArray){
         Set<String> csvs = new LinkedHashSet<>();
+        Set<String> columnsToInclude = new LinkedHashSet<>();
+        for(String col:columns){
+            columnsToInclude.add(col);
+        }
 
         StringBuilder csvBuilder = new StringBuilder();
         if(jsonArray == null || jsonArray.size()==0){
@@ -203,7 +296,9 @@ public class CSVDataUtil {
             }
 
             if(!objColumn.contains("[")) {
-                objectColumns.add(objColumn);
+                if(columnsToInclude.contains(objColumn)) {
+                    objectColumns.add(objColumn);
+                }
             }else{
                 arrayFields.add(col);
             }
@@ -217,6 +312,110 @@ public class CSVDataUtil {
         for (Map.Entry<String,Object> entry:entries){
             String field = entry.getKey();
             Object value = entry.getValue();
+            value = CSVDataUtil.getDataSetColumnValue(value);
+
+            int start = field.indexOf("[");
+            int end = field.indexOf("]");
+            int rowIndex = Integer.parseInt(field.substring(start+1,end));
+            if(rowIndex != currentRowIndex){
+                //Create a new Row
+                Row row = new Row();
+                rows.add(row);
+                currentRow = row;
+                currentRowIndex++;
+            }
+
+            //Process the current Row
+            if(field == null || field.trim().length()==0 || !field.contains(".")){
+                continue;
+            }
+            field = field.substring(end + 2);
+
+            //String[] tokens = field.split("\\.");
+            if(objectColumns.contains(field)) {
+                currentRow.addColumn(field, value);
+            }
+        }
+
+        for(Row row: rows){
+            String csv = row.toCsv();
+            if(csv != null && csv.trim().length()!=0) {
+                csvBuilder.append(csv + "\n");
+            }
+        }
+        csvs.add(csvBuilder.toString());
+
+        Set<String> arrayCsvs = processArrays(jsonArray,objectMap,arrayFields);
+        csvs.addAll(arrayCsvs);
+
+
+        Set<String> finalCsvs = new LinkedHashSet<>();
+        Iterator<String> iterator = csvs.iterator();
+        while(iterator.hasNext()){
+            String data = iterator.next();
+            if(data == null || data.trim().length()==0){
+                continue;
+            }
+            finalCsvs.add(data);
+        }
+
+        return finalCsvs;
+    }
+
+    public static Set<String> convertJsonToDataSet(String owner, String[] columns, String[] skipTransform,JsonArray jsonArray){
+        Set<String> csvs = new LinkedHashSet<>();
+        Set<String> columnsToInclude = new LinkedHashSet<>();
+        for(String col:columns){
+            columnsToInclude.add(col);
+        }
+        Set<String> columnsToSkipTransform = new LinkedHashSet<>();
+        for(String col:skipTransform){
+            columnsToSkipTransform.add(col);
+        }
+
+        StringBuilder csvBuilder = new StringBuilder();
+        if(jsonArray == null || jsonArray.size()==0){
+            return csvs;
+        }
+
+        Map<String, Object> objectMap = JsonFlattener.flattenAsMap(jsonArray.toString());
+        Set<String> objectColumns = new LinkedHashSet<>();
+        Set<String> arrayFields = new LinkedHashSet<>();
+        for(String col:objectMap.keySet()){
+            int eraseIndex = col.indexOf("]") + 2;
+            //String objColumn = col.substring(eraseIndex);
+            String objColumn=null;
+            try
+            {
+                objColumn = col.substring(eraseIndex);
+            }
+            catch (Exception e){
+                //This is an array_index
+                objColumn = col;
+            }
+
+            if(!objColumn.contains("[")) {
+                if(columnsToInclude.contains(objColumn)) {
+                    objectColumns.add(objColumn);
+                }
+            }else{
+                arrayFields.add(col);
+            }
+        }
+        csvBuilder.append(CSVDataUtil.getHeader(objectColumns)+"\n");
+
+        List<Row> rows = new ArrayList<>();
+        Set<Map.Entry<String,Object>> entries = objectMap.entrySet();
+        int currentRowIndex = -1;
+        Row currentRow = null;
+        for (Map.Entry<String,Object> entry:entries){
+            String field = entry.getKey();
+            Object value = entry.getValue();
+            int indexOf = field.indexOf("]");
+            String lookup = field.substring(indexOf+2);
+            if(!columnsToSkipTransform.contains(lookup)) {
+                value = CSVDataUtil.getDataSetColumnValue(value);
+            }
 
             int start = field.indexOf("[");
             int end = field.indexOf("]");
@@ -268,12 +467,18 @@ public class CSVDataUtil {
 
     private static String getDataSetColumnValue(Object object){
         if(object == null){
-            return "NaN";
+            double value = "NaN".hashCode();
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(2000);
+            return df.format(value);
         }
         try {
             JsonObject json = new JsonObject();
             json.addProperty("objectHash", object.toString());
-            return JsonUtil.getJsonHash(json);
+            double value = JsonUtil.getJsonHash(json).hashCode();
+            DecimalFormat df = new DecimalFormat("#");
+            df.setMaximumFractionDigits(2000);
+            return df.format(value);
         }
         catch(Exception e){
             throw new RuntimeException(e);
