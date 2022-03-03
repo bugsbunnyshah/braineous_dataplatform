@@ -21,7 +21,7 @@ public class MapperServiceSimpleSourceTests extends IngesterTest{
     @Inject
     private MapperService mapperService;
 
-    @Test
+    //@Test
     public void testSimpleSource() throws Exception
     {
         String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
