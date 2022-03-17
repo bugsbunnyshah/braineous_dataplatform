@@ -3,8 +3,7 @@ package com.appgallabs.dataplatform.ingestion.endpoint;
 import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
-import com.appgallabs.dataplatform.query.GraphData;
-import com.appgallabs.dataplatform.query.LocalGraphData;
+
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import test.components.BaseTest;
 import com.google.gson.JsonObject;
@@ -12,8 +11,7 @@ import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.apache.commons.io.IOUtils;
-import org.apache.tinkerpop.gremlin.sparql.process.traversal.dsl.sparql.SparqlTraversalSource;
-import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -45,10 +43,6 @@ public class DataMapperTests extends BaseTest
     @BeforeEach
     public void setUp()
     {
-        TinkerGraph graph = TinkerGraph.open();
-        SparqlTraversalSource server = new SparqlTraversalSource(graph);
-        GraphData graphData = new LocalGraphData(server);
-        this.objectGraphQueryService.setGraphData(graphData);
     }
 
     @Test
