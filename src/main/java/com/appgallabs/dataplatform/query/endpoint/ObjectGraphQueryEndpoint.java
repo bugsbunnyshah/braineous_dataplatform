@@ -46,7 +46,8 @@ public class ObjectGraphQueryEndpoint
         }
     }
 
-    @POST
+    //TODO:FIXME
+    /*@POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("navigate")
     public Response queryByNavigation(@RequestBody String requestJson)
@@ -57,8 +58,9 @@ public class ObjectGraphQueryEndpoint
             String entity = json.get("entity").getAsString();
             String relationship = json.get("relationship").getAsString();
             JsonObject criteria = json.get("criteria").getAsJsonObject();
-            JsonArray array = this.objectGraphQueryService.navigateByCriteria(entity,relationship,
-                    criteria);
+            //JsonArray array = this.objectGraphQueryService.navigateByCriteria(entity,relationship,
+            //        criteria);
+            JsonArray array = new JsonArray();
             return Response.ok(array.toString()).build();
         }
         catch(Exception e)
@@ -68,5 +70,5 @@ public class ObjectGraphQueryEndpoint
             error.addProperty("exception", e.getMessage());
             return Response.status(500).entity(error.toString()).build();
         }
-    }
+    }*/
 }
