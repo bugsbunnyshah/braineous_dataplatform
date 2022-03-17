@@ -1,13 +1,11 @@
 package com.appgallabs.dataplatform.query;
 
-import com.appgallabs.dataplatform.ingestion.service.MapperService;
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-
 import org.neo4j.driver.*;
+import static org.neo4j.driver.Values.parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,20 +15,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.*;
 
-import static org.neo4j.driver.Values.parameters;
-
 @ApplicationScoped
 public class ObjectGraphQueryService {
     private static Logger logger = LoggerFactory.getLogger(ObjectGraphQueryService.class);
 
     @Inject
-    private MapperService mapperService;
-
-    @Inject
     private GraphQueryGenerator graphQueryGenerator;
-
-    @Inject
-    private  GraphQueryProcessor graphQueryProcessor;
 
     private Driver driver;
 
@@ -45,33 +35,49 @@ public class ObjectGraphQueryService {
 
     @PreDestroy
     public void onStop(){
-        try {
-            this.driver.close();
-        }finally {
-        }
+        this.driver.close();
     }
 
     public JsonArray queryByCriteria(String entity, JsonObject criteria)
-    {
-        JsonArray response = new JsonArray();
-        return response;
-    }
-
-    public JsonArray navigateByCriteria(String entity, String relationship, JsonObject criteria) throws Exception
     {
         JsonArray response = new JsonArray();
         try ( Session session = driver.session() )
         {
             List<Record> resultData = session.writeTransaction(tx ->
             {
-                String query = "MATCH (a:airline_network_airport)-[r:foobar]->(f:airline_network_flight)\n" +
-                        "WHERE a.name='Dallas'\n" +
-                        "RETURN a,f";
+                String entityLabel = "n1";
+                String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
+                System.out.println(whereClause);
+                String query = "MATCH ("+entityLabel+":"+entity+")\n" +
+                        //"WHERE a.name='Dallas'\n" +
+                        "RETURN "+entityLabel;
                 System.out.println(query);
                 Result result = tx.run( query);
                 return result.list();
             } );
             System.out.println(resultData);
+        }
+        return response;
+    }
+
+    public JsonArray navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria) throws Exception
+    {
+        JsonArray response = new JsonArray();
+        try ( Session session = driver.session() )
+        {
+            List<Record> resultData = session.writeTransaction(tx ->
+            {
+                String leftLabel = "n1";
+                String rightLabel = "n2";
+                String whereClause = this.graphQueryGenerator.generateWhereClause(leftLabel,criteria);
+                System.out.println(whereClause);
+                String query = "MATCH ("+leftLabel+":"+leftEntity+")-[r:"+relationship+"]->("+rightLabel+":"+rightEntity+")\n" +
+                        //"WHERE a.name='Dallas'\n" +
+                        "RETURN "+leftLabel+","+rightLabel;
+                System.out.println(query);
+                Result result = tx.run( query);
+                return result.list();
+            } );
         }
         return response;
     }
@@ -106,7 +112,6 @@ public class ObjectGraphQueryService {
                 Result result = tx.run(getNodesQuery);
                 return result.list();
             } );
-            System.out.println(resultData);
         }
     }
 }
