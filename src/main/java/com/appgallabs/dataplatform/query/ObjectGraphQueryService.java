@@ -82,8 +82,10 @@ public class ObjectGraphQueryService {
         return response;
     }
 
-    public void saveObjectGraph(String label,String entity,JsonObject json)
+    public void saveObjectGraph(String entity,JsonObject json)
     {
+        String label = "n1";
+
         //TODO:FIME: support all data types
         String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
         try ( Session session = driver.session() )
@@ -97,19 +99,21 @@ public class ObjectGraphQueryService {
         }
     }
 
-    public void establishRelationship(String leftEntity,String rightEntity)
+    public void establishRelationship(String leftEntity,String rightEntity, String relationship)
     {
-        String getNodesQuery = "MATCH\n" +
-                "  (a:airline_network_airport),\n" +
-                "  (f:airline_network_flight)\n" +
-                "CREATE (a)-[r:foobar]->(f)\n" +
+        String leftLabel = "n1";
+        String rightLabel = "n2";
+        String createRelationship = "MATCH\n" +
+                "  ("+leftLabel+":"+leftEntity+"),\n" +
+                "  ("+rightLabel+":"+rightEntity+")\n" +
+                "CREATE ("+leftLabel+")-[r:"+relationship+"]->("+rightLabel+")\n" +
                 "RETURN type(r)";
 
         try ( Session session = driver.session() )
         {
             List<Record> resultData = session.writeTransaction(tx ->
             {
-                Result result = tx.run(getNodesQuery);
+                Result result = tx.run(createRelationship);
                 return result.list();
             } );
         }
