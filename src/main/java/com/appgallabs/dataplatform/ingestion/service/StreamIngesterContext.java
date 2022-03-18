@@ -111,7 +111,7 @@ public class StreamIngesterContext implements Serializable {
         });
     }
 
-    private void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject){
+    void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject){
         try {
             Tenant tenant = new Tenant();
             tenant.setPrincipal(principal);
