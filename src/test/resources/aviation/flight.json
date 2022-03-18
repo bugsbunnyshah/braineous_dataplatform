@@ -2,7 +2,7 @@
   "flight_date": "2021-01-28",
   "flight_status": "scheduled",
   "departure": {
-    "airport": "Dallas International",
+    "airport": "Auckland International",
     "timezone": "Pacific\/Auckland",
     "iata": "AKL",
     "icao": "NZAA",
