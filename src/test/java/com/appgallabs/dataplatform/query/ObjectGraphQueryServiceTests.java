@@ -58,49 +58,35 @@ public class ObjectGraphQueryServiceTests {
         //assertTrue(array.size()> 0);
     }
 
-    //@Test
+    @Test
     public void navigateByCriteria() throws Exception
     {
-        JsonObject ausJson = new JsonObject();
-        ausJson.addProperty("code","aus");
-        ausJson.addProperty("description", "AUS");
-        ausJson.addProperty("size", "100");
-
-        JsonObject laxJson = new JsonObject();
-        laxJson.addProperty("code","lax");
-        laxJson.addProperty("description", "LAX");
-        laxJson.addProperty("size", "150");
+        JsonObject departure = new JsonObject();
+        departure.addProperty("airport", "Indira Gandhi International");
+        JsonObject arrival = new JsonObject();
+        arrival.addProperty("arrival", "Auckland International");
 
         JsonObject flight = new JsonObject();
         flight.addProperty("flightId","123");
         flight.addProperty("description", "SouthWest");
-        flight.add("departure", ausJson);
-        flight.add("arrival", laxJson);
-        JsonUtil.print(flight);
+        flight.add("departure", departure);
+        flight.add("arrival", arrival);
 
-        JsonObject airport = new JsonObject();
-        airport.addProperty("name", "Dallas");
+        String entity = "two_test_callback_flight";
+        this.service.saveObjectGraph(entity,flight);
 
-        String left = "airline_network_airport";
-        String right = "airline_network_flight";
-        String relationship = "connection";
-        this.service.saveObjectGraph(left,airport);
-        this.service.saveObjectGraph(right,flight);
-        this.service.establishRelationship(left,right, relationship);
 
+        /*String relationship = "test0_departure_0";
+        String left = "test0_airport";
         JsonObject departureCriteria = new JsonObject();
         departureCriteria.addProperty("code","aus");
         JsonArray array = this.service.navigateByCriteria(left,right,
                 relationship,departureCriteria);
-        //JsonUtil.print(array);
-        //assertEquals(1,array.size());
 
         JsonObject arrivalCriteria = new JsonObject();
         arrivalCriteria.addProperty("code","lax");
         array = this.service.navigateByCriteria(left,right,
-                relationship,arrivalCriteria);
-        //JsonUtil.print(array);
-        //assertEquals(1,array.size());
+                relationship,arrivalCriteria);*/
     }
 
     /*@Test

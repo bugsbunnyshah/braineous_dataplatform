@@ -38,7 +38,7 @@ public class StreamIngesterContextTests extends BaseTest {
         streamIngesterContext.setMongoDBJsonStore(this.mongoDBJsonStore);
 
         Tenant tenant = this.securityTokenContainer.getTenant();
-        String entity = "airline_network_flight";
+        String entity = "test0_flight";
         String principal = tenant.getPrincipal();
         String dataLakeId = UUID.randomUUID().toString();
         String chainId = "/" + tenant.getPrincipal() + "/" + dataLakeId;

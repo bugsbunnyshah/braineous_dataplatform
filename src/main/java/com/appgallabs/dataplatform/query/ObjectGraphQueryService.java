@@ -85,6 +85,25 @@ public class ObjectGraphQueryService {
     public void saveObjectGraph(String entity,JsonObject json)
     {
         String label = "n1";
+        //TODO:FIME: support all data types
+        String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
+        try ( Session session = driver.session() )
+        {
+            List<Record> resultData = session.writeTransaction(tx ->
+            {
+                Result result = tx.run(query,parameters( "json", JsonFlattener.flattenAsMap(json.toString())
+                ));
+                return result.list();
+            } );
+        }
+
+        EntityCallback callback = new TestCallback();
+        callback.call(this,entity,json);
+    }
+
+    public void saveObjectRelationship(String entity,JsonObject json)
+    {
+        String label = "n1";
 
         //TODO:FIME: support all data types
         String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
@@ -108,7 +127,7 @@ public class ObjectGraphQueryService {
                 "  ("+rightLabel+":"+rightEntity+")\n" +
                 "CREATE ("+leftLabel+")-[r:"+relationship+"]->("+rightLabel+")\n" +
                 "RETURN type(r)";
-
+        System.out.println(createRelationship);
         try ( Session session = driver.session() )
         {
             List<Record> resultData = session.writeTransaction(tx ->
