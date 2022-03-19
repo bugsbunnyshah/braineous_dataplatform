@@ -2,11 +2,13 @@ package com.appgallabs.dataplatform.query;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
+
 import org.apache.commons.io.IOUtils;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 public class ObjectGraphQueryServiceTests {
@@ -52,10 +53,6 @@ public class ObjectGraphQueryServiceTests {
 
         JsonObject criteria = new JsonObject();
         criteria.addProperty("size", 100);
-
-        JsonArray array = service.queryByCriteria(entity, criteria);
-        //System.out.println(array);
-        //assertTrue(array.size()> 0);
     }
 
     @Test
@@ -72,41 +69,27 @@ public class ObjectGraphQueryServiceTests {
         flight.add("departure", departure);
         flight.add("arrival", arrival);
 
-        String entity = "two_test_callback_flight";
+        String entity = "flight";
         this.service.saveObjectGraph(entity,flight);
-
-
-        /*String relationship = "test0_departure_0";
-        String left = "test0_airport";
-        JsonObject departureCriteria = new JsonObject();
-        departureCriteria.addProperty("code","aus");
-        JsonArray array = this.service.navigateByCriteria(left,right,
-                relationship,departureCriteria);
-
-        JsonObject arrivalCriteria = new JsonObject();
-        arrivalCriteria.addProperty("code","lax");
-        array = this.service.navigateByCriteria(left,right,
-                relationship,arrivalCriteria);*/
     }
 
-    /*@Test
-    public void navigateByCriteriaRealData() throws Exception{
-        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                "aviation/flights_small.json"),
-                StandardCharsets.UTF_8);
-        JsonObject json = JsonParser.parseString(sourceData).getAsJsonObject();
-        JsonArray array = json.get("data").getAsJsonArray();
+    @Test
+    public void testCallbackRegistry() throws Exception{
+        String configJsonString = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
 
-        for(int i=0; i<array.size();i++){
-            JsonObject cour = array.get(i).getAsJsonObject();
-            //this.service.saveObjectGraph("flight",cour,null,false);
+        Map<String,EntityCallback> callbackMap = new HashMap<>();
+        Iterator<JsonElement> iterator = configJson.iterator();
+        while(iterator.hasNext()){
+            JsonObject entityConfigJson = iterator.next().getAsJsonObject();
+            String entity = entityConfigJson.get("entity").getAsString();
+            String callback = entityConfigJson.get("callback").getAsString();
+            EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().loadClass(callback).getDeclaredConstructor().newInstance();
+            callbackMap.put(entity,object);
         }
-
-        JsonObject departureCriteria = new JsonObject();
-        departureCriteria.addProperty("airport","Auckland International");
-        array = this.service.navigateByCriteria("flight",
-                "departure",departureCriteria);
-        JsonUtil.print(array);
-        assertEquals(5, array.size());
-    }*/
+        System.out.println(callbackMap);
+    }
 }

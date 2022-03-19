@@ -1,0 +1,6 @@
+[
+  {
+    "entity": "flight",
+    "callback": "com.appgallabs.dataplatform.query.TestCallback"
+  }
+]
