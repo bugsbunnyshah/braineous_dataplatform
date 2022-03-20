@@ -79,11 +79,6 @@ public class StreamIngesterContext implements Serializable {
 
     public void addStreamObject(StreamObject streamObject)
     {
-        //System.out.println("********ADDING_STREAM_OBJECT_FOR_STORAGE*******");
-        //System.out.println(streamObject.getData());
-        //System.out.println("************************************************");
-
-
         this.streamIngesterQueue.add(streamObject);
     }
 
@@ -102,10 +97,6 @@ public class StreamIngesterContext implements Serializable {
 
     public void ingestData(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject)
     {
-        /*Thread worker = new Thread(() -> {
-            this.ingestOnThread(principal,entity,dataLakeId,chainId,jsonObject);
-        });
-        worker.start();*/
         executorService.execute(() -> {
             this.ingestOnThread(principal,entity,dataLakeId,chainId,jsonObject);
         });
@@ -132,10 +123,6 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("dataLakeId", dataLakeId);
             data.addProperty("timestamp", ingestionTime.toEpochSecond());
             data.addProperty("objectHash", objectHash);
-            //System.out.println(objectHash);
-            logger.info("************PERSISTING-" + dataLakeId + "******************");
-            logger.info(data.toString());
-            logger.info("****************************************");
             if(!this.mongoDBJsonStore.entityExists(tenant,data)) {
                 this.mongoDBJsonStore.storeIngestion(tenant, data);
                 this.chainIds.put(dataLakeId, chainId);

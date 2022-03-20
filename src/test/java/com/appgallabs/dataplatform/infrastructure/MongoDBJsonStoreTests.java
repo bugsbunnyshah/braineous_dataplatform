@@ -136,7 +136,6 @@ public class MongoDBJsonStoreTests extends BaseTest {
     public void readByEntity() throws Exception{
         String entity = "flight";
         JsonArray data = this.mongoDBJsonStore.readByEntity(this.securityTokenContainer.getTenant(),entity);
-        JsonUtil.printStdOut(data);
     }
 
     @Test
@@ -148,7 +147,6 @@ public class MongoDBJsonStoreTests extends BaseTest {
         Tenant tenant = this.securityTokenContainer.getTenant();
         JsonObject data = this.mongoDBJsonStore.readEntity(tenant,objectHash);
         assertNotNull(data);
-        JsonUtil.printStdOut(data);
         assertEquals(objectHash,data.get("objectHash").getAsString());
     }
 }

@@ -276,11 +276,6 @@ public class StreamIngester implements Serializable{
         @Override
         public void run() {
             try {
-                System.out.println("*******QUEUE_PROCESSOR********");
-                System.out.println("DataLakeId: "+dataLakeId);
-                //System.out.println(this.queue);
-                //System.out.println(StreamIngesterContext.getStreamIngesterContext().activeDataLakeIds());
-                System.out.println("*******************************");
                 while (!this.queue.isEmpty()) {
                     StreamObject streamObject = this.queue.poll();
                     //JsonUtil.print(streamObject.toJson());

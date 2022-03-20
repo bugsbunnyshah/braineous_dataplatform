@@ -20,6 +20,5 @@ public class DataLakeEndpointTests {
         String restUrl = "/data/lake/?entity=flight";
         Response response = given().get(restUrl).andReturn();
         JsonArray flightIngestion = JsonParser.parseString(response.body().asString()).getAsJsonArray();
-        JsonUtil.printStdOut(flightIngestion);
     }
 }

@@ -127,6 +127,8 @@ public class ObjectGraphQueryService {
         }
 
         EntityCallback callback = this.callbackMap.get(entity);
+        System.out.println("******");
+        System.out.println(callback);
         callback.call(this,entity,json);
     }
 

@@ -31,7 +31,6 @@ public class DataHistoryStore {
     }
 
     private boolean exists(Tenant tenant, MongoClient mongoClient, JsonObject json){
-        JsonUtil.printStdOut(json);
         boolean exists = false;
 
         String principal = tenant.getPrincipal();
