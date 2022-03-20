@@ -127,8 +127,6 @@ public class ObjectGraphQueryService {
         }
 
         EntityCallback callback = this.callbackMap.get(entity);
-        System.out.println("******");
-        System.out.println(callback);
         callback.call(this,entity,json);
     }
 
@@ -158,7 +156,6 @@ public class ObjectGraphQueryService {
                 "  ("+rightLabel+":"+rightEntity+")\n" +
                 "CREATE ("+leftLabel+")-[r:"+relationship+"]->("+rightLabel+")\n" +
                 "RETURN type(r)";
-        System.out.println(createRelationship);
         try ( Session session = driver.session() )
         {
             List<Record> resultData = session.writeTransaction(tx ->
