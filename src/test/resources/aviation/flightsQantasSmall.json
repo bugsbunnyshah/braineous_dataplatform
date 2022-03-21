@@ -1,0 +1,53 @@
+{
+  "flight_date": "2022-03-13",
+  "flight_status": "active",
+  "departure": {
+    "airport": "Wellington International",
+    "timezone": "Pacific/Auckland",
+    "iata": "WLG",
+    "icao": "NZWN",
+    "terminal": null,
+    "gate": "17",
+    "delay": "6",
+    "scheduled": "2022-03-13T10:55:00+00:00",
+    "estimated": "2022-03-13T10:55:00+00:00",
+    "actual": "2022-03-13T11:01:00+00:00",
+    "estimated_runway": "2022-03-13T11:01:00+00:00",
+    "actual_runway": "2022-03-13T11:01:00+00:00"
+  },
+  "arrival": {
+    "airport": "Queenstown",
+    "timezone": "Pacific/Auckland",
+    "iata": "ZQN",
+    "icao": "NZQN",
+    "terminal": null,
+    "gate": null,
+    "baggage": null,
+    "delay": null,
+    "scheduled": "2022-03-13T12:20:00+00:00",
+    "estimated": "2022-03-13T12:20:00+00:00",
+    "actual": null,
+    "estimated_runway": null,
+    "actual_runway": null
+  },
+  "airline": {
+    "name": "Qantas",
+    "iata": "QF",
+    "icao": "QFA"
+  },
+  "flight": {
+    "number": "8611",
+    "iata": "QF8611",
+    "icao": "QFA8611",
+    "codeshared": {
+      "airline_name": "air new zealand",
+      "airline_iata": "nz",
+      "airline_icao": "anz",
+      "flight_number": "603",
+      "flight_iata": "nz603",
+      "flight_icao": "anz603"
+    }
+  },
+  "aircraft": null,
+  "live": null
+}

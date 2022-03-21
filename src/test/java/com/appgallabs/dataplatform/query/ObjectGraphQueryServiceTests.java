@@ -92,4 +92,18 @@ public class ObjectGraphQueryServiceTests {
         }
         System.out.println(callbackMap);
     }
+
+    @Test
+    public void navigateByCriteriaRealData() throws Exception
+    {
+        String json = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("aviation/flightsQantasSmall.json"),
+                StandardCharsets.UTF_8
+        );
+
+        JsonObject flight = JsonParser.parseString(json).getAsJsonObject();
+        System.out.println(flight);
+        String entity = "flight";
+        this.service.saveObjectGraph(entity,flight);
+    }
 }

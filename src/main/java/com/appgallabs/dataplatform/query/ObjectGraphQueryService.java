@@ -75,14 +75,16 @@ public class ObjectGraphQueryService {
             {
                 String entityLabel = "n1";
                 String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
-                System.out.println(whereClause);
-                String query = "MATCH ("+entityLabel+":"+entity+")\n" +
+                /*String query = "MATCH ("+entityLabel+":"+entity+")\n" +
                         //"WHERE a.name='Dallas'\n" +
-                        "RETURN "+entityLabel;
+                        "RETURN "+entityLabel;*/
+                String query = "MATCH p=()-[r:departure]->() RETURN p LIMIT 25";
                 System.out.println(query);
                 Result result = tx.run( query);
                 return result.list();
             } );
+
+
             System.out.println(resultData);
         }
         return response;
@@ -98,14 +100,15 @@ public class ObjectGraphQueryService {
                 String leftLabel = "n1";
                 String rightLabel = "n2";
                 String whereClause = this.graphQueryGenerator.generateWhereClause(leftLabel,criteria);
-                System.out.println(whereClause);
                 String query = "MATCH ("+leftLabel+":"+leftEntity+")-[r:"+relationship+"]->("+rightLabel+":"+rightEntity+")\n" +
-                        //"WHERE a.name='Dallas'\n" +
-                        "RETURN "+leftLabel+","+rightLabel;
+                        whereClause +
+                        " RETURN "+leftLabel+","+rightLabel;
+                //String query = "MATCH p=()-[r:departure]->() RETURN p LIMIT 25";
                 System.out.println(query);
                 Result result = tx.run( query);
                 return result.list();
             } );
+            System.out.println(resultData);
         }
         return response;
     }
