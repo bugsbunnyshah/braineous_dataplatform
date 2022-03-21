@@ -97,14 +97,12 @@ public class ObjectGraphQueryService {
         {
             List<Record> resultData = session.writeTransaction(tx ->
             {
-                String leftLabel = "n1";
-                String rightLabel = "n2";
-                String whereClause = this.graphQueryGenerator.generateWhereClause(leftLabel,criteria);
-                String query = "MATCH ("+leftLabel+":"+leftEntity+")-[r:"+relationship+"]->("+rightLabel+":"+rightEntity+")\n" +
-                        whereClause +
-                        " RETURN "+leftLabel+","+rightLabel;
-                //String query = "MATCH p=()-[r:departure]->() RETURN p LIMIT 25";
+                String whereClause = this.graphQueryGenerator.generateWhereClause(leftEntity,criteria);
+                String query = "MATCH ("+leftEntity+")--("+rightEntity+")\n" +
+                        whereClause+
+                        " RETURN airport,flight";
                 System.out.println(query);
+                System.out.println(whereClause);
                 Result result = tx.run( query);
                 return result.list();
             } );

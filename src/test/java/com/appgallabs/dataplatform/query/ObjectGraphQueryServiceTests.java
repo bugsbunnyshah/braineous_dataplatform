@@ -105,5 +105,14 @@ public class ObjectGraphQueryServiceTests {
         System.out.println(flight);
         String entity = "flight";
         this.service.saveObjectGraph(entity,flight);
+
+        String leftEntity = "airport";
+        String rightEntity = entity;
+        String relationship = "departure";
+        String departure = "Wellington International";
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("name",departure);
+        JsonArray departures = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
+        JsonUtil.printStdOut(departures);
     }
 }

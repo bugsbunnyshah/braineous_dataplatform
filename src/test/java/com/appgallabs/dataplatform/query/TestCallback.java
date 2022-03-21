@@ -12,8 +12,8 @@ public class TestCallback implements EntityCallback{
         JsonObject newEntity = new JsonObject();
         newEntity.addProperty("name",airport);
 
-        String newEntityLabel = "two_test_callback_airport";
-        String relationship = "two_test_callback_departure";
+        String newEntityLabel = "airport";
+        String relationship = "departure";
         queryService.saveObjectRelationship(newEntityLabel,newEntity);
         queryService.establishRelationship(entityLabel,newEntityLabel,relationship);
     }

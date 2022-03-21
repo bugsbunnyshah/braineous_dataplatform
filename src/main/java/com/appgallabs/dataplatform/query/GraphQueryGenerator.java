@@ -14,7 +14,7 @@ import java.util.Set;
 public class GraphQueryGenerator {
     private static Logger logger = LoggerFactory.getLogger(GraphQueryGenerator.class);
 
-    public String generateWhereClause(String label, JsonObject criteria)
+    public String generateWhereClause(String entity,JsonObject criteria)
     {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("WHERE ");
@@ -24,13 +24,13 @@ public class GraphQueryGenerator {
         {
             String key = entry.getKey();
             JsonElement element = entry.getValue();
-            String left = label+"."+key+"=";
+            String left = entity+"."+key+"=";
             Object right;
             if(element.isJsonPrimitive())
             {
                 JsonPrimitive primitive = element.getAsJsonPrimitive();
                 right = primitive.getAsString();
-                criteriaBuilder.append(left+right+" AND");
+                criteriaBuilder.append(left+"'"+right+"'");
             }
         }
         queryBuilder.append(criteriaBuilder);
