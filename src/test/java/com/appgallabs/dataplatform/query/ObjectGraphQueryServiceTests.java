@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.neo4j.driver.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -74,26 +76,6 @@ public class ObjectGraphQueryServiceTests {
     }
 
     @Test
-    public void testCallbackRegistry() throws Exception{
-        String configJsonString = IOUtils.toString(
-                Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks.json"),
-                StandardCharsets.UTF_8
-        );
-        JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
-
-        Map<String,EntityCallback> callbackMap = new HashMap<>();
-        Iterator<JsonElement> iterator = configJson.iterator();
-        while(iterator.hasNext()){
-            JsonObject entityConfigJson = iterator.next().getAsJsonObject();
-            String entity = entityConfigJson.get("entity").getAsString();
-            String callback = entityConfigJson.get("callback").getAsString();
-            EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().loadClass(callback).getDeclaredConstructor().newInstance();
-            callbackMap.put(entity,object);
-        }
-        System.out.println(callbackMap);
-    }
-
-    @Test
     public void navigateByCriteriaRealData() throws Exception
     {
         String json = IOUtils.toString(
@@ -112,7 +94,27 @@ public class ObjectGraphQueryServiceTests {
         String departure = "Wellington International";
         JsonObject criteria = new JsonObject();
         criteria.addProperty("name",departure);
-        JsonArray departures = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
-        JsonUtil.printStdOut(departures);
+        List<Record> resultSet = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
+        System.out.println(resultSet);
+    }
+
+    @Test
+    public void testCallbackRegistry() throws Exception{
+        String configJsonString = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
+
+        Map<String,EntityCallback> callbackMap = new HashMap<>();
+        Iterator<JsonElement> iterator = configJson.iterator();
+        while(iterator.hasNext()){
+            JsonObject entityConfigJson = iterator.next().getAsJsonObject();
+            String entity = entityConfigJson.get("entity").getAsString();
+            String callback = entityConfigJson.get("callback").getAsString();
+            EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().loadClass(callback).getDeclaredConstructor().newInstance();
+            callbackMap.put(entity,object);
+        }
+        System.out.println(callbackMap);
     }
 }

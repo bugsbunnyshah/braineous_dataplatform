@@ -34,6 +34,7 @@ public class ObjectGraphQueryService {
     public void onStart()
     {
         try {
+            //TODO;FIXME
             String uri = "neo4j+s://9c1436ff.databases.neo4j.io:7687";
             String user = "neo4j";
             String password = "oD93a6NKpeIkT8mWt6I09UvZBtL_asBMXq-AXfBWZG8";
@@ -66,12 +67,11 @@ public class ObjectGraphQueryService {
         this.driver.close();
     }
 
-    public JsonArray queryByCriteria(String entity, JsonObject criteria)
+    public List<Record> queryByCriteria(String entity, JsonObject criteria)
     {
-        JsonArray response = new JsonArray();
         try ( Session session = driver.session() )
         {
-            List<Record> resultData = session.writeTransaction(tx ->
+            List<Record> resultSet = session.writeTransaction(tx ->
             {
                 String entityLabel = "n1";
                 String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
@@ -83,32 +83,25 @@ public class ObjectGraphQueryService {
                 Result result = tx.run( query);
                 return result.list();
             } );
-
-
-            System.out.println(resultData);
+            return resultSet;
         }
-        return response;
     }
 
-    public JsonArray navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria) throws Exception
+    public List<Record> navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria) throws Exception
     {
-        JsonArray response = new JsonArray();
         try ( Session session = driver.session() )
         {
-            List<Record> resultData = session.writeTransaction(tx ->
+            List<Record> resultSet = session.writeTransaction(tx ->
             {
                 String whereClause = this.graphQueryGenerator.generateWhereClause(leftEntity,criteria);
                 String query = "MATCH ("+leftEntity+")--("+rightEntity+")\n" +
                         whereClause+
                         " RETURN airport,flight";
-                System.out.println(query);
-                System.out.println(whereClause);
                 Result result = tx.run( query);
                 return result.list();
             } );
-            System.out.println(resultData);
+            return resultSet;
         }
-        return response;
     }
 
     public void saveObjectGraph(String entity,JsonObject json)

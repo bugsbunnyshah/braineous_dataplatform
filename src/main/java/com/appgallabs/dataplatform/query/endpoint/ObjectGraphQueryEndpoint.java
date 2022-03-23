@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.neo4j.driver.*;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 @Path("/graph/query")
@@ -34,7 +36,8 @@ public class ObjectGraphQueryEndpoint
             JsonObject json = JsonParser.parseString(requestJson).getAsJsonObject();
             String entity = json.get("entity").getAsString();
             JsonObject criteria = json.get("criteria").getAsJsonObject();
-            JsonArray array = this.objectGraphQueryService.queryByCriteria(entity,criteria);
+            List<Record> records = this.objectGraphQueryService.queryByCriteria(entity,criteria);
+            JsonArray array = new JsonArray();
             return Response.ok(array.toString()).build();
         }
         catch(Exception e)
