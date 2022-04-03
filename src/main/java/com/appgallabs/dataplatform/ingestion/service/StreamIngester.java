@@ -81,6 +81,7 @@ public class StreamIngester implements Serializable{
                              MongoDBJsonStore mongoDBJsonStore,
                              DataReplayService dataReplayService,
                              ObjectGraphQueryService queryService,
+                             IngestionService ingestionService,
                              String entity,
                              JsonArray sourceData)
     {
@@ -93,6 +94,7 @@ public class StreamIngester implements Serializable{
                 streamIngesterContext.setDataReplayService(dataReplayService);
                 streamIngesterContext.setMongoDBJsonStore(mongoDBJsonStore);
                 streamIngesterContext.setQueryService(queryService);
+                streamIngesterContext.setIngestionService(ingestionService);
             }
 
             String dataLakeId = UUID.randomUUID().toString();;
@@ -128,6 +130,7 @@ public class StreamIngester implements Serializable{
                         stringJavaRDD.foreach(s -> {
                                     try {
                                         JsonObject streamObject = JsonParser.parseString(s).getAsJsonObject();
+                                        //JsonUtil.printStdOut(streamObject);
                                         String dataLakeId = streamObject.get("dataLakeId").getAsString();
                                         String principal = streamObject.get("principal").getAsString();
                                         String chainId = streamObject.get("chainId").getAsString();

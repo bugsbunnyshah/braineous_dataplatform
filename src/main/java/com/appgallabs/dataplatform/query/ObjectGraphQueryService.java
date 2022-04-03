@@ -108,14 +108,23 @@ public class ObjectGraphQueryService {
     {
         String label = "n1";
 
-        //TODO:FIME: support all data types
+        final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
+        Set<Map.Entry<String,Object>> entrySet = objectMap.entrySet();
+        final Map<String, String> finalMap = new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:entrySet){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(key != null && value != null) {
+                finalMap.put(key, value.toString());
+            }
+        }
+
         String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
         try ( Session session = driver.session() )
         {
             List<Record> resultData = session.writeTransaction(tx ->
             {
-                Result result = tx.run(query,parameters( "json", JsonFlattener.flattenAsMap(json.toString())
-                ));
+                Result result = tx.run(query,parameters( "json", finalMap));
                 return result.list();
             } );
         }
@@ -128,14 +137,13 @@ public class ObjectGraphQueryService {
     {
         String label = "n1";
 
-        //TODO:FIME: support all data types
+        final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
         String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
         try ( Session session = driver.session() )
         {
             List<Record> resultData = session.writeTransaction(tx ->
             {
-                Result result = tx.run(query,parameters( "json", JsonFlattener.flattenAsMap(json.toString())
-                ));
+                Result result = tx.run(query,parameters( "json", objectMap));
                 return result.list();
             } );
         }

@@ -39,6 +39,22 @@ public class IngestionService implements Serializable {
         this.pushAgents = new HashMap<>();
     }
 
+    public Map<String, FetchAgent> getFetchAgents() {
+        return fetchAgents;
+    }
+
+    public void setFetchAgents(Map<String, FetchAgent> fetchAgents) {
+        this.fetchAgents = fetchAgents;
+    }
+
+    public Map<String, PushAgent> getPushAgents() {
+        return pushAgents;
+    }
+
+    public void setPushAgents(Map<String, PushAgent> pushAgents) {
+        this.pushAgents = pushAgents;
+    }
+
     @PostConstruct
     public void onStart(){
         try {

@@ -42,7 +42,7 @@ public class ObjectGraphQueryServiceTests {
         this.service.onStop();
     }
 
-    @Test
+    //@Test
     public void queryByCriteria() throws Exception
     {
         JsonObject airport = new JsonObject();
@@ -50,7 +50,7 @@ public class ObjectGraphQueryServiceTests {
         airport.addProperty("description", "AUS");
         airport.addProperty("size", "100");
 
-        String entity = "airline_network_airport";
+        String entity = "flight";
         this.service.saveObjectGraph(entity,airport);
 
         JsonObject criteria = new JsonObject();
@@ -70,6 +70,7 @@ public class ObjectGraphQueryServiceTests {
         flight.addProperty("description", "SouthWest");
         flight.add("departure", departure);
         flight.add("arrival", arrival);
+        flight.addProperty("capacity",10);
 
         String entity = "flight";
         this.service.saveObjectGraph(entity,flight);

@@ -52,6 +52,9 @@ public class MapperService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
+    @Inject
+    private IngestionService ingestionService;
+
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public JsonObject map(String entity,JsonArray sourceData)
@@ -63,6 +66,7 @@ public class MapperService {
                 this.mongoDBJsonStore,
                 this.dataReplayService,
                 this.objectGraphQueryService,
+                this.ingestionService,
                 entity,
                 sourceData);
         return result;

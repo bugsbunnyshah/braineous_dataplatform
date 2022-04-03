@@ -41,6 +41,8 @@ public class StreamIngesterContext implements Serializable {
 
     private ExecutorService executorService;
 
+    private IngestionService ingestionService;
+
 
     private StreamIngesterContext()
     {
@@ -70,6 +72,14 @@ public class StreamIngesterContext implements Serializable {
             StreamIngesterContext.streamIngesterContext = new StreamIngesterContext();
         }
         return StreamIngesterContext.streamIngesterContext;
+    }
+
+    public IngestionService getIngestionService() {
+        return ingestionService;
+    }
+
+    public void setIngestionService(IngestionService ingestionService) {
+        this.ingestionService = ingestionService;
     }
 
     public void clear(){
@@ -103,6 +113,7 @@ public class StreamIngesterContext implements Serializable {
     }
 
     void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject){
+        //System.out.println("***INGESTING****");
         try {
             Tenant tenant = new Tenant();
             tenant.setPrincipal(principal);
@@ -124,6 +135,7 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("timestamp", ingestionTime.toEpochSecond());
             data.addProperty("objectHash", objectHash);
             if(!this.mongoDBJsonStore.entityExists(tenant,data)) {
+                //System.out.println("****SAVING****");
                 this.mongoDBJsonStore.storeIngestion(tenant, data);
                 this.chainIds.put(dataLakeId, chainId);
 
@@ -139,6 +151,7 @@ public class StreamIngesterContext implements Serializable {
             }
         }
         catch(Exception e){
+            e.printStackTrace();
             logger.error(e.getMessage(),e);
         }
     }
