@@ -140,7 +140,9 @@ public class StreamIngesterContext implements Serializable {
                 this.chainIds.put(dataLakeId, chainId);
 
                 //Update the ObjectGraph service
-                this.queryService.saveObjectGraph(entity, jsonObject);
+                try {
+                    this.queryService.saveObjectGraph(entity, jsonObject);
+                }catch(Exception e){}
 
 
                 BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
