@@ -28,9 +28,9 @@ public class StreamIngesterQueue implements Serializable {
     {
         String dataLakeId = streamObject.getDataLakeId();
 
-        //System.out.println("********ACTIVE_DATA_LAKE_ID********");
-        //System.out.println(dataLakeId);
-        //System.out.println("***********************************");
+        /*System.out.println("********ACTIVE_DATA_LAKE_ID********");
+        System.out.println(dataLakeId);
+        System.out.println("***********************************");*/
 
         Queue<StreamObject> objectQueue = this.queue.get(dataLakeId);
         if(objectQueue == null){

@@ -89,12 +89,12 @@ public class ObjectGraphQueryServiceTests {
         String entity = "flight";
         this.service.saveObjectGraph(entity,flight);
 
-        String leftEntity = "airport";
-        String rightEntity = entity;
+        String leftEntity = "flight";
+        String rightEntity = "airport";
         String relationship = "departure";
-        String departure = "Wellington International";
+        String departureAirport = "Wellington International";
         JsonObject criteria = new JsonObject();
-        criteria.addProperty("name",departure);
+        criteria.addProperty("flight_date","2022-03-13");
         List<Record> resultSet = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
         System.out.println(resultSet);
     }

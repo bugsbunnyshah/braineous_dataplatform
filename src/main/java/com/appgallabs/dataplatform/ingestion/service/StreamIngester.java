@@ -37,7 +37,7 @@ public class StreamIngester implements Serializable{
     private SparkConf sparkConf;
     private JavaStreamingContext streamingContext;
     private StreamReceiver streamReceiver;
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private ExecutorService executor = Executors.newWorkStealingPool();
     private boolean isReceiverStarted = false;
 
 

@@ -11,6 +11,17 @@ public class StreamObject implements Serializable {
     private String dataLakeId;
     private String chainId;
 
+    public StreamObject() {
+    }
+
+    public StreamObject(String entity, String principal, String data, String dataLakeId, String chainId) {
+        this.entity = entity;
+        this.principal = principal;
+        this.data = data;
+        this.dataLakeId = dataLakeId;
+        this.chainId = chainId;
+    }
+
     public String getData() {
         return data;
     }

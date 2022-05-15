@@ -34,10 +34,18 @@ public class ObjectGraphQueryService {
     public void onStart()
     {
         try {
-            //TODO;FIXME
-            String uri = "neo4j+s://9c1436ff.databases.neo4j.io:7687";
+            //staging
+            String uri = "neo4j+s://99010aff.databases.neo4j.io:7687";
             String user = "neo4j";
-            String password = "oD93a6NKpeIkT8mWt6I09UvZBtL_asBMXq-AXfBWZG8";
+            String password = "AM8_XkkyVerBSDt9nsJ8-3dEEd0aIgw2wO-yLAf2pZU";
+
+
+            //production
+            //String uri = "neo4j+s://9c1436ff.databases.neo4j.io:7687";
+            //String user = "neo4j";
+            //String password = "oD93a6NKpeIkT8mWt6I09UvZBtL_asBMXq-AXfBWZG8";
+
+
             this.driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
 
             //load callbacks
@@ -69,27 +77,33 @@ public class ObjectGraphQueryService {
 
     public List<Record> queryByCriteria(String entity, JsonObject criteria)
     {
-        try ( Session session = driver.session() )
+        /*try ( Session session = driver.session() )
         {
             List<Record> resultSet = session.writeTransaction(tx ->
             {
                 String entityLabel = "n1";
                 String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
-                /*String query = "MATCH ("+entityLabel+":"+entity+")\n" +
-                        //"WHERE a.name='Dallas'\n" +
-                        "RETURN "+entityLabel;*/
-                String query = "MATCH p=()-[r:departure]->() RETURN p LIMIT 25";
+                String query = "MATCH ("+entityLabel+":"+entity+")\n" +
+                        whereClause +
+                        "RETURN "+entityLabel;
                 System.out.println(query);
                 Result result = tx.run( query);
                 return result.list();
             } );
             return resultSet;
-        }
+        }*/
+        String entityLabel = "n1";
+        String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
+        String query = "MATCH ("+entityLabel+":"+entity+")\n" +
+                whereClause +
+                "RETURN "+entityLabel;
+        System.out.println(query);
+        return null;
     }
 
     public List<Record> navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria) throws Exception
     {
-        try ( Session session = driver.session() )
+        /*try ( Session session = driver.session() )
         {
             List<Record> resultSet = session.writeTransaction(tx ->
             {
@@ -101,7 +115,15 @@ public class ObjectGraphQueryService {
                 return result.list();
             } );
             return resultSet;
-        }
+        }*/
+        String whereClause = this.graphQueryGenerator.generateWhereClause(leftEntity,criteria);
+        String leftLabel = leftEntity.substring(0,1);
+        String rightLabel = rightEntity.substring(0,1);
+        String query = "MATCH ("+leftLabel+":"+leftEntity+")-[:departure]->("+rightLabel+":"+rightEntity+")\n" +
+                whereClause+ " "+
+                "RETURN "+leftLabel+","+rightLabel;
+        System.out.println(query);
+        return null;
     }
 
     public void saveObjectGraph(String entity,JsonObject json)
