@@ -35,15 +35,15 @@ public class ObjectGraphQueryService {
     {
         try {
             //staging
-            String uri = "neo4j+s://99010aff.databases.neo4j.io:7687";
-            String user = "neo4j";
-            String password = "AM8_XkkyVerBSDt9nsJ8-3dEEd0aIgw2wO-yLAf2pZU";
+            //String uri = "neo4j+s://99010aff.databases.neo4j.io:7687";
+            //String user = "neo4j";
+            //String password = "AM8_XkkyVerBSDt9nsJ8-3dEEd0aIgw2wO-yLAf2pZU";
 
 
             //production
-            //String uri = "neo4j+s://9c1436ff.databases.neo4j.io:7687";
-            //String user = "neo4j";
-            //String password = "oD93a6NKpeIkT8mWt6I09UvZBtL_asBMXq-AXfBWZG8";
+            String uri = "neo4j+s://e5d43725.databases.neo4j.io:7687";
+            String user = "neo4j";
+            String password = "Ze46ehsOwibNH7BKyrFKd5dw2e8mKWMMzkhdjkm6gQk";
 
 
             this.driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
