@@ -41,9 +41,9 @@ public class ObjectGraphQueryService {
 
 
             //production
-            String uri = "neo4j+s://e5d43725.databases.neo4j.io:7687";
+            String uri = "neo4j+s://45348c3b.databases.neo4j.io:7687";
             String user = "neo4j";
-            String password = "Ze46ehsOwibNH7BKyrFKd5dw2e8mKWMMzkhdjkm6gQk";
+            String password = "nvCLtxHmr8L3oiubMI5A7fhWeUJuZ0t0N-j2C1Uf8uA";
 
 
             this.driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));

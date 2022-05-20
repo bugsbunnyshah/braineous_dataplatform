@@ -134,25 +134,30 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("dataLakeId", dataLakeId);
             data.addProperty("timestamp", ingestionTime.toEpochSecond());
             data.addProperty("objectHash", objectHash);
-            if(!this.mongoDBJsonStore.entityExists(tenant,data)) {
-                //System.out.println("****SAVING****");
-                this.mongoDBJsonStore.storeIngestion(tenant, data);
-                this.chainIds.put(dataLakeId, chainId);
 
-                //Update the ObjectGraph service
-                try {
-                    this.queryService.saveObjectGraph(entity, jsonObject);
-                }catch(Exception e){
-                    e.printStackTrace();
+            try {
+                if (!this.mongoDBJsonStore.entityExists(tenant, data)) {
+                    //System.out.println("****SAVING****");
+                    this.mongoDBJsonStore.storeIngestion(tenant, data);
+
+
+                    this.chainIds.put(dataLakeId, chainId);
+
+                    //Update the ObjectGraph service
+                    try {
+                        this.queryService.saveObjectGraph(entity, jsonObject);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
+
+                    //TODO: Update DataHistory
+                    //data.remove("data");
+                    //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
                 }
-
-
-                BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
-
-                //TODO: Update DataHistory
-                //data.remove("data");
-                //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
-            }
+            }catch (Exception e){}
         }
         catch(Exception e){
             e.printStackTrace();
