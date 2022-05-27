@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -26,6 +28,18 @@ public class MongoDBJsonStore implements Serializable
 
     @Inject
     private AIPlatformConfig aiPlatformConfig;
+
+    @ConfigProperty(name = "mongoDBConnectionString")
+    private String mongodbConnectionString;
+
+    @ConfigProperty(name = "mongodbHost")
+    private String mongodbHost;
+
+    @ConfigProperty(name = "mongodbPort")
+    private String mongodbPort;
+
+    private String database = "ian_qa";
+    private String password = "jen";
 
     @Inject
     private DataHistoryStore dataHistoryStore;
@@ -41,7 +55,7 @@ public class MongoDBJsonStore implements Serializable
         this.databaseMap = new HashMap<>();
     }
 
-    @PostConstruct
+    /*@PostConstruct
     public void start()
     {
         try {
@@ -58,14 +72,32 @@ public class MongoDBJsonStore implements Serializable
                         + ":" + config.get("mongodbPassword").getAsString() + "@");
             }
             connectStringBuilder.append(mongodbHost + ":" + mongodbPort);
+            connectStringBuilder.append("/-2061008798_aiplatform");
 
             String connectionString = connectStringBuilder.toString();
+            System.out.println("**********************************");
+            System.out.println(connectionString);
+            System.out.println("**********************************");
             this.mongoClient = MongoClients.create(connectionString);
         }
         catch(Exception e)
         {
             this.mongoClient = null;
         }
+    }*/
+    @PostConstruct
+    public void start()
+    {
+        String connectionString;
+        if(this.mongodbHost.equals("localhost"))
+        {
+            connectionString = this.mongodbConnectionString;
+        }
+        else
+        {
+            connectionString = MessageFormat.format(this.mongodbConnectionString,this.password,this.mongodbHost,this.database);
+        }
+        this.mongoClient = MongoClients.create(connectionString);
     }
 
     @PreDestroy
