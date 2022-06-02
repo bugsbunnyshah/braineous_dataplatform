@@ -7,14 +7,24 @@ public class TestCallback implements EntityCallback{
 
     @Override
     public void call(ObjectGraphQueryService queryService,String entityLabel,JsonObject entity) {
-        JsonObject departure = entity.get("departure").getAsJsonObject();
-        String airport = departure.get("airport").getAsString();
-        JsonObject newEntity = new JsonObject();
-        newEntity.addProperty("name",airport);
+        String relatedTo = "airport";
+        String left = "departure";
+        String right = "arrival";
 
-        String newEntityLabel = "airport";
-        String relationship = "departure";
-        queryService.saveObjectRelationship(newEntityLabel,newEntity);
-        queryService.establishRelationship(entityLabel,newEntityLabel,relationship);
+        //Departure
+        JsonObject departure = entity.get("departure").getAsJsonObject();
+        JsonObject departureAirport = new JsonObject();
+        departureAirport.addProperty("name",departure.get("airport").getAsString());
+        queryService.saveObjectRelationship(relatedTo,departureAirport);
+
+        //Arrival
+        JsonObject arrival = entity.get("arrival").getAsJsonObject();
+        JsonObject arrivalAirport = new JsonObject();
+        arrivalAirport.addProperty("name",arrival.get("airport").getAsString());
+        queryService.saveObjectRelationship(relatedTo,arrivalAirport);
+
+        //establish
+        queryService.establishRelationship(entityLabel,relatedTo,left);
+        queryService.establishRelationship(entityLabel,relatedTo,right);
     }
 }

@@ -41,9 +41,9 @@ public class ObjectGraphQueryService {
 
 
             //production
-            String uri = "neo4j+s://45348c3b.databases.neo4j.io:7687";
+            String uri = "neo4j+s://f68f3f83.databases.neo4j.io:7687";
             String user = "neo4j";
-            String password = "nvCLtxHmr8L3oiubMI5A7fhWeUJuZ0t0N-j2C1Uf8uA";
+            String password = "XqFdNRKumxztTfMID57cDiNvb5fba-tR_hiNTazSqNg";
 
 
             this.driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
@@ -101,9 +101,9 @@ public class ObjectGraphQueryService {
         return null;
     }
 
-    public List<Record> navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria) throws Exception
+    public List<Record> navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria, String airport) throws Exception
     {
-        /*try ( Session session = driver.session() )
+        try ( Session session = driver.session() )
         {
             List<Record> resultSet = session.writeTransaction(tx ->
             {
@@ -111,19 +111,17 @@ public class ObjectGraphQueryService {
                 String query = "MATCH ("+leftEntity+")--("+rightEntity+")\n" +
                         whereClause+
                         " RETURN airport,flight";
+
+                if(relationship.equals("departure")) {
+                    query = "MATCH (f:flight)-[:departure]->(a:airport) WHERE a.name='"+airport+"' RETURN f LIMIT 100";
+                }else{
+                    query = "MATCH (f:flight)-[:arrival]->(a:airport) WHERE a.name='"+airport+"' RETURN f lIMIT 100";
+                }
                 Result result = tx.run( query);
                 return result.list();
             } );
             return resultSet;
-        }*/
-        String whereClause = this.graphQueryGenerator.generateWhereClause(leftEntity,criteria);
-        String leftLabel = leftEntity.substring(0,1);
-        String rightLabel = rightEntity.substring(0,1);
-        String query = "MATCH ("+leftLabel+":"+leftEntity+")-[:departure]->("+rightLabel+":"+rightEntity+")\n" +
-                whereClause+ " "+
-                "RETURN "+leftLabel+","+rightLabel;
-        System.out.println(query);
-        return null;
+        }
     }
 
     public void saveObjectGraph(String entity,JsonObject json)
@@ -157,9 +155,21 @@ public class ObjectGraphQueryService {
 
     public void saveObjectRelationship(String entity,JsonObject json)
     {
+        System.out.println("****SAVE_OBJECT_RELATIONSHIP****");
         String label = "n1";
 
         final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
+        Set<Map.Entry<String,Object>> entrySet = objectMap.entrySet();
+        final Map<String, String> finalMap = new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:entrySet){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(key != null && value != null) {
+                finalMap.put(key, value.toString());
+            }
+        }
+
+
         String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
         try ( Session session = driver.session() )
         {
@@ -173,6 +183,7 @@ public class ObjectGraphQueryService {
 
     public void establishRelationship(String leftEntity,String rightEntity, String relationship)
     {
+        System.out.println("****ESTABLISH_RELATIONSHIP****");
         String leftLabel = "n1";
         String rightLabel = "n2";
         String createRelationship = "MATCH\n" +

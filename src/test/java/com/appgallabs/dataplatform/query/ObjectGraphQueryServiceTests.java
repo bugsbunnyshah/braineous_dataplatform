@@ -95,8 +95,8 @@ public class ObjectGraphQueryServiceTests {
         String departureAirport = "Wellington International";
         JsonObject criteria = new JsonObject();
         criteria.addProperty("flight_date","2022-03-13");
-        List<Record> resultSet = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
-        System.out.println(resultSet);
+        //List<Record> resultSet = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
+        //System.out.println(resultSet);
     }
 
     @Test
@@ -117,5 +117,18 @@ public class ObjectGraphQueryServiceTests {
             callbackMap.put(entity,object);
         }
         System.out.println(callbackMap);
+    }
+
+    @Test
+    public void endToEndTest() throws Exception {
+        String jsonString = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("query/flight.json"),
+                StandardCharsets.UTF_8
+        );
+
+        String sourceEntity = "flight";
+        JsonObject sourceJson = JsonParser.parseString(jsonString).getAsJsonObject();
+
+        service.saveObjectGraph(sourceEntity,sourceJson);
     }
 }
