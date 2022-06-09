@@ -55,7 +55,8 @@ public class ObjectGraphQueryService {
             );
             JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
 
-            Iterator<JsonElement> iterator = configJson.iterator();
+            //TODO
+            /*Iterator<JsonElement> iterator = configJson.iterator();
             while (iterator.hasNext()) {
                 JsonObject entityConfigJson = iterator.next().getAsJsonObject();
                 String entity = entityConfigJson.get("entity").getAsString();
@@ -63,7 +64,7 @@ public class ObjectGraphQueryService {
                 EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().
                         loadClass(callback).getDeclaredConstructor().newInstance();
                 this.callbackMap.put(entity, object);
-            }
+            }*/
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             throw new RuntimeException(e);
@@ -149,8 +150,8 @@ public class ObjectGraphQueryService {
             } );
         }
 
-        EntityCallback callback = this.callbackMap.get(entity);
-        callback.call(this,entity,json);
+        //EntityCallback callback = this.callbackMap.get(entity);
+        //callback.call(this,entity,json);
     }
 
     public void saveObjectRelationship(String entity,JsonObject json)
