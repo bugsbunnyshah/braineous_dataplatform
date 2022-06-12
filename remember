@@ -1,0 +1,10 @@
+String uri = "neo4j+s://7cf94439.databases.neo4j.io:7687";
+String user = "neo4j";
+String password = "QOWGA5Cd-zuVR1L7F7Uj38IcodZO-nzIIwaOnMnBg9M";
+
+:auto MATCH (n)
+CALL {
+WITH n
+DETACH DELETE n
+} IN TRANSACTIONS OF 1000 ROWS;
+
