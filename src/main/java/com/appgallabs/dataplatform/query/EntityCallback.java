@@ -1,7 +1,8 @@
 package com.appgallabs.dataplatform.query;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public interface EntityCallback {
-    void call(ObjectGraphQueryService queryService,String entityLabel,JsonObject entity);
+    void call(ObjectGraphQueryService queryService, String entityLabel, JsonArray data);
 }

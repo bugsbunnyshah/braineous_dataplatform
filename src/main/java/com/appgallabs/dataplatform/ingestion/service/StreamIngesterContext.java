@@ -98,7 +98,8 @@ public class StreamIngesterContext implements Serializable {
 
     public void setQueryService(ObjectGraphQueryService queryService) {
         this.queryService = queryService;
-        this.callbackAgent = new CallbackAgent(this.queryService);
+        this.callbackAgent = new CallbackAgent(this.queryService
+        ,this.mongoDBJsonStore,this.securityTokenContainer);
     }
 
     public void setDataReplayService(DataReplayService dataReplayService){

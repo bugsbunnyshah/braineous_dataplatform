@@ -1,7 +1,10 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.EntityCallback;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,8 +27,16 @@ public class CallbackAgent {
 
     private ObjectGraphQueryService queryService;
 
-    public CallbackAgent(ObjectGraphQueryService queryService){
+    private MongoDBJsonStore mongoDBJsonStore;
+
+    private SecurityTokenContainer securityTokenContainer;
+
+    public CallbackAgent(ObjectGraphQueryService queryService,
+                         MongoDBJsonStore mongoDBJsonStore,
+                         SecurityTokenContainer securityTokenContainer){
         try {
+            this.mongoDBJsonStore = mongoDBJsonStore;
+            this.securityTokenContainer = securityTokenContainer;
             this.queryService = queryService;
 
             //load callbacks
@@ -68,9 +79,17 @@ public class CallbackAgent {
 
     private void issueCallback(int batchSize,String chainId,String entity,JsonObject data){
         System.out.println("**************************ISSUING_CALLBACK*********************************************");
+        String dataLakeId = data.get("dataLakeId").getAsString();
+        String tenant = this.securityTokenContainer.getTenant().getPrincipal();
+        System.out.println(dataLakeId);
+        System.out.println(tenant);
+        JsonArray array = this.mongoDBJsonStore.getIngestion(
+                this.securityTokenContainer.getTenant(),
+                dataLakeId);
+        JsonUtil.printStdOut(array);
         EntityCallback callback = this.callbackMap.get(entity);
         if (callback != null) {
-            callback.call(this.queryService, entity, data);
+            callback.call(this.queryService, entity, array);
         }
     }
 }

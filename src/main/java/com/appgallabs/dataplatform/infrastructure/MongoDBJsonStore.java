@@ -133,6 +133,9 @@ public class MongoDBJsonStore implements Serializable
         MongoCollection<Document> collection = database.getCollection("datalake");
 
         String queryJson = "{\"braineous_datalakeid\":\""+dataLakeId+"\"}";
+        System.out.println("****************************************");
+        System.out.println(queryJson);
+        System.out.println("****************************************");
         Bson bson = Document.parse(queryJson);
         FindIterable<Document> iterable = collection.find(bson);
         MongoCursor<Document> cursor = iterable.cursor();

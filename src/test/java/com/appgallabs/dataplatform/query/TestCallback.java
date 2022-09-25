@@ -1,13 +1,14 @@
 package com.appgallabs.dataplatform.query;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class TestCallback implements EntityCallback{
 
     @Override
-    public void call(ObjectGraphQueryService queryService,String entityLabel,JsonObject entity) {
-        String relatedTo = "airport";
+    public void call(ObjectGraphQueryService queryService, String entityLabel, JsonArray entity) {
+        /*String relatedTo = "airport";
         String left = "departure";
         String right = "arrival";
 
@@ -25,6 +26,6 @@ public class TestCallback implements EntityCallback{
 
         //establish
         queryService.establishRelationship(entityLabel,relatedTo,left);
-        queryService.establishRelationship(entityLabel,relatedTo,right);
+        queryService.establishRelationship(entityLabel,relatedTo,right);*/
     }
 }
