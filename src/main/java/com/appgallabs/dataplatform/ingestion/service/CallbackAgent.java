@@ -61,23 +61,18 @@ public class CallbackAgent {
 
     public synchronized void notifyBatchTracker(int batchSize,String chainId,String entity,JsonObject data){
         Integer currentSize = this.batchTracker.get(chainId);
-        System.out.println("BTACH: "+currentSize);
         if(currentSize == null){
             this.batchTracker.put(chainId,1);
-            System.out.println("****TRACKER_STARTED********: "+this.batchTracker.get(chainId));
         }else{
             int newCount = currentSize + 1;
-            System.out.println("******NEW_COUNT******"+newCount);
             this.batchTracker.put(chainId,newCount);
-            System.out.println("****TRACKER_UPDATED********: "+this.batchTracker.get(chainId));
-
             if(newCount == batchSize) {
-                this.issueCallback(currentSize, chainId, entity, data);
+                this.issueCallback(entity, data);
             }
         }
     }
 
-    private void issueCallback(int batchSize,String chainId,String entity,JsonObject data){
+    private void issueCallback(String entity,JsonObject data){
         System.out.println("**************************ISSUING_CALLBACK*********************************************");
         String dataLakeId = data.get("dataLakeId").getAsString();
         String tenant = this.securityTokenContainer.getTenant().getPrincipal();
@@ -86,9 +81,8 @@ public class CallbackAgent {
         JsonArray array = this.mongoDBJsonStore.getIngestion(
                 this.securityTokenContainer.getTenant(),
                 dataLakeId);
-        JsonUtil.printStdOut(array);
         EntityCallback callback = this.callbackMap.get(entity);
-        if (callback != null) {
+        if (callback != null && array.size() > 0) {
             callback.call(this.queryService, entity, array);
         }
     }

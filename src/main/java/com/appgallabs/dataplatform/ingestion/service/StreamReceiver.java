@@ -9,7 +9,6 @@ public class StreamReceiver extends Receiver<String> {
     public StreamReceiver(StorageLevel storageLevel) {
         super(storageLevel);
         this.dataProcessor = new DataProcessor(this);
-        System.out.println("***************"+this+"***************");
     }
 
     @Override

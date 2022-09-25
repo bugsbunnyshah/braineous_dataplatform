@@ -107,7 +107,6 @@ public class StreamIngester implements Serializable{
             streamObject.setData(sourceData.toString());
             streamObject.setPrincipal(tenant.getPrincipal());
             streamObject.setBatchSize(sourceData.size());
-            JsonUtil.printStdOut(streamObject.toJson());
             StreamIngesterContext.getStreamIngesterContext().addStreamObject(streamObject);
 
             json.addProperty("entity",entity);
@@ -133,7 +132,6 @@ public class StreamIngester implements Serializable{
                         stringJavaRDD.foreach(s -> {
                                     try {
                                         JsonObject streamObject = JsonParser.parseString(s).getAsJsonObject();
-                                        JsonUtil.printStdOut(streamObject);
                                         String dataLakeId = streamObject.get("dataLakeId").getAsString();
                                         String principal = streamObject.get("principal").getAsString();
                                         String chainId = streamObject.get("chainId").getAsString();

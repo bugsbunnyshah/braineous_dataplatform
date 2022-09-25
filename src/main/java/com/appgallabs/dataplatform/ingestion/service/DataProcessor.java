@@ -19,7 +19,6 @@ public class DataProcessor implements Runnable, Serializable
     {
         this.streamReceiver = streamReceiver;
         this.activeQueueProcessors = new ArrayList<>();
-        System.out.println("***************"+this+"***************");
     }
 
 
