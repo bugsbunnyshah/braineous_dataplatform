@@ -50,10 +50,7 @@ public class StreamIngesterContext implements Serializable {
 
     private IngestionService ingestionService;
 
-    private Map<String, EntityCallback> callbackMap = new HashMap<>();
-
-
-    private Map<String,Integer> batchTracker = new HashedMap();
+    private CallbackAgent callbackAgent;
 
 
     private StreamIngesterContext()
@@ -61,23 +58,6 @@ public class StreamIngesterContext implements Serializable {
         try {
             this.streamIngesterQueue = new StreamIngesterQueue();
             this.chainIds = new HashMap<>();
-
-            //load callbacks
-            String configJsonString = IOUtils.toString(
-                    Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks.json"),
-                    StandardCharsets.UTF_8
-            );
-            JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
-            Iterator<JsonElement> iterator = configJson.iterator();
-            while (iterator.hasNext()) {
-                JsonObject entityConfigJson = iterator.next().getAsJsonObject();
-                String entity = entityConfigJson.get("entity").getAsString();
-                String callback = entityConfigJson.get("callback").getAsString();
-                EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().
-                        loadClass(callback).getDeclaredConstructor().newInstance();
-                this.callbackMap.put(entity, object);
-            }
-
             this.executorService = Executors.newFixedThreadPool(1000);
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -114,6 +94,23 @@ public class StreamIngesterContext implements Serializable {
 
     public void setIngestionService(IngestionService ingestionService) {
         this.ingestionService = ingestionService;
+    }
+
+    public void setQueryService(ObjectGraphQueryService queryService) {
+        this.queryService = queryService;
+        this.callbackAgent = new CallbackAgent(this.queryService);
+    }
+
+    public void setDataReplayService(DataReplayService dataReplayService){
+        this.dataReplayService = dataReplayService;
+    }
+
+    public void setMongoDBJsonStore(MongoDBJsonStore mongoDBJsonStore) {
+        this.mongoDBJsonStore = mongoDBJsonStore;
+    }
+
+    public void setSecurityTokenContainer(SecurityTokenContainer securityTokenContainer) {
+        this.securityTokenContainer = securityTokenContainer;
     }
 
     public void clear(){
@@ -176,7 +173,7 @@ public class StreamIngesterContext implements Serializable {
             this.storeToDataLake(tenant,data);
             this.storeToGraph(tenant,entity,data);
 
-            this.notifyBatchTracker(batchSize,chainId,entity,data);
+            this.callbackAgent.notifyBatchTracker(batchSize,chainId,entity,data);
 
 
             BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
@@ -191,31 +188,6 @@ public class StreamIngesterContext implements Serializable {
         }
     }
 
-    private synchronized void notifyBatchTracker(int batchSize,String chainId,String entity,JsonObject data){
-        Integer currentSize = this.batchTracker.get(chainId);
-        System.out.println("BTACH: "+currentSize);
-        if(currentSize == null){
-            this.batchTracker.put(chainId,1);
-            System.out.println("****TRACKER_STARTED********: "+this.batchTracker.get(chainId));
-        }else{
-            int newCount = currentSize + 1;
-            System.out.println("******NEW_COUNT******"+newCount);
-            this.batchTracker.put(chainId,newCount);
-            System.out.println("****TRACKER_UPDATED********: "+this.batchTracker.get(chainId));
-
-            if(newCount == batchSize) {
-                this.issueCallback(currentSize, chainId, entity, data);
-            }
-        }
-    }
-
-    private void issueCallback(int batchSize,String chainId,String entity,JsonObject data){
-        System.out.println("**************************ISSUING_CALLBACK*********************************************");
-        EntityCallback callback = this.callbackMap.get(entity);
-        if (callback != null) {
-            callback.call(this.queryService, entity, data);
-        }
-    }
 
     private void storeToDataLake(Tenant tenant,JsonObject data){
         if (!this.mongoDBJsonStore.entityExists(tenant, data)) {
@@ -231,21 +203,5 @@ public class StreamIngesterContext implements Serializable {
             this.queryService.saveObjectGraph(entity, jsonObject);
             System.out.println("****SAVING_TO_NEO_SUCCESS****");
         //}
-    }
-
-    public void setQueryService(ObjectGraphQueryService queryService) {
-        this.queryService = queryService;
-    }
-
-    public void setDataReplayService(DataReplayService dataReplayService){
-        this.dataReplayService = dataReplayService;
-    }
-
-    public void setMongoDBJsonStore(MongoDBJsonStore mongoDBJsonStore) {
-        this.mongoDBJsonStore = mongoDBJsonStore;
-    }
-
-    public void setSecurityTokenContainer(SecurityTokenContainer securityTokenContainer) {
-        this.securityTokenContainer = securityTokenContainer;
     }
 }
