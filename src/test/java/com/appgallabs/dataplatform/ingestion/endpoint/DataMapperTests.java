@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import test.components.IngesterTest;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
-public class DataMapperTests extends BaseTest
+public class DataMapperTests extends IngesterTest
 {
     private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
 
@@ -74,6 +75,8 @@ public class DataMapperTests extends BaseTest
         assertNotNull(ingestedData.get("dataLakeId"));
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
+
+        Thread.sleep(3600000);
     }
 
     @Test

@@ -11,15 +11,9 @@ public class StreamObject implements Serializable {
     private String dataLakeId;
     private String chainId;
 
-    public StreamObject() {
-    }
+    private int batchSize;
 
-    public StreamObject(String entity, String principal, String data, String dataLakeId, String chainId) {
-        this.entity = entity;
-        this.principal = principal;
-        this.data = data;
-        this.dataLakeId = dataLakeId;
-        this.chainId = chainId;
+    public StreamObject() {
     }
 
     public String getData() {
@@ -28,6 +22,14 @@ public class StreamObject implements Serializable {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
     }
 
     public String getDataLakeId() {
@@ -85,6 +87,8 @@ public class StreamObject implements Serializable {
         if(this.chainId != null){
             json.addProperty("chainId",this.chainId);
         }
+
+        json.addProperty("batchSize",this.batchSize);
 
         return json;
     }

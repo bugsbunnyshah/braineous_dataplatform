@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.neo4j.driver.*;
 import static org.neo4j.driver.Values.parameters;
 import org.slf4j.Logger;
@@ -28,37 +29,21 @@ public class ObjectGraphQueryService {
 
     private Driver driver;
 
-    private Map<String,EntityCallback> callbackMap = new HashMap<>();
+    @ConfigProperty(name = "queryServiceUri")
+    private String queryServiceUri;
+
+    @ConfigProperty(name = "queryServiceUser")
+    private String queryServiceUser;
+
+    @ConfigProperty(name = "queryServicePassword")
+    private String queryServicePassword;
 
     @PostConstruct
     public void onStart()
     {
         try {
-            //production
-            String uri = "neo4j+s://7cf94439.databases.neo4j.io:7687";
-            String user = "neo4j";
-            String password = "QOWGA5Cd-zuVR1L7F7Uj38IcodZO-nzIIwaOnMnBg9M";
-
-
-            this.driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
-
-            //load callbacks
-            String configJsonString = IOUtils.toString(
-                    Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks.json"),
-                    StandardCharsets.UTF_8
-            );
-            JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
-
-            //TODO
-            /*Iterator<JsonElement> iterator = configJson.iterator();
-            while (iterator.hasNext()) {
-                JsonObject entityConfigJson = iterator.next().getAsJsonObject();
-                String entity = entityConfigJson.get("entity").getAsString();
-                String callback = entityConfigJson.get("callback").getAsString();
-                EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().
-                        loadClass(callback).getDeclaredConstructor().newInstance();
-                this.callbackMap.put(entity, object);
-            }*/
+            this.driver = GraphDatabase.driver(this.queryServiceUri,
+                    AuthTokens.basic(this.queryServiceUser,this.queryServicePassword));
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             throw new RuntimeException(e);
@@ -72,27 +57,11 @@ public class ObjectGraphQueryService {
 
     public List<Record> queryByCriteria(String entity, JsonObject criteria)
     {
-        /*try ( Session session = driver.session() )
-        {
-            List<Record> resultSet = session.writeTransaction(tx ->
-            {
-                String entityLabel = "n1";
-                String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
-                String query = "MATCH ("+entityLabel+":"+entity+")\n" +
-                        whereClause +
-                        "RETURN "+entityLabel;
-                System.out.println(query);
-                Result result = tx.run( query);
-                return result.list();
-            } );
-            return resultSet;
-        }*/
         String entityLabel = "n1";
         String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
         String query = "MATCH ("+entityLabel+":"+entity+")\n" +
                 whereClause +
                 "RETURN "+entityLabel;
-        System.out.println(query);
         return null;
     }
 
@@ -121,7 +90,7 @@ public class ObjectGraphQueryService {
 
     public void saveObjectGraph(String entity,JsonObject json)
     {
-        String label = "n1";
+        /*String label = "n1";
 
         final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
         Set<Map.Entry<String,Object>> entrySet = objectMap.entrySet();
@@ -142,15 +111,12 @@ public class ObjectGraphQueryService {
                 Result result = tx.run(query,parameters( "json", finalMap));
                 return result.list();
             } );
-        }
-
-        //EntityCallback callback = this.callbackMap.get(entity);
-        //callback.call(this,entity,json);
+        }*/
     }
 
     public void saveObjectRelationship(String entity,JsonObject json)
     {
-        System.out.println("****SAVE_OBJECT_RELATIONSHIP****");
+        logger.info("****SAVE_OBJECT_RELATIONSHIP****");
         String label = "n1";
 
         final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
@@ -178,7 +144,7 @@ public class ObjectGraphQueryService {
 
     public void establishRelationship(String leftEntity,String rightEntity, String relationship)
     {
-        System.out.println("****ESTABLISH_RELATIONSHIP****");
+        logger.info("****ESTABLISH_RELATIONSHIP****");
         String leftLabel = "n1";
         String rightLabel = "n2";
         String createRelationship = "MATCH\n" +

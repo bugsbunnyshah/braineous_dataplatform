@@ -49,6 +49,6 @@ public class StreamIngesterContextTests extends BaseTest {
         System.out.println(jsonString);
         JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
 
-        streamIngesterContext.ingestOnThread(principal,entity,dataLakeId,chainId,json);
+        streamIngesterContext.ingestOnThread(principal,entity,dataLakeId,chainId,1,json);
     }
 }

@@ -21,27 +21,26 @@ public class AIPlatformConfig {
     @ConfigProperty(name = "mongodbPort")
     private String mongoDBPort;
 
+    @ConfigProperty(name = "queryServiceUri")
+    private String queryServiceUri;
+
+    @ConfigProperty(name = "queryServiceUser")
+    private String queryServiceUser;
+
+    @ConfigProperty(name = "queryServicePassword")
+    private String queryServicePassword;
+
     @PostConstruct
     public void start()
     {
         try
         {
-            //String mongoDBHost = System.getenv("MONGODBHOST");
-            //String mongoDBPort = System.getenv("MONGODBPORT");
-            String mongoDBUser = System.getenv("MONGODBUSER");
-            String mongoDBPassword = System.getenv("MONGODBPASSWORD");
-
             this.configuration = new JsonObject();
             this.configuration.addProperty("mongodbHost", this.mongoDBHost);
             this.configuration.addProperty("mongodbPort", this.mongoDBPort);
-            if(!StringUtils.isEmpty(mongoDBUser))
-            {
-                this.configuration.addProperty("mongodbUser", mongoDBUser);
-            }
-            if(!StringUtils.isEmpty(mongoDBPassword))
-            {
-                this.configuration.addProperty("mongodbPassword", mongoDBPassword);
-            }
+            this.configuration.addProperty("queryServiceUri", this.queryServiceUri);
+            this.configuration.addProperty("queryServiceUser", this.queryServiceUser);
+            this.configuration.addProperty("queryServicePassword", this.queryServicePassword);
         }
         catch(Exception e)
         {

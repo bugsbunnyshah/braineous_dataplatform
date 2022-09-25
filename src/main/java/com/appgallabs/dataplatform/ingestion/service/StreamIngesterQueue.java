@@ -44,6 +44,7 @@ public class StreamIngesterQueue implements Serializable {
             JsonObject jsonObject = iterator.next().getAsJsonObject();
             StreamObject cour = new StreamObject();
             cour.setPrincipal(streamObject.getPrincipal());
+            cour.setBatchSize(streamObject.getBatchSize());
             cour.setDataLakeId(streamObject.getDataLakeId());
             cour.setChainId(streamObject.getChainId());
             cour.setEntity(streamObject.getEntity());
