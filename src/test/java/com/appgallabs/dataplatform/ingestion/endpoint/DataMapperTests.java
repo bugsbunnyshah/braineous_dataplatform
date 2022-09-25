@@ -76,7 +76,7 @@ public class DataMapperTests extends IngesterTest
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
 
-        Thread.sleep(3600000);
+        //Thread.sleep(3600000);
     }
 
     @Test
