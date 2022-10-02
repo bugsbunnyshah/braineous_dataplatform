@@ -86,15 +86,20 @@ public class CallbackAgent {
                 this.securityTokenContainer.getTenant(),
                 dataLakeId);
         String callback = this.callbackMap.get(entity);
-        this.makeCall(callback, entity, array);
+        if(array.size()>0) {
+            this.makeCall(callback, entity, array);
+        }
     }
 
     private void makeCall(String restUrl,String entity,JsonArray array){
         try {
             System.out.println("********CALLBACK+++********************");
+            JsonObject callbackJson = new JsonObject();
+            callbackJson.addProperty("entity",entity);
+            callbackJson.add("data",array);
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    .POST(HttpRequest.BodyPublishers.ofString(array.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(callbackJson.toString()))
                     .build();
 
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
