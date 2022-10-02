@@ -1,6 +1,6 @@
 [
   {
     "entity": "flight",
-    "callback": "com.appgallabs.dataplatform.query.TestCallback"
+    "callback": "http://localhost:8080/dataIngester/callback"
   }
 ]

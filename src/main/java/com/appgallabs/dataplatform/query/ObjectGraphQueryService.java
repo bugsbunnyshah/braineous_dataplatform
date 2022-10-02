@@ -81,6 +81,9 @@ public class ObjectGraphQueryService {
                 }else{
                     query = "MATCH (f:flight)-[:arrival]->(a:airport) WHERE a.name='"+airport+"' RETURN f lIMIT 100";
                 }
+
+                System.out.println(query);
+
                 Result result = tx.run( query);
                 return result.list();
             } );
@@ -90,7 +93,7 @@ public class ObjectGraphQueryService {
 
     public void saveObjectGraph(String entity,JsonObject json)
     {
-        /*String label = "n1";
+        String label = "n1";
 
         final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
         Set<Map.Entry<String,Object>> entrySet = objectMap.entrySet();
@@ -111,7 +114,7 @@ public class ObjectGraphQueryService {
                 Result result = tx.run(query,parameters( "json", finalMap));
                 return result.list();
             } );
-        }*/
+        }
     }
 
     public void saveObjectRelationship(String entity,JsonObject json)

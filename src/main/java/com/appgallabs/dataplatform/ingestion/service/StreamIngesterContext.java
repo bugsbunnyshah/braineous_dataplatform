@@ -6,22 +6,14 @@ import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.query.EntityCallback;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.appgallabs.dataplatform.util.BackgroundProcessListener;
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.io.IOUtils;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -168,7 +160,7 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("objectHash", objectHash);
 
             this.storeToDataLake(tenant,data);
-            this.storeToGraph(tenant,entity,data);
+            this.storeToGraph(tenant,entity,jsonObject);
 
             this.callbackAgent.notifyBatchTracker(batchSize,chainId,entity,data);
 
@@ -190,15 +182,11 @@ public class StreamIngesterContext implements Serializable {
         if (!this.mongoDBJsonStore.entityExists(tenant, data)) {
             this.mongoDBJsonStore.storeIngestion(tenant, data);
             //this.chainIds.put(dataLakeId, chainId);
-            //System.out.println("****SAVED_TO_MONGO_DB****");
+            System.out.println("****SAVED_TO_MONGO_DB****");
         }
     }
 
     private void storeToGraph(Tenant tenant,String entity,JsonObject jsonObject){
-        //if (!this.mongoDBJsonStore.entityExists(tenant, data)) {
-            //System.out.println("****SAVING_TO_NEO****");
-            this.queryService.saveObjectGraph(entity, jsonObject);
-            //System.out.println("****SAVING_TO_NEO_SUCCESS****");
-        //}
+        this.queryService.saveObjectGraph(entity, jsonObject);
     }
 }

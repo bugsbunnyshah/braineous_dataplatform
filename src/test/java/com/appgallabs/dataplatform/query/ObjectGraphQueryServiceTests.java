@@ -107,14 +107,13 @@ public class ObjectGraphQueryServiceTests {
         );
         JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
 
-        Map<String,EntityCallback> callbackMap = new HashMap<>();
+        Map<String,String> callbackMap = new HashMap<>();
         Iterator<JsonElement> iterator = configJson.iterator();
         while(iterator.hasNext()){
             JsonObject entityConfigJson = iterator.next().getAsJsonObject();
             String entity = entityConfigJson.get("entity").getAsString();
             String callback = entityConfigJson.get("callback").getAsString();
-            EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().loadClass(callback).getDeclaredConstructor().newInstance();
-            callbackMap.put(entity,object);
+            callbackMap.put(entity,callback);
         }
         System.out.println(callbackMap);
     }

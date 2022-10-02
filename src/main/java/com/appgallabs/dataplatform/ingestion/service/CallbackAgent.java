@@ -2,7 +2,6 @@ package com.appgallabs.dataplatform.ingestion.service;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.query.EntityCallback;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
@@ -14,6 +13,10 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,13 +26,16 @@ public class CallbackAgent {
     private static Logger logger = LoggerFactory.getLogger(CallbackAgent.class);
 
     private Map<String,Integer> batchTracker = new HashedMap();
-    private Map<String, EntityCallback> callbackMap = new HashMap<>();
+
+    Map<String,String> callbackMap = new HashMap<>();
 
     private ObjectGraphQueryService queryService;
 
     private MongoDBJsonStore mongoDBJsonStore;
 
     private SecurityTokenContainer securityTokenContainer;
+
+    private HttpClient httpClient = HttpClient.newBuilder().build();
 
     public CallbackAgent(ObjectGraphQueryService queryService,
                          MongoDBJsonStore mongoDBJsonStore,
@@ -50,9 +56,7 @@ public class CallbackAgent {
                 JsonObject entityConfigJson = iterator.next().getAsJsonObject();
                 String entity = entityConfigJson.get("entity").getAsString();
                 String callback = entityConfigJson.get("callback").getAsString();
-                EntityCallback object = (EntityCallback) Thread.currentThread().getContextClassLoader().
-                        loadClass(callback).getDeclaredConstructor().newInstance();
-                this.callbackMap.put(entity, object);
+                this.callbackMap.put(entity,callback);
             }
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -81,9 +85,23 @@ public class CallbackAgent {
         JsonArray array = this.mongoDBJsonStore.getIngestion(
                 this.securityTokenContainer.getTenant(),
                 dataLakeId);
-        EntityCallback callback = this.callbackMap.get(entity);
-        if (callback != null && array.size() > 0) {
-            callback.call(this.queryService, entity, array);
+        String callback = this.callbackMap.get(entity);
+        this.makeCall(callback, entity, array);
+    }
+
+    private void makeCall(String restUrl,String entity,JsonArray array){
+        try {
+            System.out.println("********CALLBACK+++********************");
+            HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+            HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    .POST(HttpRequest.BodyPublishers.ofString(array.toString()))
+                    .build();
+
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String responseJson = httpResponse.body();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
