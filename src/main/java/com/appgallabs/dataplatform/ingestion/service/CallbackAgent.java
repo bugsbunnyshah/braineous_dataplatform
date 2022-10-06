@@ -94,16 +94,29 @@ public class CallbackAgent {
     private void makeCall(String restUrl,String entity,JsonArray array){
         try {
             System.out.println("********CALLBACK+++********************");
-            JsonObject callbackJson = new JsonObject();
-            callbackJson.addProperty("entity",entity);
-            callbackJson.add("data",array);
-            HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
-            HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    .POST(HttpRequest.BodyPublishers.ofString(callbackJson.toString()))
-                    .build();
+            JsonArray chunk = new JsonArray();
+            int chunkSize = 10;
+            for(int i=0; i< array.size(); i++) {
+                JsonObject currentObject = array.get(i).getAsJsonObject();
+                if(chunk.size() < chunkSize && i < array.size()-1){
+                    chunk.add(currentObject);
+                    continue;
+                }
+                else {
+                    JsonObject callbackJson = new JsonObject();
+                    callbackJson.addProperty("entity", entity);
+                    callbackJson.add("data", chunk);
+                    HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+                    HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                            .POST(HttpRequest.BodyPublishers.ofString(callbackJson.toString()))
+                            .build();
 
-            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String responseJson = httpResponse.body();
+                    HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    String responseJson = httpResponse.body();
+
+                    chunk = new JsonArray();
+                }
+            }
         }catch(Exception e){
             e.printStackTrace();
             throw new RuntimeException(e);
