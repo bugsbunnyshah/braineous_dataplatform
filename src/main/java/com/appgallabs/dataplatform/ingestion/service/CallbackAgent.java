@@ -109,10 +109,14 @@ public class CallbackAgent {
                     HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
                     HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
                             .POST(HttpRequest.BodyPublishers.ofString(callbackJson.toString()))
+                            .setHeader("Principal","PAlDekAoo0XWjAicU9SQDKgy7B0y2p2t")
+                            .setHeader("Bearer","Bearer")
                             .build();
 
-                    HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+                    HttpResponse<String> httpResponse = httpClient.send(httpRequest,
+                            HttpResponse.BodyHandlers.ofString());
                     String responseJson = httpResponse.body();
+                    System.out.println(httpResponse.statusCode());
 
                     chunk = new JsonArray();
                 }
