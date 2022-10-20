@@ -55,36 +55,6 @@ public class MongoDBJsonStore implements Serializable
         this.databaseMap = new HashMap<>();
     }
 
-    /*@PostConstruct
-    public void start()
-    {
-        try {
-            JsonObject config = this.aiPlatformConfig.getConfiguration();
-
-            //mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-            StringBuilder connectStringBuilder = new StringBuilder();
-            connectStringBuilder.append("mongodb://");
-
-            String mongodbHost = config.get("mongodbHost").getAsString();
-            long mongodbPort = config.get("mongodbPort").getAsLong();
-            if (config.has("mongodbUser") && config.has("mongodbPassword")) {
-                connectStringBuilder.append(config.get("mongodbUser").getAsString()
-                        + ":" + config.get("mongodbPassword").getAsString() + "@");
-            }
-            connectStringBuilder.append(mongodbHost + ":" + mongodbPort);
-            connectStringBuilder.append("/-2061008798_aiplatform");
-
-            String connectionString = connectStringBuilder.toString();
-            System.out.println("**********************************");
-            System.out.println(connectionString);
-            System.out.println("**********************************");
-            this.mongoClient = MongoClients.create(connectionString);
-        }
-        catch(Exception e)
-        {
-            this.mongoClient = null;
-        }
-    }*/
     @PostConstruct
     public void start()
     {
@@ -95,8 +65,15 @@ public class MongoDBJsonStore implements Serializable
         }
         else
         {
-            connectionString = MessageFormat.format(this.mongodbConnectionString,this.password,this.mongodbHost,this.database);
+            connectionString = MessageFormat.format(this.mongodbConnectionString,
+                    this.password,this.mongodbHost,
+                    this.database);
         }
+
+        System.out.println("*****************************");
+        System.out.println(connectionString);
+        System.out.println("*****************************");
+
         this.mongoClient = MongoClients.create(connectionString);
     }
 
