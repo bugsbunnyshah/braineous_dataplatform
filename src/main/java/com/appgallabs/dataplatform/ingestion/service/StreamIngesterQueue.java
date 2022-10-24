@@ -27,9 +27,9 @@ public class StreamIngesterQueue implements Serializable {
 
     public void add(StreamObject streamObject)
     {
-        System.out.println("ADDING TO QUE");
+        System.out.println("ADDING TO QUEUE......................................................");
         JsonUtil.printStdOut(streamObject.toJson());
-        System.out.println("********************");
+        System.out.println("********************LUADA");
 
         String dataLakeId = streamObject.getDataLakeId();
 
@@ -44,6 +44,12 @@ public class StreamIngesterQueue implements Serializable {
         while (iterator.hasNext()) {
             JsonObject jsonObject = iterator.next().getAsJsonObject();
             StreamObject cour = new StreamObject();
+            String principal = streamObject.getPrincipal();
+            String entity = streamObject.getEntity();
+            int batchSize = streamObject.getBatchSize();
+            String chainId = streamObject.getChainId();
+            String data = streamObject.getData();
+
             cour.setPrincipal(streamObject.getPrincipal());
             cour.setBatchSize(streamObject.getBatchSize());
             cour.setDataLakeId(streamObject.getDataLakeId());
@@ -51,6 +57,9 @@ public class StreamIngesterQueue implements Serializable {
             cour.setEntity(streamObject.getEntity());
             cour.setData(jsonObject.toString());
             objectQueue.add(cour);
+
+            StreamIngesterContext.getStreamIngesterContext().
+                    ingestOnThread(principal,entity,dataLakeId,chainId,batchSize,jsonObject);
         }
         if(!objectQueue.isEmpty()) {
             this.activeQueues.add(dataLakeId);
