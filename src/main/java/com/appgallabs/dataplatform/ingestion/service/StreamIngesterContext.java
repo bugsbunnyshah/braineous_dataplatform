@@ -9,6 +9,7 @@ import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.appgallabs.dataplatform.util.BackgroundProcessListener;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,6 @@ public class StreamIngesterContext implements Serializable {
         if(StreamIngesterContext.streamIngester == null){
             getStreamIngesterContext().announce();
             StreamIngesterContext.streamIngester = new StreamIngester();
-            StreamIngesterContext.streamIngester.start();
         }
         return StreamIngesterContext.streamIngester;
     }

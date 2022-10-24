@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,11 +27,11 @@ public class StreamIngesterQueue implements Serializable {
 
     public void add(StreamObject streamObject)
     {
-        String dataLakeId = streamObject.getDataLakeId();
+        System.out.println("ADDING TO QUE");
+        JsonUtil.printStdOut(streamObject.toJson());
+        System.out.println("********************");
 
-        /*System.out.println("********ACTIVE_DATA_LAKE_ID********");
-        System.out.println(dataLakeId);
-        System.out.println("***********************************");*/
+        String dataLakeId = streamObject.getDataLakeId();
 
         Queue<StreamObject> objectQueue = this.queue.get(dataLakeId);
         if(objectQueue == null){
@@ -54,11 +55,6 @@ public class StreamIngesterQueue implements Serializable {
         if(!objectQueue.isEmpty()) {
             this.activeQueues.add(dataLakeId);
         }
-
-        /*System.out.println("*************ADD*********************");
-        System.out.println("DataLakeId: "+dataLakeId);
-        System.out.println(this.queue.get(dataLakeId));
-        System.out.println("**********************************");*/
     }
 
     public Queue<StreamObject> getDataLakeQueue(String dataLakeId){
@@ -66,12 +62,6 @@ public class StreamIngesterQueue implements Serializable {
         if(objectQueue == null){
             return new LinkedList<>();
         }
-
-        /*System.out.println("*************GET_QUEUE*********************");
-        System.out.println("DataLakeId: "+dataLakeId);
-        System.out.println(objectQueue);
-        System.out.println(this.getActiveDataLakeIds());
-        System.out.println("**********************************");*/
 
         return objectQueue;
     }
