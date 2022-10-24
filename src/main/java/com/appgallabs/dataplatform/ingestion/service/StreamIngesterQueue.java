@@ -27,9 +27,8 @@ public class StreamIngesterQueue implements Serializable {
 
     public void add(StreamObject streamObject)
     {
-        System.out.println("ADDING TO QUEUE......................................................");
+        System.out.println("ADDING TO QUEUE......................................................123");
         JsonUtil.printStdOut(streamObject.toJson());
-        System.out.println("********************LUADA");
 
         String dataLakeId = streamObject.getDataLakeId();
 
