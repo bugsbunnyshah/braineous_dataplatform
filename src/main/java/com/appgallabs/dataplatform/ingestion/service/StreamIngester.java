@@ -46,7 +46,8 @@ public class StreamIngester implements Serializable{
             if (this.streamingContext == null) {
                 // Create a local StreamingContext with two working thread and batch interval of 1 second
                 this.sparkConf = new SparkConf().setAppName("StreamIngester")
-                        .set("hostname", "localhost").setMaster("local[20]");
+                        .set("hostname", "gespennvdh.us-east-2.awsapprunner.com").
+                        setMaster("gespennvdh.us-east-2.awsapprunner.com[20]");
                 this.streamingContext = new JavaStreamingContext(sparkConf, new Duration(1000));
                 this.streamReceiver = new StreamReceiver(StorageLevels.MEMORY_AND_DISK_2);
                 this.startIngestion();
