@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.mitre.harmony.matchers.ElementPair;
 import org.mitre.harmony.matchers.MatcherManager;
 import org.mitre.harmony.matchers.MatcherScore;
@@ -40,6 +41,9 @@ public class MapperService {
 
     private CSVDataUtil csvDataUtil = new CSVDataUtil();
 
+    @ConfigProperty(name = "environment")
+    private String environment;
+
     @Inject
     private ObjectGraphQueryService objectGraphQueryService;
 
@@ -62,6 +66,7 @@ public class MapperService {
         Tenant tenant = this.securityTokenContainer.getTenant();
         JsonObject result = StreamIngesterContext.getStreamIngester().submit(
                 tenant,
+                this.environment,
                 this.securityTokenContainer,
                 this.mongoDBJsonStore,
                 this.dataReplayService,

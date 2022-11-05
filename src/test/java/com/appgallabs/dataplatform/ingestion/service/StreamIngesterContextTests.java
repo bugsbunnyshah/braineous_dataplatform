@@ -33,6 +33,7 @@ public class StreamIngesterContextTests extends BaseTest {
     @Test
     public void ingestData() throws Exception{
         StreamIngesterContext streamIngesterContext = StreamIngesterContext.getStreamIngesterContext();
+        streamIngesterContext.setEnvironment("dev");
         streamIngesterContext.setQueryService(this.queryService);
         streamIngesterContext.setSecurityTokenContainer(this.securityTokenContainer);
         streamIngesterContext.setMongoDBJsonStore(this.mongoDBJsonStore);

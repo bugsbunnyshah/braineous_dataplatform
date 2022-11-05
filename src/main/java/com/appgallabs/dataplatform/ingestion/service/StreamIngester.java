@@ -33,7 +33,7 @@ public class StreamIngester implements Serializable{
     }
 
     //TODO: test ingesting XML and CSV
-    public JsonObject submit(Tenant tenant, SecurityTokenContainer securityTokenContainer,
+    public JsonObject submit(Tenant tenant, String environment, SecurityTokenContainer securityTokenContainer,
                              MongoDBJsonStore mongoDBJsonStore,
                              DataReplayService dataReplayService,
                              ObjectGraphQueryService queryService,
@@ -46,6 +46,7 @@ public class StreamIngester implements Serializable{
         if(securityTokenContainer != null) {
             if (StreamIngesterContext.getStreamIngesterContext() != null) {
                 StreamIngesterContext streamIngesterContext = StreamIngesterContext.getStreamIngesterContext();
+                streamIngesterContext.setEnvironment(environment);
                 streamIngesterContext.setSecurityTokenContainer(securityTokenContainer);
                 streamIngesterContext.setDataReplayService(dataReplayService);
                 streamIngesterContext.setMongoDBJsonStore(mongoDBJsonStore);

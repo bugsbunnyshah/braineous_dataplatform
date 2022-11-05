@@ -45,6 +45,8 @@ public class StreamIngesterContext implements Serializable {
 
     private CallbackAgent callbackAgent;
 
+    private String environment;
+
 
     private StreamIngesterContext()
     {
@@ -90,7 +92,7 @@ public class StreamIngesterContext implements Serializable {
 
     public void setQueryService(ObjectGraphQueryService queryService) {
         this.queryService = queryService;
-        this.callbackAgent = new CallbackAgent(this.queryService
+        this.callbackAgent = new CallbackAgent(this.environment,this.queryService
         ,this.mongoDBJsonStore,this.securityTokenContainer);
     }
 
@@ -104,6 +106,14 @@ public class StreamIngesterContext implements Serializable {
 
     public void setSecurityTokenContainer(SecurityTokenContainer securityTokenContainer) {
         this.securityTokenContainer = securityTokenContainer;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 
     public void clear(){

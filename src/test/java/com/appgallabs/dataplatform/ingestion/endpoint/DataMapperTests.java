@@ -46,7 +46,7 @@ public class DataMapperTests extends IngesterTest
     {
     }
 
-    @Test
+    //@Test
     public void testMapWithOneToOneFields() throws Exception {
         String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("dataMapper/sourceSchema.json"),
@@ -79,7 +79,7 @@ public class DataMapperTests extends IngesterTest
         Thread.sleep(3600000);
     }
 
-    @Test
+    //@Test
     public void testMapWithScatteredFields() throws Exception {
         String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("dataMapper/sourceSchema.json"),
@@ -110,7 +110,7 @@ public class DataMapperTests extends IngesterTest
         assertEquals(200, statusCode);
     }
 
-    @Test
+    //@Test
     public void testMapCsvSourceData() throws Exception
     {
         String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
@@ -139,7 +139,7 @@ public class DataMapperTests extends IngesterTest
         assertEquals(200, statusCode);
     }
 
-    @Test
+    //@Test
     public void testMapCsvSourceDataWithoutHeaderForMLModel() throws Exception
     {
         String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
@@ -168,7 +168,7 @@ public class DataMapperTests extends IngesterTest
         assertEquals(200, statusCode);
     }
 
-    @Test
+    //@Test
     public void testMapCsvSourceDataWithHeaderForMLModel() throws Exception
     {
         String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
@@ -197,7 +197,7 @@ public class DataMapperTests extends IngesterTest
         assertEquals(200, statusCode);
     }
 
-    @Test
+    //@Test
     public void testMapXmlSourceData() throws Exception {
         String xml = IOUtils.toString(Thread.currentThread().getContextClassLoader()
                         .getResourceAsStream("dataMapper/people.xml"),
@@ -225,7 +225,7 @@ public class DataMapperTests extends IngesterTest
         assertNotNull(ingestedData.get("dataLakeId"));
     }
 
-    @Test
+    //@Test
     public void testEndToEndQueryByTraversal() throws Exception {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader()
                         .getResourceAsStream("query/person.json"),

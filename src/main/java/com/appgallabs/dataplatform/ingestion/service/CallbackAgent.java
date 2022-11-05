@@ -37,17 +37,22 @@ public class CallbackAgent {
 
     private HttpClient httpClient = HttpClient.newBuilder().build();
 
-    public CallbackAgent(ObjectGraphQueryService queryService,
+    private String environment;
+
+    public CallbackAgent(String environment,ObjectGraphQueryService queryService,
                          MongoDBJsonStore mongoDBJsonStore,
                          SecurityTokenContainer securityTokenContainer){
         try {
+            this.environment = environment;
             this.mongoDBJsonStore = mongoDBJsonStore;
             this.securityTokenContainer = securityTokenContainer;
             this.queryService = queryService;
 
             //load callbacks
+            String configFile = "entityCallbacks_"+environment+".json";
             String configJsonString = IOUtils.toString(
-                    Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks.json"),
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                            configFile),
                     StandardCharsets.UTF_8
             );
             JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
