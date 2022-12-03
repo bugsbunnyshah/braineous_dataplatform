@@ -48,7 +48,7 @@ public class JWTTokenManagerTests {
         assertNotNull(generatedToken);
     }
 
-    @Test
+    //@Test
     public void testAuthenticationMissingToken() throws Exception{
         String restUrl = "http://localhost:8080/data/security/issue";
 
@@ -84,7 +84,7 @@ public class JWTTokenManagerTests {
         assertEquals(expectedStatus,status);
     }
 
-    @Test
+    //@Test
     public void testAuthenticationSuccess() throws Exception{
         String restUrl = "http://localhost:8080/data/security/issue";
 
@@ -122,7 +122,7 @@ public class JWTTokenManagerTests {
         logger.info(responseJson);
     }
 
-    @Test
+    //@Test
     public void testAuthenticationFailed() throws Exception{
         String restUrl = "http://localhost:8080/data/security/issue";
 
