@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.smallrye.jwt.build.Jwt;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +27,13 @@ public class JWTTokenManager {
 
     Map<String,AuthenticationCallback> callbackMap = new HashMap<>();
 
+    @ConfigProperty(name = "environment")
+    private String environment;
+
 
     @PostConstruct
     public void start(){
         try {
-            //TODO: Environment
-            String environment = "dev";
-
             //load callbacks
             String configFile = "authenticationCallbacks_"+environment+".json";
             String configJsonString = IOUtils.toString(
