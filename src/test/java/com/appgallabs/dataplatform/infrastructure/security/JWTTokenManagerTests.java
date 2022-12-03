@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.infrastructure.security;
 
 import com.appgallabs.dataplatform.infrastructure.Http;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.apache.commons.io.IOUtils;
@@ -28,7 +29,7 @@ public class JWTTokenManagerTests {
     private Http http;
 
     @Test
-    public void issueEndpoint() throws Exception{
+    public void issueEndpointAuthenticationSuccess() throws Exception{
         JsonObject input = new JsonObject();
         input.addProperty("tenant","random_tenant");
         input.addProperty("username","test@test.com");
@@ -41,8 +42,48 @@ public class JWTTokenManagerTests {
         response.body().prettyPrint();
         logger.info("************************");
 
-        String generatedToken = response.body().toString();
         assertEquals(200, response.getStatusCode());
+        JsonObject json = JsonParser.parseString(response.body().asString()).getAsJsonObject();
+        String token = json.get("token").getAsString();
+        logger.info(token);
+        assertNotNull(token);
+    }
+
+    @Test
+    public void issueEndpointAuthenticationFailedNoUser() throws Exception{
+        JsonObject input = new JsonObject();
+        input.addProperty("tenant","random_tenant");
+        input.addProperty("username","test1@test.com");
+        input.addProperty("password","password");
+
+        Response response = given().body(input.toString()).when().post("/data/security/issue")
+                .andReturn();
+        logger.info("************************");
+        logger.info(response.statusLine());
+        response.body().prettyPrint();
+        logger.info("************************");
+
+        String generatedToken = response.body().toString();
+        assertEquals(401, response.getStatusCode());
+        assertNotNull(generatedToken);
+    }
+
+    @Test
+    public void issueEndpointAuthenticationFailedWrongPassword() throws Exception{
+        JsonObject input = new JsonObject();
+        input.addProperty("tenant","random_tenant");
+        input.addProperty("username","test@test.com");
+        input.addProperty("password","password1");
+
+        Response response = given().body(input.toString()).when().post("/data/security/issue")
+                .andReturn();
+        logger.info("************************");
+        logger.info(response.statusLine());
+        response.body().prettyPrint();
+        logger.info("************************");
+
+        String generatedToken = response.body().toString();
+        assertEquals(401, response.getStatusCode());
         assertNotNull(generatedToken);
     }
 
