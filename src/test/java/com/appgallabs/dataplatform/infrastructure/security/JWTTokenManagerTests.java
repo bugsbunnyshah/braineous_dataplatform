@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure.security;
 
 import com.appgallabs.dataplatform.infrastructure.Http;
+import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.apache.commons.io.IOUtils;
@@ -24,20 +25,17 @@ public class JWTTokenManagerTests {
     private static Logger logger = LoggerFactory.getLogger(JWTTokenManagerTests.class);
 
     @Inject
-    private JWTTokenManager jwtTokenManager;
-
-    @Inject
     private Http http;
 
     @Test
-    public void issueServiceComponent() throws Exception{
-        String token = this.jwtTokenManager.issueToken();
-        logger.info(token);
-    }
-
-    @Test
     public void issueEndpoint() throws Exception{
-        Response response = given().get("/data/security/issue").andReturn();
+        JsonObject input = new JsonObject();
+        input.addProperty("tenant","random_tenant");
+        input.addProperty("username","test@test.com");
+        input.addProperty("password","password");
+
+        Response response = given().body(input.toString()).when().post("/data/security/issue")
+                .andReturn();
         logger.info("************************");
         logger.info(response.statusLine());
         response.body().prettyPrint();
