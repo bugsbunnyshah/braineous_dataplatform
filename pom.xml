@@ -202,6 +202,16 @@
       <version>0.5.3</version>
     </dependency>
     -->
+
+    <!-- security integration -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt-build</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
