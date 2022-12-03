@@ -24,7 +24,7 @@ import java.util.*;
 public class JWTTokenManager {
     private static Logger logger  = LoggerFactory.getLogger(JWTTokenManager.class);
 
-    Map<String,String> callbackMap = new HashMap<>();
+    Map<String,AuthenticationCallback> callbackMap = new HashMap<>();
 
 
     @PostConstruct
@@ -46,7 +46,9 @@ public class JWTTokenManager {
                 JsonObject entityConfigJson = iterator.next().getAsJsonObject();
                 String tenant = entityConfigJson.get("tenant").getAsString();
                 String callback = entityConfigJson.get("callback").getAsString();
-                this.callbackMap.put(tenant,callback);
+                AuthenticationCallback authenticationCallback = (AuthenticationCallback) Thread.currentThread().getContextClassLoader()
+                        .loadClass(callback).newInstance();
+                this.callbackMap.put(tenant,authenticationCallback);
             }
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -64,9 +66,8 @@ public class JWTTokenManager {
             String username = input.get("username").getAsString();
             String password = input.get("password").getAsString();
 
-            String callBackClass = this.callbackMap.get(tenant);
-            AuthenticationCallback authenticationCallback = (AuthenticationCallback) Thread.currentThread().getContextClassLoader()
-                    .loadClass(callBackClass).newInstance();
+            AuthenticationCallback authenticationCallback = this.callbackMap.get(tenant);
+
             boolean success = authenticationCallback.authenticate(tenant, username, password);
             if(!success){
                 JsonObject error = new JsonObject();
