@@ -63,6 +63,7 @@ public class MapperService {
 
     public JsonObject map(String entity,JsonArray sourceData)
     {
+        System.out.println("MAPPER_SERVICE");
         Tenant tenant = this.securityTokenContainer.getTenant();
         JsonObject result = StreamIngesterContext.getStreamIngester().submit(
                 tenant,

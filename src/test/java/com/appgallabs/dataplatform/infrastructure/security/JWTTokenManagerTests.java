@@ -28,7 +28,7 @@ public class JWTTokenManagerTests {
     @Inject
     private Http http;
 
-    @Test
+    //@Test
     public void issueEndpointAuthenticationSuccess() throws Exception{
         JsonObject input = new JsonObject();
         input.addProperty("tenant","random_tenant");

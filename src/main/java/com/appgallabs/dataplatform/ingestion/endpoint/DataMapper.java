@@ -36,6 +36,7 @@ public class DataMapper {
     {
         try
         {
+            System.out.println("MAP");
             JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
             String sourceData = jsonObject.get("sourceData").getAsString();
