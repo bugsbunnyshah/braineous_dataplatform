@@ -82,7 +82,9 @@ public class ObjectGraphQueryService {
                     query = "MATCH (f:flight)-[:arrival]->(a:airport) WHERE a.name='"+airport+"' RETURN f lIMIT 100";
                 }
 
+                System.out.println("************QUERY***************");
                 System.out.println(query);
+                System.out.println("***************************");
 
                 Result result = tx.run( query);
                 return result.list();
