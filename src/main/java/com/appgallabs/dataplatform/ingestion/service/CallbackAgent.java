@@ -69,63 +69,28 @@ public class CallbackAgent {
     }
 
     public synchronized void notifyBatchTracker(int batchSize,String chainId,String entity,JsonObject data){
-        Integer currentSize = this.batchTracker.get(chainId);
-        if(currentSize == null){
-            this.batchTracker.put(chainId,1);
-        }else{
-            int newCount = currentSize + 1;
-            this.batchTracker.put(chainId,newCount);
-            if(newCount == batchSize) {
-                this.issueCallback(entity, data);
-            }
-        }
-    }
-
-    private void issueCallback(String entity,JsonObject data){
-        System.out.println("**************************ISSUING_CALLBACK*********************************************");
-        String dataLakeId = data.get("dataLakeId").getAsString();
-        String tenant = this.securityTokenContainer.getTenant().getPrincipal();
-        System.out.println(dataLakeId);
-        System.out.println(tenant);
-        JsonArray array = this.mongoDBJsonStore.getIngestion(
-                this.securityTokenContainer.getTenant(),
-                dataLakeId);
+        JsonArray array = new JsonArray();
+        array.add(data);
         String callback = this.callbackMap.get(entity);
-        if(array.size()>0) {
-            this.makeCall(callback, entity, array);
-        }
+        this.makeCall(callback, entity, array);
     }
 
     private void makeCall(String restUrl,String entity,JsonArray array){
         try {
             System.out.println("********CALLBACK+++********************");
-            JsonArray chunk = new JsonArray();
-            int chunkSize = 10;
-            for(int i=0; i< array.size(); i++) {
-                JsonObject currentObject = array.get(i).getAsJsonObject();
-                if(chunk.size() < chunkSize && i < array.size()-1){
-                    chunk.add(currentObject);
-                    continue;
-                }
-                else {
-                    JsonObject callbackJson = new JsonObject();
-                    callbackJson.addProperty("entity", entity);
-                    callbackJson.add("data", chunk);
-                    HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
-                    HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                            .POST(HttpRequest.BodyPublishers.ofString(callbackJson.toString()))
-                            .setHeader("Principal","PAlDekAoo0XWjAicU9SQDKgy7B0y2p2t")
-                            .setHeader("Bearer","Bearer")
-                            .build();
+            System.out.println(restUrl);
+            JsonObject callbackJson = new JsonObject();
+            callbackJson.addProperty("entity", entity);
+            callbackJson.add("data", array);
+            HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+            HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    .POST(HttpRequest.BodyPublishers.ofString(callbackJson.toString()))
+                    .setHeader("Principal","PAlDekAoo0XWjAicU9SQDKgy7B0y2p2t")
+                    .setHeader("Bearer","Bearer")
+                    .build();
 
-                    HttpResponse<String> httpResponse = httpClient.send(httpRequest,
-                            HttpResponse.BodyHandlers.ofString());
-                    String responseJson = httpResponse.body();
-                    System.out.println(httpResponse.statusCode());
-
-                    chunk = new JsonArray();
-                }
-            }
+            httpClient.send(httpRequest,
+                    HttpResponse.BodyHandlers.ofString());
         }catch(Exception e){
             e.printStackTrace();
             throw new RuntimeException(e);

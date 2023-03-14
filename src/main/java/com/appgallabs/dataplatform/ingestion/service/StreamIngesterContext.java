@@ -170,12 +170,12 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("objectHash", objectHash);
 
             this.storeToDataLake(tenant,data);
-            this.storeToGraph(tenant,entity,jsonObject);
+            //this.storeToGraph(tenant,entity,jsonObject);
 
             this.callbackAgent.notifyBatchTracker(batchSize,chainId,entity,data);
 
 
-            BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
+            //BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
 
             //TODO: Update DataHistory
             //data.remove("data");
