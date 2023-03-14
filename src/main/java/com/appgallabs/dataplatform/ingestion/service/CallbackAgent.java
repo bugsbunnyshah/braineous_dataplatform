@@ -78,7 +78,6 @@ public class CallbackAgent {
     private void makeCall(String restUrl,String entity,JsonArray array){
         try {
             System.out.println("********CALLBACK+++********************");
-            System.out.println(restUrl);
             JsonObject callbackJson = new JsonObject();
             callbackJson.addProperty("entity", entity);
             callbackJson.add("data", array);
