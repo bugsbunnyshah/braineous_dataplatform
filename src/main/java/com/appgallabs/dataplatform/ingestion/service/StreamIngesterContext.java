@@ -9,18 +9,17 @@ import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.appgallabs.dataplatform.util.BackgroundProcessListener;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonObject;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StreamIngesterContext implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(StreamIngesterContext.class);
@@ -40,11 +39,24 @@ public class StreamIngesterContext implements Serializable {
 
     private ObjectGraphQueryService queryService;
 
+    private ExecutorService executorService;
+
+    private IngestionService ingestionService;
+
+    private CallbackAgent callbackAgent;
+
+    private String environment;
+
 
     private StreamIngesterContext()
     {
-        this.streamIngesterQueue = new StreamIngesterQueue();
-        this.chainIds = new HashMap<>();
+        try {
+            this.streamIngesterQueue = new StreamIngesterQueue();
+            this.chainIds = new HashMap<>();
+            this.executorService = Executors.newFixedThreadPool(1000);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     private void announce(){
@@ -70,6 +82,40 @@ public class StreamIngesterContext implements Serializable {
         return StreamIngesterContext.streamIngesterContext;
     }
 
+    public IngestionService getIngestionService() {
+        return ingestionService;
+    }
+
+    public void setIngestionService(IngestionService ingestionService) {
+        this.ingestionService = ingestionService;
+    }
+
+    public void setQueryService(ObjectGraphQueryService queryService) {
+        this.queryService = queryService;
+        this.callbackAgent = new CallbackAgent(this.environment,this.queryService
+        ,this.mongoDBJsonStore,this.securityTokenContainer);
+    }
+
+    public void setDataReplayService(DataReplayService dataReplayService){
+        this.dataReplayService = dataReplayService;
+    }
+
+    public void setMongoDBJsonStore(MongoDBJsonStore mongoDBJsonStore) {
+        this.mongoDBJsonStore = mongoDBJsonStore;
+    }
+
+    public void setSecurityTokenContainer(SecurityTokenContainer securityTokenContainer) {
+        this.securityTokenContainer = securityTokenContainer;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
     public void clear(){
         StreamIngesterContext.streamIngester = null;
         StreamIngesterContext.streamIngesterContext = null;
@@ -77,11 +123,6 @@ public class StreamIngesterContext implements Serializable {
 
     public void addStreamObject(StreamObject streamObject)
     {
-        //System.out.println("********ADDING_STREAM_OBJECT_FOR_STORAGE*******");
-        //System.out.println(streamObject.getData());
-        //System.out.println("************************************************");
-
-
         this.streamIngesterQueue.add(streamObject);
     }
 
@@ -98,22 +139,28 @@ public class StreamIngesterContext implements Serializable {
         return chainIds;
     }
 
-    public void ingestData(String principal,String entity,String dataLakeId, String chainId, JsonObject jsonObject)
+    public void ingestData(String principal,String entity,String dataLakeId, String chainId, int batchSize, JsonObject jsonObject)
     {
-        try {
-            //JsonUtil.print(jsonObject);
+        executorService.execute(() -> {
+            this.ingestOnThread(principal,entity,dataLakeId,chainId,batchSize,jsonObject);
+        });
+    }
 
+    void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, int batchSize, JsonObject jsonObject){
+        try {
             Tenant tenant = new Tenant();
             tenant.setPrincipal(principal);
             SecurityToken securityToken = new SecurityToken();
             securityToken.setPrincipal(principal);
             this.securityTokenContainer.setSecurityToken(securityToken);
 
-
             OffsetDateTime ingestionTime = OffsetDateTime.now(ZoneOffset.UTC);
             String objectHash = JsonUtil.getJsonHash(jsonObject);
+            jsonObject.addProperty("objectHash",objectHash);
+
             JsonObject data = new JsonObject();
             data.addProperty("braineous_datalakeid", dataLakeId);
+            data.addProperty("batchSize", batchSize);
             data.addProperty("tenant", tenant.getPrincipal());
             data.addProperty("entity",entity);
             data.addProperty("data", jsonObject.toString());
@@ -121,40 +168,35 @@ public class StreamIngesterContext implements Serializable {
             data.addProperty("dataLakeId", dataLakeId);
             data.addProperty("timestamp", ingestionTime.toEpochSecond());
             data.addProperty("objectHash", objectHash);
-            logger.info("************PERSISTING-" + dataLakeId + "******************");
-            logger.info(data.toString());
-            logger.info("****************************************");
-            this.mongoDBJsonStore.storeIngestion(tenant, data);
-            this.chainIds.put(dataLakeId, chainId);
 
-            //Update the ObjectGraph service
-            Vertex object = this.queryService.saveObjectGraph(entity, jsonObject, null, false);
-            System.out.println(object.graph());
+            this.storeToDataLake(tenant,data);
+            //this.storeToGraph(tenant,entity,jsonObject);
 
-            BackgroundProcessListener.getInstance().decreaseThreshold(entity,dataLakeId,data);
+            this.callbackAgent.notifyBatchTracker(batchSize,chainId,entity,data);
 
-            //Update DataHistory
-            data.remove("data");
-            this.mongoDBJsonStore.storeHistoryObject(tenant, data);
+
+            //BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
+
+            //TODO: Update DataHistory
+            //data.remove("data");
+            //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
         }
         catch(Exception e){
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
     }
 
-    public void setQueryService(ObjectGraphQueryService queryService) {
-        this.queryService = queryService;
+
+    private void storeToDataLake(Tenant tenant,JsonObject data){
+        if (!this.mongoDBJsonStore.entityExists(tenant, data)) {
+            this.mongoDBJsonStore.storeIngestion(tenant, data);
+            //this.chainIds.put(dataLakeId, chainId);
+            System.out.println("****SAVED_TO_MONGO_DB****");
+        }
     }
 
-    public void setDataReplayService(DataReplayService dataReplayService){
-        this.dataReplayService = dataReplayService;
-    }
-
-    public void setMongoDBJsonStore(MongoDBJsonStore mongoDBJsonStore) {
-        this.mongoDBJsonStore = mongoDBJsonStore;
-    }
-
-    public void setSecurityTokenContainer(SecurityTokenContainer securityTokenContainer) {
-        this.securityTokenContainer = securityTokenContainer;
+    private void storeToGraph(Tenant tenant,String entity,JsonObject jsonObject){
+        this.queryService.saveObjectGraph(entity, jsonObject);
     }
 }

@@ -24,9 +24,13 @@ public class SecurityTokenProcessor implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext context) throws IOException
     {
-        String bearerToken = context.getHeaderString("Bearer");
-        if(bearerToken != null)
+        //System.out.println("*********TOKEN_FILTER_ACTIVE***************");
+        String authorization = context.getHeaderString("Authorization");
+        if(authorization != null)
         {
+            String[] array = authorization.split(" ");
+            String bearerToken = array[1];
+            System.out.println(bearerToken);
             String principal = context.getHeaderString("Principal");
             JsonObject json = new JsonObject();
             json.addProperty("access_token", bearerToken);

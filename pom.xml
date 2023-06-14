@@ -93,6 +93,11 @@
       <artifactId>mongodb-driver-sync</artifactId>
       <version>4.3.3</version>
     </dependency>
+    <dependency>
+      <groupId>org.neo4j.driver</groupId>
+      <artifactId>neo4j-java-driver</artifactId>
+      <version>4.4.3</version>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.spark</groupId>
@@ -166,26 +171,26 @@
 
     <dependency>
       <groupId>org.apache.tinkerpop</groupId>
-      <artifactId>tinkergraph-gremlin</artifactId>
-      <version>3.4.6</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
-      <artifactId>gremlin-server</artifactId>
-      <version>3.4.6</version>
-      <scope>test</scope>
+      <artifactId>gremlin-core</artifactId>
+      <version>3.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.tinkerpop</groupId>
       <artifactId>gremlin-driver</artifactId>
-      <version>3.4.6</version>
+      <version>3.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tinkerpop</groupId>
+      <artifactId>tinkergraph-gremlin</artifactId>
+      <version>3.5.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.tinkerpop</groupId>
       <artifactId>sparql-gremlin</artifactId>
-      <version>3.4.6</version>
+      <version>3.5.2</version>
     </dependency>
 
+    <!--
     <dependency>
       <groupId>org.janusgraph</groupId>
       <artifactId>janusgraph-core</artifactId>
@@ -195,6 +200,17 @@
       <groupId>org.janusgraph</groupId>
       <artifactId>janusgraph-inmemory</artifactId>
       <version>0.5.3</version>
+    </dependency>
+    -->
+
+    <!-- security integration -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt-build</artifactId>
     </dependency>
   </dependencies>
 

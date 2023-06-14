@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.configuration;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,7 @@ public class AIPlatformConfigTests
     @Inject
     private AIPlatformConfig aiPlatformConfig;
 
-    //@Test
+    @Test
     public void testGetConfiguration() throws Exception
     {
         logger.info(this.aiPlatformConfig.getConfiguration().toString());

@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
 public class MongoDBJsonStoreTests extends BaseTest {
@@ -129,5 +130,23 @@ public class MongoDBJsonStoreTests extends BaseTest {
         cour.setPrincipal(tenant);
         JsonArray metaData = this.mongoDBJsonStore.getIngestedDataSetsMetaData(cour);
         JsonUtil.print(metaData);
+    }
+
+    @Test
+    public void readByEntity() throws Exception{
+        String entity = "flight";
+        JsonArray data = this.mongoDBJsonStore.readByEntity(this.securityTokenContainer.getTenant(),entity);
+    }
+
+    @Test
+    public void readEntity() throws Exception{
+        JsonObject jsonObject = new JsonObject();
+        String objectHash = JsonUtil.getJsonHash(jsonObject);
+        jsonObject.addProperty("objectHash",objectHash);
+        this.mongoDBJsonStore.storeIngestion(this.securityTokenContainer.getTenant(),jsonObject);
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        JsonObject data = this.mongoDBJsonStore.readEntity(tenant,objectHash);
+        assertNotNull(data);
+        assertEquals(objectHash,data.get("objectHash").getAsString());
     }
 }

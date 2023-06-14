@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,11 +27,10 @@ public class StreamIngesterQueue implements Serializable {
 
     public void add(StreamObject streamObject)
     {
-        String dataLakeId = streamObject.getDataLakeId();
+        System.out.println("ADDING TO QUEUE......................................................123");
+        JsonUtil.printStdOut(streamObject.toJson());
 
-        //System.out.println("********ACTIVE_DATA_LAKE_ID********");
-        //System.out.println(dataLakeId);
-        //System.out.println("***********************************");
+        String dataLakeId = streamObject.getDataLakeId();
 
         Queue<StreamObject> objectQueue = this.queue.get(dataLakeId);
         if(objectQueue == null){
@@ -43,21 +43,26 @@ public class StreamIngesterQueue implements Serializable {
         while (iterator.hasNext()) {
             JsonObject jsonObject = iterator.next().getAsJsonObject();
             StreamObject cour = new StreamObject();
+            String principal = streamObject.getPrincipal();
+            String entity = streamObject.getEntity();
+            int batchSize = streamObject.getBatchSize();
+            String chainId = streamObject.getChainId();
+            String data = streamObject.getData();
+
             cour.setPrincipal(streamObject.getPrincipal());
+            cour.setBatchSize(streamObject.getBatchSize());
             cour.setDataLakeId(streamObject.getDataLakeId());
             cour.setChainId(streamObject.getChainId());
             cour.setEntity(streamObject.getEntity());
             cour.setData(jsonObject.toString());
             objectQueue.add(cour);
+
+            StreamIngesterContext.getStreamIngesterContext().
+                    ingestOnThread(principal,entity,dataLakeId,chainId,batchSize,jsonObject);
         }
         if(!objectQueue.isEmpty()) {
             this.activeQueues.add(dataLakeId);
         }
-
-        /*System.out.println("*************ADD*********************");
-        System.out.println("DataLakeId: "+dataLakeId);
-        System.out.println(this.queue.get(dataLakeId));
-        System.out.println("**********************************");*/
     }
 
     public Queue<StreamObject> getDataLakeQueue(String dataLakeId){
@@ -65,12 +70,6 @@ public class StreamIngesterQueue implements Serializable {
         if(objectQueue == null){
             return new LinkedList<>();
         }
-
-        /*System.out.println("*************GET_QUEUE*********************");
-        System.out.println("DataLakeId: "+dataLakeId);
-        System.out.println(objectQueue);
-        System.out.println(this.getActiveDataLakeIds());
-        System.out.println("**********************************");*/
 
         return objectQueue;
     }

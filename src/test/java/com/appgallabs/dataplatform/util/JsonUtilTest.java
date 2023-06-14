@@ -59,4 +59,12 @@ public class JsonUtilTest {
         assertEquals(hash,topHash);
         assertEquals(hash,nextHash);
     }
+
+    @Test
+    public void testStringHashing() throws Exception{
+        String objectHash = new String("E9F16AA536FEC998D8AB79BBE13A4700");
+        System.out.println(objectHash.hashCode());
+        System.out.println("E9F16AA536FEC998D8AB79BBE13A4700".hashCode());
+        assertEquals("E9F16AA536FEC998D8AB79BBE13A4700".hashCode(),objectHash.hashCode());
+    }
 }

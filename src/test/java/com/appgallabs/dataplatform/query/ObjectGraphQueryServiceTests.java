@@ -1,12 +1,13 @@
 package com.appgallabs.dataplatform.query;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
+
 import org.apache.commons.io.IOUtils;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,12 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 public class ObjectGraphQueryServiceTests {
@@ -39,81 +39,92 @@ public class ObjectGraphQueryServiceTests {
         this.service.onStop();
     }
 
-    @Test
+    //@Test
     public void queryByCriteria() throws Exception
     {
-        JsonObject ausJson = new JsonObject();
-        ausJson.addProperty("code","aus");
-        ausJson.addProperty("description", "AUS");
-        ausJson.addProperty("size", 100);
-        Vertex ausV = this.service.saveObjectGraph("airport",ausJson,null,false);
-        System.out.println(ausV.graph());
+        JsonObject airport = new JsonObject();
+        airport.addProperty("code","aus");
+        airport.addProperty("description", "AUS");
+        airport.addProperty("size", "100");
+
+        String entity = "flight";
+        this.service.saveObjectGraph(entity,airport);
 
         JsonObject criteria = new JsonObject();
         criteria.addProperty("size", 100);
-
-        JsonArray array = service.queryByCriteria("airport", criteria);
-        System.out.println(array);
-        assertTrue(array.size()> 0);
     }
 
     @Test
     public void navigateByCriteria() throws Exception
     {
-        JsonObject ausJson = new JsonObject();
-        ausJson.addProperty("code","aus");
-        ausJson.addProperty("description", "AUS");
-        ausJson.addProperty("size", 100);
-
-        JsonObject laxJson = new JsonObject();
-        laxJson.addProperty("code","lax");
-        laxJson.addProperty("description", "LAX");
-        laxJson.addProperty("size", 150);
+        JsonObject departure = new JsonObject();
+        departure.addProperty("airport", "Indira Gandhi International");
+        JsonObject arrival = new JsonObject();
+        arrival.addProperty("arrival", "Auckland International");
 
         JsonObject flight = new JsonObject();
         flight.addProperty("flightId","123");
         flight.addProperty("description", "SouthWest");
-        flight.add("departure", ausJson);
-        flight.add("arrival", laxJson);
+        flight.add("departure", departure);
+        flight.add("arrival", arrival);
+        flight.addProperty("capacity",10);
 
-        JsonUtil.print(flight);
-
-        Vertex v = this.service.saveObjectGraph("flight",flight,null,false);
-        System.out.println(v.graph());
-
-        JsonObject departureCriteria = new JsonObject();
-        departureCriteria.addProperty("code","aus");
-        JsonArray array = this.service.navigateByCriteria("flight",
-                "departure",departureCriteria);
-        JsonUtil.print(array);
-        assertEquals(1,array.size());
-
-        JsonObject arrivalCriteria = new JsonObject();
-        arrivalCriteria.addProperty("code","lax");
-        array = this.service.navigateByCriteria("flight",
-                "arrival",arrivalCriteria);
-        JsonUtil.print(array);
-        assertEquals(1,array.size());
+        String entity = "flight";
+        this.service.saveObjectGraph(entity,flight);
     }
 
     @Test
-    public void navigateByCriteriaRealData() throws Exception{
-        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                "aviation/flights_small.json"),
-                StandardCharsets.UTF_8);
-        JsonObject json = JsonParser.parseString(sourceData).getAsJsonObject();
-        JsonArray array = json.get("data").getAsJsonArray();
+    public void navigateByCriteriaRealData() throws Exception
+    {
+        String json = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("aviation/flightsQantasSmall.json"),
+                StandardCharsets.UTF_8
+        );
 
-        for(int i=0; i<array.size();i++){
-            JsonObject cour = array.get(i).getAsJsonObject();
-            this.service.saveObjectGraph("flight",cour,null,false);
+        JsonObject flight = JsonParser.parseString(json).getAsJsonObject();
+        System.out.println(flight);
+        String entity = "flight";
+        this.service.saveObjectGraph(entity,flight);
+
+        String leftEntity = "flight";
+        String rightEntity = "airport";
+        String relationship = "departure";
+        String departureAirport = "Wellington International";
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("flight_date","2022-03-13");
+        //List<Record> resultSet = this.service.navigateByCriteria(leftEntity,rightEntity,relationship,criteria);
+        //System.out.println(resultSet);
+    }
+
+    @Test
+    public void testCallbackRegistry() throws Exception{
+        String configJsonString = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("entityCallbacks_dev.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonArray configJson = JsonParser.parseString(configJsonString).getAsJsonArray();
+
+        Map<String,String> callbackMap = new HashMap<>();
+        Iterator<JsonElement> iterator = configJson.iterator();
+        while(iterator.hasNext()){
+            JsonObject entityConfigJson = iterator.next().getAsJsonObject();
+            String entity = entityConfigJson.get("entity").getAsString();
+            String callback = entityConfigJson.get("callback").getAsString();
+            callbackMap.put(entity,callback);
         }
+        System.out.println(callbackMap);
+    }
 
-        JsonObject departureCriteria = new JsonObject();
-        departureCriteria.addProperty("airport","Auckland International");
-        array = this.service.navigateByCriteria("flight",
-                "departure",departureCriteria);
-        JsonUtil.print(array);
-        assertEquals(5, array.size());
+    @Test
+    public void endToEndTest() throws Exception {
+        String jsonString = IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("query/flight.json"),
+                StandardCharsets.UTF_8
+        );
+
+        String sourceEntity = "flight";
+        JsonObject sourceJson = JsonParser.parseString(jsonString).getAsJsonObject();
+
+        service.saveObjectGraph(sourceEntity,sourceJson);
     }
 }

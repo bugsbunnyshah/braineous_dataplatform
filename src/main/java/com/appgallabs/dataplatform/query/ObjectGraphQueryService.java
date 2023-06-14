@@ -1,15 +1,15 @@
 package com.appgallabs.dataplatform.query;
 
-import com.appgallabs.dataplatform.ingestion.service.MapperService;
-import com.appgallabs.dataplatform.util.JsonUtil;
+import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import com.google.gson.JsonParser;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
-import org.apache.tinkerpop.gremlin.sparql.process.traversal.dsl.sparql.SparqlTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.T;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.apache.commons.io.IOUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.neo4j.driver.*;
+import static org.neo4j.driver.Values.parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @ApplicationScoped
@@ -24,158 +25,145 @@ public class ObjectGraphQueryService {
     private static Logger logger = LoggerFactory.getLogger(ObjectGraphQueryService.class);
 
     @Inject
-    private MapperService mapperService;
-
-    @Inject
     private GraphQueryGenerator graphQueryGenerator;
 
-    @Inject
-    private  GraphQueryProcessor graphQueryProcessor;
+    private Driver driver;
 
+    @ConfigProperty(name = "queryServiceUri")
+    private String queryServiceUri;
 
-    private TinkerGraph g;
+    @ConfigProperty(name = "queryServiceUser")
+    private String queryServiceUser;
 
-    private GraphData graphData;
-
-    private SparqlTraversalSource server;
+    @ConfigProperty(name = "queryServicePassword")
+    private String queryServicePassword;
 
     @PostConstruct
     public void onStart()
     {
-        //TODO: instantiate with a RemoteGraphData
-        /*BaseConfiguration configuration = new BaseConfiguration();
-        configuration.addProperty("port", 8182);
-        configuration.addProperty("hosts", Arrays.asList("gremlin-server"));
-        configuration.addProperty("gremlin.remote.remoteConnectionClass","org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection");
-        configuration.addProperty("connectionPool.maxContentLength", 131072);
-        configuration.addProperty("connectionPool.enableSsl", false);
-        configuration.addProperty("connectionPool.maxSize", 80);
-        configuration.addProperty("connectionPool.minSize", 10);
-        configuration.addProperty("connectionPool.maxInProcessPerConnection", 16);
-        configuration.addProperty("connectionPool.minInProcessPerConnection", 8);
-        configuration.addProperty("connectionPool.maxWaitForConnection", 10000);
-        configuration.addProperty("connectionPool.minSimultaneousUsagePerConnection", 10);
-        configuration.addProperty("connectionPool.maxSimultaneousUsagePerConnection", 10);
-        //configuration.addProperty("serializer.className", "org.apache.tinkerpop.gremlin.driver.ser.AbstractGryoMessageSerializerV3d0");
-        //configuration.addProperty("serializer.config.serializeResultToString", "true");
-        configuration.addProperty("serializer.className",
-                "org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV3d0");
-
-        RemoteConnection remoteConnection = RemoteConnection.from(configuration);
-        SparqlTraversalSource server = new SparqlTraversalSource(remoteConnection);*/
-        this.g = TinkerGraph.open();
-        this.server = new SparqlTraversalSource(g);
-        this.graphData = new LocalGraphData(server);
+        try {
+            this.driver = GraphDatabase.driver(this.queryServiceUri,
+                    AuthTokens.basic(this.queryServiceUser,this.queryServicePassword));
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            throw new RuntimeException(e);
+        }
     }
 
     @PreDestroy
     public void onStop(){
-        this.g = null;
-        this.server = null;
-        this.graphData = null;
+        this.driver.close();
     }
 
-    public void setGraphData(GraphData graphData)
+    public List<Record> queryByCriteria(String entity, JsonObject criteria)
     {
-        this.graphData = graphData;
+        String entityLabel = "n1";
+        String whereClause = this.graphQueryGenerator.generateWhereClause(entityLabel,criteria);
+        String query = "MATCH ("+entityLabel+":"+entity+")\n" +
+                whereClause +
+                "RETURN "+entityLabel;
+        return null;
     }
 
-    public GraphData getGraphData()
+    public List<Record> navigateByCriteria(String leftEntity,String rightEntity, String relationship, JsonObject criteria, String airport) throws Exception
     {
-        return this.graphData;
-    }
-
-    public JsonArray queryByCriteria(String entity, JsonObject criteria)
-    {
-        JsonArray response = new JsonArray();
-        String query = this.graphQueryGenerator.generateQueryByCriteria(entity,criteria);
-
-        GraphTraversal result = this.graphQueryProcessor.query(this.graphData, query);
-        Iterator<Vertex> itr = result.toSet().iterator();
-        while(itr.hasNext())
+        try ( Session session = driver.session() )
         {
-            Vertex vertex = itr.next();
-            JsonObject vertexJson = JsonParser.parseString(vertex.property("source").value().toString()).getAsJsonObject();
-            response.add(vertexJson);
-        }
-        return response;
-    }
+            List<Record> resultSet = session.writeTransaction(tx ->
+            {
+                String whereClause = this.graphQueryGenerator.generateWhereClause(leftEntity,criteria);
+                String query = "MATCH ("+leftEntity+")--("+rightEntity+")\n" +
+                        whereClause+
+                        " RETURN airport,flight";
 
-    public JsonArray navigateByCriteria(String entity, String relationship, JsonObject criteria) throws Exception
-    {
-        JsonArray response = new JsonArray();
-
-        String navQuery = this.graphQueryGenerator.generateNavigationQuery(entity,
-                relationship,criteria);
-
-        GraphTraversal result = this.graphQueryProcessor.navigate(this.graphData,navQuery);
-        //result = result.flatMap(result);
-        //System.out.println(result);
-        Iterator<Map> itr = result.toSet().iterator();
-        while(itr.hasNext())
-        {
-            Map map = itr.next();
-            Vertex edge = (Vertex) map.get(entity);
-            if(edge != null) {
-                System.out.println(edge.label());
-                if (edge.label().equals(entity)) {
-                    JsonObject edgeJson = JsonParser.parseString(edge.property("source").value().toString()).getAsJsonObject();
-                    response.add(edgeJson);
+                if(relationship.equals("departure")) {
+                    query = "MATCH (f:flight)-[:departure]->(a:airport) WHERE a.name='"+airport+"' RETURN f LIMIT 100";
+                }else{
+                    query = "MATCH (f:flight)-[:arrival]->(a:airport) WHERE a.name='"+airport+"' RETURN f lIMIT 100";
                 }
-            }
-            else
-            {
-                System.out.println("NOT_fOUND");
-            }
-        }
 
-        return response;
+                System.out.println("************QUERY***************");
+                System.out.println(query);
+                System.out.println("***************************");
+
+                Result result = tx.run( query);
+                return result.list();
+            } );
+            return resultSet;
+        }
     }
 
-    public Vertex saveObjectGraph(String entity,
-                                  JsonObject parent,JsonObject child,boolean isProperty)
+    public void saveObjectGraph(String entity,JsonObject json)
     {
-        Vertex vertex;
-        if(!isProperty)
-        {
-            vertex = this.g.addVertex(T.label,entity);
-        }
-        else
-        {
-            vertex = this.g.addVertex(T.label, entity);
-        }
+        String label = "n1";
 
-        JsonObject json = parent;
-        if(child != null)
-        {
-            json = child;
-        }
-
-        Set<String> properties = json.keySet();
-        List<Vertex> children = new ArrayList<>();
-        for(String property:properties)
-        {
-            if(json.get(property).isJsonObject())
-            {
-                JsonObject propertyObject = json.getAsJsonObject(property);
-                Vertex propertyVertex = this.saveObjectGraph(property,parent,propertyObject,true);
-                children.add(propertyVertex);
-            }
-            else if(json.get(property).isJsonPrimitive())
-            {
-                String value = json.get(property).getAsString();
-                vertex.property(property,value);
+        final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
+        Set<Map.Entry<String,Object>> entrySet = objectMap.entrySet();
+        final Map<String, String> finalMap = new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:entrySet){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(key != null && value != null) {
+                finalMap.put(key, value.toString());
             }
         }
 
-        vertex.property("source",json.toString());
-        vertex.property("vertexId",UUID.randomUUID().toString());
-
-        for(Vertex local:children)
+        String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
+        try ( Session session = driver.session() )
         {
-            vertex.addEdge("edge_"+local.label(), local, T.id, UUID.randomUUID().toString(), "weight", 0.5d);
+            List<Record> resultData = session.writeTransaction(tx ->
+            {
+                Result result = tx.run(query,parameters( "json", finalMap));
+                return result.list();
+            } );
+        }
+    }
+
+    public void saveObjectRelationship(String entity,JsonObject json)
+    {
+        logger.info("****SAVE_OBJECT_RELATIONSHIP****");
+        String label = "n1";
+
+        final Map<String, Object> objectMap = JsonFlattener.flattenAsMap(json.toString());
+        Set<Map.Entry<String,Object>> entrySet = objectMap.entrySet();
+        final Map<String, String> finalMap = new LinkedHashMap<>();
+        for(Map.Entry<String,Object> entry:entrySet){
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(key != null && value != null) {
+                finalMap.put(key, value.toString());
+            }
         }
 
-        return vertex;
+
+        String query = "CREATE (("+label +":"+entity+" $json)) RETURN "+label;
+        try ( Session session = driver.session() )
+        {
+            List<Record> resultData = session.writeTransaction(tx ->
+            {
+                Result result = tx.run(query,parameters( "json", objectMap));
+                return result.list();
+            } );
+        }
+    }
+
+    public void establishRelationship(String leftEntity,String rightEntity, String relationship)
+    {
+        logger.info("****ESTABLISH_RELATIONSHIP****");
+        String leftLabel = "n1";
+        String rightLabel = "n2";
+        String createRelationship = "MATCH\n" +
+                "  ("+leftLabel+":"+leftEntity+"),\n" +
+                "  ("+rightLabel+":"+rightEntity+")\n" +
+                "CREATE ("+leftLabel+")-[r:"+relationship+"]->("+rightLabel+")\n" +
+                "RETURN type(r)";
+        try ( Session session = driver.session() )
+        {
+            List<Record> resultData = session.writeTransaction(tx ->
+            {
+                Result result = tx.run(createRelationship);
+                return result.list();
+            } );
+        }
     }
 }

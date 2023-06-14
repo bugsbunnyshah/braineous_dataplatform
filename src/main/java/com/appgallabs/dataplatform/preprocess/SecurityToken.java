@@ -44,8 +44,8 @@ public class SecurityToken implements Serializable {
     {
         SecurityToken securityToken = new SecurityToken();
         JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-        securityToken.clientId = jsonObject.get("principal").getAsString();
-        securityToken.principal = ""+ ObjectUtil.hashCode(securityToken.clientId);
+        securityToken.principal = jsonObject.get("principal").getAsString();
+        //securityToken.principal = ""+ ObjectUtil.hashCode(securityToken.clientId);
         securityToken.token = jsonObject.get("access_token").getAsString();
         return securityToken;
     }

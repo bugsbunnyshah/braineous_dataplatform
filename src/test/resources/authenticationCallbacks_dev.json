@@ -1,0 +1,6 @@
+[
+  {
+    "tenant": "random_tenant",
+    "callback": "com.appgallabs.dataplatform.infrastructure.security.InMemoryCallback"
+  }
+]

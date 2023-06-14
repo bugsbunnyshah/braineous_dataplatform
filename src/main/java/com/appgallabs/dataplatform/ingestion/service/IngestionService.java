@@ -39,24 +39,48 @@ public class IngestionService implements Serializable {
         this.pushAgents = new HashMap<>();
     }
 
+    public Map<String, FetchAgent> getFetchAgents() {
+        return fetchAgents;
+    }
+
+    public void setFetchAgents(Map<String, FetchAgent> fetchAgents) {
+        this.fetchAgents = fetchAgents;
+    }
+
+    public Map<String, PushAgent> getPushAgents() {
+        return pushAgents;
+    }
+
+    public void setPushAgents(Map<String, PushAgent> pushAgents) {
+        this.pushAgents = pushAgents;
+    }
+
     @PostConstruct
     public void onStart(){
         try {
-            String agentRegistrationJson = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                            getResourceAsStream("ingestionAgents.json"),
-                    StandardCharsets.UTF_8);
-            JsonArray jsonArray = JsonParser.parseString(agentRegistrationJson).getAsJsonArray();
-            for(int i=0; i<jsonArray.size(); i++){
-                JsonObject json = jsonArray.get(i).getAsJsonObject();
-                String id = json.get("id").getAsString();
-                String fetchAgent = json.get("fetchAgent").getAsString();
-                String pushAgent = json.get("pushAgent").getAsString();
+            String agentRegistrationJson = null;
+            try {
+                agentRegistrationJson = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                                getResourceAsStream("ingestionAgents.json"),
+                        StandardCharsets.UTF_8);
+            }catch (Exception e){
+                agentRegistrationJson = null;
+            }
 
-                Class fetchAgentClass = Thread.currentThread().getContextClassLoader().loadClass(fetchAgent);
-                Class pushAgentClass = Thread.currentThread().getContextClassLoader().loadClass(pushAgent);
+            if(agentRegistrationJson != null) {
+                JsonArray jsonArray = JsonParser.parseString(agentRegistrationJson).getAsJsonArray();
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JsonObject json = jsonArray.get(i).getAsJsonObject();
+                    String id = json.get("id").getAsString();
+                    String fetchAgent = json.get("fetchAgent").getAsString();
+                    String pushAgent = json.get("pushAgent").getAsString();
 
-                this.fetchAgents.put(id, (FetchAgent) fetchAgentClass.getDeclaredConstructor().newInstance());
-                this.pushAgents.put(id, (PushAgent) pushAgentClass.getDeclaredConstructor().newInstance());
+                    Class fetchAgentClass = Thread.currentThread().getContextClassLoader().loadClass(fetchAgent);
+                    Class pushAgentClass = Thread.currentThread().getContextClassLoader().loadClass(pushAgent);
+
+                    this.fetchAgents.put(id, (FetchAgent) fetchAgentClass.getDeclaredConstructor().newInstance());
+                    this.pushAgents.put(id, (PushAgent) pushAgentClass.getDeclaredConstructor().newInstance());
+                }
             }
         }
         catch (Exception e){
@@ -83,21 +107,25 @@ public class IngestionService implements Serializable {
 
     public void ingestData(String agentId, String entity){
         FetchAgent fetchAgent = this.fetchAgents.get(agentId);
-        if(!fetchAgent.isStarted()) {
+        if(fetchAgent != null && !fetchAgent.isStarted()) {
             fetchAgent.setSecurityTokenContainer(this.securityTokenContainer);
             fetchAgent.setTenant(this.securityTokenContainer.getTenant());
             fetchAgent.setEntity(entity);
             fetchAgent.setMapperService(this.mapperService);
+            fetchAgent.setMongoDBJsonStore(this.mongoDBJsonStore);
             fetchAgent.startFetch();
         }
     }
 
     public void ingestData(String agentId, String entity,JsonArray data){
         PushAgent pushAgent = this.pushAgents.get(agentId);
-        pushAgent.setSecurityTokenContainer(securityTokenContainer);
-        pushAgent.setTenant(this.securityTokenContainer.getTenant());
-        pushAgent.setEntity(entity);
-        pushAgent.setMapperService(this.mapperService);
-        pushAgent.receiveData(data);
+        if(pushAgent != null) {
+            pushAgent.setSecurityTokenContainer(securityTokenContainer);
+            pushAgent.setTenant(this.securityTokenContainer.getTenant());
+            pushAgent.setEntity(entity);
+            pushAgent.setMapperService(this.mapperService);
+            pushAgent.setMongoDBJsonStore(this.mongoDBJsonStore);
+            pushAgent.receiveData(data);
+        }
     }
 }

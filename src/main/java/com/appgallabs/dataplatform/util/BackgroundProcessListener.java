@@ -49,7 +49,6 @@ public class BackgroundProcessListener {
 
     public void decreaseThreshold(String entity,String dataLakeId,JsonObject jsonObject){
         if(entity.equals("not_specified")){
-            System.out.println(jsonObject);
             return;
         }
 
@@ -62,7 +61,6 @@ public class BackgroundProcessListener {
 
         if(this.receiver != null && this.receiver.getData() != null) {
             this.receiver.getData().add(jsonObject);
-            System.out.println(this.receiver.getData());
             String local = jsonObject.get("braineous_datalakeid").getAsString();
             if(this.entityToIdMap.get(entity).contains(local))
             {

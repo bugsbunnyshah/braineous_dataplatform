@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -27,8 +29,23 @@ public class MongoDBJsonStore implements Serializable
     @Inject
     private AIPlatformConfig aiPlatformConfig;
 
+    @ConfigProperty(name = "mongoDBConnectionString")
+    private String mongodbConnectionString;
+
+    @ConfigProperty(name = "mongodbHost")
+    private String mongodbHost;
+
+    @ConfigProperty(name = "mongodbPort")
+    private String mongodbPort;
+
+    private String database = "ian_qa";
+    private String password = "jen";
+
     @Inject
     private DataHistoryStore dataHistoryStore;
+
+    @Inject
+    private DataLakeStore dataLakeStore;
 
     private MongoClient mongoClient;
     private Map<String,MongoDatabase> databaseMap;
@@ -41,28 +58,23 @@ public class MongoDBJsonStore implements Serializable
     @PostConstruct
     public void start()
     {
-        try {
-            JsonObject config = this.aiPlatformConfig.getConfiguration();
-
-            //mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-            StringBuilder connectStringBuilder = new StringBuilder();
-            connectStringBuilder.append("mongodb://");
-
-            String mongodbHost = config.get("mongodbHost").getAsString();
-            long mongodbPort = config.get("mongodbPort").getAsLong();
-            if (config.has("mongodbUser") && config.has("mongodbPassword")) {
-                connectStringBuilder.append(config.get("mongodbUser").getAsString()
-                        + ":" + config.get("mongodbPassword").getAsString() + "@");
-            }
-            connectStringBuilder.append(mongodbHost + ":" + mongodbPort);
-
-            String connectionString = connectStringBuilder.toString();
-            this.mongoClient = MongoClients.create(connectionString);
-        }
-        catch(Exception e)
+        String connectionString;
+        if(this.mongodbHost.equals("localhost"))
         {
-            this.mongoClient = null;
+            connectionString = this.mongodbConnectionString;
         }
+        else
+        {
+            connectionString = MessageFormat.format(this.mongodbConnectionString,
+                    this.password,this.mongodbHost,
+                    this.database);
+        }
+
+        System.out.println("*****************************");
+        System.out.println(connectionString);
+        System.out.println("*****************************");
+
+        this.mongoClient = MongoClients.create(connectionString);
     }
 
     @PreDestroy
@@ -98,6 +110,9 @@ public class MongoDBJsonStore implements Serializable
         MongoCollection<Document> collection = database.getCollection("datalake");
 
         String queryJson = "{\"braineous_datalakeid\":\""+dataLakeId+"\"}";
+        System.out.println("****************************************");
+        System.out.println(queryJson);
+        System.out.println("****************************************");
         Bson bson = Document.parse(queryJson);
         FindIterable<Document> iterable = collection.find(bson);
         MongoCursor<Document> cursor = iterable.cursor();
@@ -544,5 +559,17 @@ public class MongoDBJsonStore implements Serializable
 
     public JsonArray readHistory(Tenant tenant, OffsetDateTime endTime){
         return this.dataHistoryStore.readHistory(tenant, this.mongoClient,endTime);
+    }
+    //--DataLake------------------------------
+    public JsonArray readByEntity(Tenant tenant, String entity){
+        return this.dataLakeStore.readByEntity(tenant,this.mongoClient,entity);
+    }
+
+    public boolean entityExists(Tenant tenant, JsonObject entity){
+        return this.dataLakeStore.entityExists(tenant,this.mongoClient,entity);
+    }
+
+    public JsonObject readEntity(Tenant tenant,String objectHash){
+        return this.dataLakeStore.readEntity(tenant, this.mongoClient, objectHash);
     }
 }
