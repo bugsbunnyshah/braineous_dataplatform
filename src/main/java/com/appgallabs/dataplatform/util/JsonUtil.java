@@ -1,10 +1,7 @@
 package com.appgallabs.dataplatform.util;
 
 import com.github.wnameless.json.flattener.JsonFlattener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +49,17 @@ public class JsonUtil {
 
     public static String getJsonHash(JsonObject jsonObject) throws NoSuchAlgorithmException {
         Map<String, Object> jsonMap = JsonFlattener.flattenAsMap(jsonObject.toString());
+        Map<String,Object> sortedMap = new TreeMap<>();
+        Set<Map.Entry<String,Object>> entrySet = jsonMap.entrySet();
+        for(Map.Entry<String,Object> entry:entrySet){
+            sortedMap.put(entry.getKey(),entry.getValue());
+        }
+        String jsonHashString = sortedMap.toString();
+        return JsonUtil.hash(jsonHashString);
+    }
+
+    public static String getJsonHash(JsonArray jsonArray) throws NoSuchAlgorithmException {
+        Map<String, Object> jsonMap = JsonFlattener.flattenAsMap(jsonArray.toString());
         Map<String,Object> sortedMap = new TreeMap<>();
         Set<Map.Entry<String,Object>> entrySet = jsonMap.entrySet();
         for(Map.Entry<String,Object> entry:entrySet){
