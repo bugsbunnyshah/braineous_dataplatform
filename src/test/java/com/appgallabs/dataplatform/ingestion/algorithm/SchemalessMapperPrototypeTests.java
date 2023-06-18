@@ -2,7 +2,6 @@ package com.appgallabs.dataplatform.ingestion.algorithm;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.flattener.JsonFlattener;
-import com.github.wnameless.json.flattener.KeyTransformer;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -14,12 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.Json;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class DeclarativeMapperTests {
-    private static Logger logger = LoggerFactory.getLogger(DeclarativeMapperTests.class);
+public class SchemalessMapperPrototypeTests {
+    private static Logger logger = LoggerFactory.getLogger(SchemalessMapperPrototypeTests.class);
 
     @Test
     public void mapAll() throws Exception {
