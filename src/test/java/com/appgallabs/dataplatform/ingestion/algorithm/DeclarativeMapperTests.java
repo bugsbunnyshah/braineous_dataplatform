@@ -60,31 +60,39 @@ public class DeclarativeMapperTests {
         Map<String,Object> flattenedJson = new LinkedHashMap<>();
         EvaluationListener evaluationListener = foundResult -> {
             String dotNotationPath = convertPathToDotNotation(foundResult.path());
+            if(dotNotationPath.equalsIgnoreCase("ignore")){
+                return EvaluationListener.EvaluationContinuation.CONTINUE;
+            }
 
             Object value = foundResult.result();
-            String variableValue;
-            flattenedJson.put(dotNotationPath,value);
+
+            flattenedJson.put(dotNotationPath, value);
             return EvaluationListener.EvaluationContinuation.CONTINUE;
         };
 
-        readContext.withListeners(evaluationListener).read("$.store.book");
+        //readContext.withListeners(evaluationListener).read("$.store.book");
         //readContext.withListeners(evaluationListener).read("$.store.book[1].author");
 
         //TODO
-        //List<Map<String, Object>> books =  readContext.withListeners(evaluationListener).
-        //        read("$.store.book[?(@.price < 10)]");
+        readContext.withListeners(evaluationListener).
+                read("$.store.book[?(@.price != 0)]");
 
         Gson gson = new Gson();
         String flattenedJsonString = gson.toJson(flattenedJson,LinkedHashMap.class);
         JsonUtil.printStdOut(JsonParser.parseString(flattenedJsonString));
 
-        System.out.println("*******************");
+        System.out.println("*************************************************");
 
         String nestedJson = JsonUnflattener.unflatten(flattenedJsonString);
-        JsonUtil.printStdOut(JsonParser.parseString(nestedJson));
+
+        JsonElement jsonElement = JsonParser.parseString(nestedJson);
+        JsonUtil.printStdOut(jsonElement);
     }
 
     private String convertPathToDotNotation(String path){
+        if(path.startsWith("@")){
+            return "ignore";
+        }
         StringBuilder builder = new StringBuilder();
         for(int i=0; i<path.length(); i++){
             int token = path.charAt(i);
