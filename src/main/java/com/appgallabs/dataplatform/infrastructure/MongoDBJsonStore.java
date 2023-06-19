@@ -2,6 +2,8 @@ package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -88,6 +90,50 @@ public class MongoDBJsonStore implements Serializable
     }
 
     //Data Ingestion related operations-----------------------------------------------------
+    public String storeIngestion(Tenant tenant,Map<String,Object> flatJson){
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+
+        MongoCollection<Document> collection = database.getCollection("datalake");
+
+        //TODO
+        Gson gson = new Gson();
+        String flattenedJsonString = gson.toJson(flatJson,LinkedHashMap.class);
+
+        //produce dataLakeId
+        String dataLakeId = UUID.randomUUID().toString();
+        Document document = Document.parse(flattenedJsonString);
+        document.put("braineous_datalakeid", dataLakeId);
+
+        collection.insertOne(document);
+
+        return dataLakeId;
+    }
+
+    public void readIngestion(Tenant tenant,String dataLakeId){
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+
+        MongoCollection<Document> collection = database.getCollection("datalake");
+
+        String queryJson = "{\"braineous_datalakeid\":\""+dataLakeId+"\"}";
+        System.out.println("****************************************");
+        System.out.println(queryJson);
+        System.out.println("****************************************");
+        Bson bson = Document.parse(queryJson);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+            JsonObject storedJson = JsonParser.parseString(documentJson).getAsJsonObject();
+            JsonUtil.printStdOut(storedJson);
+        }
+    }
+
     public void storeIngestion(Tenant tenant,JsonObject jsonObject)
     {
         String principal = tenant.getPrincipal();
