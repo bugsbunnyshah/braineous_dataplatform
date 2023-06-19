@@ -3,10 +3,8 @@ package com.appgallabs.dataplatform.infrastructure;
 import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.github.wnameless.json.unflattener.JsonUnflattener;
+import com.google.gson.*;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -115,7 +113,7 @@ public class MongoDBJsonStore implements Serializable
         return dataLakeId;
     }
 
-    public void readIngestion(Tenant tenant,String dataLakeId){
+    public JsonArray readIngestion(Tenant tenant,String dataLakeId){
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
         MongoDatabase database = mongoClient.getDatabase(databaseName);
@@ -129,13 +127,26 @@ public class MongoDBJsonStore implements Serializable
         Bson bson = Document.parse(queryJson);
         FindIterable<Document> iterable = collection.find(bson);
         MongoCursor<Document> cursor = iterable.cursor();
+        Document wholeDocument = new Document();
         while(cursor.hasNext())
         {
             Document document = cursor.next();
-            String documentJson = document.toJson();
-            JsonObject storedJson = JsonParser.parseString(documentJson).getAsJsonObject();
-            JsonUtil.printStdOut(storedJson);
+            wholeDocument.append(document.keySet().iterator().next(),
+                    document.entrySet().iterator().next());
         }
+
+        JsonArray result = new JsonArray();
+
+        //TODO
+        Gson gson = new Gson();
+        String flattenedJsonString = gson.toJson(wholeDocument,Map.class);
+
+        String nestedJson = JsonUnflattener.unflatten(flattenedJsonString);
+        JsonElement jsonElement = JsonParser.parseString(nestedJson);
+
+        result.add(jsonElement);
+
+        return result;
     }
 
     public void storeIngestion(Tenant tenant,JsonObject jsonObject)

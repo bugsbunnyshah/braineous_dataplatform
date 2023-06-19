@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
@@ -48,6 +49,7 @@ public class SchemalessStoragePrototypeTests extends BaseTest {
         String dataLakeId = this.mongoDBJsonStore.storeIngestion(tenant,flattenJson);
 
         //Read the Json
-        this.mongoDBJsonStore.readIngestion(tenant,dataLakeId);
+        JsonArray result = this.mongoDBJsonStore.readIngestion(tenant,dataLakeId);
+        JsonUtil.printStdOut(result);
     }
 }
