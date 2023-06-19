@@ -97,16 +97,20 @@ public class MongoDBJsonStore implements Serializable
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
-        //TODO
-        Gson gson = new Gson();
-        String flattenedJsonString = gson.toJson(flatJson,LinkedHashMap.class);
-
         //produce dataLakeId
         String dataLakeId = UUID.randomUUID().toString();
-        Document document = Document.parse(flattenedJsonString);
-        document.put("braineous_datalakeid", dataLakeId);
 
-        collection.insertOne(document);
+        Set<Map.Entry<String, Object>> entrySet = flatJson.entrySet();
+        for(Map.Entry<String, Object> entry: entrySet){
+            Document document = new Document();
+            document.put("braineous_datalakeid", dataLakeId);
+
+            String path = entry.getKey();
+            Object value = entry.getValue();
+            document.put(path,value);
+
+            collection.insertOne(document);
+        }
 
         return dataLakeId;
     }
