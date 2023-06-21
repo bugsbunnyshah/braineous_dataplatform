@@ -127,19 +127,34 @@ public class MongoDBJsonStore implements Serializable
         Bson bson = Document.parse(queryJson);
         FindIterable<Document> iterable = collection.find(bson);
         MongoCursor<Document> cursor = iterable.cursor();
-        Document wholeDocument = new Document();
+        Map<String,Object> wholeDocument = new LinkedHashMap<>();
         while(cursor.hasNext())
         {
             Document document = cursor.next();
-            wholeDocument.append(document.keySet().iterator().next(),
-                    document.entrySet().iterator().next());
+            Iterator<String> keyIterator = document.keySet().iterator();
+            String key = null;
+            while(keyIterator.hasNext()){
+                key = keyIterator.next();
+                if(!key.equals("_id") && !key.equals("braineous_datalakeid")){
+                    break;
+                }
+            }
+
+            Object value = document.get(key);
+            if(value instanceof String){
+                wholeDocument.put(key, value.toString());
+            }else if (value instanceof Boolean){
+                wholeDocument.put(key, ((Boolean) value).booleanValue());
+            }else{
+                wholeDocument.put(key, ((Number) value).doubleValue());
+            }
         }
 
         JsonArray result = new JsonArray();
 
         //TODO
         Gson gson = new Gson();
-        String flattenedJsonString = gson.toJson(wholeDocument,Map.class);
+        String flattenedJsonString = gson.toJson(wholeDocument,LinkedHashMap.class);
 
         String nestedJson = JsonUnflattener.unflatten(flattenedJsonString);
         JsonElement jsonElement = JsonParser.parseString(nestedJson);
