@@ -35,17 +35,6 @@ public class SchemalessMapperPrototypeTests {
     }
 
     @Test
-    public void mapSubset() throws Exception{
-        String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/mapAll.json"),
-                StandardCharsets.UTF_8
-        );
-
-        JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-        JsonUtil.printStdOut(json);
-    }
-
-    @Test
     public void prototypeJsonPath() throws Exception{
         String json = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),

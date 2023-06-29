@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.github.wnameless.json.flattener.JsonFlattener;
 import test.components.BaseTest;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.*;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -148,5 +150,26 @@ public class MongoDBJsonStoreTests extends BaseTest {
         JsonObject data = this.mongoDBJsonStore.readEntity(tenant,objectHash);
         assertNotNull(data);
         assertEquals(objectHash,data.get("objectHash").getAsString());
+    }
+
+    @Test
+    public void storeFlatJson() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                StandardCharsets.UTF_8
+        );
+
+        Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(jsonString);
+        JsonUtil.printStdOut(JsonParser.parseString(flattenJson.toString()));
+
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        System.out.println(tenant.getPrincipal());
+
+        //Store the FlatJson
+        String dataLakeId = this.mongoDBJsonStore.storeIngestion(tenant,flattenJson);
+
+        //Read the Json
+        JsonArray result = this.mongoDBJsonStore.readIngestion(tenant,dataLakeId);
+        JsonUtil.printStdOut(result);
     }
 }
