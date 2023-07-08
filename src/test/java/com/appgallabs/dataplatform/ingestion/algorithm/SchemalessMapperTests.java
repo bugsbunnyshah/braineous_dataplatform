@@ -31,7 +31,7 @@ public class SchemalessMapperTests {
     @Test
     public void mapAll() throws Exception{
         String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
 
@@ -49,7 +49,7 @@ public class SchemalessMapperTests {
     @Test
     public void mapSubset() throws Exception{
         String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
 

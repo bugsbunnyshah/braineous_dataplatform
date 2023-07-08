@@ -5,7 +5,6 @@ import com.github.wnameless.json.flattener.JsonFlattener;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jayway.jsonpath.*;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +21,7 @@ public class SchemalessMapperPrototypeTests {
     @Test
     public void mapAll() throws Exception {
         String jsonString = IOUtils.toString(Thread.currentThread().
-                getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
 
@@ -37,7 +36,7 @@ public class SchemalessMapperPrototypeTests {
     @Test
     public void prototypeJsonPath() throws Exception{
         String json = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
 

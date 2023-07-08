@@ -30,7 +30,7 @@ public class SchemalessIngestionServiceTests extends BaseTest {
     @Test
     public void processFull() throws Exception {
         String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
         String datalakeId = this.schemalessIngestionService.processFull(jsonString);
@@ -52,7 +52,7 @@ public class SchemalessIngestionServiceTests extends BaseTest {
     @Test
     public void processSubset() throws Exception {
         String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
 
