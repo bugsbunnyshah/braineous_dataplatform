@@ -46,3 +46,4 @@ src/main/resources/META-INF/resources/
 remember.txt
 /mlruns/
 gitpush.sh
+/compare/
