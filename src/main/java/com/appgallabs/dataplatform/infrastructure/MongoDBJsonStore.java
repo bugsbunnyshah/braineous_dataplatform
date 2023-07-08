@@ -145,12 +145,16 @@ public class MongoDBJsonStore implements Serializable
             }
 
             Object value = document.get(key);
-            if(value instanceof String){
-                wholeDocument.put(key, value.toString());
-            }else if (value instanceof Boolean){
-                wholeDocument.put(key, ((Boolean) value).booleanValue());
-            }else{
-                wholeDocument.put(key, ((Number) value).doubleValue());
+            if(value instanceof Document){
+                this.processArrayDocument(wholeDocument,(Document)value,key);
+            }else {
+                if (value instanceof String) {
+                    wholeDocument.put(key, value.toString());
+                } else if (value instanceof Boolean) {
+                    wholeDocument.put(key, ((Boolean) value).booleanValue());
+                } else {
+                    wholeDocument.put(key, ((Number) value).doubleValue());
+                }
             }
         }
 
@@ -166,6 +170,22 @@ public class MongoDBJsonStore implements Serializable
         result.add(jsonElement);
 
         return result;
+    }
+
+    private void processArrayDocument(Map<String,Object> wholeDocument, Document document, String arrayKey){
+        Iterator<String> keyIterator = document.keySet().iterator();
+        String key;
+        while(keyIterator.hasNext()){
+            key = keyIterator.next();
+            Object value = document.get(key);
+            if(value instanceof String){
+                wholeDocument.put(arrayKey+"."+key, value.toString());
+            }else if (value instanceof Boolean){
+                wholeDocument.put(arrayKey+"."+key, ((Boolean) value).booleanValue());
+            }else{
+                wholeDocument.put(arrayKey+"."+key, ((Number) value).doubleValue());
+            }
+        }
     }
 
     public void storeIngestion(Tenant tenant,JsonObject jsonObject)

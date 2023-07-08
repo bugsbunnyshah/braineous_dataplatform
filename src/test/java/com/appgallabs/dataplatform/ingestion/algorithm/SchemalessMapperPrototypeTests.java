@@ -71,7 +71,6 @@ public class SchemalessMapperPrototypeTests {
         System.out.println("*************************************************");
 
         String nestedJson = JsonUnflattener.unflatten(flattenedJsonString);
-
         JsonElement jsonElement = JsonParser.parseString(nestedJson);
         JsonUtil.printStdOut(jsonElement);
     }

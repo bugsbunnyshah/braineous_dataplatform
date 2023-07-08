@@ -14,6 +14,8 @@ import test.components.BaseTest;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -49,6 +51,27 @@ public class SchemalessIngestionServiceTests extends BaseTest {
 
     @Test
     public void processSubset() throws Exception {
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/subset.json"),
+                StandardCharsets.UTF_8
+        );
 
+        List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
+
+        String datalakeId = this.schemalessIngestionService.processSubset(jsonString,jsonPathExpressions);
+
+        JsonArray result = this.schemalessIngestionService.readIngestion(datalakeId);
+
+        String inputSubsetString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/pulled.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonObject inputJson = JsonParser.parseString(inputSubsetString).getAsJsonObject();
+        String inputHash = JsonUtil.getJsonHash(inputJson);
+
+        JsonObject resultJson = result.get(0).getAsJsonObject();
+        String resultHash = JsonUtil.getJsonHash(resultJson);
+
+        assertEquals(inputHash, resultHash);
     }
 }
