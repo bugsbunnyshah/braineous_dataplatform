@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
 import com.github.wnameless.json.flattener.JsonFlattener;
+import com.google.gson.JsonArray;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.EvaluationListener;
 import com.jayway.jsonpath.JsonPath;
@@ -27,6 +28,12 @@ public class SchemalessIngestionService {
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
+
+    public JsonArray readIngestion(String dataLakeId){
+        Tenant tenant = securityTokenContainer.getTenant();
+        JsonArray result = this.mongoDBJsonStore.readIngestion(tenant,dataLakeId);
+        return result;
+    }
 
     public String processFull(String jsonString){
        Tenant tenant = securityTokenContainer.getTenant();
