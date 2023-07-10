@@ -2,13 +2,8 @@ package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.*;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.EvaluationListener;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ReadContext;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -146,15 +141,12 @@ public class MongoDBJsonStore implements Serializable
 
             Object value = document.get(key);
             if(value instanceof Document){
-                this.processArrayDocument(wholeDocument,(Document)value,key);
-            }else {
-                if (value instanceof String) {
-                    wholeDocument.put(key, value.toString());
-                } else if (value instanceof Boolean) {
-                    wholeDocument.put(key, ((Boolean) value).booleanValue());
-                } else {
-                    wholeDocument.put(key, ((Number) value).doubleValue());
-                }
+                this.processDocument(wholeDocument, key, (Document)value);
+            }else if (value instanceof List){
+                this.processList(wholeDocument, key, ((List)value).toArray());
+            }
+            else {
+                processPrimitive(wholeDocument,key,value);
             }
         }
 
@@ -172,54 +164,60 @@ public class MongoDBJsonStore implements Serializable
         return result;
     }
 
-    private void processArrayDocument(Map<String,Object> wholeDocument, Document document, String arrayKey){
+    private void processPrimitive(Map<String,Object> wholeDocument, String key, Object value){
+        if (value instanceof String) {
+            wholeDocument.put(key, value.toString());
+        } else if (value instanceof Boolean) {
+            wholeDocument.put(key, ((Boolean) value).booleanValue());
+        } else {
+            wholeDocument.put(key, ((Number) value).doubleValue());
+        }
+    }
+
+    private void processDocument(Map<String,Object> wholeDocument, String key, Document document){
         Iterator<String> keyIterator = document.keySet().iterator();
-        String key;
+        if(!keyIterator.hasNext()){
+            wholeDocument.put(key, document);
+            return;
+        }
+
+        String variable;
         while(keyIterator.hasNext()){
-            key = keyIterator.next();
-            Object value = document.get(key);
+            variable = keyIterator.next();
+            Object value = document.get(variable);
             if(value instanceof List || value instanceof Document){
                 if(value instanceof Document){
-                    processArrayDocument(wholeDocument, (Document) value, arrayKey+"."+key);
+                    processDocument(wholeDocument, key+"."+variable, (Document) value);
                 }else{
-                    List<Object> objectArray = new ArrayList<>();
-                    List list = (List)value;
-                    for(Object object:list){
-                       objectArray.add(object);
-                    }
-                    processArrayList(wholeDocument, objectArray.toArray(),arrayKey+"."+key);
+                    processList(wholeDocument, key +"."+variable, ((List)value).toArray());
                 }
                 continue;
             }
-
-            if(value instanceof String){
-                wholeDocument.put(arrayKey+"."+key, value.toString());
-            }else if (value instanceof Boolean){
-                wholeDocument.put(arrayKey+"."+key, ((Boolean) value).booleanValue());
-            }else{
-                wholeDocument.put(arrayKey+"."+key, ((Number) value).doubleValue());
-            }
+            processPrimitive(wholeDocument,key+"."+variable,value);
         }
     }
 
-    private void processArrayList(Map<String,Object> wholeDocument, Object[] objectArray, String key){
-        List array = new ArrayList<>();
+    private void processList(Map<String,Object> wholeDocument, String key, Object[] objectArray){
+        if(objectArray.length == 0){
+            wholeDocument.put(key, objectArray);
+            return;
+        }
+
+        int counter = 0;
         for(Object value:objectArray) {
             if(value instanceof Document){
-                processArrayDocument(wholeDocument, (Document) value, key);
-                return;
-            }else {
-                if (value instanceof String) {
-                    array.add(value.toString());
-                } else if (value instanceof Boolean) {
-                    array.add(((Boolean) value).booleanValue());
-                } else {
-                    array.add(((Number) value).doubleValue());
-                }
+                processDocument(wholeDocument, key+"["+counter+"]", (Document) value);
+            }else if(value instanceof List){
+                processList(wholeDocument, key+"["+counter+"]", ((List)value).toArray());
             }
+            else {
+                processPrimitive(wholeDocument,key+"["+counter+"]",value);
+            }
+            counter++;
         }
-        wholeDocument.put(key, array);
     }
+
+
 
     public void storeIngestion(Tenant tenant,JsonObject jsonObject)
     {
