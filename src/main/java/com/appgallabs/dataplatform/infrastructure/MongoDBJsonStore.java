@@ -178,6 +178,20 @@ public class MongoDBJsonStore implements Serializable
         while(keyIterator.hasNext()){
             key = keyIterator.next();
             Object value = document.get(key);
+            if(value instanceof List || value instanceof Document){
+                if(value instanceof Document){
+                    processArrayDocument(wholeDocument, (Document) value, arrayKey+"."+key);
+                }else{
+                    List<Object> objectArray = new ArrayList<>();
+                    List list = (List)value;
+                    for(Object object:list){
+                       objectArray.add(object);
+                    }
+                    processArrayList(wholeDocument, objectArray.toArray(),arrayKey+"."+key);
+                }
+                continue;
+            }
+
             if(value instanceof String){
                 wholeDocument.put(arrayKey+"."+key, value.toString());
             }else if (value instanceof Boolean){
@@ -186,6 +200,25 @@ public class MongoDBJsonStore implements Serializable
                 wholeDocument.put(arrayKey+"."+key, ((Number) value).doubleValue());
             }
         }
+    }
+
+    private void processArrayList(Map<String,Object> wholeDocument, Object[] objectArray, String key){
+        List array = new ArrayList<>();
+        for(Object value:objectArray) {
+            if(value instanceof Document){
+                processArrayDocument(wholeDocument, (Document) value, key);
+                return;
+            }else {
+                if (value instanceof String) {
+                    array.add(value.toString());
+                } else if (value instanceof Boolean) {
+                    array.add(((Boolean) value).booleanValue());
+                } else {
+                    array.add(((Number) value).doubleValue());
+                }
+            }
+        }
+        wholeDocument.put(key, array);
     }
 
     public void storeIngestion(Tenant tenant,JsonObject jsonObject)

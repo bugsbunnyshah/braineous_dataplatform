@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.ingestion.service;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
@@ -70,6 +71,37 @@ public class SchemalessIngestionServiceTests extends BaseTest {
         String inputHash = JsonUtil.getJsonHash(inputJson);
 
         JsonObject resultJson = result.get(0).getAsJsonObject();
+        String resultHash = JsonUtil.getJsonHash(resultJson);
+
+        assertEquals(inputHash, resultHash);
+    }
+
+    @Test
+    public void processNestedArrays() throws Exception {
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_nested_arrays.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonElement originalJson = JsonParser.parseString(jsonString);
+        System.out.println("***ORIGINAL***");
+        JsonUtil.printStdOut(originalJson);
+
+        List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
+
+        String datalakeId = this.schemalessIngestionService.processSubset(jsonString,jsonPathExpressions);
+
+        JsonArray result = this.schemalessIngestionService.readIngestion(datalakeId);
+
+        String inputSubsetString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/pulled_nested_arrays.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonObject inputJson = JsonParser.parseString(inputSubsetString).getAsJsonObject();
+        JsonUtil.printStdOut(inputJson);
+        String inputHash = JsonUtil.getJsonHash(inputJson);
+
+        JsonObject resultJson = result.get(0).getAsJsonObject();
+        JsonUtil.printStdOut(resultJson);
         String resultHash = JsonUtil.getJsonHash(resultJson);
 
         assertEquals(inputHash, resultHash);
