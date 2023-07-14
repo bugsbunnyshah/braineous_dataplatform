@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -22,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.*;
 
 @Singleton
+@Named("braineous://datalake/mongodb")
 public class MongoDBJsonStore implements DataLakeDriver,Serializable
 {
     private static Logger logger = LoggerFactory.getLogger(MongoDBJsonStore.class);
@@ -85,6 +87,10 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
     public MongoClient getMongoClient() {
         return mongoClient;
+    }
+
+    public String name(){
+        return "braineous://datalake/mongodb";
     }
 
     //Data Ingestion related operations-----------------------------------------------------

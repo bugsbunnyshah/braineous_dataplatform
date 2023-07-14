@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -13,7 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import test.components.BaseTest;
 
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.literal.NamedLiteral;
 import javax.inject.Inject;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +31,9 @@ public class SchemalessIngestionServiceTests extends BaseTest {
 
     @Inject
     private SchemalessIngestionService schemalessIngestionService;
+
+    @Inject
+    Instance<DataLakeDriver> dataLakeDriverInstance;
 
     @Test
     public void processFull() throws Exception {
@@ -105,5 +112,14 @@ public class SchemalessIngestionServiceTests extends BaseTest {
         String resultHash = JsonUtil.getJsonHash(resultJson);
 
         assertEquals(inputHash, resultHash);
+    }
+
+    @Test
+    public void prototypeInterfaceInjection() throws Exception{
+        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of("braineous://datalake/mongodb")).get();
+
+        System.out.println("********");
+        System.out.println(dataLakeDriver.name());
+        System.out.println("********");
     }
 }
