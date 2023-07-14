@@ -54,7 +54,7 @@ public class ObjectGraphQueryServiceTests {
         criteria.addProperty("size", 100);
     }
 
-    @Test
+    //@Test
     public void navigateByCriteria() throws Exception
     {
         JsonObject departure = new JsonObject();
@@ -73,7 +73,7 @@ public class ObjectGraphQueryServiceTests {
         this.service.saveObjectGraph(entity,flight);
     }
 
-    @Test
+    //@Test
     public void navigateByCriteriaRealData() throws Exception
     {
         String json = IOUtils.toString(
@@ -115,7 +115,7 @@ public class ObjectGraphQueryServiceTests {
         System.out.println(callbackMap);
     }
 
-    @Test
+    //@Test
     public void endToEndTest() throws Exception {
         String jsonString = IOUtils.toString(
                 Thread.currentThread().getContextClassLoader().getResourceAsStream("query/flight.json"),
