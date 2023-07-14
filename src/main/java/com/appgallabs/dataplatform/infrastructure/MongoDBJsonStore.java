@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
+import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.*;
@@ -21,7 +22,7 @@ import java.time.OffsetDateTime;
 import java.util.*;
 
 @Singleton
-public class MongoDBJsonStore implements Serializable
+public class MongoDBJsonStore implements DataLakeDriver,Serializable
 {
     private static Logger logger = LoggerFactory.getLogger(MongoDBJsonStore.class);
 
