@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
@@ -116,7 +118,9 @@ public class SchemalessIngestionServiceTests extends BaseTest {
 
     @Test
     public void prototypeInterfaceInjection() throws Exception{
-        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of("braineous://datalake/mongodb")).get();
+        Config config = ConfigProvider.getConfig();
+        String dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
+        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
 
         System.out.println("********");
         System.out.println(dataLakeDriver.name());

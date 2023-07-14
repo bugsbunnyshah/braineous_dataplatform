@@ -217,6 +217,13 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-jwt-build</artifactId>
     </dependency>
+
+    <!-- small_rye_for_braineous_configuration -->
+    <dependency>
+      <groupId>io.smallrye.config</groupId>
+      <artifactId>smallrye-config-source-yaml</artifactId>
+      <version>3.3.1</version>
+    </dependency>
   </dependencies>
 
   <build>

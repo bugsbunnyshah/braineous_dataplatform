@@ -7,9 +7,12 @@ import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.EvaluationListener;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.literal.NamedLiteral;
@@ -26,20 +29,29 @@ public class SchemalessIngestionService {
     private static Logger logger = LoggerFactory.getLogger(SchemalessIngestionService.class);
 
     @Inject
-    Instance<DataLakeDriver> dataLakeDriverInstance;
+    private Instance<DataLakeDriver> dataLakeDriverInstance;
+
+    private String dataLakeDriverName;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @PostConstruct
+    public void start(){
+        Config config = ConfigProvider.getConfig();
+        this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
+        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
+    }
+
     public JsonArray readIngestion(String dataLakeId){
-        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of("braineous://datalake/mongodb")).get();
+        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(this.dataLakeDriverName)).get();
         Tenant tenant = securityTokenContainer.getTenant();
         JsonArray result = dataLakeDriver.readIngestion(tenant,dataLakeId);
         return result;
     }
 
     public String processFull(String jsonString){
-        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of("braineous://datalake/mongodb")).get();
+        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(this.dataLakeDriverName)).get();
        Tenant tenant = securityTokenContainer.getTenant();
 
         Map<String, Object> flattenedJsonMap = JsonFlattener.flattenAsMap(jsonString);
@@ -50,7 +62,7 @@ public class SchemalessIngestionService {
     }
 
     public String processSubset(String jsonString, List<String> jsonPathExpressions){
-        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of("braineous://datalake/mongodb")).get();
+        DataLakeDriver dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(this.dataLakeDriverName)).get();
         Tenant tenant = securityTokenContainer.getTenant();
 
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(jsonString);
