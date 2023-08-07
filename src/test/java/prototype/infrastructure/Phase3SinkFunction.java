@@ -2,7 +2,7 @@ package prototype.infrastructure;
 
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
-public class DataEventSinkFunction implements SinkFunction<SinkEvent> {
+public class Phase3SinkFunction implements SinkFunction<SinkEvent> {
 
     @Override
     public void invoke(SinkEvent value, Context context) throws Exception {

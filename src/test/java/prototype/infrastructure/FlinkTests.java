@@ -103,11 +103,12 @@ public class FlinkTests {
 
         DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
 
-        dataEvents.map(
-                new DataEventMapFunction()
-        ).addSink(
-                new DataEventSinkFunction()
+        DataStream<DataEvent> mappedStream = dataEvents.map(
+                new Phase1MapFunction()
         );
+
+        mappedStream.map(new Phase2MapFunction())
+                .addSink(new Phase3SinkFunction());
 
         env.execute();
     }
@@ -129,11 +130,12 @@ public class FlinkTests {
 
         DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
 
-        dataEvents.map(
-                new DataEventMapFunction()
-        ).addSink(
-                new DataEventSinkFunction()
+        DataStream<DataEvent> mappedStream = dataEvents.map(
+                new Phase1MapFunction()
         );
+
+        mappedStream.map(new Phase2MapFunction())
+                .addSink(new Phase3SinkFunction());
 
         env.execute();
     }
