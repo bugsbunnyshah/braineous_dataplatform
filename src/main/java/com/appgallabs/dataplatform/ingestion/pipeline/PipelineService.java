@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
@@ -15,6 +16,8 @@ import javax.enterprise.context.ApplicationScoped;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @ApplicationScoped
 public class PipelineService {
@@ -28,21 +31,29 @@ public class PipelineService {
             );
             JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
 
+            //TODO: Quarkus
+            SchemalessMapper mapper = new SchemalessMapper();
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
             List<DataEvent> inputEvents = new ArrayList<>();
             for (int i = 0; i < jsonArray.size(); i++) {
-                inputEvents.add(new DataEvent(jsonArray.get(i).getAsJsonObject().toString()));
+                //decompose the object into its fields
+                String json = jsonArray.get(i).getAsJsonObject().toString();
+                Map<String,Object> flatObject = mapper.mapAll(json);
+
+                Set<Map.Entry<String, Object>> entries = flatObject.entrySet();
+                for(Map.Entry<String, Object> entry:entries){
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    inputEvents.add(new DataEvent(json,key,value));
+                }
             }
 
             DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
 
-            DataStream<DataEvent> mappedStream = dataEvents.map(
-                    new DecomposeObjectMapFunction()
-            );
-
-            mappedStream.map(new MetaDataDecoratorMapFunction())
-                    .addSink(new DataLakeSinkFunction());
+            dataEvents.map(
+                    new MetaDataDecoratorMapFunction()
+            ).addSink(new DataLakeSinkFunction());
 
             env.execute();
         }catch(Exception e){

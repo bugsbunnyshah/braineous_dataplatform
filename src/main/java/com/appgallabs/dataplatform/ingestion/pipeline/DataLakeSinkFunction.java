@@ -2,12 +2,11 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
-public class DataLakeSinkFunction implements SinkFunction<SinkEvent> {
+public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
 
     @Override
-    public void invoke(SinkEvent value, Context context) throws Exception {
+    public void invoke(DataEvent value, Context context) throws Exception {
         SinkFunction.super.invoke(value, context);
-        System.out.println("*******STORE******");
-        System.out.println(value);
+        System.out.println(value + ">" + value.isProcessed());
     }
 }

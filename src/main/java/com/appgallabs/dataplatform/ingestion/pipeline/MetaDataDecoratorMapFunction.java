@@ -2,12 +2,15 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import org.apache.flink.api.common.functions.MapFunction;
 
-public class MetaDataDecoratorMapFunction implements MapFunction<DataEvent, SinkEvent> {
+public class MetaDataDecoratorMapFunction implements MapFunction<DataEvent, DataEvent> {
 
     @Override
-    public SinkEvent map(DataEvent dataEvent) throws Exception {
-        System.out.println("*******DECORATE******");
-        SinkEvent nextEvent = new SinkEvent(dataEvent.getJson());
-        return nextEvent;
+    public DataEvent map(DataEvent dataEvent) throws Exception {
+        try {
+            dataEvent.setProcessed(true);
+            return dataEvent;
+        }finally{
+            Thread.sleep((long)(Math.random() * 1000));
+        }
     }
 }
