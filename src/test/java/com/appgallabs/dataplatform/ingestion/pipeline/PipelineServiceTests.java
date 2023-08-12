@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO
-//@QuarkusTest
+@QuarkusTest
 public class PipelineServiceTests {
     private static Logger logger = LoggerFactory.getLogger(PipelineServiceTests.class);
 
