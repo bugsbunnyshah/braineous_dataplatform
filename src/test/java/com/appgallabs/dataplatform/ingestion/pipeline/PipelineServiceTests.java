@@ -21,13 +21,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO
 @QuarkusTest
 public class PipelineServiceTests {
     private static Logger logger = LoggerFactory.getLogger(PipelineServiceTests.class);
 
     @Inject
-    private PipelineService pipelineService = new PipelineService();
+    private PipelineService pipelineService;
 
     @Test
     public void ingest() {
