@@ -8,12 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
+import java.io.Serializable;
 
 @Singleton
-public class AIPlatformConfig {
+public class AIPlatformConfig implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(AIPlatformConfig.class);
-
-    private JsonObject configuration;
 
     @ConfigProperty(name = "mongodbHost")
     private String mongoDBHost;
@@ -30,26 +29,15 @@ public class AIPlatformConfig {
     @ConfigProperty(name = "queryServicePassword")
     private String queryServicePassword;
 
-    @PostConstruct
-    public void start()
-    {
-        try
-        {
-            this.configuration = new JsonObject();
-            this.configuration.addProperty("mongodbHost", this.mongoDBHost);
-            this.configuration.addProperty("mongodbPort", this.mongoDBPort);
-            this.configuration.addProperty("queryServiceUri", this.queryServiceUri);
-            this.configuration.addProperty("queryServiceUser", this.queryServiceUser);
-            this.configuration.addProperty("queryServicePassword", this.queryServicePassword);
-        }
-        catch(Exception e)
-        {
-            this.configuration = null;
-        }
-    }
 
     public JsonObject getConfiguration()
     {
-        return this.configuration;
+        JsonObject configuration = new JsonObject();
+        configuration.addProperty("mongodbHost", this.mongoDBHost);
+        configuration.addProperty("mongodbPort", this.mongoDBPort);
+        configuration.addProperty("queryServiceUri", this.queryServiceUri);
+        configuration.addProperty("queryServiceUser", this.queryServiceUser);
+        configuration.addProperty("queryServicePassword", this.queryServicePassword);
+        return configuration;
     }
 }

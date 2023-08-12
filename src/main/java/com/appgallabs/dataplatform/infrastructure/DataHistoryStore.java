@@ -11,10 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 @Singleton
-public class DataHistoryStore {
+public class DataHistoryStore implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(DataHistoryStore.class);
 
     public void storeHistoryObject(Tenant tenant, MongoClient mongoClient, JsonObject json){

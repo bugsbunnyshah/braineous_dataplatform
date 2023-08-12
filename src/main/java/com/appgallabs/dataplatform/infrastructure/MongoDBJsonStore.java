@@ -49,17 +49,13 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     @Inject
     private DataLakeStore dataLakeStore;
 
-    private MongoClient mongoClient;
-    private Map<String,MongoDatabase> databaseMap;
-
     public MongoDBJsonStore()
     {
-        this.databaseMap = new HashMap<>();
+
+
     }
 
-    @PostConstruct
-    public void start()
-    {
+    public MongoClient getMongoClient() {
         String connectionString;
         if(this.mongodbHost.equals("localhost"))
         {
@@ -76,16 +72,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
         System.out.println(connectionString);
         System.out.println("*****************************");
 
-        this.mongoClient = MongoClients.create(connectionString);
-    }
-
-    @PreDestroy
-    public void stop()
-    {
-        this.mongoClient.close();
-    }
-
-    public MongoClient getMongoClient() {
+        MongoClient mongoClient = MongoClients.create(connectionString);
         return mongoClient;
     }
 
@@ -93,11 +80,20 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
         return "braineous://datalake/mongodb";
     }
 
+    @Override
+    public String toString() {
+        return "MongoDBJsonStore{" +
+                "mongodbHost='" + mongodbHost + '\'' +
+                ", mongodbPort='" + mongodbPort + '\'' +
+                ", database='" + database + '\'' +
+                '}';
+    }
+
     //Data Ingestion related operations-----------------------------------------------------
     public String storeIngestion(Tenant tenant,Map<String,Object> flatJson){
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -122,7 +118,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     public JsonArray readIngestion(Tenant tenant,String dataLakeId){
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -230,7 +226,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -243,7 +239,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -270,7 +266,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -295,7 +291,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -320,7 +316,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -350,7 +346,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -366,7 +362,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -385,7 +381,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
         String queryJson = "{\"chainId\":\""+chainId+"\"}";
@@ -412,7 +408,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -434,7 +430,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("diff");
 
         JsonObject jsonObject = new JsonObject();
@@ -449,7 +445,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("diff");
 
         JsonObject jsonObject = new JsonObject();
@@ -467,7 +463,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diff");
 
@@ -489,7 +485,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
         String modelId = UUID.randomUUID().toString();
@@ -504,7 +500,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
@@ -525,7 +521,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
@@ -546,7 +542,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
         JsonObject currentModel = this.getModelPackage(tenant,modelId);
@@ -562,7 +558,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
         JsonObject currentModel = this.getModelPackage(tenant,modelId);
@@ -578,7 +574,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
         Document doc = Document.parse(modelPackage.toString());
@@ -589,7 +585,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -606,7 +602,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -623,7 +619,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -640,7 +636,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -668,7 +664,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
         String dataSettype = "training";
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -692,22 +688,22 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     }
     //---DataHistory----------------------------
     public void storeHistoryObject(Tenant tenant, JsonObject jsonObject){
-        this.dataHistoryStore.storeHistoryObject(tenant, this.mongoClient,jsonObject);
+        this.dataHistoryStore.storeHistoryObject(tenant, this.getMongoClient(),jsonObject);
     }
 
     public JsonArray readHistory(Tenant tenant, OffsetDateTime endTime){
-        return this.dataHistoryStore.readHistory(tenant, this.mongoClient,endTime);
+        return this.dataHistoryStore.readHistory(tenant, this.getMongoClient(),endTime);
     }
     //--DataLake------------------------------
     public JsonArray readByEntity(Tenant tenant, String entity){
-        return this.dataLakeStore.readByEntity(tenant,this.mongoClient,entity);
+        return this.dataLakeStore.readByEntity(tenant,this.getMongoClient(),entity);
     }
 
     public boolean entityExists(Tenant tenant, JsonObject entity){
-        return this.dataLakeStore.entityExists(tenant,this.mongoClient,entity);
+        return this.dataLakeStore.entityExists(tenant,this.getMongoClient(),entity);
     }
 
     public JsonObject readEntity(Tenant tenant,String objectHash){
-        return this.dataLakeStore.readEntity(tenant, this.mongoClient, objectHash);
+        return this.dataLakeStore.readEntity(tenant, this.getMongoClient(), objectHash);
     }
 }

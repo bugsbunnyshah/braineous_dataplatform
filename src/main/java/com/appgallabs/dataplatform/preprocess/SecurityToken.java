@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class SecurityToken implements Serializable {
     private String principal;
     private String token;
-    private String clientId;
 
     public SecurityToken()
     {
@@ -32,14 +31,6 @@ public class SecurityToken implements Serializable {
         this.token = token;
     }
 
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
     public static SecurityToken fromJson(String jsonString)
     {
         SecurityToken securityToken = new SecurityToken();
@@ -55,7 +46,6 @@ public class SecurityToken implements Serializable {
         return "SecurityToken{" +
                 "principal='" + principal + '\'' +
                 ", token='" + token + '\'' +
-                ", clientId='" + clientId + '\'' +
                 '}';
     }
 }

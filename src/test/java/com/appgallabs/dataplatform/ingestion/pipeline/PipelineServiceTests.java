@@ -14,6 +14,7 @@ import prototype.infrastructure.Phase1MapFunction;
 import prototype.infrastructure.Phase2MapFunction;
 import prototype.infrastructure.Phase3SinkFunction;
 import prototype.infrastructure.*;
+import test.components.BaseTest;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @QuarkusTest
-public class PipelineServiceTests {
+public class PipelineServiceTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(PipelineServiceTests.class);
 
     @Inject

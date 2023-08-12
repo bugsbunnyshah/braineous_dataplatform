@@ -3,9 +3,10 @@ package com.appgallabs.dataplatform.datalake;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.google.gson.JsonArray;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public interface DataLakeDriver {
+public interface DataLakeDriver extends Serializable {
 
     public String name();
 
