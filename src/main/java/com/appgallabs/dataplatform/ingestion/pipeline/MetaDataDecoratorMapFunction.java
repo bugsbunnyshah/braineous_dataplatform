@@ -1,7 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
-import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import org.apache.flink.api.common.functions.MapFunction;
 
 public class MetaDataDecoratorMapFunction implements MapFunction<DataEvent, DataEvent> {

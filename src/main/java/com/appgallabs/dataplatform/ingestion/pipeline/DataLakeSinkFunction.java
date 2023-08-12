@@ -2,7 +2,6 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
-import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
