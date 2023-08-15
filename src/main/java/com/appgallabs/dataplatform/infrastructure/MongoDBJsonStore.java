@@ -40,6 +40,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     @ConfigProperty(name = "mongodbPort")
     private String mongodbPort;
 
+    //TODO(1): unhardcode
     private String database = "ian_qa";
     private String password = "jen";
 
@@ -85,7 +86,6 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
         return "MongoDBJsonStore{" +
                 "mongodbHost='" + mongodbHost + '\'' +
                 ", mongodbPort='" + mongodbPort + '\'' +
-                ", database='" + database + '\'' +
                 '}';
     }
 

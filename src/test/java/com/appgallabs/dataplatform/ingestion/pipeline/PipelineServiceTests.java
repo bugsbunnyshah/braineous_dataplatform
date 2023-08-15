@@ -30,7 +30,24 @@ public class PipelineServiceTests extends BaseTest {
     private PipelineService pipelineService;
 
     @Test
-    public void ingest() {
-        this.pipelineService.ingest();
+    public void ingestArray() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
+                StandardCharsets.UTF_8
+        );
+
+        String entity = "books";
+        this.pipelineService.ingest(entity,jsonString);
+    }
+
+    @Test
+    public void ingestObject() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
+                StandardCharsets.UTF_8
+        );
+
+        String entity = "books";
+        this.pipelineService.ingest(entity,jsonString);
     }
 }

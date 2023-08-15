@@ -13,9 +13,12 @@ public class DataEvent {
 
     private boolean isProcessed;
 
+    private String entity;
+
     public DataEvent() {}
 
-    public DataEvent(String json, String fieldName, Object fieldValue) {
+    public DataEvent(String entity,String json, String fieldName, Object fieldValue) {
+        this.entity = entity;
         this.json = json;
         this.fieldName = fieldName;
         this.fieldValue = fieldValue;
@@ -63,5 +66,13 @@ public class DataEvent {
 
     public void setProcessed(boolean processed) {
         isProcessed = processed;
+    }
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 }
