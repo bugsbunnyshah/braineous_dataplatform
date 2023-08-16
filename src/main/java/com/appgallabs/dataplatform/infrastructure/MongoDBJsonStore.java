@@ -69,9 +69,9 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
                     this.database);
         }
 
-        System.out.println("*****************************");
-        System.out.println(connectionString);
-        System.out.println("*****************************");
+        //System.out.println("*****************************");
+        //System.out.println(connectionString);
+        //System.out.println("*****************************");
 
         MongoClient mongoClient = MongoClients.create(connectionString);
         return mongoClient;
@@ -97,22 +97,17 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
-        //produce dataLakeId
-        String dataLakeId = UUID.randomUUID().toString();
-
         Set<Map.Entry<String, Object>> entrySet = flatJson.entrySet();
+        Document document = new Document();
         for(Map.Entry<String, Object> entry: entrySet){
-            Document document = new Document();
-            document.put("braineous_datalakeid", dataLakeId);
-
             String path = entry.getKey();
             Object value = entry.getValue();
             document.put(path,value);
-
-            collection.insertOne(document);
         }
 
-        return dataLakeId;
+        collection.insertOne(document);
+
+        return (String)flatJson.get("objectHash");
     }
 
     public JsonArray readIngestion(Tenant tenant,String dataLakeId){
@@ -122,10 +117,10 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
-        String queryJson = "{\"braineous_datalakeid\":\""+dataLakeId+"\"}";
-        System.out.println("****************************************");
-        System.out.println(queryJson);
-        System.out.println("****************************************");
+        String queryJson = "{\"objectHash\":\""+dataLakeId+"\"}";
+        //System.out.println("****************************************");
+        //System.out.println(queryJson);
+        //System.out.println("****************************************");
         Bson bson = Document.parse(queryJson);
         FindIterable<Document> iterable = collection.find(bson);
         MongoCursor<Document> cursor = iterable.cursor();
@@ -137,7 +132,11 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
             String key = null;
             while(keyIterator.hasNext()){
                 key = keyIterator.next();
-                if(!key.equals("_id") && !key.equals("braineous_datalakeid")){
+                if(!key.equals("_id") &&
+                        !key.equals("objectHash") &&
+                        !key.equals("tenant") &&
+                        !key.equals("entity") &&
+                        !key.equals("timestamp")){
                     break;
                 }
             }

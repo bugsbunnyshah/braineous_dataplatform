@@ -5,6 +5,13 @@ import java.io.Serializable;
 public class Tenant implements Serializable {
     private String principal;
 
+    public Tenant() {
+    }
+
+    public Tenant(String principal) {
+        this.principal = principal;
+    }
+
     public String getPrincipal() {
         return principal;
     }

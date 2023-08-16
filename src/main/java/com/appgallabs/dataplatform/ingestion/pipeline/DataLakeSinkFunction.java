@@ -1,11 +1,14 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
 
@@ -30,20 +33,30 @@ public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
         String objectHash = value.toString();
 
         //tenant
-        String tenant = this.securityToken.getPrincipal();
+        Tenant tenant = new Tenant(this.securityToken.getPrincipal());
+        String tenantString = tenant.toString();
 
         //entity
         String entity = value.getEntity();
 
-        System.out.println(value + ">" + value.isProcessed() + ">" + value.getFieldName() + ">" + value.getFieldValue());
+
+        //store into datalake
+        Map<String,Object> fieldMap = new HashMap<>();
+        fieldMap.put("tenant",tenantString);
+        fieldMap.put("objectHash",objectHash);
+        fieldMap.put("timestamp",timestamp);
+        fieldMap.put("entity",entity);
+        fieldMap.put(value.getFieldName(),value.getFieldValue());
+        String datalakeId = this.dataLakeDriver.storeIngestion(tenant, fieldMap);
+
+        /*System.out.println(value + ">" + value.isProcessed() + ">" + value.getFieldName() + ">" + value.getFieldValue());
         System.out.println(this.securityToken);
         System.out.println(this.dataLakeDriver);
         System.out.println(timestamp);
         System.out.println(objectHash);
         System.out.println(tenant);
         System.out.println(entity);
-        System.out.println("**********************************");
-
-        //TODO(1): store into datalake
+        System.out.println(datalakeId);
+        System.out.println("**********************************");*/
     }
 }

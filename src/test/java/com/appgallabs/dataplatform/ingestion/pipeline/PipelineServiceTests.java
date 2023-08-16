@@ -1,26 +1,26 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import prototype.infrastructure.DataEvent;
-import prototype.infrastructure.Phase1MapFunction;
-import prototype.infrastructure.Phase2MapFunction;
-import prototype.infrastructure.Phase3SinkFunction;
-import prototype.infrastructure.*;
+
 import test.components.BaseTest;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class PipelineServiceTests extends BaseTest {
@@ -29,15 +29,40 @@ public class PipelineServiceTests extends BaseTest {
     @Inject
     private PipelineService pipelineService;
 
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
+
     @Test
     public void ingestArray() throws Exception{
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
                 StandardCharsets.UTF_8
         );
+        JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
+        JsonObject jsonObject = jsonArray.get(1).getAsJsonObject();
+        String originalObjectHash = JsonUtil.getJsonHash(jsonObject);
+        jsonObject.remove("expensive");
+        String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
         String entity = "books";
         this.pipelineService.ingest(entity,jsonString);
+
+        JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
+                originalObjectHash);
+
+        JsonObject storedJson = ingestion.get(0).getAsJsonObject();
+        JsonUtil.printStdOut(storedJson);
+
+        storedJson.remove("expensive");
+        String compareRightObjectHash = JsonUtil.getJsonHash(storedJson);
+
+        System.out.println("*************");
+        System.out.println(compareRightObjectHash);
+        System.out.println("*************");
+        assertEquals(compareLeftObjectHash,compareRightObjectHash);
     }
 
     @Test
@@ -46,8 +71,26 @@ public class PipelineServiceTests extends BaseTest {
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
+        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+        String originalObjectHash = JsonUtil.getJsonHash(jsonObject);
+        jsonObject.remove("expensive");
+        String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
         String entity = "books";
         this.pipelineService.ingest(entity,jsonString);
+
+        JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
+                originalObjectHash);
+
+        JsonObject storedJson = ingestion.get(0).getAsJsonObject();
+        JsonUtil.printStdOut(storedJson);
+
+        storedJson.remove("expensive");
+        String compareRightObjectHash = JsonUtil.getJsonHash(storedJson);
+
+        System.out.println("*************");
+        System.out.println(compareRightObjectHash);
+        System.out.println("*************");
+        assertEquals(compareLeftObjectHash,compareRightObjectHash);
     }
 }

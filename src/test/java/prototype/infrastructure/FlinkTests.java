@@ -139,35 +139,4 @@ public class FlinkTests {
 
         env.execute();
     }
-
-    @Test
-    public void dataStreamEndToEndArrayPrototypeWithContext() throws Exception{
-        String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
-                StandardCharsets.UTF_8
-        );
-        JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
-
-        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
-        List<DataEvent> inputEvents = new ArrayList<>();
-        for(int i=0; i<jsonArray.size();i++) {
-            inputEvents.add(new DataEvent(jsonArray.get(i).getAsJsonObject().toString()));
-        }
-
-        DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
-
-        //bootstrapped stream
-        
-
-
-        /*DataStream<DataEvent> mappedStream = dataEvents.map(
-                new Phase1MapFunction()
-        );
-
-        mappedStream.map(new Phase2MapFunction())
-                .addSink(new Phase3SinkFunction());*/
-
-        env.execute();
-    }
 }
