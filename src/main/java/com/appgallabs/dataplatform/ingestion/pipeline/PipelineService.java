@@ -83,9 +83,7 @@ public class PipelineService {
 
             DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
 
-            dataEvents.map(
-                    this.metaDataDecoratorMapFunction
-            ).addSink(this.dataLakeSinkFunction);
+            dataEvents.addSink(this.dataLakeSinkFunction);
 
             env.execute();
         }catch(Exception e){

@@ -13,11 +13,7 @@ public class MetaDataDecoratorMapFunction implements MapFunction<DataEvent, Data
 
     @Override
     public DataEvent map(DataEvent dataEvent) throws Exception {
-        try {
-            dataEvent.setProcessed(true);
-            return dataEvent;
-        }finally{
-            Thread.sleep((long)(Math.random() * 1000));
-        }
+        dataEvent.setProcessed(true);
+        return dataEvent;
     }
 }
