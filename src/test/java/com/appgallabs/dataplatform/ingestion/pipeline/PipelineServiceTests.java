@@ -19,6 +19,8 @@ import test.components.BaseTest;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -86,6 +88,37 @@ public class PipelineServiceTests extends BaseTest {
         JsonUtil.printStdOut(storedJson);
 
         storedJson.remove("expensive");
+        String compareRightObjectHash = JsonUtil.getJsonHash(storedJson);
+
+        System.out.println("*************");
+        System.out.println(compareRightObjectHash);
+        System.out.println("*************");
+        assertEquals(compareLeftObjectHash,compareRightObjectHash);
+    }
+
+    @Test
+    public void ingestObjectSubset() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
+                StandardCharsets.UTF_8
+        );
+
+        String entity = "books";
+        List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
+        this.pipelineService.ingest(entity,jsonString, jsonPathExpressions);
+
+        String inputSubsetString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/pulled.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonObject inputJson = JsonParser.parseString(inputSubsetString).getAsJsonObject();
+        String compareLeftObjectHash = JsonUtil.getJsonHash(inputJson);
+
+        JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
+                compareLeftObjectHash);
+
+        JsonObject storedJson = ingestion.get(0).getAsJsonObject();
+        JsonUtil.printStdOut(storedJson);
         String compareRightObjectHash = JsonUtil.getJsonHash(storedJson);
 
         System.out.println("*************");

@@ -61,7 +61,7 @@ public class SchemalessMapperPrototypeTests {
 
         //TODO
         readContext.withListeners(evaluationListener).
-                read("$.store.book[?(@.price != 0)]");
+                read("$.store.book[?(@.price < 9)]");
 
         Gson gson = new Gson();
         String flattenedJsonString = gson.toJson(flattenedJson,LinkedHashMap.class);
