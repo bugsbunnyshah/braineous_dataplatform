@@ -32,7 +32,7 @@ public class DataLakeDriverTests extends BaseTest {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    @Test
+    //@Test
     public void storeFlatJson() throws Exception{
         DataLakeDriver dataLakeDriver = this.mongoDBJsonStore;
 

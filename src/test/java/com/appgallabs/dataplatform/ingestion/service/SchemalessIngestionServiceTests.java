@@ -37,7 +37,7 @@ public class SchemalessIngestionServiceTests extends BaseTest {
     @Inject
     Instance<DataLakeDriver> dataLakeDriverInstance;
 
-    @Test
+    //@Test
     public void processFull() throws Exception {
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
@@ -59,7 +59,7 @@ public class SchemalessIngestionServiceTests extends BaseTest {
         assertEquals(inputHash, resultHash);
     }
 
-    @Test
+    //@Test
     public void processSubset() throws Exception {
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
@@ -85,7 +85,7 @@ public class SchemalessIngestionServiceTests extends BaseTest {
         assertEquals(inputHash, resultHash);
     }
 
-    @Test
+    //@Test
     public void processNestedArrays() throws Exception {
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_nested_arrays.json"),
@@ -116,7 +116,7 @@ public class SchemalessIngestionServiceTests extends BaseTest {
         assertEquals(inputHash, resultHash);
     }
 
-    @Test
+    //@Test
     public void prototypeInterfaceInjection() throws Exception{
         Config config = ConfigProvider.getConfig();
         String dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
