@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
+import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 
 import com.github.wnameless.json.unflattener.JsonUnflattener;
@@ -49,6 +50,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
     @Inject
     private DataLakeStore dataLakeStore;
+
 
     public MongoDBJsonStore()
     {
@@ -111,6 +113,8 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     }
 
     public JsonArray readIngestion(Tenant tenant,String dataLakeId){
+        Gson gson = new Gson();
+
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
         MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
@@ -154,8 +158,6 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
         JsonArray result = new JsonArray();
 
-        //TODO
-        Gson gson = new Gson();
         String flattenedJsonString = gson.toJson(wholeDocument,LinkedHashMap.class);
 
         String nestedJson = JsonUnflattener.unflatten(flattenedJsonString);

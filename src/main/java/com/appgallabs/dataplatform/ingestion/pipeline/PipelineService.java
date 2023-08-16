@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -28,6 +29,9 @@ import java.util.*;
 @ApplicationScoped
 public class PipelineService {
     private static Logger logger = LoggerFactory.getLogger(PipelineService.class);
+
+    @Inject
+    private FrameworkServices frameworkServices;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
@@ -143,7 +147,7 @@ public class PipelineService {
 
         //decompose the object into its fields
         Map<String,Object> flatObject = mapper.mapSubset(json,jsonPathExpressions);
-        Gson gson = new Gson();
+        Gson gson = this.frameworkServices.getGson();
         String flattenedJsonString = gson.toJson(flatObject, LinkedHashMap.class);
         String jsonSubset = JsonUnflattener.unflatten(flattenedJsonString);
 
