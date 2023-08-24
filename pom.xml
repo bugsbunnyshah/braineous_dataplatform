@@ -225,7 +225,19 @@
       <version>3.3.1</version>
     </dependency>
 
+    <!-- kafka_infrastructure -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>3.1.0</version>
+      <!--<scope>provided</scope> -->
+    </dependency>
     <!-- flink_based_data_processor -->
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-streaming-java</artifactId>
