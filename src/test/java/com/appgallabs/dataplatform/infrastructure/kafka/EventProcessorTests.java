@@ -22,7 +22,10 @@ public class EventProcessorTests {
 
     @Test
     public void processEvent() {
-        JsonObject response = this.eventProcessor.processEvent();
+        JsonObject json = new JsonObject();
+        json.addProperty("ingestion","braineous_data_platform");
+
+        JsonObject response = this.eventProcessor.processEvent(json);
 
         logger.info("*****************");
         logger.info(response.toString());

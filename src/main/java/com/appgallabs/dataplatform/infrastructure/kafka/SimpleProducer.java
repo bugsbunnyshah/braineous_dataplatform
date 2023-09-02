@@ -35,6 +35,13 @@ class SimpleProducer extends AbstractSimpleKafka {
     public SimpleProducer() throws Exception {
     }
 
+    public void publishToBroker(String topicName, String message) throws Exception {
+        String key = UUID.randomUUID().toString();
+        this.send(topicName, key, message);
+        Thread.sleep(100);
+        this.shutdown();
+    }
+
     /**
      * This method sends a limited number of messages
      * with random string data to the Kafka broker.
