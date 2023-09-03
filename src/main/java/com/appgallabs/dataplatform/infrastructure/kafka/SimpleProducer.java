@@ -53,6 +53,34 @@ class SimpleProducer extends AbstractSimpleKafka {
     }
 
     /**
+     * Does the work of sending a message to
+     * a Kafka broker. The method uses the name of
+     * the topic that was declared in this class's
+     * constructor.
+     *
+     * @param topicName the name of the topic to where the message                   will be sent
+     * @param key       the key value for the message
+     * @param message   the content of the message
+     * @throws Exception the exception that gets thrown upon error
+     */
+    protected void send(String topicName, String key, String message) throws Exception {
+        String source = SimpleProducer.class.getName();
+
+        //create the ProducerRecord object which will
+        //represent the message to the Kafka broker.
+        ProducerRecord<String, String> producerRecord =
+                new ProducerRecord<>(topicName, key, message);
+
+        //Use the helper to create an informative log entry in JSON format
+        JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName, key, message);
+        //log.info(obj.toJSONString());
+
+        //Send the message to the Kafka broker using the internal
+        //KafkaProducer
+        getKafkaProducer().send(producerRecord);
+    }
+
+    /**
      * This method sends a limited number of messages
      * with random string data to the Kafka broker.
      *
@@ -91,35 +119,6 @@ class SimpleProducer extends AbstractSimpleKafka {
             //send the message
             this.send(topicName, key, message);
         }
-    }
-
-
-    /**
-     * Does the work of sending a message to
-     * a Kafka broker. The method uses the name of
-     * the topic that was declared in this class's
-     * constructor.
-     *
-     * @param topicName the name of the topic to where the message                   will be sent
-     * @param key       the key value for the message
-     * @param message   the content of the message
-     * @throws Exception the exception that gets thrown upon error
-     */
-    protected void send(String topicName, String key, String message) throws Exception {
-        String source = SimpleProducer.class.getName();
-
-        //create the ProducerRecord object which will
-        //represent the message to the Kafka broker.
-        ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>(topicName, key, message);
-
-        //Use the helper to create an informative log entry in JSON format
-        JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName, key, message);
-        //log.info(obj.toJSONString());
-
-        //Send the message to the Kafka broker using the internal
-        //KafkaProducer
-        getKafkaProducer().send(producerRecord);
     }
 
     private KafkaProducer<String, String> getKafkaProducer() throws Exception {

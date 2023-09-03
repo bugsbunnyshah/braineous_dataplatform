@@ -16,7 +16,7 @@ import org.apache.kafka.clients.admin.TopicListing;
 public class EventProcessor {
     private static Logger logger = LoggerFactory.getLogger(EventProcessor.class);
 
-    private final String fixedTopicName = "braineous_dataplatform_kafka_topic";
+    private final String braineousKafkaTopic = "braineous_dataplatform_kafka_topic";
 
     private TopicListing topicListing;
 
@@ -25,7 +25,7 @@ public class EventProcessor {
     @PostConstruct
     public void start(){
         try {
-            this.topicListing = KafkaTopicHelper.createFixedTopic(fixedTopicName);
+            this.topicListing = KafkaTopicHelper.createFixedTopic(braineousKafkaTopic);
             this.producer = SimpleProducer.getInstance();
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -48,7 +48,7 @@ public class EventProcessor {
             /**
              * PRODUCE_MESSAGES_FROM_EVENT
              */
-            this.producer.publishToBroker(fixedTopicName, json.toString());
+            this.producer.publishToBroker(braineousKafkaTopic, json.toString());
             response.addProperty("statusCode", 200);
 
 

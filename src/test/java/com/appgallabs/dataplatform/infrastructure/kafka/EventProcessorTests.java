@@ -45,6 +45,6 @@ public class EventProcessorTests {
             assertNotNull(response);
         }
 
-        Thread.sleep(30000);
+        Thread.sleep(10000);
     }
 }
