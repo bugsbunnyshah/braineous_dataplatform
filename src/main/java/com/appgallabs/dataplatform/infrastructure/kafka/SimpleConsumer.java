@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class SimpleConsumer extends AbstractSimpleKafka{
 
+    //TODO: make this configurable and find the optimal polling period
     private final int TIME_OUT_MS = 5000;
     private KafkaConsumer<String, String> kafkaConsumer = null;
     private final AtomicBoolean closed = new AtomicBoolean(false);
@@ -46,6 +47,62 @@ class SimpleConsumer extends AbstractSimpleKafka{
         }catch(Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+    public void close() throws Exception {
+        if (this.getKafkaConsumer() == null){
+            log.info(MessageHelper.getSimpleJSONObject("The internal consumer is NULL"));
+            return;
+        }
+        log.info(MessageHelper.getSimpleJSONObject("Closing consumer"));
+        if( this.getKafkaConsumer() != null) this.getKafkaConsumer().close();
+    }
+
+    /**
+     * The runAlways method retrieves a collection of ConsumerRecords continuously.
+     * The number of max number of records retrieved in each polling session back to
+     * the Kafka broker is defined by the property max.poll.records as published by
+     * the class {@link com.demo.kafka.PropertiesHelper} object
+     *
+     * @param topicName    the topic to access
+     * @param callback the callback function that processes messages retrieved
+     *                 from Kafka
+     * @throws Exception the Exception that will get thrown upon an error
+     */
+    public void runAlways(String topicName, KafkaMessageHandler callback) throws Exception {
+        Thread t = new Thread(() -> {
+            Properties props;
+            try {
+                props = PropertiesHelper.getProperties();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            //make the consumer available for graceful shutdown
+            setKafkaConsumer(new KafkaConsumer<>(props));
+
+            //keep running forever or until shutdown() is called from another thread.
+            try {
+                getKafkaConsumer().subscribe(List.of(topicName));
+                while (!closed.get()) {
+                    ConsumerRecords<String, String> records =
+                            getKafkaConsumer().poll(Duration.ofMillis(TIME_OUT_MS));
+                    if (records.count() == 0) {
+                        log.info(MessageHelper.getSimpleJSONObject("No records retrieved"));
+                    }
+
+                    for (ConsumerRecord<String, String> record : records) {
+                        callback.processMessage(topicName, record);
+                    }
+                }
+            } catch (WakeupException e) {
+                // Ignore exception if closing
+                if (!closed.get()) throw e;
+            } catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+        t.start();
     }
 
     /**
@@ -98,61 +155,6 @@ class SimpleConsumer extends AbstractSimpleKafka{
         consumer.close();
     }
 
-    public void close() throws Exception {
-        if (this.getKafkaConsumer() == null){
-            log.info(MessageHelper.getSimpleJSONObject("The internal consumer is NULL"));
-            return;
-        }
-        log.info(MessageHelper.getSimpleJSONObject("Closing consumer"));
-        if( this.getKafkaConsumer() != null) this.getKafkaConsumer().close();
-    }
-
-    /**
-     * The runAlways method retrieves a collection of ConsumerRecords continuously.
-     * The number of max number of records retrieved in each polling session back to
-     * the Kafka broker is defined by the property max.poll.records as published by
-     * the class {@link com.demo.kafka.PropertiesHelper} object
-     *
-     * @param topicName    the topic to access
-     * @param callback the callback function that processes messages retrieved
-     *                 from Kafka
-     * @throws Exception the Exception that will get thrown upon an error
-     */
-    public void runAlways(String topicName, KafkaMessageHandler callback) throws Exception {
-        Thread t = new Thread(() -> {
-            Properties props = null;
-            try {
-                props = PropertiesHelper.getProperties();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            //make the consumer available for graceful shutdown
-            setKafkaConsumer(new KafkaConsumer<>(props));
-
-            //keep running forever or until shutdown() is called from another thread.
-            try {
-                getKafkaConsumer().subscribe(List.of(topicName));
-                while (!closed.get()) {
-                    ConsumerRecords<String, String> records =
-                            getKafkaConsumer().poll(Duration.ofMillis(TIME_OUT_MS));
-                    if (records.count() == 0) {
-                        log.info(MessageHelper.getSimpleJSONObject("No records retrieved"));
-                    }
-
-                    for (ConsumerRecord<String, String> record : records) {
-                        callback.processMessage(topicName, record);
-                    }
-                }
-            } catch (WakeupException e) {
-                // Ignore exception if closing
-                if (!closed.get()) throw e;
-            } catch (Exception e){
-                throw new RuntimeException(e);
-            }
-        });
-        t.start();
-    }
     /**
      * Shuts down the internal {@link KafkaConsumer}
      * This method is provided as a convenience for shutting down the consumer when

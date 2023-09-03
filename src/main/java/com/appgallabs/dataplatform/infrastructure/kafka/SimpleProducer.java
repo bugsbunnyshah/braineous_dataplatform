@@ -47,6 +47,12 @@ class SimpleProducer extends AbstractSimpleKafka {
         return this.topicName;
     }
 
+    public void shutdown() throws Exception {
+        closed.set(true);
+        log.info(MessageHelper.getSimpleJSONObject("Shutting down producer"));
+        getKafkaProducer().close();
+    }
+
     public void publishToBroker(String topicName, String message) throws Exception {
         String key = UUID.randomUUID().toString();
         this.send(topicName, key, message);
@@ -127,11 +133,5 @@ class SimpleProducer extends AbstractSimpleKafka {
             this.kafkaProducer = new KafkaProducer<>(props);
         }
         return this.kafkaProducer;
-    }
-
-    public void shutdown() throws Exception {
-        closed.set(true);
-        log.info(MessageHelper.getSimpleJSONObject("Shutting down producer"));
-        getKafkaProducer().close();
     }
 }
