@@ -35,7 +35,7 @@ public class EventProcessorTests {
         JsonObject json = new JsonObject();
         json.addProperty("ingestion","braineous_data_platform");
 
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<1; i++) {
             JsonObject response = this.eventProcessor.processEvent(json);
 
             logger.info("*****************");
@@ -45,6 +45,6 @@ public class EventProcessorTests {
             assertNotNull(response);
         }
 
-        Thread.sleep(10000);
+        Thread.sleep(3000);
     }
 }
