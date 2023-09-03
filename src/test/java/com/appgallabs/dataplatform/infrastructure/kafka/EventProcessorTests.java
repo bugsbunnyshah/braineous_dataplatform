@@ -25,12 +25,14 @@ public class EventProcessorTests {
         JsonObject json = new JsonObject();
         json.addProperty("ingestion","braineous_data_platform");
 
-        JsonObject response = this.eventProcessor.processEvent(json);
+        for(int i=0; i<10; i++) {
+            JsonObject response = this.eventProcessor.processEvent(json);
 
-        logger.info("*****************");
-        logger.info(response.toString());
-        logger.info("*****************");
+            logger.info("*****************");
+            logger.info(response.toString());
+            logger.info("*****************");
 
-        assertNotNull(response);
+            assertNotNull(response);
+        }
     }
 }

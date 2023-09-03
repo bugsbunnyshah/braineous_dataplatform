@@ -16,13 +16,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * content onto the Kafka broker defined in {@link /src/resources/config.properties}
  */
 class SimpleProducer extends AbstractSimpleKafka {
-
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final Logger log = Logger.getLogger(SimpleProducer.class.getName());
 
     private KafkaProducer<String, String> kafkaProducer;
-    private final AtomicBoolean closed = new AtomicBoolean(false);
-
-
-    private final Logger log = Logger.getLogger(SimpleProducer.class.getName());
+    private String topicName = null;
 
     /**
      * Instantiates a new Abstract class, SimpleKafka.
@@ -32,14 +30,26 @@ class SimpleProducer extends AbstractSimpleKafka {
      *
      * @throws Exception the exception
      */
-    public SimpleProducer() throws Exception {
+    private SimpleProducer() throws Exception {
+    }
+
+    public static SimpleProducer getInstance(){
+        try {
+            return new SimpleProducer();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    private void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+    private String getTopicName() {
+        return this.topicName;
     }
 
     public void publishToBroker(String topicName, String message) throws Exception {
         String key = UUID.randomUUID().toString();
         this.send(topicName, key, message);
-        Thread.sleep(100);
-        this.shutdown();
     }
 
     /**
@@ -80,16 +90,7 @@ class SimpleProducer extends AbstractSimpleKafka {
             String message = MessageHelper.getRandomString();
             //send the message
             this.send(topicName, key, message);
-            Thread.sleep(100);
         }
-    }
-
-    private String topicName = null;
-    private void setTopicName(String topicName) {
-        this.topicName = topicName;
-    }
-    private String getTopicName() {
-        return this.topicName;
     }
 
 
@@ -114,7 +115,8 @@ class SimpleProducer extends AbstractSimpleKafka {
 
         //Use the helper to create an informative log entry in JSON format
         JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName, key, message);
-        log.info(obj.toJSONString());
+        //log.info(obj.toJSONString());
+
         //Send the message to the Kafka broker using the internal
         //KafkaProducer
         getKafkaProducer().send(producerRecord);
