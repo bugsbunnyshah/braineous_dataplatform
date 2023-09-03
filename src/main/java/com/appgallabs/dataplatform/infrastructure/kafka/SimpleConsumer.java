@@ -37,7 +37,15 @@ class SimpleConsumer extends AbstractSimpleKafka{
      * This abstract class's constructor provides graceful
      * shutdown behavior for Kafka producers and consumers
      */
-    public SimpleConsumer() throws Exception {
+    private SimpleConsumer() throws Exception {
+    }
+
+    public static SimpleConsumer getInstance(){
+        try {
+            return new SimpleConsumer();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -90,7 +98,7 @@ class SimpleConsumer extends AbstractSimpleKafka{
         consumer.close();
     }
 
-    private void close() throws Exception {
+    public void close() throws Exception {
         if (this.getKafkaConsumer() == null){
             log.info(MessageHelper.getSimpleJSONObject("The internal consumer is NULL"));
             return;
@@ -111,28 +119,39 @@ class SimpleConsumer extends AbstractSimpleKafka{
      * @throws Exception the Exception that will get thrown upon an error
      */
     public void runAlways(String topicName, KafkaMessageHandler callback) throws Exception {
-        Properties props = PropertiesHelper.getProperties();
-        //make the consumer available for graceful shutdown
-        setKafkaConsumer(new KafkaConsumer<>(props));
-
-        //keep running forever or until shutdown() is called from another thread.
-        try {
-            getKafkaConsumer().subscribe(List.of(topicName));
-            while (!closed.get()) {
-                ConsumerRecords<String, String> records =
-                        getKafkaConsumer().poll(Duration.ofMillis(TIME_OUT_MS));
-                if (records.count() == 0) {
-                    log.info(MessageHelper.getSimpleJSONObject("No records retrieved"));
-                }
-
-                for (ConsumerRecord<String, String> record : records) {
-                    callback.processMessage(topicName, record);
-                }
+        Thread t = new Thread(() -> {
+            Properties props = null;
+            try {
+                props = PropertiesHelper.getProperties();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-        } catch (WakeupException e) {
-            // Ignore exception if closing
-            if (!closed.get()) throw e;
-        }
+
+            //make the consumer available for graceful shutdown
+            setKafkaConsumer(new KafkaConsumer<>(props));
+
+            //keep running forever or until shutdown() is called from another thread.
+            try {
+                getKafkaConsumer().subscribe(List.of(topicName));
+                while (!closed.get()) {
+                    ConsumerRecords<String, String> records =
+                            getKafkaConsumer().poll(Duration.ofMillis(TIME_OUT_MS));
+                    if (records.count() == 0) {
+                        log.info(MessageHelper.getSimpleJSONObject("No records retrieved"));
+                    }
+
+                    for (ConsumerRecord<String, String> record : records) {
+                        callback.processMessage(topicName, record);
+                    }
+                }
+            } catch (WakeupException e) {
+                // Ignore exception if closing
+                if (!closed.get()) throw e;
+            } catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        });
+        t.start();
     }
     /**
      * Shuts down the internal {@link KafkaConsumer}

@@ -52,12 +52,6 @@ public class EventProcessor {
             response.addProperty("statusCode", 200);
 
 
-            /**
-             * TODO: CONSUME_MESSAGES_FROM_EVENT
-             */
-            //consume the messages
-            //new SimpleConsumer().run(fixedTopicName, new KafkaMessageHandlerImpl(), null);
-
             return response;
         }catch(Exception e){
             throw new RuntimeException(e);

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeTest;
 
 import javax.inject.Inject;
 
@@ -20,8 +21,17 @@ public class EventProcessorTests {
     @Inject
     private EventProcessor eventProcessor;
 
+    @Inject
+    private EventConsumer eventConsumer;
+
+    @BeforeTest
+    public void setUp(){
+        JsonObject response = this.eventConsumer.checkStatus();
+        logger.info(response.toString());
+    }
+
     @Test
-    public void processEvent() {
+    public void processEvent() throws InterruptedException {
         JsonObject json = new JsonObject();
         json.addProperty("ingestion","braineous_data_platform");
 
@@ -34,5 +44,7 @@ public class EventProcessorTests {
 
             assertNotNull(response);
         }
+
+        Thread.sleep(30000);
     }
 }
