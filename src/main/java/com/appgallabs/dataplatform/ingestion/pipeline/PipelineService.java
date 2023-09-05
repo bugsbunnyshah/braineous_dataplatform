@@ -70,7 +70,6 @@ public class PipelineService {
             List<DataEvent> inputEvents = new ArrayList<>();
 
             JsonElement jsonElement = JsonParser.parseString(jsonString);
-            JsonUtil.printStdOut(jsonElement);
 
             if(jsonElement.isJsonArray()) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();

@@ -32,13 +32,13 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
         String source = KafkaMessageHandlerImpl.class.getName();
-        //JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName,message.key(),message.value());
 
-        log.info("*****CONSUMER*******");
-        log.info(position);
-        log.info(message.key());
-        log.info(message.value());
-        log.info("********************");
+        //JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName,message.key(),message.value());
+        //log.info("*****CONSUMER*******");
+        //log.info(position);
+        //log.info(message.key());
+        //log.info(message.value());
+        //log.info("********************");
 
         /**
          * TODO: Integrate with the Pipeline Service
@@ -47,20 +47,14 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         String messageValue = message.value();
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 
-        System.out.println("******************");
-        System.out.println(this.pipelineService);
-        System.out.println("******************");
-
         String payload = json.get("message").getAsString();
         JsonElement payloadElem = JsonParser.parseString(payload);
-        JsonUtil.printStdOut(payloadElem);
 
         String jsonPayloadString = payloadElem.toString();
 
         //SecurityToken
         String securityTokenString = json.get("securityToken").getAsString();
-        SecurityToken securityToken = SecurityToken.parse(securityTokenString);
-
+        SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
 
         this.pipelineService.ingest(securityToken,entity,jsonPayloadString);
     }
