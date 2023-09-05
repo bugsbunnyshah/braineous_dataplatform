@@ -3,8 +3,10 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -62,12 +64,50 @@ public class PipelineService {
                 this.dataLakeDriver);
     }
 
+    public void ingest(SecurityToken securityToken, String entity, String jsonString){
+        try {
+            final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+            List<DataEvent> inputEvents = new ArrayList<>();
+
+            JsonElement jsonElement = JsonParser.parseString(jsonString);
+            JsonUtil.printStdOut(jsonElement);
+
+            if(jsonElement.isJsonArray()) {
+                JsonArray jsonArray = jsonElement.getAsJsonArray();
+
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    //decompose the object into its fields
+                    String json = jsonArray.get(i).getAsJsonObject().toString();
+
+                    List<DataEvent> objectEvents = this.flattenObject(entity, json);
+                    inputEvents.addAll(objectEvents);
+                }
+            }else if(jsonElement.isJsonObject()){
+                String json = jsonElement.toString();
+                List<DataEvent> objectEvents = this.flattenObject(entity, json);
+                inputEvents.addAll(objectEvents);
+            }
+
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
+                    this.dataLakeDriver);
+
+            DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
+            dataEvents.addSink(sinkFunction);
+
+            env.execute();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public void ingest(String entity,String jsonString){
         try {
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             List<DataEvent> inputEvents = new ArrayList<>();
 
             JsonElement jsonElement = JsonParser.parseString(jsonString);
+            JsonUtil.printStdOut(jsonElement);
+
             if(jsonElement.isJsonArray()) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
 
@@ -85,7 +125,6 @@ public class PipelineService {
             }
 
             DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
-
             dataEvents.addSink(this.dataLakeSinkFunction);
 
             env.execute();

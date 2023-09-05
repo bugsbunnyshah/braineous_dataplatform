@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import org.json.simple.JSONObject;
 
 import java.util.Properties;
@@ -11,6 +12,29 @@ import java.util.Random;
 public class MessageHelper {
 
     private static Properties props;
+
+    /**
+     * Gets message log entry json.
+     *
+     * @param source  the source
+     * @param topic   the topic
+     * @param key     the key
+     * @param message the message
+     * @return the message log entry json
+     * @throws Exception the exception
+     */
+    public static JSONObject getMessageLogEntryJSON(SecurityToken securityToken, String source, String topic, String key, String message) throws Exception {
+        JSONObject obj = new JSONObject();
+        String bootstrapServers = getProperties().getProperty("bootstrap.servers");
+        obj.put("bootstrapServers", bootstrapServers);
+        obj.put("securityToken",securityToken.toString());
+        obj.put("source", source);
+        obj.put("topic", topic);
+        obj.put("key", key);
+        obj.put("message", message);
+
+        return obj;
+    }
 
     /**
      * Gets random string.
@@ -28,28 +52,6 @@ public class MessageHelper {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-    }
-
-    /**
-     * Gets message log entry json.
-     *
-     * @param source  the source
-     * @param topic   the topic
-     * @param key     the key
-     * @param message the message
-     * @return the message log entry json
-     * @throws Exception the exception
-     */
-    public static JSONObject getMessageLogEntryJSON(String source, String topic, String key, String message) throws Exception {
-        JSONObject obj = new JSONObject();
-        String bootstrapServers = getProperties().getProperty("bootstrap.servers");
-        obj.put("bootstrapServers", bootstrapServers);
-        obj.put("source", source);
-        obj.put("topic", topic);
-        obj.put("key", key);
-        obj.put("message", message);
-
-        return obj;
     }
 
     /**

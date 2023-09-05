@@ -1,16 +1,19 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeTest;
+import test.components.BaseTest;
 
 import javax.inject.Inject;
 
@@ -21,8 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @QuarkusTest
-public class EventProcessorTests {
+public class EventProcessorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(EventProcessorTests.class);
+
+    private static final long HANG_TIME =  30000l;
 
     @Inject
     private EventProcessor eventProcessor;
@@ -30,8 +35,9 @@ public class EventProcessorTests {
     @Inject
     private EventConsumer eventConsumer;
 
-    @BeforeTest
-    public void setUp(){
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
         JsonObject response = this.eventConsumer.checkStatus();
         logger.info(response.toString());
     }
@@ -51,7 +57,7 @@ public class EventProcessorTests {
             assertNotNull(response);
         }
 
-        Thread.sleep(3000);
+        Thread.sleep(HANG_TIME);
     }
 
     @Test
@@ -62,7 +68,7 @@ public class EventProcessorTests {
         );
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
 
-        for(int i=0; i<1; i++) {
+        for(int i=0; i<10; i++) {
             JsonObject response = this.eventProcessor.processEvent(jsonArray);
 
             logger.info("*****************");
@@ -72,6 +78,6 @@ public class EventProcessorTests {
             assertNotNull(response);
         }
 
-        Thread.sleep(3000);
+        Thread.sleep(HANG_TIME);
     }
 }

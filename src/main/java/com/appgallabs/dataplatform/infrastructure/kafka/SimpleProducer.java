@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.log4j.Logger;
@@ -53,9 +54,10 @@ class SimpleProducer extends AbstractSimpleKafka {
         getKafkaProducer().close();
     }
 
-    public void publishToBroker(String topicName, String message) throws Exception {
+    public void publishToBroker(SecurityTokenContainer securityTokenContainer,
+                                String topicName, String message) throws Exception {
         String key = UUID.randomUUID().toString();
-        this.send(topicName, key, message);
+        this.send(securityTokenContainer,topicName, key, message);
     }
 
     /**
@@ -69,17 +71,17 @@ class SimpleProducer extends AbstractSimpleKafka {
      * @param message   the content of the message
      * @throws Exception the exception that gets thrown upon error
      */
-    protected void send(String topicName, String key, String message) throws Exception {
+    protected void send(SecurityTokenContainer securityTokenContainer, String topicName, String key, String message) throws Exception {
         String source = SimpleProducer.class.getName();
+
+        //Use the helper to create an informative log entry in JSON format
+        JSONObject obj = MessageHelper.getMessageLogEntryJSON(securityTokenContainer.getSecurityToken(), source, topicName, key, message);
+        //log.info(obj.toJSONString());
 
         //create the ProducerRecord object which will
         //represent the message to the Kafka broker.
         ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>(topicName, key, message);
-
-        //Use the helper to create an informative log entry in JSON format
-        JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName, key, message);
-        //log.info(obj.toJSONString());
+                new ProducerRecord<>(topicName, key, obj.toJSONString());
 
         //Send the message to the Kafka broker using the internal
         //KafkaProducer
@@ -102,7 +104,7 @@ class SimpleProducer extends AbstractSimpleKafka {
         while (i <= numberOfMessages) {
             String key = UUID.randomUUID().toString();
             String message = MessageHelper.getRandomString();
-            this.send(topicName, key, message);
+            //this.send(topicName, key, message);
             i++;
             Thread.sleep(100);
         }
@@ -123,7 +125,7 @@ class SimpleProducer extends AbstractSimpleKafka {
             //use the Message Helper to get a random string
             String message = MessageHelper.getRandomString();
             //send the message
-            this.send(topicName, key, message);
+            //this.send(topicName, key, message);
         }
     }
 

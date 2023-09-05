@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.apache.kafka.clients.admin.TopicListing;
@@ -17,6 +19,9 @@ public class EventProcessor {
     private static Logger logger = LoggerFactory.getLogger(EventProcessor.class);
 
     private final String braineousKafkaTopic = "braineous_dataplatform_kafka_topic";
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
 
     private TopicListing topicListing;
 
@@ -48,7 +53,8 @@ public class EventProcessor {
             /**
              * PRODUCE_MESSAGES_FROM_EVENT
              */
-            this.producer.publishToBroker(braineousKafkaTopic, json.toString());
+            this.producer.publishToBroker(this.securityTokenContainer,
+                    braineousKafkaTopic, json.toString());
             response.addProperty("statusCode", 200);
 
 

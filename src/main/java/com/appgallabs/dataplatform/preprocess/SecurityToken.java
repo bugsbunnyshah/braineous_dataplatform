@@ -41,9 +41,19 @@ public class SecurityToken implements Serializable {
         return securityToken;
     }
 
+    public static SecurityToken parse(String jsonString)
+    {
+        SecurityToken securityToken = new SecurityToken();
+        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+        securityToken.principal = jsonObject.get("principal").getAsString();
+        //securityToken.principal = ""+ ObjectUtil.hashCode(securityToken.clientId);
+        securityToken.token = jsonObject.get("token").getAsString();
+        return securityToken;
+    }
+
     @Override
     public String toString() {
-        return "SecurityToken{" +
+        return "{" +
                 "principal='" + principal + '\'' +
                 ", token='" + token + '\'' +
                 '}';
