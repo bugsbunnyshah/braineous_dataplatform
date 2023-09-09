@@ -106,35 +106,6 @@ public class MongoDBJsonStoreTests extends BaseTest {
     }*/
 
     @Test
-    public void testIngestion() throws Exception
-    {
-        String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("dataMapper/sourceSchema.json"),
-                StandardCharsets.UTF_8);
-        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("dataMapper/sourceData.json"),
-                StandardCharsets.UTF_8);
-        JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", sourceSchema);
-        input.addProperty("destinationSchema", sourceSchema);
-        input.addProperty("sourceData", sourceData);
-        input.addProperty("entity","person");
-
-
-        Response response = given().body(input.toString()).when().post("/dataMapper/map")
-                .andReturn();
-
-        String jsonResponse = response.getBody().prettyPrint();
-        JsonObject json = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        String tenant = json.get("tenant").getAsString();
-
-        Tenant cour = new Tenant();
-        cour.setPrincipal(tenant);
-        JsonArray metaData = this.mongoDBJsonStore.getIngestedDataSetsMetaData(cour);
-        JsonUtil.print(metaData);
-    }
-
-    @Test
     public void readByEntity() throws Exception{
         String entity = "flight";
         JsonArray data = this.mongoDBJsonStore.readByEntity(this.securityTokenContainer.getTenant(),entity);

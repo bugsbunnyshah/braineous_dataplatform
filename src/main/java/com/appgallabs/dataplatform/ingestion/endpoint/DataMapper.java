@@ -57,10 +57,7 @@ public class DataMapper {
             String entity = jsonObject.get("entity").getAsString();
             JsonArray array = JsonParser.parseString(sourceData).getAsJsonArray();
 
-            this.eventProcessor.processEvent(array);
-
-            JsonObject responseJson = new JsonObject();
-            responseJson.addProperty("statusCode", 200);
+            JsonObject responseJson = this.eventProcessor.processEvent(array);
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
 
