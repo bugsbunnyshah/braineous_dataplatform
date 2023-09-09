@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
+import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
+import com.appgallabs.dataplatform.infrastructure.kafka.EventProcessor;
 import com.appgallabs.dataplatform.ingestion.service.IngestionService;
 import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +32,18 @@ public class DataMapper {
 
     private CSVDataUtil csvDataUtil = new CSVDataUtil();
 
+    @Inject
+    private EventProcessor eventProcessor;
+
+    @Inject
+    private EventConsumer eventConsumer;
+
+    @PostConstruct
+    public void start(){
+        JsonObject response = this.eventConsumer.checkStatus();
+        logger.info(response.toString());
+    }
+
     @Path("map")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,15 +51,17 @@ public class DataMapper {
     {
         try
         {
-            System.out.println("MAP");
             JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
             String sourceData = jsonObject.get("sourceData").getAsString();
             String entity = jsonObject.get("entity").getAsString();
             JsonArray array = JsonParser.parseString(sourceData).getAsJsonArray();
 
+            this.eventProcessor.processEvent(array);
 
-            JsonObject responseJson  = this.mapperService.map(entity,array);
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("statusCode", 200);
+            responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
 
             Response response = Response.ok(responseJson.toString()).build();
