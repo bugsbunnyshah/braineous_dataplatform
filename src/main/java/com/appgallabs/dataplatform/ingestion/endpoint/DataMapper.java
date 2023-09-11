@@ -1,14 +1,20 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
+import com.appgallabs.dataplatform.datalake.DataLakeDriver;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProcessor;
 import com.appgallabs.dataplatform.ingestion.service.IngestionService;
 import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.json.JSONObject;
 import org.json.XML;
 import org.slf4j.Logger;
@@ -16,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.literal.NamedLiteral;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,10 +47,23 @@ public class DataMapper {
     @Inject
     private EventConsumer eventConsumer;
 
+    @Inject
+    private Instance<DataLakeDriver> dataLakeDriverInstance;
+
+    private String dataLakeDriverName;
+    private DataLakeDriver dataLakeDriver;
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
+
     @PostConstruct
     public void start(){
         JsonObject response = this.eventConsumer.checkStatus();
         logger.info(response.toString());
+
+        Config config = ConfigProvider.getConfig();
+        this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
+        this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
     }
 
     @Path("map")
@@ -68,6 +89,16 @@ public class DataMapper {
 
             JsonObject responseJson = this.eventProcessor.processEvent(array);
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
+
+            //Get Source Object Hashes
+            JsonArray sourceObjectHashes = new JsonArray();
+            for(int i=0; i<array.size();i++){
+                JsonObject sourceIngestedJson = array.get(i).getAsJsonObject();
+                String sourceObjectHash = JsonUtil.getJsonHash(sourceIngestedJson);
+                sourceObjectHashes.add(sourceObjectHash);
+            }
+            responseJson.add("data_lake_ids", sourceObjectHashes);
+
 
 
             Response response = Response.ok(responseJson.toString()).build();
@@ -108,6 +139,15 @@ public class DataMapper {
 
             JsonObject responseJson = this.eventProcessor.processEvent(array);
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
+
+            //Get Source Object Hashes
+            JsonArray sourceObjectHashes = new JsonArray();
+            for(int i=0; i<array.size();i++){
+                JsonObject sourceIngestedJson = array.get(i).getAsJsonObject();
+                String sourceObjectHash = JsonUtil.getJsonHash(sourceIngestedJson);
+                sourceObjectHashes.add(sourceObjectHash);
+            }
+            responseJson.add("data_lake_ids", sourceObjectHashes);
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;
@@ -167,7 +207,17 @@ public class DataMapper {
             }
 
 
-            JsonObject responseJson = this.mapperService.map(entity,array);
+            JsonObject responseJson = this.eventProcessor.processEvent(array);
+            responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
+
+            //Get Source Object Hashes
+            JsonArray sourceObjectHashes = new JsonArray();
+            for(int i=0; i<array.size();i++){
+                JsonObject sourceIngestedJson = array.get(i).getAsJsonObject();
+                String sourceObjectHash = JsonUtil.getJsonHash(sourceIngestedJson);
+                sourceObjectHashes.add(sourceObjectHash);
+            }
+            responseJson.add("data_lake_ids", sourceObjectHashes);
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;
@@ -187,19 +237,12 @@ public class DataMapper {
     public Response readDataLakeObject(@QueryParam("dataLakeId") String dataLakeId)
     {
         try {
-            JsonArray storedJson = this.ingestionService.readDataLakeData(dataLakeId);
+            Tenant tenant = this.securityTokenContainer.getTenant();
+            JsonArray storedJson = this.dataLakeDriver.readIngestion(tenant,dataLakeId);
 
             Response response = null;
             if(storedJson != null) {
-                JsonArray data = new JsonArray();
-
-                for(int i=0; i<storedJson.size();i++){
-                    JsonObject json = storedJson.get(i).getAsJsonObject();
-                    String jsonString = json.get("data").getAsString();
-                    data.add(JsonParser.parseString(jsonString).getAsJsonObject());
-                }
-
-                response = Response.ok(data.toString()).build();
+                response = Response.ok(storedJson.toString()).build();
             }
             else
             {

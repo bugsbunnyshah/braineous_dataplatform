@@ -135,6 +135,8 @@ public class DataMapperTests extends IngesterTest
         String storedObjectHash = JsonUtil.getJsonHash(storedDataJson);
         logger.info("STORED_OBJECT_HASH: "+storedObjectHash);
 
+        assertNotNull(storedDataArray);
+        assertEquals(1, storedDataArray.size());
         assertEquals(sourceObjectHash, storedObjectHash);
     }
 
@@ -189,6 +191,131 @@ public class DataMapperTests extends IngesterTest
         assertEquals(1, storedDataArray.size());
     }
 
+    @Test
+    public void testMapCsvSourceData() throws Exception
+    {
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
+        String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        "dataMapper/data.csv"),
+                StandardCharsets.UTF_8);
+        JsonObject input = new JsonObject();
+        input.addProperty("sourceSchema", "");
+        input.addProperty("destinationSchema", "");
+        input.addProperty("sourceData", spaceData);
+        input.addProperty("hasHeader", true);
+        input.addProperty("entity","person");
+        Response response = given().body(input.toString()).when().post("/dataMapper/mapCsv")
+                .andReturn();
+
+        String jsonResponse = response.getBody().prettyPrint();
+        logger.info("****");
+        logger.info(response.getStatusLine());
+        logger.info(jsonResponse);
+        logger.info("****");
+        assertEquals(200, response.getStatusCode());
+
+        Thread.sleep(10000);
+
+        //Get ObjectHash
+        boolean hasHeader = true;
+        String sourceData = spaceData;
+        String[] lines = sourceData.split("\n");
+        String[] columns = null;
+        int head = 0;
+        if(hasHeader) {
+            head = 1;
+            String header = lines[0];
+            columns = header.split(",");
+        }
+        else
+        {
+            String top = lines[0];
+            int columnCount = top.split(",").length;
+            columns = new String[columnCount];
+            for (int i = 0; i < columns.length; i++) {
+                columns[i] = "col" + (i+1);
+            }
+        }
+        JsonArray array = new JsonArray();
+        int length = lines.length;
+
+
+        for(int i=head; i<length; i++)
+        {
+            String line = lines[i];
+            String[] data = line.split(",");
+            JsonObject row = new JsonObject();
+            for(int j=0; j<data.length; j++)
+            {
+                row.addProperty(columns[j],data[j]);
+            }
+            array.add(row);
+        }
+
+        //Get SourceData Hash
+        JsonObject sourceJsonObject = array.get(0).getAsJsonObject();
+        String sourceObjectHash = JsonUtil.getJsonHash(sourceJsonObject);
+        logger.info("SOURCE_OBJECT_HASH: "+sourceObjectHash);
+        logger.info("***SOURCE***");
+        JsonUtil.printStdOut(sourceJsonObject);
+        logger.info("************");
+
+        //Get StoredData Hash
+        JsonArray storedDataArray = this.dataLakeDriver.readIngestion(tenant,sourceObjectHash);
+        JsonObject storedJsonObject = storedDataArray.get(0).getAsJsonObject();
+        String storedObjectHash = JsonUtil.getJsonHash(storedJsonObject);
+        logger.info("STORED_OBJECT_HASH: "+storedObjectHash);
+        logger.info("***STORED***");
+        JsonUtil.printStdOut(storedDataArray);
+        logger.info("************");
+
+        //Assertions
+        assertNotNull(storedDataArray);
+        assertEquals(1, storedDataArray.size());
+        assertEquals(sourceObjectHash, storedObjectHash);
+    }
+
+    @Test
+    public void testReadDataLakeObject() throws Exception {
+        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader()
+                        .getResourceAsStream("query/person.json"),
+                StandardCharsets.UTF_8);
+
+        JsonObject input = new JsonObject();
+        input.addProperty("sourceData", json);
+        input.addProperty("entity","person");
+
+        logger.info(input.toString());
+
+
+        Response response = given().body(input.toString()).when().post("/dataMapper/map/")
+                .andReturn();
+
+        String jsonResponse = response.getBody().prettyPrint();
+        logger.info("****");
+        logger.info(response.getStatusLine());
+        logger.info(jsonResponse);
+        logger.info("****");
+        assertEquals(200, response.getStatusCode());
+        JsonObject responseJson = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonArray dataLakeIdArray = responseJson.getAsJsonArray("data_lake_ids");
+
+        Thread.sleep(10000);
+
+        String dataLakeId = dataLakeIdArray.get(0).getAsString();
+        String url = "/dataMapper/readDataLakeObject/?dataLakeId="+dataLakeId;
+        response = given().get(url)
+                   .andReturn();
+
+        jsonResponse = response.getBody().prettyPrint();
+        logger.info("****");
+        logger.info(response.getStatusLine());
+        logger.info(jsonResponse);
+        logger.info("****");
+        assertEquals(200, response.getStatusCode());
+    }
+
     //@Test
     public void testMapWithScatteredFields() throws Exception {
         String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
@@ -212,35 +339,6 @@ public class DataMapperTests extends IngesterTest
         logger.info("***************");
         logger.info(response.getStatusLine());
         logger.info("***************");
-
-        //assert the body
-        JsonObject ingestedData = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        assertNotNull(ingestedData.get("dataLakeId"));
-        int statusCode = response.getStatusCode();
-        assertEquals(200, statusCode);
-    }
-
-    //@Test
-    public void testMapCsvSourceData() throws Exception
-    {
-        String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                "dataMapper/data.csv"),
-                StandardCharsets.UTF_8);
-        JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", "");
-        input.addProperty("destinationSchema", "");
-        input.addProperty("sourceData", spaceData);
-        input.addProperty("hasHeader", true);
-        input.addProperty("entity","person");
-        Response response = given().body(input.toString()).when().post("/dataMapper/mapCsv")
-                .andReturn();
-
-        String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
-        logger.info(response.getStatusLine());
-        logger.info(jsonResponse);
-        logger.info("****");
-        assertEquals(200, response.getStatusCode());
 
         //assert the body
         JsonObject ingestedData = JsonParser.parseString(jsonResponse).getAsJsonObject();
@@ -305,34 +403,5 @@ public class DataMapperTests extends IngesterTest
         assertNotNull(ingestedData.get("dataLakeId"));
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
-    }
-
-    //@Test
-    public void testEndToEndQueryByTraversal() throws Exception {
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream("query/person.json"),
-                StandardCharsets.UTF_8);
-
-        JsonObject input = new JsonObject();
-        input.addProperty("sourceData", json);
-        input.addProperty("entity","person");
-
-        logger.info(input.toString());
-
-
-        Response response = given().body(input.toString()).when().post("/dataMapper/map/")
-                .andReturn();
-
-        String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
-        logger.info(response.getStatusLine());
-        logger.info(jsonResponse);
-        logger.info("****");
-        assertEquals(200, response.getStatusCode());
-
-        //assert the body
-        JsonObject ingestedData = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        assertNotNull(ingestedData.get("dataLakeId"));
-        logger.info("DataLakeId: "+ingestedData.get("dataLakeId"));
     }
 }
