@@ -6,6 +6,7 @@ import com.appgallabs.dataplatform.ingestion.service.IngestionService;
 import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.json.JSONObject;
@@ -55,7 +56,15 @@ public class DataMapper {
 
             String sourceData = jsonObject.get("sourceData").getAsString();
             String entity = jsonObject.get("entity").getAsString();
-            JsonArray array = JsonParser.parseString(sourceData).getAsJsonArray();
+
+            JsonArray array;
+            JsonElement sourceIngestion = JsonParser.parseString(sourceData);
+            if(sourceIngestion.isJsonObject()){
+                array = new JsonArray();
+                array.add(sourceIngestion.getAsJsonObject());
+            }else{
+                array = sourceIngestion.getAsJsonArray();
+            }
 
             JsonObject responseJson = this.eventProcessor.processEvent(array);
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
@@ -86,11 +95,19 @@ public class DataMapper {
             String entity = jsonObject.get("entity").getAsString();
 
             JSONObject sourceJson = XML.toJSONObject(xml);
-            String json = sourceJson.toString(4);
-            JsonObject sourceJsonObject = JsonParser.parseString(json).getAsJsonObject();
+            String sourceData = sourceJson.toString(4);
 
+            JsonArray array;
+            JsonElement sourceIngestion = JsonParser.parseString(sourceData);
+            if(sourceIngestion.isJsonObject()){
+                array = new JsonArray();
+                array.add(sourceIngestion.getAsJsonObject());
+            }else{
+                array = sourceIngestion.getAsJsonArray();
+            }
 
-            JsonObject responseJson = this.mapperService.mapXml(entity,sourceJsonObject);
+            JsonObject responseJson = this.eventProcessor.processEvent(array);
+            responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;

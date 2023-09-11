@@ -12,6 +12,8 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
+import org.json.JSONObject;
+import org.json.XML;
 import test.components.BaseTest;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -136,6 +138,57 @@ public class DataMapperTests extends IngesterTest
         assertEquals(sourceObjectHash, storedObjectHash);
     }
 
+    @Test
+    public void testMapXmlSourceData() throws Exception {
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
+        String xml = IOUtils.toString(Thread.currentThread().getContextClassLoader()
+                        .getResourceAsStream("dataMapper/people.xml"),
+                StandardCharsets.UTF_8);
+
+        JsonObject input = new JsonObject();
+        input.addProperty("sourceSchema", xml);
+        input.addProperty("destinationSchema", xml);
+        input.addProperty("sourceData", xml);
+        input.addProperty("entity","person");
+
+
+        Response response = given().body(input.toString()).when().post("/dataMapper/mapXml/")
+                .andReturn();
+
+        String jsonResponse = response.getBody().prettyPrint();
+        logger.info("****");
+        logger.info(response.getStatusLine());
+        logger.info(jsonResponse);
+        logger.info("****");
+        assertEquals(200, response.getStatusCode());
+
+        Thread.sleep(10000);
+
+        //Get ObjectHash
+        JSONObject sourceJson = XML.toJSONObject(xml);
+        String json = sourceJson.toString(4);
+        JsonObject sourceJsonObject = JsonParser.parseString(json).getAsJsonObject();
+        String sourceObjectHash = JsonUtil.getJsonHash(sourceJsonObject);
+        logger.info("SOURCE_OBJECT_HASH: "+sourceObjectHash);
+        logger.info("***SOURCE***");
+        JsonUtil.printStdOut(sourceJsonObject);
+        logger.info("************");
+
+        //Get the stored ingestion
+        JsonArray storedDataArray = this.dataLakeDriver.readIngestion(tenant,sourceObjectHash);
+        JsonObject storedJsonObject = storedDataArray.get(0).getAsJsonObject();
+        String storedObjectHash = JsonUtil.getJsonHash(storedJsonObject);
+        logger.info("STORED_OBJECT_HASH: "+storedObjectHash);
+        logger.info("***STORED***");
+        JsonUtil.printStdOut(storedDataArray);
+        logger.info("************");
+
+        //Assertions
+        assertNotNull(storedDataArray);
+        assertEquals(1, storedDataArray.size());
+    }
+
     //@Test
     public void testMapWithScatteredFields() throws Exception {
         String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
@@ -252,34 +305,6 @@ public class DataMapperTests extends IngesterTest
         assertNotNull(ingestedData.get("dataLakeId"));
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
-    }
-
-    //@Test
-    public void testMapXmlSourceData() throws Exception {
-        String xml = IOUtils.toString(Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream("dataMapper/people.xml"),
-                StandardCharsets.UTF_8);
-
-        JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", xml);
-        input.addProperty("destinationSchema", xml);
-        input.addProperty("sourceData", xml);
-        input.addProperty("entity","person");
-
-
-        Response response = given().body(input.toString()).when().post("/dataMapper/mapXml/")
-                .andReturn();
-
-        String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
-        logger.info(response.getStatusLine());
-        //logger.info(jsonResponse);
-        logger.info("****");
-        assertEquals(200, response.getStatusCode());
-
-        //assert the body
-        JsonObject ingestedData = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        assertNotNull(ingestedData.get("dataLakeId"));
     }
 
     //@Test
