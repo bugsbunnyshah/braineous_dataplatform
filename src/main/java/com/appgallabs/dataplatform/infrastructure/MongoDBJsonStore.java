@@ -51,6 +51,8 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     @Inject
     private DataLakeStore dataLakeStore;
 
+    private MongoClient mongoClient = null;
+
 
     public MongoDBJsonStore()
     {
@@ -59,6 +61,10 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     }
 
     public MongoClient getMongoClient() {
+        if(this.mongoClient != null){
+            return this.mongoClient;
+        }
+
         String connectionString;
         if(this.mongodbHost.equals("localhost"))
         {
@@ -75,7 +81,7 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
         //System.out.println(connectionString);
         //System.out.println("*****************************");
 
-        MongoClient mongoClient = MongoClients.create(connectionString);
+        this.mongoClient = MongoClients.create(connectionString);
         return mongoClient;
     }
 

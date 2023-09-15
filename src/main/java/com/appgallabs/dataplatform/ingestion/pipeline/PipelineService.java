@@ -2,11 +2,11 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -25,35 +25,23 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.literal.NamedLiteral;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import java.util.*;
 
 @ApplicationScoped
 public class PipelineService {
     private static Logger logger = LoggerFactory.getLogger(PipelineService.class);
-
+    private SchemalessMapper mapper;
     @Inject
     private FrameworkServices frameworkServices;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    @Inject
-    private Instance<DataLakeDriver> dataLakeDriverInstance;
-
-    private String dataLakeDriverName;
-    private DataLakeDriver dataLakeDriver;
-
-    private SchemalessMapper mapper;
-
     @PostConstruct
     public void start(){
-        Config config = ConfigProvider.getConfig();
-
         this.mapper = new SchemalessMapper();
-
-        this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
-        this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
     }
 
     public void ingest(SecurityToken securityToken, String entity, String jsonString){
@@ -79,8 +67,7 @@ public class PipelineService {
                 inputEvents.addAll(objectEvents);
             }
 
-            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
-                    this.dataLakeDriver);
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken);
 
             DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
             dataEvents.addSink(sinkFunction);
@@ -115,8 +102,7 @@ public class PipelineService {
 
             DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
 
-            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
-                    this.dataLakeDriver);
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken);
 
             dataEvents.addSink(sinkFunction);
 
@@ -130,7 +116,7 @@ public class PipelineService {
         List<DataEvent> inputEvents = new ArrayList<>();
 
         //decompose the object into its fields
-        Map<String,Object> flatObject = mapper.mapAll(json);
+        Map<String,Object> flatObject = this.mapper.mapAll(json);
 
         Set<Map.Entry<String, Object>> entries = flatObject.entrySet();
         for(Map.Entry<String, Object> entry:entries){
@@ -146,7 +132,7 @@ public class PipelineService {
         List<DataEvent> inputEvents = new ArrayList<>();
 
         //decompose the object into its fields
-        Map<String,Object> flatObject = mapper.mapSubset(json,jsonPathExpressions);
+        Map<String,Object> flatObject = this.mapper.mapSubset(json,jsonPathExpressions);
         Gson gson = this.frameworkServices.getGson();
         String flattenedJsonString = gson.toJson(flatObject, LinkedHashMap.class);
         String jsonSubset = JsonUnflattener.unflatten(flattenedJsonString);

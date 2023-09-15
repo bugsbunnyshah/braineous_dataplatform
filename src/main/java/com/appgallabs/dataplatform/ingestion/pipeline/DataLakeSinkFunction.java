@@ -4,7 +4,10 @@ import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 
+import javax.enterprise.inject.spi.CDI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
@@ -14,16 +17,23 @@ public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
 
     private SecurityToken securityToken;
 
-    private DataLakeDriver dataLakeDriver;
-
-    public DataLakeSinkFunction(SecurityToken securityToken, DataLakeDriver dataLakeDriver) {
+    public DataLakeSinkFunction(SecurityToken securityToken) {
         this.securityToken = securityToken;
-        this.dataLakeDriver = dataLakeDriver;
     }
 
     @Override
     public void invoke(DataEvent value, Context context) throws Exception {
         SinkFunction.super.invoke(value, context);
+
+        Config config = ConfigProvider.getConfig();
+
+        //TODO: for custom datalake
+        //this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
+        //this.dataLakeDriver = dataLakeDriverInstance.
+        //        select(NamedLiteral.of(dataLakeDriverName)).get();
+
+        //for core datalake (MongoDB)
+        DataLakeDriver dataLakeDriver = CDI.current().select(DataLakeDriver.class).get();
 
         //for timestamp
         OffsetDateTime ingestionTime = OffsetDateTime.now(ZoneOffset.UTC);
@@ -47,7 +57,7 @@ public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
         fieldMap.put("timestamp",timestamp);
         fieldMap.put("entity",entity);
         fieldMap.put(value.getFieldName(),value.getFieldValue());
-        String datalakeId = this.dataLakeDriver.storeIngestion(tenant, fieldMap);
+        String datalakeId = dataLakeDriver.storeIngestion(tenant, fieldMap);
 
         /*System.out.println(value + ">" + value.isProcessed() + ">" + value.getFieldName() + ">" + value.getFieldValue());
         System.out.println(this.securityToken);
