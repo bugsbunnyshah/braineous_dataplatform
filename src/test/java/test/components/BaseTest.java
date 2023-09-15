@@ -30,11 +30,10 @@ public abstract class BaseTest
 
     @AfterEach
     void tearDown() {
-        /*try {
+        try {
             if (this.mongoDBJsonStore == null) {
                 this.mongoDBJsonStore = new MongoDBJsonStore();
             }
-            this.mongoDBJsonStore.start();
             if(this.securityTokenContainer != null && this.securityTokenContainer.getSecurityToken()!= null) {
                 String principal = this.securityTokenContainer.getTenant().getPrincipal();
                 String databaseName = principal + "_" + "aiplatform";
@@ -44,6 +43,6 @@ public abstract class BaseTest
         catch (Exception e)
         {
             e.printStackTrace();
-        }*/
+        }
     }
 }
