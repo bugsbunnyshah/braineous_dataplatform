@@ -44,10 +44,6 @@ public class PipelineService {
     private String dataLakeDriverName;
     private DataLakeDriver dataLakeDriver;
 
-    private MetaDataDecoratorMapFunction metaDataDecoratorMapFunction;
-
-    private DataLakeSinkFunction dataLakeSinkFunction;
-
     private SchemalessMapper mapper;
 
     @PostConstruct
@@ -58,10 +54,6 @@ public class PipelineService {
 
         this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
         this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
-
-        this.metaDataDecoratorMapFunction = new MetaDataDecoratorMapFunction(this.securityTokenContainer.getSecurityToken());
-        this.dataLakeSinkFunction = new DataLakeSinkFunction(this.securityTokenContainer.getSecurityToken(),
-                this.dataLakeDriver);
     }
 
     public void ingest(SecurityToken securityToken, String entity, String jsonString){
@@ -99,40 +91,7 @@ public class PipelineService {
         }
     }
 
-    public void ingest(String entity,String jsonString){
-        try {
-            final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-            List<DataEvent> inputEvents = new ArrayList<>();
-
-            JsonElement jsonElement = JsonParser.parseString(jsonString);
-            JsonUtil.printStdOut(jsonElement);
-
-            if(jsonElement.isJsonArray()) {
-                JsonArray jsonArray = jsonElement.getAsJsonArray();
-
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    //decompose the object into its fields
-                    String json = jsonArray.get(i).getAsJsonObject().toString();
-
-                    List<DataEvent> objectEvents = this.flattenObject(entity, json);
-                    inputEvents.addAll(objectEvents);
-                }
-            }else if(jsonElement.isJsonObject()){
-                String json = jsonElement.toString();
-                List<DataEvent> objectEvents = this.flattenObject(entity, json);
-                inputEvents.addAll(objectEvents);
-            }
-
-            DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
-            dataEvents.addSink(this.dataLakeSinkFunction);
-
-            env.execute();
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void ingest(String entity,String jsonString, List<String> jsonPathExpressions){
+    public void ingest(SecurityToken securityToken, String entity,String jsonString, List<String> jsonPathExpressions){
         try {
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
             List<DataEvent> inputEvents = new ArrayList<>();
@@ -156,7 +115,10 @@ public class PipelineService {
 
             DataStream<DataEvent> dataEvents = env.fromCollection(inputEvents);
 
-            dataEvents.addSink(this.dataLakeSinkFunction);
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
+                    this.dataLakeDriver);
+
+            dataEvents.addSink(sinkFunction);
 
             env.execute();
         }catch(Exception e){

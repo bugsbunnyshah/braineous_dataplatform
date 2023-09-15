@@ -50,7 +50,7 @@ public class PipelineServiceTests extends BaseTest {
         String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
         String entity = "books";
-        this.pipelineService.ingest(entity,jsonString);
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString);
 
         JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
                 originalObjectHash);
@@ -79,7 +79,7 @@ public class PipelineServiceTests extends BaseTest {
         String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
         String entity = "books";
-        this.pipelineService.ingest(entity,jsonString);
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),entity,jsonString);
 
         JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
                 originalObjectHash);
@@ -105,7 +105,7 @@ public class PipelineServiceTests extends BaseTest {
 
         String entity = "books";
         List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
-        this.pipelineService.ingest(entity,jsonString, jsonPathExpressions);
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString, jsonPathExpressions);
 
         String inputSubsetString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/pulled.json"),
@@ -136,7 +136,7 @@ public class PipelineServiceTests extends BaseTest {
 
         String entity = "books";
         List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
-        this.pipelineService.ingest(entity,jsonString, jsonPathExpressions);
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString, jsonPathExpressions);
 
         String inputSubsetString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/pulled.json"),
