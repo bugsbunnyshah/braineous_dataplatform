@@ -1,6 +1,6 @@
 package test.components;
 
-import com.appgallabs.dataplatform.ingestion.service.StreamIngesterContext;
+import com.appgallabs.dataplatform.deprecated.StreamIngesterContext;
 import com.appgallabs.dataplatform.util.BGNotificationReceiver;
 import com.appgallabs.dataplatform.util.BackgroundProcessListener;
 import org.junit.jupiter.api.AfterEach;

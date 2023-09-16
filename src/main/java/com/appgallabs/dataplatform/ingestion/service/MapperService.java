@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.deprecated.IngestionService;
+import com.appgallabs.dataplatform.deprecated.StreamIngesterContext;
 import com.appgallabs.dataplatform.history.service.DataReplayService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
@@ -78,7 +80,7 @@ public class MapperService {
         return result;
     }
 
-    static JsonObject performMapping(Map<SchemaElement, Double> scores, String json) throws IOException
+    public static JsonObject performMapping(Map<SchemaElement, Double> scores, String json) throws IOException
     {
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 
@@ -126,7 +128,7 @@ public class MapperService {
         return schemaInfo;
     }
 
-    static HierarchicalSchemaInfo populateHierarchialSchema(String object, String sourceData, String parent)
+    public static HierarchicalSchemaInfo populateHierarchialSchema(String object, String sourceData, String parent)
     {
         HierarchicalSchemaInfo schemaInfo = createHierachialSchemaInfo(object);
         JsonElement sourceElement = JsonParser.parseString(sourceData);
@@ -193,8 +195,8 @@ public class MapperService {
         return schemaInfo;
     }
 
-    static Map<SchemaElement,Double> findMatches(FilteredSchemaInfo f1, FilteredSchemaInfo f2,
-                                                  ArrayList<SchemaElement> sourceElements)
+    public static Map<SchemaElement,Double> findMatches(FilteredSchemaInfo f1, FilteredSchemaInfo f2,
+                                                        ArrayList<SchemaElement> sourceElements)
     {
         Map<SchemaElement, Double> result = new HashMap<>();
         Matcher matcher = MatcherManager.getMatcher(

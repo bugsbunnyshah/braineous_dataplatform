@@ -1,6 +1,6 @@
 package prototype;
 
-import com.appgallabs.dataplatform.ingestion.service.IngestionService;
+import com.appgallabs.dataplatform.deprecated.IngestionService;
 import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.BackgroundProcessListener;
@@ -11,15 +11,12 @@ import com.google.gson.JsonParser;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import test.components.IngesterTest;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

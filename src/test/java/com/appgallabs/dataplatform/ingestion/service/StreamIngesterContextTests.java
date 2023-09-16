@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
+import com.appgallabs.dataplatform.deprecated.StreamIngesterContext;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;

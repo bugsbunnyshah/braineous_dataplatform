@@ -1,8 +1,6 @@
 package com.appgallabs.dataplatform;
 
-import com.appgallabs.dataplatform.ingestion.service.StreamIngesterContext;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.appgallabs.dataplatform.deprecated.StreamIngesterContext;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 

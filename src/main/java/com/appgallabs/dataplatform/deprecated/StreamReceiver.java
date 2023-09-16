@@ -1,5 +1,6 @@
-package com.appgallabs.dataplatform.ingestion.service;
+package com.appgallabs.dataplatform.deprecated;
 
+import com.appgallabs.dataplatform.deprecated.DataProcessor;
 import org.apache.spark.storage.StorageLevel;
 import org.apache.spark.streaming.receiver.Receiver;
 

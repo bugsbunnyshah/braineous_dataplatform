@@ -1,13 +1,13 @@
-package com.appgallabs.dataplatform.ingestion.service;
+package com.appgallabs.dataplatform.deprecated;
 
 
 import com.appgallabs.dataplatform.history.service.DataReplayService;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.ingestion.service.CallbackAgent;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
-import com.appgallabs.dataplatform.util.BackgroundProcessListener;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;
@@ -146,7 +146,7 @@ public class StreamIngesterContext implements Serializable {
         });
     }
 
-    void ingestOnThread(String principal,String entity,String dataLakeId, String chainId, int batchSize, JsonObject jsonObject){
+    public void ingestOnThread(String principal, String entity, String dataLakeId, String chainId, int batchSize, JsonObject jsonObject){
         try {
             Tenant tenant = new Tenant();
             tenant.setPrincipal(principal);

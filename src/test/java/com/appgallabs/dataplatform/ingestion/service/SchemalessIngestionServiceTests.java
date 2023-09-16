@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.ingestion.service;
 
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
+import com.appgallabs.dataplatform.deprecated.SchemalessIngestionService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,7 +11,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
-import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

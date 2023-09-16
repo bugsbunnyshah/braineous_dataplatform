@@ -4,8 +4,6 @@ import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProcessor;
-import com.appgallabs.dataplatform.ingestion.service.IngestionService;
-import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -32,12 +30,6 @@ import javax.ws.rs.core.Response;
 @Path("dataMapper")
 public class DataMapper {
     private static Logger logger = LoggerFactory.getLogger(DataMapper.class);
-
-    @Inject
-    private MapperService mapperService;
-
-    @Inject
-    private IngestionService ingestionService;
 
     private CSVDataUtil csvDataUtil = new CSVDataUtil();
 

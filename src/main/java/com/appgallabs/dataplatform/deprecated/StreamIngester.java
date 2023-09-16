@@ -1,8 +1,9 @@
-package com.appgallabs.dataplatform.ingestion.service;
+package com.appgallabs.dataplatform.deprecated;
 
 import com.appgallabs.dataplatform.history.service.DataReplayService;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.ingestion.service.MapperService;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 

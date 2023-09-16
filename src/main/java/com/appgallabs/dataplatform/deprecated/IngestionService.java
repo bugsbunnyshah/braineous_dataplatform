@@ -1,6 +1,9 @@
-package com.appgallabs.dataplatform.ingestion.service;
+package com.appgallabs.dataplatform.deprecated;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.ingestion.service.FetchAgent;
+import com.appgallabs.dataplatform.ingestion.service.MapperService;
+import com.appgallabs.dataplatform.ingestion.service.PushAgent;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -30,9 +33,9 @@ public class IngestionService implements Serializable {
     @Inject
     private MapperService mapperService;
 
-    private Map<String,FetchAgent> fetchAgents;
+    private Map<String, FetchAgent> fetchAgents;
 
-    private Map<String,PushAgent> pushAgents;
+    private Map<String, PushAgent> pushAgents;
 
     public IngestionService(){
         this.fetchAgents = new HashMap<>();

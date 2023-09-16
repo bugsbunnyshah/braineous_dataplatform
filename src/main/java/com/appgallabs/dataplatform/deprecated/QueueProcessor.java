@@ -1,6 +1,5 @@
-package com.appgallabs.dataplatform.ingestion.service;
+package com.appgallabs.dataplatform.deprecated;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
 
 import java.util.List;

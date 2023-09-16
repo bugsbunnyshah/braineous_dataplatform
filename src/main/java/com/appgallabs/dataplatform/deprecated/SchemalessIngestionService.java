@@ -1,4 +1,4 @@
-package com.appgallabs.dataplatform.ingestion.service;
+package com.appgallabs.dataplatform.deprecated;
 
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.github.wnameless.json.flattener.JsonFlattener;
