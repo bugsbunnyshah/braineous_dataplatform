@@ -134,7 +134,7 @@ public class MongoDBJsonStoreTests extends BaseTest {
         JsonUtil.printStdOut(JsonParser.parseString(flattenJson.toString()));
 
         Tenant tenant = this.securityTokenContainer.getTenant();
-        System.out.println(tenant.getPrincipal());
+        logger.info(tenant.getPrincipal());
 
         //Store the FlatJson
         String dataLakeId = this.mongoDBJsonStore.storeIngestion(tenant,flattenJson);

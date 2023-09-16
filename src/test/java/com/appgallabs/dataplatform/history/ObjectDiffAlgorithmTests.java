@@ -333,13 +333,13 @@ public class ObjectDiffAlgorithmTests extends BaseTest {
                 "}";
 
         //JsonObject left = new JsonObject();
-        //System.out.println(flight0);
+        //logger.info(flight0);
         JsonObject left = JsonParser.parseString(flight0).getAsJsonObject();
         //left.add("object",JsonParser.parseString(email0).getAsJsonObject());
         JsonUtil.print(left);
 
         //JsonObject right = new JsonObject();
-        //System.out.println(flight1);
+        //logger.info(flight1);
         JsonObject right = JsonParser.parseString(flight1).getAsJsonObject();
         //right.add("object",JsonParser.parseString(email1).getAsJsonObject());
         JsonUtil.print(right);

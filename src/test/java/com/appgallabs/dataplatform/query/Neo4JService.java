@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.query;
 
 import org.neo4j.driver.*;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 
@@ -10,6 +11,8 @@ import static org.neo4j.driver.Values.parameters;
 
 @Singleton
 public class Neo4JService implements AutoCloseable{
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(Neo4JService.class);
+
     private final Driver driver;
 
     public Neo4JService() {
@@ -36,7 +39,7 @@ public class Neo4JService implements AutoCloseable{
                         parameters( "airportName", airportName ) );
                 return result.single().get( 0 ).asString();
             } );
-            System.out.println( greeting );
+            logger.info( greeting );
         }
     }
 
@@ -50,7 +53,7 @@ public class Neo4JService implements AutoCloseable{
                         parameters( "airportName", airportName, "airlineName",airlineName ) );
                 return result.list();
             } );
-            System.out.println(resultData);
+            logger.info(resultData.toString());
         }
     }
 
@@ -65,7 +68,7 @@ public class Neo4JService implements AutoCloseable{
                         parameters( "airportName", airportName) );
                 return result.list();
             } );
-            System.out.println(resultData);
+            logger.info(resultData.toString());
         }
     }
 }
