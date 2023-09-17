@@ -33,7 +33,7 @@ public class EventConsumer {
     @PreDestroy
     public void stop(){
         try {
-            this.consumer.close();
+            this.consumer.shutdown();
         }catch(Exception e){
             throw new RuntimeException(e);
         }

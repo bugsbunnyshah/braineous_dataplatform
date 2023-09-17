@@ -60,6 +60,11 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
     }
 
+    @PreDestroy
+    public void onStop(){
+        this.mongoClient.close();
+    }
+
     public MongoClient getMongoClient() {
         if(this.mongoClient != null){
             return this.mongoClient;
