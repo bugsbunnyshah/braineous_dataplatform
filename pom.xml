@@ -261,6 +261,12 @@
       <artifactId>graphql-java</artifactId>
       <version>20.6</version>
     </dependency>
+    <dependency>
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java-spring-boot-starter-webmvc</artifactId>
+      <version>1.0</version>
+    </dependency>
+
 
     <!-- Add logging framework, to produce console output when running in the IDE. -->
     <!-- These dependencies are excluded from the application JAR by default. -->

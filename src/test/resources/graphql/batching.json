@@ -1,0 +1,35 @@
+[
+  {
+    "hero": {
+      "name": "R2-D2",
+      "friends": [
+        {
+          "name": "Han Solo"
+        },
+        {
+          "name": "Leia Organa"
+        }
+      ]
+    }
+  },
+  {
+    "hero": {
+      "name": "Han Solo",
+      "friends": [
+        {
+          "name": "R2-D2"
+        }
+      ]
+    }
+  },
+  {
+    "hero": {
+      "name": "Leia Organa",
+      "friends": [
+        {
+          "name": "R2-D2"
+        }
+      ]
+    }
+  }
+]
