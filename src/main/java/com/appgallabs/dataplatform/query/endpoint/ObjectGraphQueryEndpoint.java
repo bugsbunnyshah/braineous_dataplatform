@@ -1,6 +1,6 @@
 package com.appgallabs.dataplatform.query.endpoint;
 
-import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
+/*import com.appgallabs.dataplatform.query.ObjectGraphQueryService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -15,13 +15,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.List;*/
 
 
-@Path("/graph/query")
+//@Path("/graph/query")
 public class ObjectGraphQueryEndpoint
 {
-    private static Logger logger = LoggerFactory.getLogger(ObjectGraphQueryEndpoint.class);
+    /*private static Logger logger = LoggerFactory.getLogger(ObjectGraphQueryEndpoint.class);
 
     @Inject
     private ObjectGraphQueryService objectGraphQueryService;

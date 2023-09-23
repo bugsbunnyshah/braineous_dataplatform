@@ -11,6 +11,7 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import graphql.spring.web.servlet.GraphQLInvocationData;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 import static graphql.schema.idl.RuntimeWiring.newRuntimeWiring;
 
@@ -52,8 +55,19 @@ public class SandboxTests {
                 StandardCharsets.UTF_8
         );
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
-        JsonUtil.printStdOut(jsonArray);
+        //JsonUtil.printStdOut(jsonArray);
 
+        GraphQLDataFetchers fetchers = new GraphQLDataFetchers();
+        GraphQLProvider provider = new GraphQLProvider(fetchers);
+        provider.init();
+        GraphQL graphQL = provider.graphQL();
 
+        //System.out.println(provider.globalDataLoaderRegistry(1000l,1000l));
+
+        GraphQLInvocationData invocationData = new GraphQLInvocationData("{}","queryAll", null);
+        RequestScopedGraphQLInvocation invocation = new RequestScopedGraphQLInvocation(graphQL,fetchers);
+
+        CompletableFuture<ExecutionResult> result = invocation.invoke(invocationData, null);
+        System.out.println(result.get().isDataPresent());
     }
 }

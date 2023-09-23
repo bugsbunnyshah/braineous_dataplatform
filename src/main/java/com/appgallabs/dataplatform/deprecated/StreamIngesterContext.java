@@ -197,6 +197,6 @@ public class StreamIngesterContext implements Serializable {
     }
 
     private void storeToGraph(Tenant tenant,String entity,JsonObject jsonObject){
-        this.queryService.saveObjectGraph(entity, jsonObject);
+        //this.queryService.saveObjectGraph(entity, jsonObject);
     }
 }

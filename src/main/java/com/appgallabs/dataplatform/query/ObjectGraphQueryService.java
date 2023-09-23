@@ -1,6 +1,6 @@
 package com.appgallabs.dataplatform.query;
 
-import com.github.wnameless.json.flattener.JsonFlattener;
+/*import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,14 +15,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.*;*/
 
+import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ObjectGraphQueryService {
-    private static Logger logger = LoggerFactory.getLogger(ObjectGraphQueryService.class);
+    /*private static Logger logger = LoggerFactory.getLogger(ObjectGraphQueryService.class);
 
     @Inject
     private GraphQueryGenerator graphQueryGenerator;
@@ -165,5 +165,5 @@ public class ObjectGraphQueryService {
                 return result.list();
             } );
         }
-    }
+    }*/
 }
