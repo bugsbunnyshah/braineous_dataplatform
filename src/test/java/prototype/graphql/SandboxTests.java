@@ -11,7 +11,6 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import graphql.spring.web.servlet.GraphQLInvocationData;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -64,10 +63,10 @@ public class SandboxTests {
 
         //System.out.println(provider.globalDataLoaderRegistry(1000l,1000l));
 
-        GraphQLInvocationData invocationData = new GraphQLInvocationData("{}","queryAll", null);
+        /*GraphQLInvocationData invocationData = new GraphQLInvocationData("{}","queryAll", null);
         RequestScopedGraphQLInvocation invocation = new RequestScopedGraphQLInvocation(graphQL,fetchers);
 
         CompletableFuture<ExecutionResult> result = invocation.invoke(invocationData, null);
-        System.out.println(result.get().isDataPresent());
+        System.out.println(result.get().isDataPresent());*/
     }
 }
