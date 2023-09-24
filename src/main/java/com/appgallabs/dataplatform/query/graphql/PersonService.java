@@ -14,7 +14,7 @@ public class PersonService {
 
     public PersonService() {
         Country c1 = new Country("United States","US");
-        Country c2 = new Country("Italy","IT");
+        Country c2 = new Country("Italy Updated","IT");
 
         Person p1 = new Person("Benjamin Franklin",c1);
         Person p2 = new Person("Leonardo da Vinci",c2);
