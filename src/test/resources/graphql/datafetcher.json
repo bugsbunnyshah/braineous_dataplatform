@@ -1,0 +1,4 @@
+{
+  "query": "{allPersons {name}}",
+  "variables": null
+}
