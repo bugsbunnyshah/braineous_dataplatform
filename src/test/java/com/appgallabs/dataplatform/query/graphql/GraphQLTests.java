@@ -17,9 +17,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-import io.restassured.response.Response;
-import static io.restassured.RestAssured.given;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
