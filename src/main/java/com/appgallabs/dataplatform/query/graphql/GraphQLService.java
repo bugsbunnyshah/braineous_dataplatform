@@ -11,6 +11,16 @@ public class GraphQLService {
     @Inject
     PersonService personService;
 
+    @Inject
+    private ProductService productService;
+
+
+    @Query("allProducts")
+    @Description("Get all products.")
+    public List<ProductDTO> getAllProducts() {
+        return this.productService.allProducts();
+    }
+
     @Query("allCountries")
     @Description("Get all countries.")
     public List<Country> getAllCountries() {

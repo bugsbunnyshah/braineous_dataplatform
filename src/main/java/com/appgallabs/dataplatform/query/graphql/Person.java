@@ -2,8 +2,8 @@ package com.appgallabs.dataplatform.query.graphql;
 
 public class Person {
 
-    String name;
-    Country country;
+    private String name;
+    private Country country;
 
     public Person() {
     }

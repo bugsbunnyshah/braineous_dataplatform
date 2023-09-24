@@ -1,8 +1,8 @@
 package com.appgallabs.dataplatform.query.graphql;
 
 public class Country {
-    String name;
-    String symbol;
+    private String name;
+    private String symbol;
 
     public Country() {
     }
