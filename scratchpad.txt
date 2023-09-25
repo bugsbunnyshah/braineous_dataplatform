@@ -16,6 +16,15 @@
     }
 }
 
+query personByName {
+    personByName(name: "Leonardo da Vinci") {
+       name
+    	 country {
+    	   name
+    	   symbol
+    	 }
+    }
+  }
 
 
 

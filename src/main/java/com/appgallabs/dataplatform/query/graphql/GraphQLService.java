@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.query.graphql;
 
+import com.google.gson.JsonArray;
 import org.eclipse.microprofile.graphql.*;
 
 import javax.inject.Inject;
@@ -16,6 +17,12 @@ public class GraphQLService {
 
     @Inject
     private QueryService queryService;
+
+    @Query("documentByLakeId")
+    @Description("Get Document by DataLakeId")
+    public List<Document> documentByLakeId(@Name("dataLakeId") String dataLakeId) {
+        return this.queryService.getDocumentByLakeId(dataLakeId);
+    }
 
     @Query("all")
     @Description("Get all records.")
@@ -52,6 +59,12 @@ public class GraphQLService {
     @Description("Get a Person")
     public Person getPerson(@Name("personId") int id) {
         return personService.getPerson(id);
+    }
+
+    @Query("personByName")
+    @Description("Get a Person By Name")
+    public List<Person> personByName(@Name("name") String personName) {
+        return personService.getPersonByName(personName);
     }
 
     public List<Person> persons(@Source Country country) {
