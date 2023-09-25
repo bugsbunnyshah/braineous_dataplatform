@@ -27,7 +27,7 @@ public class GraphQLTests {
     private static Logger logger = LoggerFactory.getLogger(GraphQLTests.class);
 
     @Test
-    public void testAllProducts() throws Exception{
+    public void testAll() throws Exception{
         String restUrl = "http://localhost:8080/graphql/";
 
         String queryJson = IOUtils.toString(Thread.currentThread().getContextClassLoader().

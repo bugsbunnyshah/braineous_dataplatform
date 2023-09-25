@@ -1,4 +1,4 @@
 {
-  "query": "{allProducts {name}}",
+  "query": "{all {dataLakeId}}",
   "variables": null
 }

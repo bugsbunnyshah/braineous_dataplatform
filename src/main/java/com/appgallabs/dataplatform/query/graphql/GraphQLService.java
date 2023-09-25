@@ -14,6 +14,14 @@ public class GraphQLService {
     @Inject
     private ProductService productService;
 
+    @Inject
+    private QueryService queryService;
+
+    @Query("all")
+    @Description("Get all records.")
+    public List<DataLakeRecord> getAll() {
+        return this.queryService.allRecords();
+    }
 
     @Query("allProducts")
     @Description("Get all products.")
