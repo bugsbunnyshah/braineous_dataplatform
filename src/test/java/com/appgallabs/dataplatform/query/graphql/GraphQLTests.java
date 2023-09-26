@@ -43,9 +43,6 @@ public class GraphQLTests extends BaseTest {
     private PipelineService pipelineService;
 
     @Inject
-    private QueryService queryService;
-
-    @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
     @Test
@@ -64,18 +61,13 @@ public class GraphQLTests extends BaseTest {
                 originalObjectHash);
 
         JsonObject storedJson = ingestion.get(0).getAsJsonObject();
-        JsonUtil.printStdOut(storedJson);
-
-        //JsonArray document = this.queryService.getDocumentByLakeId(originalObjectHash);
-        //JsonUtil.printStdOut(document);
+        assertNotNull(storedJson);
 
         String restUrl = "http://localhost:8080/graphql/";
         JsonObject documentQueryJson = new JsonObject();
-        //documentQueryJsonString = "\"{documentByLakeId {dataLakeId}}\"";
 
 
         String query = "query documentByLakeId {documentByLakeId(dataLakeId: \""+originalObjectHash+"\") {data}}";
-        logger.info(query);
 
         String queryJsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("graphql/getDocumentByLakeId.json"),
@@ -84,11 +76,24 @@ public class GraphQLTests extends BaseTest {
         JsonObject queryJsonObject = JsonParser.parseString(queryJsonString).getAsJsonObject();
         queryJsonObject.addProperty("query",query);
         String input = queryJsonObject.toString();
-        logger.info(input);
+
+        String credentials = IOUtils.resourceToString("oauth/credentials.json",
+                StandardCharsets.UTF_8,
+                Thread.currentThread().getContextClassLoader());
+        JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
+        String principal = credentialsJson.get("client_id").getAsString();
+
+        String token = IOUtils.resourceToString("oauth/jwtToken.json",
+                StandardCharsets.UTF_8,
+                Thread.currentThread().getContextClassLoader());
+        JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
+        String generatedToken = securityTokenJson.get("access_token").getAsString();
 
         HttpClient httpClient = HttpClient.newBuilder().build();
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
         HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                //.header("Principal", principal)
+                //.header("Authorization", "Bearer "+generatedToken)
                 .POST(HttpRequest.BodyPublishers.ofString(input))
                 .build();
 

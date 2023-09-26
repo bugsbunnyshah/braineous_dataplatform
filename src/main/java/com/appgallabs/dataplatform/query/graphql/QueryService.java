@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.query.graphql;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -49,12 +50,12 @@ public class QueryService {
     }
 
     public List<Document> getDocumentByLakeId(String datalakeId){
-        //Tenant tenant = this.securityTokenContainer.getTenant();
-        //JsonArray document = this.dataLakeDriver.readIngestion(tenant,datalakeId);
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        JsonArray jsonArray = this.dataLakeDriver.readIngestion(tenant,datalakeId);
 
         Document document = new Document();
-        document.setData("HELLO_WORLD");
         document.setDataLakeId(datalakeId);
+        document.setData(jsonArray.toString());
 
         List<Document> documents = new ArrayList<>();
         documents.add(document);

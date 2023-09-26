@@ -1,13 +1,22 @@
 package com.appgallabs.dataplatform.query.graphql;
 
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.microprofile.graphql.*;
 
 import javax.inject.Inject;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @GraphQLApi
 public class GraphQLService {
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
 
     @Inject
     PersonService personService;
@@ -18,9 +27,35 @@ public class GraphQLService {
     @Inject
     private QueryService queryService;
 
+    private void setSecurityToken(){
+        try {
+            String credentials = IOUtils.resourceToString("oauth/credentials.json",
+                    StandardCharsets.UTF_8,
+                    Thread.currentThread().getContextClassLoader());
+            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
+            String token = IOUtils.resourceToString("oauth/jwtToken.json",
+                    StandardCharsets.UTF_8,
+                    Thread.currentThread().getContextClassLoader());
+            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
+            securityTokenJson.addProperty("principal", credentialsJson.get("client_id").getAsString());
+            SecurityToken securityToken = SecurityToken.fromJson(securityTokenJson.toString());
+            this.securityTokenContainer.setSecurityToken(securityToken);
+
+            System.out.println("*****************************************************************");
+            System.out.println("(SecurityTokenContainer): " + this.securityTokenContainer);
+            System.out.println("(SecurityToken): " + this.securityTokenContainer.getSecurityToken());
+            System.out.println("(Principal): " + this.securityTokenContainer.getSecurityToken().getPrincipal());
+            System.out.println("*****************************************************************");
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     @Query("documentByLakeId")
     @Description("Get Document by DataLakeId")
     public List<Document> documentByLakeId(@Name("dataLakeId") String dataLakeId) {
+        this.setSecurityToken();
+
         return this.queryService.getDocumentByLakeId(dataLakeId);
     }
 
