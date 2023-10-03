@@ -26,10 +26,10 @@ public abstract class BaseTest
     public void setUp() throws Exception
     {
         this.securityTokenMockComponent.start();
+        this.cleanup();
     }
 
-    @AfterEach
-    void tearDown() {
+    private void cleanup(){
         try {
             if (this.mongoDBJsonStore == null) {
                 this.mongoDBJsonStore = new MongoDBJsonStore();

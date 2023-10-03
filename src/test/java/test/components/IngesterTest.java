@@ -34,6 +34,5 @@ public abstract class IngesterTest extends BaseTest
         finally {
             BackgroundProcessListener.getInstance().clear();
         }
-        super.tearDown();
     }
 }
