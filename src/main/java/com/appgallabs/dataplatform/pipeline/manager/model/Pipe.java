@@ -4,15 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pipe implements Serializable {
+public abstract class Pipe implements Serializable {
     private String pipeId;
     private String pipeName;
     private List<DataCleanerFunction> cleanerFunctions;
+
+    private PipeStage pipeStage;
 
     public Pipe(String pipeId, String pipeName) {
         this.pipeId = pipeId;
         this.pipeName = pipeName;
         this.cleanerFunctions = new ArrayList<>();
+        this.pipeStage = PipeStage.DEVELOPMENT;
     }
 
     public Pipe(String pipeId, String pipeName, List<DataCleanerFunction> cleanerFunctions) {
@@ -23,6 +26,7 @@ public class Pipe implements Serializable {
         this.pipeId = pipeId;
         this.pipeName = pipeName;
         this.cleanerFunctions = cleanerFunctions;
+        this.pipeStage = PipeStage.DEVELOPMENT;
     }
 
     public String getPipeId() {
@@ -63,5 +67,13 @@ public class Pipe implements Serializable {
 
     public void clearClearFunctions(){
         this.cleanerFunctions.clear();
+    }
+
+    public PipeStage getPipeStage() {
+        return pipeStage;
+    }
+
+    public void setPipeStage(PipeStage pipeStage) {
+        this.pipeStage = pipeStage;
     }
 }
