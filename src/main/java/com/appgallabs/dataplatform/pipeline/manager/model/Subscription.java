@@ -4,10 +4,13 @@ import java.io.Serializable;
 
 public class Subscription implements Serializable {
 
+    private String subscriptionId;
+
     private SubscriberGroup group;
     private Pipe pipe;
 
-    public Subscription(SubscriberGroup group, Pipe pipe) {
+    public Subscription(String subscriptionId,SubscriberGroup group, Pipe pipe) {
+        this.subscriptionId = subscriptionId;
         this.group = group;
         this.pipe = pipe;
     }
@@ -18,5 +21,13 @@ public class Subscription implements Serializable {
 
     public void setGroup(SubscriberGroup group) {
         this.group = group;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public Pipe getPipe() {
+        return pipe;
     }
 }
