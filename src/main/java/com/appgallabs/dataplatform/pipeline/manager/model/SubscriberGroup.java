@@ -1,4 +1,46 @@
 package com.appgallabs.dataplatform.pipeline.manager.model;
 
-public class SubscriberGroup {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SubscriberGroup implements Serializable {
+
+    private List<Subscriber> subscribers;
+
+    public SubscriberGroup() {
+        this.subscribers = new ArrayList<>();
+    }
+
+    public SubscriberGroup(List<Subscriber> subscribers) {
+        if(subscribers != null && !subscribers.isEmpty()) {
+            this.subscribers = subscribers;
+        }else{
+            this.subscribers = new ArrayList<>();
+        }
+    }
+
+    public List<Subscriber> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<Subscriber> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    public void addSubscriber(Subscriber subscriber){
+        if(subscriber != null) {
+            this.subscribers.add(subscriber);
+        }
+    }
+
+    public void removeSubscriber(Subscriber subscriber){
+        if(subscriber != null){
+            this.subscribers.remove(subscriber);
+        }
+    }
+
+    public void clearSubscribers(){
+        this.subscribers.clear();
+    }
 }

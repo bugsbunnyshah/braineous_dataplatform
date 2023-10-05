@@ -1,4 +1,6 @@
 package com.appgallabs.dataplatform.pipeline.manager.model;
 
-public class Subscriber {
+import java.io.Serializable;
+
+public class Subscriber implements Serializable {
 }
