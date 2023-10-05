@@ -5,9 +5,11 @@ import java.io.Serializable;
 public class Subscription implements Serializable {
 
     private SubscriberGroup group;
+    private Pipe pipe;
 
-    public Subscription(SubscriberGroup group) {
+    public Subscription(SubscriberGroup group, Pipe pipe) {
         this.group = group;
+        this.pipe = pipe;
     }
 
     public SubscriberGroup getGroup() {
