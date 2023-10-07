@@ -51,6 +51,9 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
     @Inject
     private DataLakeStore dataLakeStore;
 
+    @Inject
+    private PipelineStore pipelineStore;
+
     private MongoClient mongoClient = null;
 
 
