@@ -35,12 +35,4 @@ public class PipelineStore implements Serializable {
         logger.info(tenant.toString());
         logger.info("*******************");
     }
-
-
-    public JsonObject toJson(){
-        Gson gson = JsonUtil.getGson();
-        JsonElement jsonElement = gson.toJsonTree(this);
-        return jsonElement.getAsJsonObject();
-    }
-
 }
