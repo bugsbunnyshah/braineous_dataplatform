@@ -1,21 +1,34 @@
 package com.appgallabs.dataplatform.pipeline.manager.model;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Pipe implements Serializable {
+public class Pipe implements Serializable {
     private String pipeId;
     private String pipeName;
     private List<DataCleanerFunction> cleanerFunctions;
 
     private PipeStage pipeStage;
 
+    private PipeType pipeType;
+
+    public Pipe() {
+        this.pipeStage = PipeStage.DEVELOPMENT;
+        this.pipeType = PipeType.PUSH;
+    }
+
     public Pipe(String pipeId, String pipeName) {
         this.pipeId = pipeId;
         this.pipeName = pipeName;
         this.cleanerFunctions = new ArrayList<>();
         this.pipeStage = PipeStage.DEVELOPMENT;
+        this.pipeType = PipeType.PUSH;
     }
 
     public Pipe(String pipeId, String pipeName, List<DataCleanerFunction> cleanerFunctions) {
@@ -27,6 +40,7 @@ public abstract class Pipe implements Serializable {
         this.pipeName = pipeName;
         this.cleanerFunctions = cleanerFunctions;
         this.pipeStage = PipeStage.DEVELOPMENT;
+        this.pipeType = PipeType.PUSH;
     }
 
     public String getPipeId() {
@@ -75,5 +89,19 @@ public abstract class Pipe implements Serializable {
 
     public void setPipeStage(PipeStage pipeStage) {
         this.pipeStage = pipeStage;
+    }
+
+    public PipeType getPipeType() {
+        return pipeType;
+    }
+
+    public void setPipeType(PipeType pipeType) {
+        this.pipeType = pipeType;
+    }
+
+    public JsonObject toJson(){
+        Gson gson = JsonUtil.getGson();
+        JsonElement jsonElement = gson.toJsonTree(this);
+        return jsonElement.getAsJsonObject();
     }
 }

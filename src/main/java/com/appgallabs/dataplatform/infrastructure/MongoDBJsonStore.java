@@ -63,6 +63,18 @@ public class MongoDBJsonStore implements DataLakeDriver,Serializable
 
     }
 
+    public DataHistoryStore getDataHistoryStore() {
+        return dataHistoryStore;
+    }
+
+    public DataLakeStore getDataLakeStore() {
+        return dataLakeStore;
+    }
+
+    public PipelineStore getPipelineStore() {
+        return pipelineStore;
+    }
+
     @PreDestroy
     public void onStop(){
         this.mongoClient.close();

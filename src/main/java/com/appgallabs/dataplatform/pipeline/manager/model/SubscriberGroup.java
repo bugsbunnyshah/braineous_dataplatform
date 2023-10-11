@@ -1,5 +1,10 @@
 package com.appgallabs.dataplatform.pipeline.manager.model;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +47,11 @@ public class SubscriberGroup implements Serializable {
 
     public void clearSubscribers(){
         this.subscribers.clear();
+    }
+
+    public JsonObject toJson(){
+        Gson gson = JsonUtil.getGson();
+        JsonElement jsonElement = gson.toJsonTree(this);
+        return jsonElement.getAsJsonObject();
     }
 }

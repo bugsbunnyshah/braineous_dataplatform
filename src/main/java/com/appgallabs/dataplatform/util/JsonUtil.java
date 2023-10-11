@@ -18,6 +18,10 @@ public class JsonUtil {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    public static Gson getGson() {
+        return gson;
+    }
+
     public static void print(JsonElement jsonElement)
     {
         if(jsonElement.isJsonArray())
