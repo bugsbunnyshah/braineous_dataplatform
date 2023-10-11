@@ -48,9 +48,9 @@ public class Subscription implements Serializable {
     public static Subscription parse(String jsonString){
         Gson gson = JsonUtil.getGson();
 
-        Subscription subscription = gson.fromJson(jsonString,Subscription.class);
+        Subscription parsed = gson.fromJson(jsonString,Subscription.class);
 
-        return subscription;
+        return parsed;
     }
 
     @Override

@@ -31,4 +31,17 @@ public class Subscriber implements Serializable {
         JsonElement jsonElement = gson.toJsonTree(this);
         return jsonElement.getAsJsonObject();
     }
+
+    public static Subscriber parse(String jsonString){
+        Gson gson = JsonUtil.getGson();
+
+        Subscriber parsed = gson.fromJson(jsonString,Subscriber.class);
+
+        return parsed;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson().toString();
+    }
 }

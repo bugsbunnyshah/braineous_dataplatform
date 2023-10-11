@@ -54,4 +54,17 @@ public class SubscriberGroup implements Serializable {
         JsonElement jsonElement = gson.toJsonTree(this);
         return jsonElement.getAsJsonObject();
     }
+
+    public static SubscriberGroup parse(String jsonString){
+        Gson gson = JsonUtil.getGson();
+
+        SubscriberGroup parsed = gson.fromJson(jsonString,SubscriberGroup.class);
+
+        return parsed;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson().toString();
+    }
 }

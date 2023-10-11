@@ -104,4 +104,17 @@ public class Pipe implements Serializable {
         JsonElement jsonElement = gson.toJsonTree(this);
         return jsonElement.getAsJsonObject();
     }
+
+    public static Pipe parse(String jsonString){
+        Gson gson = JsonUtil.getGson();
+
+        Pipe parsed = gson.fromJson(jsonString,Pipe.class);
+
+        return parsed;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson().toString();
+    }
 }
