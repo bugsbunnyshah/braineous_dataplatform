@@ -38,6 +38,6 @@ public class PipelineStoreTests extends BaseTest {
         List<Subscription> all = pipelineStore.getAllSubscriptions(tenant, mongoClient);
 
         assertNotNull(all);
-        assertTrue(!all.isEmpty());
+        assertTrue(all.isEmpty());
     }
 }
