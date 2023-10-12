@@ -23,7 +23,7 @@ public abstract class IngesterTest extends BaseTest
         StreamIngesterContext.getStreamIngester().start();
     }
 
-    @AfterEach
+    /*@AfterEach
     void tearDown() {
         try {
             StreamIngesterContext.getStreamIngester().stop();
@@ -34,5 +34,5 @@ public abstract class IngesterTest extends BaseTest
         finally {
             BackgroundProcessListener.getInstance().clear();
         }
-    }
+    }*/
 }

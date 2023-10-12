@@ -25,6 +25,12 @@ public abstract class BaseTest
     @BeforeEach
     public void setUp() throws Exception
     {
+        this.tearDown();
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception
+    {
         this.securityTokenMockComponent.start();
         this.cleanup();
     }
@@ -42,7 +48,7 @@ public abstract class BaseTest
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 }
