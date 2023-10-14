@@ -18,6 +18,15 @@ import java.util.List;
 public class PipelineStore implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(PipelineStore.class);
 
+    public void createSubscription(Tenant tenant, MongoClient mongoClient, Subscription subscription){
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        collection.insertOne(Document.parse(subscription.toJson().toString()));
+    }
+
     public JsonArray getAllSubscriptions(Tenant tenant, MongoClient mongoClient){
         JsonArray all = new JsonArray();
 
@@ -64,15 +73,5 @@ public class PipelineStore implements Serializable {
         }
 
         return null;
-    }
-
-
-    public void createSubscription(Tenant tenant, MongoClient mongoClient, Subscription subscription){
-        String principal = tenant.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = database.getCollection("subscription");
-
-        collection.insertOne(Document.parse(subscription.toJson().toString()));
     }
 }
