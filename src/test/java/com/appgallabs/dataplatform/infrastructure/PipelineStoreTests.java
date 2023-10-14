@@ -1,9 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure;
 
-import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
-import com.appgallabs.dataplatform.pipeline.manager.model.Subscriber;
-import com.appgallabs.dataplatform.pipeline.manager.model.SubscriberGroup;
-import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
+import com.appgallabs.dataplatform.pipeline.manager.model.*;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
@@ -102,6 +99,65 @@ public class PipelineStoreTests extends BaseTest {
 
             assertNotNull(subscription);
             assertTrue(subscriptionHashes.contains(hash));
+        }
+    }
+
+    @Test
+    public void updateSubscription() throws Exception{
+        PipelineStore pipelineStore = this.mongoDBJsonStore.getPipelineStore();
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+            pipelineStore.createSubscription(tenant, mongoClient, subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("HASH: " + hash);
+            JsonUtil.printStdOut(subscription.toJson());
+            logger.info("**********************");
+        }
+
+        logger.info("*****************************************************************");
+        for(String subscriptionId: subscriptionIds) {
+            //Get all subscriptions
+            Subscription subscription = pipelineStore.getSubscription(tenant, mongoClient,
+                    subscriptionId);
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+
+            //update the subscribers
+            String newSubscriber = "3@1.com";
+            subscription.getGroup().addSubscriber(new Subscriber(newSubscriber));
+
+            Subscription updated = pipelineStore.updateSubscription(tenant, mongoClient, subscription);
+            String newHash = JsonUtil.getJsonHash(updated.toJson());
+            subscriptionHashes.remove(hash);
+            subscriptionHashes.add(newHash);
+
+            logger.info("****SUBSCRIPTION_ID_HASH_UPDATED***");
+            logger.info("ID: " +updated);
+            logger.info("OLD_HASH: " + hash);
+            logger.info("NEW_HASH: " + newHash);
+            JsonUtil.printStdOut(updated.toJson());
+            logger.info("**********************");
+
+            assertNotNull(subscription);
+            assertFalse(subscriptionHashes.contains(hash));
+            assertTrue(subscriptionHashes.contains(newHash));
         }
     }
 }

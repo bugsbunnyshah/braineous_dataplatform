@@ -74,4 +74,25 @@ public class PipelineStore implements Serializable {
 
         return null;
     }
+
+    public Subscription updateSubscription(Tenant tenant, MongoClient mongoClient,Subscription subscription){
+        String subscriptionId = subscription.getSubscriptionId();
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        JsonObject queryJson = new JsonObject();
+        queryJson.addProperty("subscriptionId",subscriptionId);
+        String queryJsonString = queryJson.toString();
+        Bson bson = Document.parse(queryJsonString);
+
+        Document newDocument = Document.parse(subscription.toJson().toString());
+        collection.findOneAndReplace(bson, newDocument);
+
+        Subscription updatedSubscription = this.getSubscription(tenant,mongoClient,subscriptionId);
+
+        return updatedSubscription;
+    }
 }
