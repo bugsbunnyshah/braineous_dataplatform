@@ -7,7 +7,24 @@ import com.google.gson.JsonObject;
 
 public class DataCleanerFunction {
 
-        public JsonObject toJson(){
+    private String function;
+
+    public DataCleanerFunction() {
+    }
+
+    public DataCleanerFunction(String function) {
+        this.function = function;
+    }
+
+    public String getFunction() {
+        return function;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public JsonObject toJson(){
             Gson gson = JsonUtil.getGson();
             JsonElement jsonElement = gson.toJsonTree(this);
             return jsonElement.getAsJsonObject();
