@@ -160,4 +160,45 @@ public class PipelineStoreTests extends BaseTest {
             assertTrue(subscriptionHashes.contains(newHash));
         }
     }
+
+    @Test
+    public void deleteSubscription() throws Exception{
+        PipelineStore pipelineStore = this.mongoDBJsonStore.getPipelineStore();
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+            pipelineStore.createSubscription(tenant, mongoClient, subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("HASH: " + hash);
+            logger.info("**********************");
+        }
+
+        logger.info("*****************************************************************");
+        for(String subscriptionId: subscriptionIds) {
+            String deleted = pipelineStore.deleteSubscription(tenant,mongoClient,subscriptionId);
+
+            Subscription subscription = pipelineStore.getSubscription(tenant, mongoClient,
+                    subscriptionId);
+
+            assertEquals(deleted, subscriptionId);
+            assertNull(subscription);
+        }
+    }
 }
