@@ -11,6 +11,9 @@ import java.util.List;
 
 public class Pipe implements Serializable {
     private String pipeId;
+
+    private String subscriptionId;
+
     private String pipeName;
     private List<DataCleanerFunction> cleanerFunctions;
 
@@ -49,6 +52,14 @@ public class Pipe implements Serializable {
 
     public void setPipeId(String pipeId) {
         this.pipeId = pipeId;
+    }
+
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     public String getPipeName() {

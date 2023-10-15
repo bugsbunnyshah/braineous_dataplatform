@@ -21,6 +21,7 @@ public class Subscription implements Serializable {
         this.subscriptionId = subscriptionId;
         this.group = group;
         this.pipe = pipe;
+        this.pipe.setSubscriptionId(this.subscriptionId);
     }
 
     public SubscriberGroup getGroup() {
@@ -37,6 +38,10 @@ public class Subscription implements Serializable {
 
     public Pipe getPipe() {
         return pipe;
+    }
+
+    public void setPipe(Pipe pipe) {
+        this.pipe = pipe;
     }
 
     public JsonObject toJson(){

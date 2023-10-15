@@ -15,11 +15,11 @@ public class PipeService {
 
     }
 
-    public void stage(Pipe pipe){
+    public void moveToStage(Pipe pipe){
 
     }
 
-    public void deploy(Pipe pipe){
+    public void moveToDeploy(Pipe pipe){
 
     }
 }

@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure;
 
+import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
 import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.*;
@@ -110,5 +111,15 @@ public class PipelineStore implements Serializable {
         collection.deleteOne(bson);
 
         return subscriptionId;
+    }
+
+    //-------------------------------------------------------
+    public void updatePipe(Tenant tenant, MongoClient mongoClient, Pipe pipe) {
+        String subscriptionId = pipe.getSubscriptionId();
+        Subscription subscription = this.getSubscription(tenant,mongoClient,subscriptionId);
+
+        subscription.setPipe(pipe);
+
+        this.updateSubscription(tenant,mongoClient,subscription);
     }
 }
