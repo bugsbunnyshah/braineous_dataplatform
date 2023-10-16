@@ -90,7 +90,7 @@ public class Pipe implements Serializable {
         }
     }
 
-    public void clearClearFunctions(){
+    public void clearCleanerFunctions(){
         this.cleanerFunctions.clear();
     }
 

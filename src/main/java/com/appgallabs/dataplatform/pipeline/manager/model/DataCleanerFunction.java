@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.Objects;
+
 public class DataCleanerFunction {
 
     private String function;
@@ -42,4 +44,17 @@ public class DataCleanerFunction {
         public String toString() {
             return this.toJson().toString();
         }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataCleanerFunction that = (DataCleanerFunction) o;
+        return function.equals(that.function);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(function);
+    }
 }
