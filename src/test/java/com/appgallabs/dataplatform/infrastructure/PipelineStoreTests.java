@@ -41,9 +41,9 @@ public class PipelineStoreTests extends BaseTest {
         group.addSubscriber(new Subscriber("1@1.com"));
         group.addSubscriber(new Subscriber("2@1.com"));
 
-        Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
 
         for(int i=0; i<numberOfSubscriptions; i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
             Subscription subscription = new Subscription(UUID.randomUUID().toString(), group, pushPipe);
             pipelineStore.createSubscription(tenant, mongoClient, subscription);
         }
@@ -66,11 +66,10 @@ public class PipelineStoreTests extends BaseTest {
         group.addSubscriber(new Subscriber("1@1.com"));
         group.addSubscriber(new Subscriber("2@1.com"));
 
-        Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
-
         List<String> subscriptionIds = new ArrayList<>();
         List<String> subscriptionHashes = new ArrayList<>();
         for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
             String subscriptionId = UUID.randomUUID().toString();
             Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
             pipelineStore.createSubscription(tenant, mongoClient, subscription);
@@ -112,11 +111,11 @@ public class PipelineStoreTests extends BaseTest {
         group.addSubscriber(new Subscriber("1@1.com"));
         group.addSubscriber(new Subscriber("2@1.com"));
 
-        Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
 
         List<String> subscriptionIds = new ArrayList<>();
         List<String> subscriptionHashes = new ArrayList<>();
         for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
             String subscriptionId = UUID.randomUUID().toString();
             Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
             pipelineStore.createSubscription(tenant, mongoClient, subscription);
@@ -171,11 +170,11 @@ public class PipelineStoreTests extends BaseTest {
         group.addSubscriber(new Subscriber("1@1.com"));
         group.addSubscriber(new Subscriber("2@1.com"));
 
-        Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
 
         List<String> subscriptionIds = new ArrayList<>();
         List<String> subscriptionHashes = new ArrayList<>();
         for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
             String subscriptionId = UUID.randomUUID().toString();
             Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
             pipelineStore.createSubscription(tenant, mongoClient, subscription);
