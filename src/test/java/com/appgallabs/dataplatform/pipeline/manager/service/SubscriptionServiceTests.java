@@ -1,6 +1,9 @@
-package com.appgallabs.dataplatform.pipeline.manager.model;
+package com.appgallabs.dataplatform.pipeline.manager.service;
 
-import com.appgallabs.dataplatform.pipeline.manager.service.SubscriptionService;
+import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscriber;
+import com.appgallabs.dataplatform.pipeline.manager.model.SubscriberGroup;
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
@@ -20,9 +23,9 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
-public class SubscriptionTests extends BaseTest
+public class SubscriptionServiceTests extends BaseTest
 {
-    private static Logger logger = LoggerFactory.getLogger(SubscriptionTests.class);
+    private static Logger logger = LoggerFactory.getLogger(SubscriptionServiceTests.class);
 
     @Inject
     private SubscriptionService subscriptionService;
