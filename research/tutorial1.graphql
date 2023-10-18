@@ -1,0 +1,32 @@
+query allProducers(filter: {
+frontmatter: {
+title: {
+in: ["Children's Anthology of Monsters", "Hogwarts: A History"]
+}
+}
+}){
+producers{
+id
+name
+location
+teas{
+id
+name
+description
+}
+}
+}
+
+query example{
+repository(owner: "paolosalvatori", name: "ServiceBusExplorer") {
+releases(first: 1, orderBy: {field: CREATED_AT, direction: DESC}) {
+nodes(isDraft :false , isPrerelease :false ) {
+name
+tagName
+resourcePath
+isDraft
+isPrerelease
+}
+}
+}
+}

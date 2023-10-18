@@ -27,4 +27,11 @@ query personByName {
   }
 
 
+  {
+    id
+    name
+    description
+  }
+
+
 
