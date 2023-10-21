@@ -1,12 +1,17 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
+import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class DataPipelineService {
     private static DataPipelineService singleton = new DataPipelineService();
 
-    private DataPipelineService(){
+    private DataPipelineClient dataPipelineClient;
 
+    private DataPipelineService(){
+        this.dataPipelineClient = DataPipelineClient.getInstance();
     }
 
     public static DataPipelineService getInstance(){
@@ -17,13 +22,22 @@ public class DataPipelineService {
         return DataPipelineService.singleton;
     }
 
-    public JsonObject sendData(){
-        JsonObject response = new JsonObject();
-        return response;
-    }
+    public JsonObject sendData(String payload){
 
-    public JsonObject sendStream(){
-        JsonObject response = new JsonObject();
+        //TODO: produce rest payload
+        JsonElement jsonElement = JsonParser.parseString(payload);
+
+
+        //TODO: send data for ingestion
+        JsonObject response = this.dataPipelineClient.sendData(jsonElement);
+
+
+        //TODO: process response
+
+
+        //TODO: provide response
+        response.addProperty("statusCode",200);
+
         return response;
     }
 }
