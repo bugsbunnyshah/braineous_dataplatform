@@ -1,6 +1,8 @@
 package com.appgallabs.dataplatform.client.sdk.api;
 
 import com.appgallabs.dataplatform.client.sdk.infrastructure.ListenableQueue;
+import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
+import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ehcache.sizeof.SizeOf;
@@ -8,11 +10,23 @@ import org.ehcache.sizeof.SizeOf;
 import java.util.LinkedList;
 
 public class StreamingAgent {
+    private static StreamingAgent singleton = new StreamingAgent();
+
+    private DataPipelineClient dataPipelineClient;
 
     private ListenableQueue<String> queueStream;
 
-    public StreamingAgent() {
+    private StreamingAgent(){
+        this.dataPipelineClient = DataPipelineClient.getInstance();
         this.queueStream = new ListenableQueue<>(new LinkedList<>());
+    }
+
+    public static StreamingAgent getInstance(){
+        //safe-check, cause why not
+        if(StreamingAgent.singleton == null){
+            StreamingAgent.singleton = new StreamingAgent();
+        }
+        return StreamingAgent.singleton;
     }
 
     public void sendData(String json){
@@ -21,15 +35,14 @@ public class StreamingAgent {
             SizeOf sizeOf = SizeOf.newInstance();
             long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
-            //System.out.println("****DATA_STREAM_SIZE****");
-            //System.out.println(q.size());
-            //System.out.println(dataStreamSize+"");
-            //System.out.println("************************");
-
-            int windowSize = 400;
+            //TODO: make this configurable, depending on
+            //ingestion payload size
+            int windowSize = 1024;
             if(dataStreamSize >= windowSize){
                 for(int i=0; i<this.queueStream.size();i++) {
                     String element = this.queueStream.remove();
+
+                    //TODO: send to DataPipelineClient
                     System.out.println(i);
                     System.out.println(element);
                     System.out.println("*****************");

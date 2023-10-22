@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
+import com.appgallabs.dataplatform.client.sdk.api.StreamingAgent;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
@@ -22,8 +23,11 @@ public class DataPipelineService {
         return DataPipelineService.singleton;
     }
 
-    public JsonObject sendData(String payload){
+    public void sendData(String payload){
 
+        StreamingAgent.getInstance().sendData(payload);
+
+        /*
         //validate and prepare rest payload
         JsonElement jsonElement = JsonUtil.validateJson(payload);
         if(jsonElement == null){
@@ -42,6 +46,6 @@ public class DataPipelineService {
         }
         response.addProperty("status",ingestionStatusMessage);
 
-        return response;
+        return response;*/
     }
 }

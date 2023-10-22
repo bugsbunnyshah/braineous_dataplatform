@@ -6,7 +6,7 @@ public class StreamingAgentTests {
 
     @Test
     public void sendData() throws Exception{
-        StreamingAgent streamingAgent = new StreamingAgent();
+        StreamingAgent streamingAgent = StreamingAgent.getInstance();
 
         for(int i=0; i<10; i++) {
             streamingAgent.sendData("hello"+i);
