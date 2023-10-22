@@ -79,7 +79,6 @@ public class DataPipelineClient {
 
 
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String responseJson = httpResponse.body();
             String statusCode = "" + httpResponse.statusCode();
 
             response.addProperty("httpResponseCode", statusCode);
