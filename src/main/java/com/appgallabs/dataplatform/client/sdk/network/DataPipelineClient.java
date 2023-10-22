@@ -26,9 +26,10 @@ public class DataPipelineClient {
         return DataPipelineClient.singleton;
     }
 
+    //TODO: finalize_implementation
     public JsonObject sendData(JsonElement jsonElement){
         try {
-            String restUrl = "http://localhost:8080/graphql/";
+            String restUrl = "http://localhost:8080/dataMapper/map/";
             String payload = jsonElement.toString();
 
             //get OAuth Token
@@ -51,39 +52,35 @@ public class DataPipelineClient {
             return response;
         }catch(Exception e){
             JsonObject error = new JsonObject();
-            error.addProperty("ingestion_error",e.getMessage());
+            error.addProperty("ingestionError",e.getMessage());
             return error;
         }
     }
 
+    //TODO: finalize_implementation
     private JsonObject handleRestCall(String restUrl,String principal,String generatedToken, String payload){
         try {
             JsonObject response = new JsonObject();
 
-            String query = "query documentByLakeId {documentByLakeId(dataLakeId: \"" + "hash" + "\") {data}}";
-
-            String queryJsonString = IOUtils.toString(Thread.currentThread().
-                            getContextClassLoader().getResourceAsStream("graphql/getDocumentByLakeId.json"),
-                    StandardCharsets.UTF_8
-            );
-            JsonObject queryJsonObject = JsonParser.parseString(queryJsonString).getAsJsonObject();
-            queryJsonObject.addProperty("query", query);
-            String input = queryJsonObject.toString();
+            //TODO: integrate_entity
+            JsonObject requestBody = new JsonObject();
+            requestBody.addProperty("sourceData",payload);
+            requestBody.addProperty("entity", "book");
 
 
             //TODO: fix authorization
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    //.header("Principal", principal)
-                    //.header("Authorization", "Bearer "+generatedToken)
-                    .POST(HttpRequest.BodyPublishers.ofString(input))
+                    .header("Principal", principal)
+                    .header("Authorization", "Bearer "+generatedToken)
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
                     .build();
 
 
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String responseJson = httpResponse.body();
-            int statusCode = httpResponse.statusCode();
+            String statusCode = "" + httpResponse.statusCode();
 
             response.addProperty("httpResponseCode", statusCode);
 

@@ -81,4 +81,12 @@ public class JsonUtil {
                 .printHexBinary(digest).toUpperCase();
         return myHash;
     }
+
+    public static JsonElement validateJson(String jsonString){
+        try{
+            return JsonParser.parseString(jsonString);
+        }catch (Exception e){
+            return null;
+        }
+    }
 }
