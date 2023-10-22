@@ -49,6 +49,7 @@ public class JsonUtil {
             System.out.println("******ARRAY_SIZE: "+jsonElement.getAsJsonArray().size()+"**********");
         }
         System.out.println(gson.toJson(jsonElement));
+        System.out.println("**********************");
     }
 
     public static String getJsonHash(JsonObject jsonObject) throws NoSuchAlgorithmException {
