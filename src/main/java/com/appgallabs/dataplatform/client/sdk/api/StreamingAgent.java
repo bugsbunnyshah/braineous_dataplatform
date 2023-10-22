@@ -2,10 +2,12 @@ package com.appgallabs.dataplatform.client.sdk.api;
 
 import com.appgallabs.dataplatform.client.sdk.infrastructure.ListenableQueue;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
-import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.ehcache.sizeof.SizeOf;
 
 import java.util.LinkedList;
@@ -30,27 +32,28 @@ public class StreamingAgent {
         return StreamingAgent.singleton;
     }
 
-    public void sendData(String json){
+    public synchronized void sendData(String json){
         // register a listener which polls a queue and prints an element
         this.queueStream.registerListener(e -> {
             SizeOf sizeOf = SizeOf.newInstance();
             long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
-            //TODO: make this configurable, depending on
-            //ingestion payload size
-            int windowSize = 1024;
+            //TODO: make this configurable, depending on ingestion payload size
+            int windowSize = 2000;
             if(dataStreamSize >= windowSize){
+                JsonArray batch = new JsonArray();
                 for(int i=0; i<this.queueStream.size();i++) {
                     String element = this.queueStream.remove();
-
-                    //TODO: send to DataPipelineClient
-                    //System.out.println(i);
-                    //System.out.println(element);
-                    //System.out.println("*****************");
-
-                    JsonObject response = sendDataToCloud(element);
-                    JsonUtil.printStdOut(response);
+                    JsonElement batchElement = JsonParser.parseString(element);
+                    batch.add(batchElement);
                 }
+
+                //send batch to cloud
+                String batchJsonString = batch.toString();
+                JsonObject response = sendDataToCloud(batchJsonString);
+
+                //TODO: integrate with reporting service
+                JsonUtil.printStdOut(response);
             }
         });
 

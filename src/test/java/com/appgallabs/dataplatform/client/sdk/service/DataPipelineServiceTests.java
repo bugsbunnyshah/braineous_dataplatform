@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.client.sdk.service;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -26,7 +27,10 @@ public class DataPipelineServiceTests {
         );
 
         for(int i=0; i<10; i++) {
-            dataPipelineService.sendData(jsonString);
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            json.addProperty("offset",i);
+
+            dataPipelineService.sendData(json.toString());
         }
 
         //assertions
