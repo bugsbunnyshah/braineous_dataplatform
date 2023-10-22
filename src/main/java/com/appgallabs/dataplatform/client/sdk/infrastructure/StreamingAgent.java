@@ -1,6 +1,5 @@
-package com.appgallabs.dataplatform.client.sdk.api;
+package com.appgallabs.dataplatform.client.sdk.infrastructure;
 
-import com.appgallabs.dataplatform.client.sdk.infrastructure.ListenableQueue;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
@@ -45,7 +44,7 @@ public class StreamingAgent {
                         String element = this.queueStream.remove();
                         JsonElement batchElement = JsonUtil.validateJson(element);
                         if(batchElement == null){
-                            //TODO: integrate with reporting service
+                            //TODO: integrate with reporting service CR2
                             continue;
                         }
 
@@ -58,7 +57,7 @@ public class StreamingAgent {
                         String batchJsonString = batch.toString();
                         JsonObject response = sendDataToCloud(batchJsonString);
 
-                        //TODO: integrate with reporting service
+                        //TODO: integrate with reporting service CR2
                         JsonUtil.printStdOut(response);
                     }
                 }

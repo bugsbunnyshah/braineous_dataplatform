@@ -1,10 +1,7 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
-import com.appgallabs.dataplatform.client.sdk.api.StreamingAgent;
+import com.appgallabs.dataplatform.client.sdk.infrastructure.StreamingAgent;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
-import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class DataPipelineService {
     private static DataPipelineService singleton = new DataPipelineService();

@@ -1,9 +1,11 @@
-package com.appgallabs.dataplatform.client.sdk.api;
+package com.appgallabs.dataplatform.client.sdk.infrastructure;
 
+import com.appgallabs.dataplatform.client.sdk.infrastructure.StreamingAgent;
 import org.junit.jupiter.api.Test;
 
 public class StreamingAgentTests {
 
+    //TODO: solidify CR2
     @Test
     public void sendData() throws Exception{
         StreamingAgent streamingAgent = StreamingAgent.getInstance();

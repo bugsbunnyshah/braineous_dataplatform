@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AuthenticationServiceTests {
     private static Logger logger = LoggerFactory.getLogger(AuthenticationServiceTests.class);
 
+    //TODO: solidify CR2
     @Test
     public void sendData() throws Exception{
         AuthenticationService service = AuthenticationService.getInstance();

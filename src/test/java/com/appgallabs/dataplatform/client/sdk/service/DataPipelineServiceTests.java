@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DataPipelineServiceTests {
     private static Logger logger = LoggerFactory.getLogger(DataPipelineServiceTests.class);
 
+    //TODO: solidify: CR2
     @Test
     public void sendData() throws Exception{
         DataPipelineService dataPipelineService = DataPipelineService.getInstance();
