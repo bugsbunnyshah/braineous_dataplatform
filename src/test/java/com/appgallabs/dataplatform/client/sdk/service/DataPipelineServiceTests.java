@@ -18,12 +18,16 @@ public class DataPipelineServiceTests {
     public void sendData() throws Exception{
         DataPipelineService dataPipelineService = DataPipelineService.getInstance();
 
+        String jsonResource = "ingestion/algorithm/input.json";
+        //String jsonResource = "people.json";
         String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
+                        getContextClassLoader().getResourceAsStream(jsonResource),
                 StandardCharsets.UTF_8
         );
 
-        dataPipelineService.sendData(jsonString);
+        for(int i=0; i<10; i++) {
+            dataPipelineService.sendData(jsonString);
+        }
 
         //assertions
         //System.out.println("********************************");

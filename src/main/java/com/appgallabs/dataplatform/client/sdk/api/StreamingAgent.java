@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.client.sdk.api;
 import com.appgallabs.dataplatform.client.sdk.infrastructure.ListenableQueue;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.ehcache.sizeof.SizeOf;
@@ -43,13 +44,38 @@ public class StreamingAgent {
                     String element = this.queueStream.remove();
 
                     //TODO: send to DataPipelineClient
-                    System.out.println(i);
-                    System.out.println(element);
-                    System.out.println("*****************");
+                    //System.out.println(i);
+                    //System.out.println(element);
+                    //System.out.println("*****************");
+
+                    JsonObject response = sendDataToCloud(element);
+                    JsonUtil.printStdOut(response);
                 }
             }
         });
 
         this.queueStream.add(json);
+    }
+
+    private JsonObject sendDataToCloud(String payload){
+        //validate and prepare rest payload
+        JsonElement jsonElement = JsonUtil.validateJson(payload);
+        if(jsonElement == null){
+            throw new RuntimeException("payload_not_in_json_format");
+        }
+
+        //send data for ingestion
+        JsonObject response = this.dataPipelineClient.sendData(jsonElement);
+
+        //process response
+        String ingestionStatusMessage = null;
+        if(response.has("ingestionError")){
+            ingestionStatusMessage = response.get("ingestionError").getAsString();
+        }else{
+            ingestionStatusMessage = response.get("ingestionStatusCode").getAsString();
+        }
+        response.addProperty("status",ingestionStatusMessage);
+
+        return response;
     }
 }

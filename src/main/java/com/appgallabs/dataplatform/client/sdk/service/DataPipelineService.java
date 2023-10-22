@@ -24,28 +24,6 @@ public class DataPipelineService {
     }
 
     public void sendData(String payload){
-
         StreamingAgent.getInstance().sendData(payload);
-
-        /*
-        //validate and prepare rest payload
-        JsonElement jsonElement = JsonUtil.validateJson(payload);
-        if(jsonElement == null){
-            throw new RuntimeException("payload_not_in_json_format");
-        }
-
-        //send data for ingestion
-        JsonObject response = this.dataPipelineClient.sendData(jsonElement);
-
-        //process response
-        String ingestionStatusMessage = null;
-        if(response.has("ingestionError")){
-            ingestionStatusMessage = response.get("ingestionError").getAsString();
-        }else{
-            ingestionStatusMessage = response.get("ingestionStatusCode").getAsString();
-        }
-        response.addProperty("status",ingestionStatusMessage);
-
-        return response;*/
     }
 }
