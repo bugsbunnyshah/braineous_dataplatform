@@ -7,7 +7,6 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.ehcache.sizeof.SizeOf;
 
 import java.util.LinkedList;
@@ -39,22 +38,30 @@ public class StreamingAgent {
             long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
             //TODO: make this configurable, depending on ingestion payload size
-            int windowSize = 2000;
-            if(dataStreamSize >= windowSize){
-                JsonArray batch = new JsonArray();
-                for(int i=0; i<this.queueStream.size();i++) {
-                    String element = this.queueStream.remove();
-                    JsonElement batchElement = JsonParser.parseString(element);
-                    batch.add(batchElement);
+            int windowSize = 100;
+                if (dataStreamSize >= windowSize) {
+                    JsonArray batch = new JsonArray();
+                    for (int i = 0; i < this.queueStream.size(); i++) {
+                        String element = this.queueStream.remove();
+                        JsonElement batchElement = JsonUtil.validateJson(element);
+                        if(batchElement == null){
+                            //TODO: integrate with reporting service
+                            continue;
+                        }
+
+                        batch.add(batchElement);
+                    }
+
+                    //send batch to cloud
+                    if(batch.size() > 0) {
+                        JsonUtil.printStdOut(batch);
+                        String batchJsonString = batch.toString();
+                        JsonObject response = sendDataToCloud(batchJsonString);
+
+                        //TODO: integrate with reporting service
+                        JsonUtil.printStdOut(response);
+                    }
                 }
-
-                //send batch to cloud
-                String batchJsonString = batch.toString();
-                JsonObject response = sendDataToCloud(batchJsonString);
-
-                //TODO: integrate with reporting service
-                JsonUtil.printStdOut(response);
-            }
         });
 
         this.queueStream.add(json);

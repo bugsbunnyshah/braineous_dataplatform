@@ -9,7 +9,7 @@ public class StreamingAgentTests {
         StreamingAgent streamingAgent = StreamingAgent.getInstance();
 
         for(int i=0; i<10; i++) {
-            streamingAgent.sendData("hello"+i);
+            streamingAgent.sendData("{hello"+i);
         }
     }
 }
