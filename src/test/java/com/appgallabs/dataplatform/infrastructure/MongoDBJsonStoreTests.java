@@ -36,12 +36,6 @@ public class MongoDBJsonStoreTests extends BaseTest {
     private SecurityTokenContainer securityTokenContainer;
 
 
-    @AfterEach
-    public void tearDown()
-    {
-
-    }
-
     @Test
     public void testStoreDataSetRealDataForEval() throws Exception
     {
@@ -116,6 +110,7 @@ public class MongoDBJsonStoreTests extends BaseTest {
         JsonObject jsonObject = new JsonObject();
         String objectHash = JsonUtil.getJsonHash(jsonObject);
         jsonObject.addProperty("objectHash",objectHash);
+        jsonObject.addProperty("name","hello2");
         this.mongoDBJsonStore.storeIngestion(this.securityTokenContainer.getTenant(),jsonObject);
         Tenant tenant = this.securityTokenContainer.getTenant();
         JsonObject data = this.mongoDBJsonStore.readEntity(tenant,objectHash);

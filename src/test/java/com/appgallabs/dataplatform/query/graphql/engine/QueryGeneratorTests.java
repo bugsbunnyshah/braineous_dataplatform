@@ -1,10 +1,17 @@
 package com.appgallabs.dataplatform.query.graphql.engine;
 
+import com.appgallabs.dataplatform.infrastructure.DataLakeStore;
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.infrastructure.PipelineStore;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mongodb.client.MongoClient;
 import graphql.language.*;
 import graphql.parser.Parser;
 
@@ -13,25 +20,35 @@ import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import test.components.BaseTest;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @QuarkusTest
-public class QueryGeneratorTests {
+public class QueryGeneratorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(QueryGeneratorTests.class);
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
 
     @Inject
     private SchemalessMapper schemalessMapper;
 
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
+
     @Test
     public void queryByAll() throws Exception{
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+        DataLakeStore dataLakeStore = this.mongoDBJsonStore.getDataLakeStore();
+
         String querySql = "query findTeas{\n" +
                 "  teas{\n" +
                 "    id\n" +
-                "    name\n" +
+                "    name2\n" +
                 "    description\n" +
                 "  }\n" +
                 "}";
@@ -65,10 +82,12 @@ public class QueryGeneratorTests {
         //JsonUtil.printStdOut(queryJson);
         //JsonUtil.printStdOut(projectionJson);
 
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(queryJson);
-        queryBuilder.append(",");
-        queryBuilder.append(projectionJson);
-        logger.info(queryBuilder.toString());
+        //Execute the query
+        String entity = "books";
+        JsonArray result = dataLakeStore.readByEntity(tenant,mongoClient,
+                entity, fieldNames);
+        JsonUtil.printStdOut(result);
+
+        //Process response
     }
 }
