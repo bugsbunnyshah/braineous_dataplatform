@@ -107,15 +107,19 @@ public class MongoDBJsonStoreTests extends BaseTest {
 
     @Test
     public void readEntity() throws Exception{
-        JsonObject jsonObject = new JsonObject();
-        String objectHash = JsonUtil.getJsonHash(jsonObject);
-        jsonObject.addProperty("objectHash",objectHash);
-        jsonObject.addProperty("name","hello2");
-        this.mongoDBJsonStore.storeIngestion(this.securityTokenContainer.getTenant(),jsonObject);
-        Tenant tenant = this.securityTokenContainer.getTenant();
-        JsonObject data = this.mongoDBJsonStore.readEntity(tenant,objectHash);
-        assertNotNull(data);
-        assertEquals(objectHash,data.get("objectHash").getAsString());
+        for(int i=0; i<3; i++) {
+            JsonObject jsonObject = new JsonObject();
+            String objectHash = JsonUtil.getJsonHash(jsonObject);
+            jsonObject.addProperty("objectHash", objectHash);
+            jsonObject.addProperty("name", "hello");
+            jsonObject.addProperty("value","value");
+            jsonObject.addProperty("diff",""+i);
+            this.mongoDBJsonStore.storeIngestion(this.securityTokenContainer.getTenant(), jsonObject);
+            Tenant tenant = this.securityTokenContainer.getTenant();
+            JsonObject data = this.mongoDBJsonStore.readEntity(tenant, objectHash);
+            assertNotNull(data);
+            assertEquals(objectHash, data.get("objectHash").getAsString());
+        }
     }
 
     @Test

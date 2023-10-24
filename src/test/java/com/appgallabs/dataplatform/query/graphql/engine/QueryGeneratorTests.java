@@ -24,7 +24,9 @@ import test.components.BaseTest;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @QuarkusTest
 public class QueryGeneratorTests extends BaseTest {
@@ -47,9 +49,9 @@ public class QueryGeneratorTests extends BaseTest {
 
         String querySql = "query findTeas{\n" +
                 "  teas{\n" +
-                "    id\n" +
-                "    name2\n" +
-                "    description\n" +
+                "    name\n" +
+                "    value\n" +
+                "    diff\n" +
                 "  }\n" +
                 "}";
         Parser parser = new Parser();
@@ -86,6 +88,124 @@ public class QueryGeneratorTests extends BaseTest {
         String entity = "books";
         JsonArray result = dataLakeStore.readByEntity(tenant,mongoClient,
                 entity, fieldNames);
+        JsonUtil.printStdOut(result);
+
+        //Process response
+    }
+
+    @Test
+    public void queryByAND() throws Exception{
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+        DataLakeStore dataLakeStore = this.mongoDBJsonStore.getDataLakeStore();
+
+        String querySql = "query findTeas{\n" +
+                "  teas{\n" +
+                "    name\n" +
+                "    value\n" +
+                "    diff\n" +
+                "    objectHash\n" +
+                "  }\n" +
+                "}";
+        Parser parser = new Parser();
+        Document document = parser.parseDocument(querySql);
+
+        List<Definition> definitions = document.getDefinitions();
+
+        OperationDefinition operationDefinition = (OperationDefinition) definitions.get(0);
+        SelectionSet selectionSet = operationDefinition.getSelectionSet();
+
+        List<String> fieldNames = new ArrayList<>();
+        List<Selection> selections = selectionSet.getSelections();
+        for(Selection selection:selections){
+            Field field = (Field) selection;
+            SelectionSet whereSet = field.getSelectionSet();
+            List<Selection> whereSelections = whereSet.getSelections();
+            for(Selection whereSelection:whereSelections){
+                Field whereField = (Field) whereSelection;
+                fieldNames.add(whereField.getName());
+            }
+        }
+
+        //MongoDB finalAll query: db.datalake.find({},{name: 1})
+        //JsonUtil.printStdOut(JsonUtil.validateJson(fieldNames.toString()));
+        JsonObject queryJson = new JsonObject();
+        JsonObject projectionJson = new JsonObject();
+        for(String fieldName:fieldNames){
+            projectionJson.addProperty(fieldName,1);
+        }
+        //JsonUtil.printStdOut(queryJson);
+        //JsonUtil.printStdOut(projectionJson);
+
+        //TODO criteria
+        Map<String, String> criteria  = new HashMap<String, String>() {{
+            put("diff", "0");
+            put("name", "hello");
+        }};
+
+        //Execute the query
+        String entity = "books";
+        JsonArray result = dataLakeStore.readByEntityFilterByAND(tenant,mongoClient,
+                entity, fieldNames, criteria);
+        JsonUtil.printStdOut(result);
+
+        //Process response
+    }
+
+    @Test
+    public void queryByOR() throws Exception{
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+        DataLakeStore dataLakeStore = this.mongoDBJsonStore.getDataLakeStore();
+
+        String querySql = "query findTeas{\n" +
+                "  teas{\n" +
+                "    name\n" +
+                "    value\n" +
+                "    diff\n" +
+                "    objectHash\n" +
+                "  }\n" +
+                "}";
+        Parser parser = new Parser();
+        Document document = parser.parseDocument(querySql);
+
+        List<Definition> definitions = document.getDefinitions();
+
+        OperationDefinition operationDefinition = (OperationDefinition) definitions.get(0);
+        SelectionSet selectionSet = operationDefinition.getSelectionSet();
+
+        List<String> fieldNames = new ArrayList<>();
+        List<Selection> selections = selectionSet.getSelections();
+        for(Selection selection:selections){
+            Field field = (Field) selection;
+            SelectionSet whereSet = field.getSelectionSet();
+            List<Selection> whereSelections = whereSet.getSelections();
+            for(Selection whereSelection:whereSelections){
+                Field whereField = (Field) whereSelection;
+                fieldNames.add(whereField.getName());
+            }
+        }
+
+        //MongoDB finalAll query: db.datalake.find({},{name: 1})
+        //JsonUtil.printStdOut(JsonUtil.validateJson(fieldNames.toString()));
+        JsonObject queryJson = new JsonObject();
+        JsonObject projectionJson = new JsonObject();
+        for(String fieldName:fieldNames){
+            projectionJson.addProperty(fieldName,1);
+        }
+        //JsonUtil.printStdOut(queryJson);
+        //JsonUtil.printStdOut(projectionJson);
+
+        //TODO criteria
+        Map<String, String> criteria  = new HashMap<String, String>() {{
+            put("diff", "0");
+            put("name", "hello");
+        }};
+
+        //Execute the query
+        String entity = "books";
+        JsonArray result = dataLakeStore.readByEntityFilterByOR(tenant,mongoClient,
+                entity, fieldNames, criteria);
         JsonUtil.printStdOut(result);
 
         //Process response
