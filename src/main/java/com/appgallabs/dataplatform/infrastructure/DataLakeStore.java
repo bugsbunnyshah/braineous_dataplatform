@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.infrastructure;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
