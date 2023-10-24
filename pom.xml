@@ -370,12 +370,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire-plugin.version}</version>
         <configuration>
-          <systemPropertyVariables>
-            <!--
-            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-            <maven.home>${maven.home}</maven.home>
-            -->
-          </systemPropertyVariables>
+          <excludes>
+            <exclude>prototype/**/*.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>

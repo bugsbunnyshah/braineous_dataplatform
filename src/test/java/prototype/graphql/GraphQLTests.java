@@ -104,7 +104,7 @@ public class GraphQLTests extends BaseTest {
 
             JsonElement responseJsonElement = JsonParser.parseString(responseJson);
             JsonUtil.printStdOut(responseJsonElement);
-        }catch(Exception e){
+        }catch (Exception e){
 
         }
     }
