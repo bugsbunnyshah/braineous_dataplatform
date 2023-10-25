@@ -1,25 +1,27 @@
-package com.appgallabs.dataplatform.query.endpoint;
+package com.appgallabs.dataplatform.query.graphql.endpoint;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.google.gson.JsonArray;
+import com.appgallabs.dataplatform.query.graphql.service.QueryExecutor;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
-@Path("/data/query")
-public class DataLakeGraphSqlQueryEndpoint
+@Path("/data/lake/query")
+public class DataLakeGraphQlQueryEndpoint
 {
-    private static Logger logger = LoggerFactory.getLogger(DataLakeGraphSqlQueryEndpoint.class);
+    private static Logger logger = LoggerFactory.getLogger(DataLakeGraphQlQueryEndpoint.class);
+
+    @Inject
+    private QueryExecutor queryExecutor;
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
@@ -27,17 +29,19 @@ public class DataLakeGraphSqlQueryEndpoint
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response all(@QueryParam("entity") String entity)
+    public Response query(@RequestBody String input)
     {
         try
         {
-            JsonArray json = this.mongoDBJsonStore.readByEntity(
-                    securityTokenContainer.getTenant(),
-                    entity
-            );
-            return Response.ok(json.toString()).build();
+            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+
+            String graphqlQuery = jsonObject.get("graphqlQuery").getAsString();
+
+            JsonObject response = new JsonObject();
+
+            return Response.ok(response.toString()).build();
         }
         catch(Exception e)
         {
