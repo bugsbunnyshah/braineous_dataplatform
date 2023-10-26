@@ -27,9 +27,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("dataMapper")
-public class DataMapper {
-    private static Logger logger = LoggerFactory.getLogger(DataMapper.class);
+@Path("ingestion")
+public class DataIngestion {
+    private static Logger logger = LoggerFactory.getLogger(DataIngestion.class);
 
     private CSVDataUtil csvDataUtil = new CSVDataUtil();
 
@@ -58,7 +58,7 @@ public class DataMapper {
         this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
     }
 
-    @Path("map")
+    @Path("json")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response map(@RequestBody String input)
@@ -105,7 +105,7 @@ public class DataMapper {
         }
     }
 
-    @Path("mapXml")
+    @Path("xml")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response mapXmlSourceData(@RequestBody String input)
@@ -153,7 +153,7 @@ public class DataMapper {
         }
     }
 
-    @Path("mapCsv")
+    @Path("csv")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response mapCsvSourceData(@RequestBody String input)
