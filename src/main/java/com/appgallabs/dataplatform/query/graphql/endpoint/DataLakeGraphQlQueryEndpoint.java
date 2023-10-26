@@ -1,8 +1,8 @@
 package com.appgallabs.dataplatform.query.graphql.endpoint;
 
-import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
-import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.query.graphql.service.QueryExecutor;
+
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
@@ -23,11 +23,6 @@ public class DataLakeGraphQlQueryEndpoint
     @Inject
     private QueryExecutor queryExecutor;
 
-    @Inject
-    private MongoDBJsonStore mongoDBJsonStore;
-
-    @Inject
-    private SecurityTokenContainer securityTokenContainer;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,11 +32,12 @@ public class DataLakeGraphQlQueryEndpoint
         {
             JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
+            String entity = "book";
+
             String graphqlQuery = jsonObject.get("graphqlQuery").getAsString();
+            JsonArray result = this.queryExecutor.executeQueryNoCriteria(entity, graphqlQuery);
 
-            JsonObject response = new JsonObject();
-
-            return Response.ok(response.toString()).build();
+            return Response.ok(result.toString()).build();
         }
         catch(Exception e)
         {
