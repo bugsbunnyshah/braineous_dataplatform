@@ -24,7 +24,7 @@ public class QueryExecutor {
     @Inject
     private QueryParser queryParser;
 
-    //TODO: make this datalake agnostic
+    //TODO: make this datalake agnostic (CR2)
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 

@@ -73,7 +73,7 @@ public class DataLakeGraphQlQueryEndpointTests extends BaseTest {
         logger.info(response.getStatusLine());
         logger.info("***************");
 
-        //TODO: assert
+        //TODO: CR1
         assertEquals(200, statusCode);
     }
 }

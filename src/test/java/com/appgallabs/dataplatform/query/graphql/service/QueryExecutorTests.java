@@ -66,7 +66,7 @@ public class QueryExecutorTests extends BaseTest {
         JsonArray result = this.queryExecutor.executeQueryNoCriteria(entity, querySql);
         JsonUtil.printStdOut(result);
 
-        //TODO assert
+        //TODO assert CR1
         assertNotNull(result);
         assertEquals(3, result.size());
     }
@@ -86,7 +86,7 @@ public class QueryExecutorTests extends BaseTest {
         JsonArray result = this.queryExecutor.executeQueryByANDCriteria(entity, querySql);
         JsonUtil.printStdOut(result);
 
-        //TODO assert
+        //TODO assert CR1
         assertNotNull(result);
         assertEquals(1, result.size());
     }
@@ -106,7 +106,7 @@ public class QueryExecutorTests extends BaseTest {
         JsonArray result = this.queryExecutor.executeQueryByORCriteria(entity, querySql);
         JsonUtil.printStdOut(result);
 
-        //TODO assert
+        //TODO assert CR1
         assertNotNull(result);
         assertEquals(3, result.size());
     }

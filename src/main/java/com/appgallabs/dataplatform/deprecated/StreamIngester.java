@@ -33,7 +33,6 @@ public class StreamIngester implements Serializable{
 
     }
 
-    //TODO: test ingesting XML and CSV
     public JsonObject submit(Tenant tenant, String environment, SecurityTokenContainer securityTokenContainer,
                              MongoDBJsonStore mongoDBJsonStore,
                              DataReplayService dataReplayService,

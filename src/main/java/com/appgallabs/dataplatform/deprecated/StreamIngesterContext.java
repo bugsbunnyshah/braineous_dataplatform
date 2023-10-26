@@ -177,7 +177,6 @@ public class StreamIngesterContext implements Serializable {
 
             //BackgroundProcessListener.getInstance().decreaseThreshold(entity, dataLakeId, data);
 
-            //TODO: Update DataHistory
             //data.remove("data");
             //this.mongoDBJsonStore.storeHistoryObject(tenant, data);
         }
