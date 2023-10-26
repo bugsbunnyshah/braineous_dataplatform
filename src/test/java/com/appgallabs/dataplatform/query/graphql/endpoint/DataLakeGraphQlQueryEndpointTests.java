@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.query.graphql.endpoint;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -50,7 +51,7 @@ public class DataLakeGraphQlQueryEndpointTests extends BaseTest {
     @Test
     public void query() throws Exception {
 
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
 
         String graphqlQuery = "query findTeas{\n" +
                 "  teas{\n" +

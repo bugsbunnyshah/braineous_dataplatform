@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.query.graphql.engine;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.DataLakeStore;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.PipelineStore;
@@ -85,7 +86,7 @@ public class QueryGeneratorTests extends BaseTest {
         //JsonUtil.printStdOut(projectionJson);
 
         //Execute the query
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         JsonArray result = dataLakeStore.readByEntity(tenant,mongoClient,
                 entity, fieldNames);
         JsonUtil.printStdOut(result);
@@ -144,7 +145,7 @@ public class QueryGeneratorTests extends BaseTest {
         }};
 
         //Execute the query
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         JsonArray result = dataLakeStore.readByEntityFilterByAND(tenant,mongoClient,
                 entity, fieldNames, criteria);
         JsonUtil.printStdOut(result);
@@ -203,7 +204,7 @@ public class QueryGeneratorTests extends BaseTest {
         }};
 
         //Execute the query
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         JsonArray result = dataLakeStore.readByEntityFilterByOR(tenant,mongoClient,
                 entity, fieldNames, criteria);
         JsonUtil.printStdOut(result);

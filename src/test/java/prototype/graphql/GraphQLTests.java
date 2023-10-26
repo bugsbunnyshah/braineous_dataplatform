@@ -1,5 +1,6 @@
 package prototype.graphql;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -53,7 +54,7 @@ public class GraphQLTests extends BaseTest {
             JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
             String originalObjectHash = JsonUtil.getJsonHash(jsonObject);
 
-            String entity = "books";
+            String entity = TempConstants.ENTITY;
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity, jsonString);
 
             JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),

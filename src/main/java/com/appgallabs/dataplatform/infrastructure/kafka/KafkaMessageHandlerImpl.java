@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -43,7 +44,7 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         /**
          * TODO: Integrate with the Pipeline Service
          */
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         String messageValue = message.value();
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 

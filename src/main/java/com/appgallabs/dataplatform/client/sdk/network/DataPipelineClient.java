@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -62,10 +63,12 @@ public class DataPipelineClient {
         try {
             JsonObject response = new JsonObject();
 
+            String entity = TempConstants.ENTITY;
+
             //TODO: integrate_entity
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("sourceData",payload);
-            requestBody.addProperty("entity", "book");
+            requestBody.addProperty("entity", entity);
 
 
             //TODO: fix authorization

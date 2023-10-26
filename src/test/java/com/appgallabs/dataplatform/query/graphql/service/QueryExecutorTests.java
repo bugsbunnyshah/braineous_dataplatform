@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.query.graphql.service;
 
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -52,7 +53,7 @@ public class QueryExecutorTests extends BaseTest {
 
     @Test
     public void executeQueryNoCriteria() throws Exception{
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
 
         String querySql = "query findTeas{\n" +
                 "  teas{\n" +
@@ -72,7 +73,7 @@ public class QueryExecutorTests extends BaseTest {
 
     @Test
     public void executeQueryByANDCriteria() throws Exception{
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
 
         String querySql = "query findTeas{\n" +
                 "  teas{\n" +
@@ -92,7 +93,7 @@ public class QueryExecutorTests extends BaseTest {
 
     @Test
     public void executeQueryByORCriteria() throws Exception{
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
 
         String querySql = "query findTeas{\n" +
                 "  teas{\n" +

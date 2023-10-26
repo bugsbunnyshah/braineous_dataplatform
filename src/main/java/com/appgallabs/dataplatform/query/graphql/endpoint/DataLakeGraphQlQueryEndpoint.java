@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.query.graphql.endpoint;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.query.graphql.service.QueryExecutor;
 
 import com.google.gson.JsonArray;
@@ -32,7 +33,7 @@ public class DataLakeGraphQlQueryEndpoint
         {
             JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
-            String entity = "book";
+            String entity = TempConstants.ENTITY;
 
             String graphqlQuery = jsonObject.get("graphqlQuery").getAsString();
             JsonArray result = this.queryExecutor.executeQueryNoCriteria(entity, graphqlQuery);

@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -49,7 +50,7 @@ public class PipelineServiceTests extends BaseTest {
         jsonObject.remove("expensive");
         String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString);
 
         JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
@@ -78,7 +79,7 @@ public class PipelineServiceTests extends BaseTest {
         jsonObject.remove("expensive");
         String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),entity,jsonString);
 
         JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
@@ -103,7 +104,7 @@ public class PipelineServiceTests extends BaseTest {
                 StandardCharsets.UTF_8
         );
 
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
         this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString, jsonPathExpressions);
 
@@ -134,7 +135,7 @@ public class PipelineServiceTests extends BaseTest {
                 StandardCharsets.UTF_8
         );
 
-        String entity = "books";
+        String entity = TempConstants.ENTITY;
         List<String> jsonPathExpressions = Arrays.asList("$.store.book[?(@.price != 0)]");
         this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString, jsonPathExpressions);
 
