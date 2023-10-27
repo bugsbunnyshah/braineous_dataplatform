@@ -1,6 +1,9 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StoreOrchestrator {
@@ -20,9 +23,18 @@ public class StoreOrchestrator {
     }
 
     public void receiveData(String pipeId, String data) {
+        Registry registry = Registry.getInstance();
+
         //find the registered store drivers for this pipe
+        List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
+        if(storeDrivers == null || storeDrivers.isEmpty()){
+            return;
+        }
 
         //TODO: make this transactional (GA)
         //fan out storage to each store
+        storeDrivers.stream().forEach(storeDriver -> storeDriver.storeData(
+                JsonUtil.validateJson(data).getAsJsonArray()
+        ));
     }
 }

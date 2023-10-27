@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class StoreOrchestratorTests {
+public class OrchestratorTests {
 
     @Test
     public void testConfigurationFramework() throws Exception{
