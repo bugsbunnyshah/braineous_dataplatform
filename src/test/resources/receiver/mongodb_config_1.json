@@ -2,9 +2,9 @@
   "pipeId": "123",
   "configuration": [
     {
-      "storeDriver" : "",
+      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
       "name": "store_1",
-      "mongodb_config": {
+      "config": {
         "connectionString": "1",
         "database": "1d",
         "collection": "1c"
@@ -12,9 +12,9 @@
       "jsonpathExpression": ""
     },
     {
-      "storeDriver" : "",
+      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
       "name": "store_2",
-      "mongodb_config": {
+      "config": {
         "connectionString": "2",
         "database": "2d",
         "collection": "2c"
@@ -22,9 +22,9 @@
       "jsonpathExpression": ""
     },
     {
-      "storeDriver" : "",
+      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
       "name": "store_3",
-      "mongodb_config": {
+      "config": {
         "connectionString": "3",
         "database": "3d",
         "collection": "3c"

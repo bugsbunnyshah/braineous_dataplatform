@@ -7,18 +7,8 @@ public class StoreOrchestrator {
 
     private static StoreOrchestrator singleton = new StoreOrchestrator();
 
-    Registry registry;
 
     private StoreOrchestrator(){
-        this.registry = new Registry();
-    }
-
-    public Registry getRegistry() {
-        return registry;
-    }
-
-    public void setRegistry(Registry registry) {
-        this.registry = registry;
     }
 
     public static StoreOrchestrator getInstance(){
