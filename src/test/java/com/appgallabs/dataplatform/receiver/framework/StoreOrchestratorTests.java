@@ -14,6 +14,7 @@ import test.components.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,7 +54,7 @@ public class StoreOrchestratorTests extends BaseTest {
         String connectionString = driverConfiguration.get("connectionString").getAsString();
         String database = driverConfiguration.get("database").getAsString();
         String collection = driverConfiguration.get("collection").getAsString();
-        List<String> collectionHashes = MongoDBUtil.readCollectionHashes(connectionString,
+        Set<String> collectionHashes = MongoDBUtil.readCollectionHashes(connectionString,
                 database,collection);
         JsonUtil.printStdOut(JsonUtil.validateJson(objectHashes.toString()));
 
