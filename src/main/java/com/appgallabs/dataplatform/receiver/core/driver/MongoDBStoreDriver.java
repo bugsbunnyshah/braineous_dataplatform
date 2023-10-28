@@ -4,7 +4,6 @@ import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mongodb.MongoBulkWriteException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -30,21 +29,21 @@ public class MongoDBStoreDriver implements StoreDriver {
 
     @Override
     public void storeData(JsonArray dataSet) {
-        //get the driver configuration
-        String connectionString = this.configJson.get("connectionString").getAsString();
-        String database = this.configJson.get("database").getAsString();
-        String collection = this.configJson.get("collection").getAsString();
-
-        //setup driver components
-        MongoClient mongoClient = MongoClients.create(connectionString);
-        MongoDatabase db = mongoClient.getDatabase(database);
-        MongoCollection<Document> dbCollection = db.getCollection(collection);
-
-        //bulk insert
         try {
+            //get the driver configuration
+            String connectionString = this.configJson.get("connectionString").getAsString();
+            String database = this.configJson.get("database").getAsString();
+            String collection = this.configJson.get("collection").getAsString();
+
+            //setup driver components
+            MongoClient mongoClient = MongoClients.create(connectionString);
+            MongoDatabase db = mongoClient.getDatabase(database);
+            MongoCollection<Document> dbCollection = db.getCollection(collection);
+
+            //bulk insert
             List<WriteModel<Document>> bulkOperations = new ArrayList<>();
             int size = dataSet.size();
-            for(int i=0; i<size; i++) {
+            for (int i = 0; i < size; i++) {
                 JsonObject dataToBeStored = dataSet.get(i).getAsJsonObject();
 
                 Document document = Document.parse(dataToBeStored.toString());
@@ -55,8 +54,9 @@ public class MongoDBStoreDriver implements StoreDriver {
             }
             dbCollection.bulkWrite(bulkOperations);
 
-        } catch (MongoBulkWriteException e){
+        }catch(Exception e){
             logger.error(e.getMessage());
+            //TODO: (CR2) report to the pipeline monitoring service
         }
     }
 }

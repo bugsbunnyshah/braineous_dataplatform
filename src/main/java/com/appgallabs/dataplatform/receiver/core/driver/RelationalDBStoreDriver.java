@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+//TODO: (CR1)
 public class RelationalDBStoreDriver implements StoreDriver {
     @Override
     public void configure(JsonObject configJson) {

@@ -38,7 +38,7 @@ public class StoreOrchestrator {
         storeDrivers.stream().forEach(storeDriver -> {
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
-                //TODO: adjust based on configured jsonpath expression
+                //TODO: adjust based on configured jsonpath expression (CR1)
 
                 storeDriver.storeData(preStorageDataSet);
             }

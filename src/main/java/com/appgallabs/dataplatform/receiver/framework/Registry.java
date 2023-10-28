@@ -1,14 +1,12 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //TODO: persist Registry (CR1)
 public class Registry {
@@ -81,5 +79,17 @@ public class Registry {
         //TODO: flush to db (CR1)
 
         return pipeId;
+    }
+
+    public JsonArray getDriverConfigurations(){
+        JsonArray driverConfigurations = new JsonArray();
+
+        Set<Map.Entry<String, JsonArray>> entries = this.registry.entrySet();
+        for(Map.Entry<String, JsonArray> entry: entries){
+            JsonArray registeredValue = entry.getValue();
+            driverConfigurations.add(registeredValue);
+        }
+
+        return driverConfigurations;
     }
 }
