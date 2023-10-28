@@ -36,7 +36,7 @@ public class StreamingAgent {
             SizeOf sizeOf = SizeOf.newInstance();
             long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
-            //TODO: make this configurable, depending on ingestion payload size
+            //TODO: make this configurable, depending on ingestion payload size (CR2)
             int windowSize = 100;
                 if (dataStreamSize >= windowSize) {
                     JsonArray batch = new JsonArray();
@@ -44,7 +44,7 @@ public class StreamingAgent {
                         String element = this.queueStream.remove();
                         JsonElement batchElement = JsonUtil.validateJson(element);
                         if(batchElement == null){
-                            //TODO: integrate with reporting service CR2
+                            //TODO: integrate with reporting service (CR2)
                             continue;
                         }
 
@@ -57,7 +57,7 @@ public class StreamingAgent {
                         String batchJsonString = batch.toString();
                         JsonObject response = sendDataToCloud(batchJsonString);
 
-                        //TODO: integrate with reporting service CR2
+                        //TODO: integrate with reporting service (CR2)
                         JsonUtil.printStdOut(response);
                     }
                 }

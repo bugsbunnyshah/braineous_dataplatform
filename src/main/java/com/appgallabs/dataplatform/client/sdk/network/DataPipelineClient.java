@@ -27,7 +27,7 @@ public class DataPipelineClient {
         return DataPipelineClient.singleton;
     }
 
-    //TODO: finalize_implementation
+    //TODO: finalize_implementation (CR1)
     public JsonObject sendData(JsonElement jsonElement){
         try {
             String restUrl = "http://localhost:8080/dataMapper/map/";
@@ -58,20 +58,20 @@ public class DataPipelineClient {
         }
     }
 
-    //TODO: finalize_implementation
+    //TODO: finalize_implementation (CR1)
     private JsonObject handleRestCall(String restUrl,String principal,String generatedToken, String payload){
         try {
             JsonObject response = new JsonObject();
 
             String entity = TempConstants.ENTITY;
 
-            //TODO: integrate_entity
+            //TODO: integrate_entity (CR1)
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("sourceData",payload);
             requestBody.addProperty("entity", entity);
 
 
-            //TODO: fix authorization
+            //TODO: fix authorization (CR1)
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))

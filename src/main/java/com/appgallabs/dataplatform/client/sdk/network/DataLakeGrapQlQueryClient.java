@@ -26,7 +26,7 @@ public class DataLakeGrapQlQueryClient {
         return DataLakeGrapQlQueryClient.singleton;
     }
 
-    //TODO: finalize_implementation
+    //TODO: finalize_implementation (CR1)
     public JsonObject sendQuery(String graphqlQuery){
         try {
             String restUrl = "http://localhost:8080/data/lake/query/";
@@ -56,17 +56,17 @@ public class DataLakeGrapQlQueryClient {
         }
     }
 
-    //TODO: finalize_implementation
+    //TODO: finalize_implementation (CR1)
     private JsonObject handleRestCall(String restUrl,String principal,String generatedToken, String graphqlQuery){
         try {
             JsonObject response = new JsonObject();
 
-            //TODO: integrate_entity
+            //TODO: integrate_entity (CR1)
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("graphqlQuery",graphqlQuery);
 
 
-            //TODO: fix authorization
+            //TODO: fix authorization (CR1)
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
