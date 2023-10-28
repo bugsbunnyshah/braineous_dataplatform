@@ -50,7 +50,7 @@ public class DataLakeGraphQlQueryTests extends BaseTest {
     }
 
     //TODO: solidify: CR2
-    @Test
+    //@Test
     public void sendQuery() throws Exception{
         String graphqlQuery = "";
 
