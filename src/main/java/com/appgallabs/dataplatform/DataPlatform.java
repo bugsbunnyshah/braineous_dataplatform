@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform;
 
-import com.appgallabs.dataplatform.deprecated.StreamIngesterContext;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
 
@@ -10,7 +9,6 @@ public class DataPlatform {
     {
         //TODO CR1
         System.out.println("Braineous DataPlatform started...");
-        StreamIngesterContext.getStreamIngester().start();
         Quarkus.run(args);
     }
 }
