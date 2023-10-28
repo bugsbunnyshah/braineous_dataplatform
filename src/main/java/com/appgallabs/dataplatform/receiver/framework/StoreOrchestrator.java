@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +32,16 @@ public class StoreOrchestrator {
             return;
         }
 
+
         //TODO: make this transactional (GA)
         //fan out storage to each store
-        storeDrivers.stream().forEach(storeDriver -> storeDriver.storeData(
-                JsonUtil.validateJson(data).getAsJsonArray()
-        ));
+        storeDrivers.stream().forEach(storeDriver -> {
+                JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
+
+                //TODO: adjust based on configured jsonpath expression
+
+                storeDriver.storeData(preStorageDataSet);
+            }
+        );
     }
 }

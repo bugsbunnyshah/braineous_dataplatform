@@ -5,31 +5,31 @@
       "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
       "name": "store_1",
       "config": {
-        "connectionString": "1",
-        "database": "1d",
-        "collection": "1c"
+        "connectionString": "mongodb://localhost:27017",
+        "database": "store_1",
+        "collection": "sampleDataSet"
       },
-      "jsonpathExpression": ""
+      "jsonpathExpression": "jsonpath:1"
     },
     {
       "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
       "name": "store_2",
       "config": {
-        "connectionString": "2",
-        "database": "2d",
-        "collection": "2c"
+        "connectionString": "mongodb://localhost:27017",
+        "database": "store_2",
+        "collection": "sampleDataSet"
       },
-      "jsonpathExpression": ""
+      "jsonpathExpression": "jsonpath:2"
     },
     {
       "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
       "name": "store_3",
       "config": {
-        "connectionString": "3",
-        "database": "3d",
-        "collection": "3c"
+        "connectionString": "mongodb://localhost:27017",
+        "database": "store_3",
+        "collection": "sampleDataSet"
       },
-      "jsonpathExpression": ""
+      "jsonpathExpression": "jsonpath:3"
     }
   ]
 }

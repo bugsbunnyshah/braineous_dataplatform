@@ -26,7 +26,7 @@ public class StoreOrchestratorTests extends BaseTest {
         String jsonString = Util.loadResource("receiver/mongodb_config_1.json");
 
         Registry registry = Registry.getInstance();
-        String pipeId = registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+        registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
     }
 
     @Test
