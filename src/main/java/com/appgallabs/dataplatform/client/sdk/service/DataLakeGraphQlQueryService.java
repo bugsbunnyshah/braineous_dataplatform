@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
+import com.appgallabs.dataplatform.client.sdk.api.GraphQlQueryException;
 import com.appgallabs.dataplatform.client.sdk.network.DataLakeGrapQlQueryClient;
 
 import com.google.gson.JsonArray;
@@ -23,7 +24,7 @@ public class DataLakeGraphQlQueryService {
         return DataLakeGraphQlQueryService.singleton;
     }
 
-    public JsonArray sendQuery(String graphqlQuery){
+    public JsonArray sendQuery(String graphqlQuery) throws GraphQlQueryException{
         //send query
         JsonObject response = this.client.sendQuery(graphqlQuery);
 
@@ -36,12 +37,13 @@ public class DataLakeGraphQlQueryService {
         }
         response.addProperty("status",queryStatusMessage);
 
-        if(response.has("queryResult")){
+        JsonArray result = new JsonArray();
+        if(response.has("queryResult") && queryStatusMessage.equals("200")){
             String queryResult = response.get("queryResult").getAsString();
-            JsonArray result = JsonParser.parseString(queryResult).getAsJsonArray();
+            result = JsonParser.parseString(queryResult).getAsJsonArray();
             return result;
         }
 
-        return null;
+        throw new GraphQlQueryException(response.toString());
     }
 }

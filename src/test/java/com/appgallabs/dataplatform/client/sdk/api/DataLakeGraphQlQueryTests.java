@@ -49,13 +49,19 @@ public class DataLakeGraphQlQueryTests extends BaseTest {
         }
     }
 
-    //TODO: solidify: (CR2)
-    //@Test
+    //TODO: solidify: (CR1)
+    @Test
     public void sendQuery() throws Exception{
-        String graphqlQuery = "";
+        String querySql = "query findTeas{\n" +
+                "  teas{\n" +
+                "    name\n" +
+                "    value\n" +
+                "    diff\n" +
+                "  }\n" +
+                "}";
 
         for(int i=0; i<10; i++) {
-            JsonArray result = DataLakeGraphQlQuery.sendQuery(graphqlQuery);
+            JsonArray result = DataLakeGraphQlQuery.sendQuery(querySql);
             JsonUtil.printStdOut(result);
         }
 

@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 public class DataPipelineTests {
     private static Logger logger = LoggerFactory.getLogger(DataPipelineTests.class);
 
-    //TODO: solidify: (CR2)
+    //TODO: solidify: (CR1)
     @Test
     public void sendData() throws Exception{
         String jsonResource = "ingestion/algorithm/input.json";

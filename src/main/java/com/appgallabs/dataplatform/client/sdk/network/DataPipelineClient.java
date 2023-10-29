@@ -30,7 +30,7 @@ public class DataPipelineClient {
     //TODO: finalize_implementation (CR1)
     public JsonObject sendData(JsonElement jsonElement){
         try {
-            String restUrl = "http://localhost:8080/dataMapper/map/";
+            String restUrl = "http://localhost:8080/data/ingestion/map/";
             String payload = jsonElement.toString();
 
             //get OAuth Token
@@ -38,7 +38,7 @@ public class DataPipelineClient {
                     StandardCharsets.UTF_8,
                     Thread.currentThread().getContextClassLoader());
             JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String principal = credentialsJson.get("client_id").getAsString();
+            String tenant = credentialsJson.get("client_id").getAsString();
 
             String token = IOUtils.resourceToString("oauth/jwtToken.json",
                     StandardCharsets.UTF_8,
@@ -47,7 +47,7 @@ public class DataPipelineClient {
             String generatedToken = securityTokenJson.get("access_token").getAsString();
 
             //provide response
-            JsonObject response = this.handleRestCall(restUrl,principal,generatedToken, payload);
+            JsonObject response = this.handleRestCall(restUrl,tenant,generatedToken, payload);
             response.addProperty("ingestionStatusCode", response.get("httpResponseCode").getAsString());
 
             return response;
@@ -59,7 +59,7 @@ public class DataPipelineClient {
     }
 
     //TODO: finalize_implementation (CR1)
-    private JsonObject handleRestCall(String restUrl,String principal,String generatedToken, String payload){
+    private JsonObject handleRestCall(String restUrl,String tenant,String generatedToken, String payload){
         try {
             JsonObject response = new JsonObject();
 
@@ -73,8 +73,8 @@ public class DataPipelineClient {
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    .header("Principal", principal)
-                    .header("Authorization", "Bearer "+generatedToken)
+                    .header("tenant", tenant)
+                    .header("token", "Bearer "+generatedToken)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
                     .build();
 
