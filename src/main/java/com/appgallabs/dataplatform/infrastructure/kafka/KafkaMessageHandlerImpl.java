@@ -41,9 +41,7 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         //log.info(message.value());
         //log.info("********************");
 
-        /**
-         * TODO: Integrate with the Pipeline Service (CR1)
-         */
+        //  TODO: unhardcode entity (CR1)
         String entity = TempConstants.ENTITY;
         String messageValue = message.value();
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();

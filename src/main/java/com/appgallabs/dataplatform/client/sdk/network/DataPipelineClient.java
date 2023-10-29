@@ -65,13 +65,11 @@ public class DataPipelineClient {
 
             String entity = TempConstants.ENTITY;
 
-            //TODO: integrate_entity (CR1)
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("sourceData",payload);
             requestBody.addProperty("entity", entity);
 
 
-            //TODO: fix authorization (CR1)
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
