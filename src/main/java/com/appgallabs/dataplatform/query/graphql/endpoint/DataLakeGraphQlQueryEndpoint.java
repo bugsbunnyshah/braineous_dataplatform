@@ -24,7 +24,7 @@ public class DataLakeGraphQlQueryEndpoint
     @Inject
     private QueryExecutor queryExecutor;
 
-
+    //TODO: query_routing (CR1)
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response query(@RequestBody String input)
