@@ -59,7 +59,7 @@ public class SchemalessMapperPrototypeTests {
         //readContext.withListeners(evaluationListener).read("$.store.book");
         //readContext.withListeners(evaluationListener).read("$.store.book[1].author");
 
-        //TODO
+        //TODO (5.0)
         readContext.withListeners(evaluationListener).
                 read("$.store.book[?(@.price < 9)]");
 

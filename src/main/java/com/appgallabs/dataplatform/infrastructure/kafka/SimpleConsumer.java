@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class SimpleConsumer extends AbstractSimpleKafka{
 
-    //TODO: make this configurable and find the optimal polling period
+    //TODO: make this configurable and find the optimal polling period (CR1)
     private final int TIME_OUT_MS = 5000;
     private KafkaConsumer<String, String> kafkaConsumer = null;
     private final AtomicBoolean closed = new AtomicBoolean(false);

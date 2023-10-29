@@ -49,7 +49,6 @@ public class ObjectGraphQueryEndpoint
         }
     }
 
-    //TODO:FIXME
     /*@POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("navigate")

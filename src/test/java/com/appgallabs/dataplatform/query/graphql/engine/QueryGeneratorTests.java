@@ -138,7 +138,7 @@ public class QueryGeneratorTests extends BaseTest {
         //JsonUtil.printStdOut(queryJson);
         //JsonUtil.printStdOut(projectionJson);
 
-        //TODO: CR1
+        //TODO: (CR1)
         Map<String, String> criteria  = new HashMap<String, String>() {{
             put("diff", "0");
             put("name", "hello");
@@ -197,7 +197,7 @@ public class QueryGeneratorTests extends BaseTest {
         //JsonUtil.printStdOut(queryJson);
         //JsonUtil.printStdOut(projectionJson);
 
-        //TODO: CR1
+        //TODO: (CR1)
         Map<String, String> criteria  = new HashMap<String, String>() {{
             put("diff", "0");
             put("name", "hello");

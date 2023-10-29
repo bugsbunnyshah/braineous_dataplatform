@@ -27,7 +27,7 @@ public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
 
         Config config = ConfigProvider.getConfig();
 
-        //TODO: CR1
+        //TODO: (CR1)
         //this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
         //this.dataLakeDriver = dataLakeDriverInstance.
         //        select(NamedLiteral.of(dataLakeDriverName)).get();

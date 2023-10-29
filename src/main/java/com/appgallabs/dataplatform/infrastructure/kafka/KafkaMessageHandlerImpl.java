@@ -42,7 +42,7 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         //log.info("********************");
 
         /**
-         * TODO: Integrate with the Pipeline Service
+         * TODO: Integrate with the Pipeline Service (CR1)
          */
         String entity = TempConstants.ENTITY;
         String messageValue = message.value();
