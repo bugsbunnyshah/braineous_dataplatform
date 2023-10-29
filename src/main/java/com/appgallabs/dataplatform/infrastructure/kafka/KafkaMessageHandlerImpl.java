@@ -3,17 +3,13 @@ package com.appgallabs.dataplatform.infrastructure.kafka;
 import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
-import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.JsonArray;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.commons.io.IOUtils;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  *

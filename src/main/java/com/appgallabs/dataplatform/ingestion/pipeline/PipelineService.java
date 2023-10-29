@@ -7,6 +7,7 @@ import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 
+import com.appgallabs.dataplatform.receiver.framework.Registry;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -39,9 +40,12 @@ public class PipelineService {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    private Registry registry;
+
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
+        this.registry = Registry.getInstance();
     }
 
     public void ingest(SecurityToken securityToken, String entity, String jsonString){

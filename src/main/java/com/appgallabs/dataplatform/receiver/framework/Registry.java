@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -91,5 +90,9 @@ public class Registry {
         }
 
         return driverConfigurations;
+    }
+
+    public Set<String> allRegisteredPipeIds(){
+        return this.registry.keySet();
     }
 }

@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.infrastructure.kafka;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.receiver.framework.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeTest;
 import test.components.BaseTest;
+import test.components.Util;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.literal.NamedLiteral;
@@ -34,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventProcessorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(EventProcessorTests.class);
 
-    private static final long HANG_TIME =  30000l;
+    private static final long HANG_TIME =  15000l;
 
     @Inject
     private EventProcessor eventProcessor;
@@ -51,6 +53,7 @@ public class EventProcessorTests extends BaseTest {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -60,6 +63,15 @@ public class EventProcessorTests extends BaseTest {
         Config config = ConfigProvider.getConfig();
         this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
         this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
+
+        String jsonString = Util.loadResource("receiver/mongodb_config_1.json");
+
+        Registry registry = Registry.getInstance();
+        registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+        JsonUtil.printStdOut(JsonUtil.validateJson(registry.allRegisteredPipeIds().toString()));
+
+        this.eventProcessor.start();
+        this.eventConsumer.start();
     }
 
     @Test

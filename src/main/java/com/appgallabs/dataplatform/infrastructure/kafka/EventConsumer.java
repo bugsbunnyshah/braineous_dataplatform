@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
+import com.appgallabs.dataplatform.receiver.framework.Registry;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,22 +10,33 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.HashSet;
+import java.util.Set;
 
 @Singleton
 public class EventConsumer {
     private static Logger logger = LoggerFactory.getLogger(EventConsumer.class);
 
-    private final String braineousKafkaTopic = "braineous_dataplatform_kafka_topic";
-    private SimpleConsumer consumer;
+    private Set<SimpleConsumer> consumers;
 
     @Inject
     private PipelineService pipelineService;
 
+    public EventConsumer() {
+        this.consumers = new HashSet<>();
+    }
+
     @PostConstruct
     public void start(){
         try {
-            this.consumer = SimpleConsumer.getInstance();
-            this.consumer.runAlways(braineousKafkaTopic, new KafkaMessageHandlerImpl(this.pipelineService));
+            //start all pipes which are kafka topics
+            Set<String> allPipeIds = Registry.getInstance().allRegisteredPipeIds();
+
+            for(String pipeTopic:allPipeIds) {
+                SimpleConsumer consumer = SimpleConsumer.getInstance();
+                consumer.runAlways(pipeTopic, new KafkaMessageHandlerImpl(this.pipelineService));
+                this.consumers.add(consumer);
+            }
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -33,7 +45,9 @@ public class EventConsumer {
     @PreDestroy
     public void stop(){
         try {
-            this.consumer.shutdown();
+            for(SimpleConsumer consumer:this.consumers){
+                consumer.shutdown();
+            }
         }catch(Exception e){
             throw new RuntimeException(e);
         }

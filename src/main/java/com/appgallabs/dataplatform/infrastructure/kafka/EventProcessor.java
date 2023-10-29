@@ -1,6 +1,8 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.receiver.framework.Registry;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -14,24 +16,43 @@ import javax.inject.Singleton;
 
 import org.apache.kafka.clients.admin.TopicListing;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 @Singleton
 public class EventProcessor {
     private static Logger logger = LoggerFactory.getLogger(EventProcessor.class);
 
-    private final String braineousKafkaTopic = "braineous_dataplatform_kafka_topic";
-
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    private TopicListing topicListing;
+    private Map<String, TopicListing> topicListing;
 
-    private SimpleProducer producer;
+    private Map<String, SimpleProducer> producer;
+
+    public EventProcessor() {
+        this.topicListing = new HashMap<>();
+        this.producer = new HashMap<>();
+    }
 
     @PostConstruct
     public void start(){
         try {
-            this.topicListing = KafkaTopicHelper.createFixedTopic(braineousKafkaTopic);
-            this.producer = SimpleProducer.getInstance();
+            //TODO: (CR1)
+            Registry registry = Registry.getInstance();
+            JsonUtil.printStdOut(JsonUtil.validateJson(registry.allRegisteredPipeIds().toString()));
+
+            //start all pipes which are kafka topics
+            Set<String> allPipeIds = Registry.getInstance().allRegisteredPipeIds();
+
+            for(String pipeTopic: allPipeIds) {
+                TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
+                SimpleProducer producer = SimpleProducer.getInstance();
+
+                this.topicListing.put(pipeTopic, topicListing);
+                this.producer.put(pipeTopic, producer);
+            }
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -40,7 +61,9 @@ public class EventProcessor {
     @PreDestroy
     public void stop(){
         try {
-            this.producer.shutdown();
+            for(SimpleProducer producer: this.producer.values()) {
+                producer.shutdown();
+            }
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -53,8 +76,12 @@ public class EventProcessor {
             /**
              * PRODUCE_MESSAGES_FROM_EVENT
              */
-            this.producer.publishToBroker(this.securityTokenContainer,
-                    braineousKafkaTopic, json.toString());
+            //TODO: (CR1)
+            SimpleProducer producer = this.producer.values().iterator().next();
+            String pipeTopic = this.producer.keySet().iterator().next();
+
+            producer.publishToBroker(this.securityTokenContainer,
+                    pipeTopic, json.toString());
             response.addProperty("statusCode", 200);
 
 
