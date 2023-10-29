@@ -6,8 +6,10 @@ import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -15,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import test.components.BaseTest;
 
 import javax.inject.Inject;
+
+import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,6 +54,18 @@ public class DataLakeGraphQlQueryEndpointTests extends BaseTest {
 
     @Test
     public void query() throws Exception {
+        //get OAuth Token
+        String credentials = IOUtils.resourceToString("oauth/credentials.json",
+                StandardCharsets.UTF_8,
+                Thread.currentThread().getContextClassLoader());
+        JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
+        String tenant = credentialsJson.get("client_id").getAsString();
+
+        String token = IOUtils.resourceToString("oauth/jwtToken.json",
+                StandardCharsets.UTF_8,
+                Thread.currentThread().getContextClassLoader());
+        JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
+        String generatedToken = securityTokenJson.get("access_token").getAsString();
 
         String entity = TempConstants.ENTITY;
 
@@ -64,10 +80,13 @@ public class DataLakeGraphQlQueryEndpointTests extends BaseTest {
         JsonObject input = new JsonObject();
         input.addProperty("graphqlQuery", graphqlQuery);
 
-        Response response = given().body(input.toString()).when().post("/data/lake/query")
+        Response response = given().body(input.toString()).when()
+                .header("tenant", tenant)
+                .header("token", "Bearer "+generatedToken)
+                .post("/data/lake/query")
                 .andReturn();
 
-        String jsonResponse = response.getBody().prettyPrint();
+        response.getBody().prettyPrint();
         int statusCode = response.statusCode();
         logger.info("**************");
         logger.info(response.getStatusLine());

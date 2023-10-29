@@ -4,9 +4,10 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
-public class DataEvent {
+public class DataEvent implements Serializable {
     private String json;
     private String fieldName;
     private Object fieldValue;

@@ -59,14 +59,13 @@ public class DataLakeSinkFunction implements SinkFunction<DataEvent> {
         fieldMap.put(value.getFieldName(),value.getFieldValue());
         String datalakeId = dataLakeDriver.storeIngestion(tenant, fieldMap);
 
-        /*System.out.println(value + ">" + value.isProcessed() + ">" + value.getFieldName() + ">" + value.getFieldValue());
+        System.out.println(value + ">" + value.isProcessed() + ">" + value.getFieldName() + ">" + value.getFieldValue());
         System.out.println(this.securityToken);
-        System.out.println(this.dataLakeDriver);
         System.out.println(timestamp);
         System.out.println(objectHash);
         System.out.println(tenant);
         System.out.println(entity);
         System.out.println(datalakeId);
-        System.out.println("**********************************");*/
+        System.out.println("**********************************");
     }
 }

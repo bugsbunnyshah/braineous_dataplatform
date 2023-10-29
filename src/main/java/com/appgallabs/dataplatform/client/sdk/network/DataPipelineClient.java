@@ -30,7 +30,7 @@ public class DataPipelineClient {
     //TODO: finalize_implementation (CR1)
     public JsonObject sendData(JsonElement jsonElement){
         try {
-            String restUrl = "http://localhost:8080/data/ingestion/map/";
+            String restUrl = "http://localhost:8080/ingestion/json/";
             String payload = jsonElement.toString();
 
             //get OAuth Token

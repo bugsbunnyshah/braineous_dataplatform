@@ -6,7 +6,9 @@ import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProcessor;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.receiver.framework.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,6 +28,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 
 @Path("ingestion")
 public class DataIngestion {
@@ -50,18 +53,31 @@ public class DataIngestion {
 
     @PostConstruct
     public void start(){
-        JsonObject response = this.eventConsumer.checkStatus();
-        logger.info(response.toString());
+        try {
+            JsonObject response = this.eventConsumer.checkStatus();
+            logger.info(response.toString());
 
-        Config config = ConfigProvider.getConfig();
-        this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
-        this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
+            Config config = ConfigProvider.getConfig();
+            this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
+            this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
+
+            //TODO: (CR1)
+            String jsonString = Util.loadResource("receiver/mongodb_config_1.json");
+            Registry registry = Registry.getInstance();
+            registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+            JsonUtil.printStdOut(JsonUtil.validateJson(registry.allRegisteredPipeIds().toString()));
+
+            this.eventProcessor.start();
+            this.eventConsumer.start();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Path("json")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response map(@RequestBody String input)
+    public Response json(@RequestBody String input)
     {
         try
         {
