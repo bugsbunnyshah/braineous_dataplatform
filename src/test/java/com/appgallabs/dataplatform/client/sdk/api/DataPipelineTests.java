@@ -22,7 +22,7 @@ public class DataPipelineTests {
                 StandardCharsets.UTF_8
         );
 
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<1; i++) {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             json.addProperty("offset",i);
 

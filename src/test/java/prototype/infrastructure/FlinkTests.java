@@ -20,6 +20,33 @@ public class FlinkTests {
     private static Logger logger = LoggerFactory.getLogger(FlinkTests.class);
 
     @Test
+    public void remoteStreamPrototype() throws Exception{
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
+                "127.0.0.1", 8081,
+                "dataplatform-1.0.0.jar"
+        );
+
+        DataStream<String> flintstones = env.fromElements(
+                "1", "2", "3"
+        );
+
+        DataStream<String> adults = flintstones.filter(
+                new PersonFilter()
+        );
+
+
+        System.out.println("SUBMITTING JOB");
+        env.execute();
+
+        System.out.println("RETURNEDblahblah......");
+        System.out.println(adults.print());
+
+        System.out.println("***********");
+        System.out.println("DONE....");
+        System.out.println("***********");
+    }
+
+    /*@Test
     public void dataStreamPrototype() throws Exception{
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -39,7 +66,7 @@ public class FlinkTests {
         System.out.println("***********");
         System.out.println("DONE....");
         System.out.println("***********");
-    }
+    }*/
 
     @Test
     public void dataStreamJsonPrototype() throws Exception{

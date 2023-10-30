@@ -47,3 +47,4 @@ remember.txt
 /mlruns/
 gitpush.sh
 compare/
+/dataplatform-1.0.0-runner.jar

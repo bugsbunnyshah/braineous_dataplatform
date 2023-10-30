@@ -1,7 +1,10 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.Serializable;
@@ -33,7 +36,7 @@ public class DataEvent implements Serializable {
         this.json = json;
     }
 
-    public String toString() {
+    /*public String toString() {
         JsonElement jsonElement = JsonParser.parseString(this.json);
         try {
             if (jsonElement.isJsonArray()) {
@@ -43,7 +46,7 @@ public class DataEvent implements Serializable {
         }catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     public String getFieldName() {
         return fieldName;
@@ -75,5 +78,16 @@ public class DataEvent implements Serializable {
 
     public void setEntity(String entity) {
         this.entity = entity;
+    }
+
+    public JsonObject toJson(){
+        Gson gson = JsonUtil.getGson();
+        JsonElement jsonElement = gson.toJsonTree(this);
+        return jsonElement.getAsJsonObject();
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson().toString();
     }
 }

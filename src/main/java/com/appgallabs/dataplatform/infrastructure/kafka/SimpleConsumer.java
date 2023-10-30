@@ -88,7 +88,7 @@ class SimpleConsumer extends AbstractSimpleKafka{
                     ConsumerRecords<String, String> records =
                             getKafkaConsumer().poll(Duration.ofMillis(TIME_OUT_MS));
                     if (records.count() == 0) {
-                        log.info(MessageHelper.getSimpleJSONObject("No records retrieved"));
+                        continue;
                     }
 
                     for (ConsumerRecord<String, String> record : records) {
@@ -142,7 +142,6 @@ class SimpleConsumer extends AbstractSimpleKafka{
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(TIME_OUT_MS));
             recNum = records.count();
             if (recNum == 0) {
-                log.info(MessageHelper.getSimpleJSONObject("No records retrieved"));
                 break;
             }
 
