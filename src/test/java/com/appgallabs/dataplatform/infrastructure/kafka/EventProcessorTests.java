@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventProcessorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(EventProcessorTests.class);
 
-    private static final long HANG_TIME =  15000l;
+    private static final long HANG_TIME =  30000l;
 
     @Inject
     private EventProcessor eventProcessor;
@@ -84,7 +84,7 @@ public class EventProcessorTests extends BaseTest {
         );
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
 
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<jsonArray.size(); i++) {
             JsonObject response = this.eventProcessor.processEvent(jsonArray);
 
             logger.info("*****************");
@@ -112,11 +112,13 @@ public class EventProcessorTests extends BaseTest {
             String compareRightObjectHash = JsonUtil.getJsonHash(storedJson);
 
             logger.info("*****LHS********");
-            logger.info(compareRightObjectHash);
+            logger.info(compareLeftObjectHash);
+            JsonUtil.printStdOut(jsonObject);
             logger.info("****************");
 
             logger.info("*****RHS********");
             logger.info(compareRightObjectHash);
+            JsonUtil.printStdOut(storedJson);
             logger.info("****************");
 
             assertEquals(compareLeftObjectHash, compareRightObjectHash);

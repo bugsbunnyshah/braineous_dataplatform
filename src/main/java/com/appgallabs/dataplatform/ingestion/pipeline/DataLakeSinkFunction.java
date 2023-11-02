@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
@@ -29,11 +30,8 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
     private SecurityToken securityToken;
 
-    private DataLakeDriver dataLakeDriver;
-
-    public DataLakeSinkFunction(SecurityToken securityToken, DataLakeDriver dataLakeDriver) {
+    public DataLakeSinkFunction(SecurityToken securityToken) {
         this.securityToken = securityToken;
-        this.dataLakeDriver = dataLakeDriver;
     }
 
     @Override
@@ -73,7 +71,8 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
             fieldMap.put("entity",entity);
             fieldMap.put(fieldName,fieldValue);
 
-            String datalakeId = this.dataLakeDriver.storeIngestion(tenant, fieldMap);
+            //TODO
+            //String datalakeId = this.dataLakeDriver.storeIngestion(tenant, fieldMap);
 
             //FileUtils.write(new File("datalakeId"+count+".debug"), datalakeId,
             //        StandardCharsets.UTF_8);
