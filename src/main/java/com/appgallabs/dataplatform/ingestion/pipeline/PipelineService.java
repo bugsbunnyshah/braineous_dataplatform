@@ -110,7 +110,7 @@ public class PipelineService {
 
 
             DataStream<String> dataEvents = env.fromCollection(input);
-            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken, this.dataLakeDriver);
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken);
             dataEvents.addSink(sinkFunction);
             env.execute();
         }catch(Exception e){
