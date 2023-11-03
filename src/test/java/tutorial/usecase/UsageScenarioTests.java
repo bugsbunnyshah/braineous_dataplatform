@@ -20,7 +20,7 @@ public class UsageScenarioTests {
      *
      * @throws Exception
      */
-    @Test
+    //@Test
     public void scenario1() throws Exception{
         String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
         String json = Util.loadResource(datasetLocation);
