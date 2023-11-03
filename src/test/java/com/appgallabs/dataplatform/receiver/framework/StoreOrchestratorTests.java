@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.MongoDBUtil;
 import com.google.gson.JsonArray;

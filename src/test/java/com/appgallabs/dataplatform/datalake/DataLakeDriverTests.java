@@ -27,14 +27,12 @@ public class DataLakeDriverTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(DataLakeDriverTests.class);
 
     @Inject
-    private MongoDBJsonStore mongoDBJsonStore;
-
-    @Inject
     private SecurityTokenContainer securityTokenContainer;
 
     //@Test
     public void storeFlatJson() throws Exception{
-        DataLakeDriver dataLakeDriver = this.mongoDBJsonStore;
+        //TODO (NOW)
+        DataLakeDriver dataLakeDriver = null;
 
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),

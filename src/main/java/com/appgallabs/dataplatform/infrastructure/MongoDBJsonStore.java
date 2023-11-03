@@ -25,7 +25,7 @@ import java.util.*;
 
 @Singleton
 @Named("braineous://datalake/mongodb")
-public class MongoDBJsonStore implements DataLakeDriver,Serializable
+public class MongoDBJsonStore
 {
     private static Logger logger = LoggerFactory.getLogger(MongoDBJsonStore.class);
 

@@ -1,29 +1,21 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.TempConstants;
-import com.appgallabs.dataplatform.datalake.DataLakeDriver;
-import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.datalake.MongoDBDataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonObject;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 
-import javax.enterprise.inject.spi.CDI;
-import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 
 public class DataLakeSinkFunction implements SinkFunction<String> {
@@ -36,7 +28,10 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
     @Override
     public void invoke(String value, Context context) throws Exception {
-        JsonObject object = JsonUtil.validateJson(value).getAsJsonObject();
+        MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
+        driver.storeIngestion(null, null);
+
+        /*JsonObject object = JsonUtil.validateJson(value).getAsJsonObject();
 
         //for timestamp
         OffsetDateTime ingestionTime = OffsetDateTime.now(ZoneOffset.UTC);
@@ -71,12 +66,21 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
             fieldMap.put("entity",entity);
             fieldMap.put(fieldName,fieldValue);
 
+            Registry registry = Registry.getInstance();
+            System.out.println("**********************");
+            System.out.println(registry);
+            System.out.println("**********************");
+
             //TODO
             //String datalakeId = this.dataLakeDriver.storeIngestion(tenant, fieldMap);
 
             //FileUtils.write(new File("datalakeId"+count+".debug"), datalakeId,
             //        StandardCharsets.UTF_8);
             //count++;
-        }
+        }*/
+
+        /*if(true){
+            throw new NullPointerException("why not (back_bhenchod2.0)?");
+        }*/
     }
 }

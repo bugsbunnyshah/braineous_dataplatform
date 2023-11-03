@@ -1,11 +1,10 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StoreOrchestrator {
 

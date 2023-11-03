@@ -1,5 +1,7 @@
-package com.appgallabs.dataplatform.receiver.framework;
+package com.appgallabs.dataplatform.pipeline;
 
+import com.appgallabs.dataplatform.datalake.DataLakeDriver;
+import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ public class Registry {
 
     private static Registry singleton = new Registry();
     private Map<String, JsonArray> registry; //pipeId -> StoreDriver
+
+    private Map<String, DataLakeDriver> datalakeDrivers;
 
     private Registry() {
         this.registry = new HashMap<>();

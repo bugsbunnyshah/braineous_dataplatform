@@ -1,7 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.receiver.framework.Registry;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

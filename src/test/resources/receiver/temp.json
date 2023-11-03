@@ -1,0 +1,15 @@
+{
+  "pipeId": "123",
+  "configuration": [
+    {
+      "storeDriver": "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
+      "name": "store_1",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "store_1",
+        "collection": "sampleDataSet"
+      },
+      "jsonpathExpression": "jsonpath:1"
+    }
+  ]
+}

@@ -1,13 +1,11 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
-import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.receiver.framework.Registry;
+import com.appgallabs.dataplatform.pipeline.Registry;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,16 +14,12 @@ import com.google.gson.JsonParser;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.literal.NamedLiteral;
 import javax.inject.Inject;
 import java.util.*;
 
@@ -41,12 +35,6 @@ public class PipelineService {
 
     private Registry registry;
 
-    @Inject
-    private Instance<DataLakeDriver> dataLakeDriverInstance;
-
-    private String dataLakeDriverName;
-    private DataLakeDriver dataLakeDriver;
-
     @ConfigProperty(name = "flinkHost")
     private String flinkHost;
 
@@ -57,10 +45,6 @@ public class PipelineService {
     public void start(){
         this.mapper = new SchemalessMapper();
         this.registry = Registry.getInstance();
-
-        Config config = ConfigProvider.getConfig();
-        this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
-        this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
     }
 
     public void ingest(SecurityToken securityToken, String entity, String jsonString){

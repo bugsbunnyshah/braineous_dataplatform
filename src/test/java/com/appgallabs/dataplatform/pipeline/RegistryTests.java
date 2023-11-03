@@ -1,5 +1,6 @@
-package com.appgallabs.dataplatform.receiver.framework;
+package com.appgallabs.dataplatform.pipeline;
 
+import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -21,6 +22,22 @@ public class RegistryTests extends BaseTest {
     @Test
     public void registerPipe() throws Exception{
         String jsonString = Util.loadResource("receiver/mongodb_config_1.json");
+        String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
+
+        Registry registry = Registry.getInstance();
+        String pipeId = registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+
+        List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
+        JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
+
+        //asserts
+        assertEquals(inputPipeId, pipeId);
+        assertFalse(storeDrivers.isEmpty());
+    }
+
+    @Test
+    public void registerCorePipeline() throws Exception{
+        String jsonString = Util.loadResource("pipeline/mongodb_pipeline.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
         Registry registry = Registry.getInstance();

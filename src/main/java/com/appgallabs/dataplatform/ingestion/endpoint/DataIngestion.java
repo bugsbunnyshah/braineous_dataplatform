@@ -6,7 +6,7 @@ import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProcessor;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.receiver.framework.Registry;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;

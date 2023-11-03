@@ -80,8 +80,9 @@ class SimpleProducer extends AbstractSimpleKafka {
 
         //create the ProducerRecord object which will
         //represent the message to the Kafka broker.
+        String messageString = obj.toJSONString();
         ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>(topicName, key, obj.toJSONString());
+                new ProducerRecord<>(topicName, key, messageString);
 
         //Send the message to the Kafka broker using the internal
         //KafkaProducer
