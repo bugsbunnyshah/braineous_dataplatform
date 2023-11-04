@@ -33,8 +33,6 @@ public class PipelineService {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    private Registry registry;
-
     @ConfigProperty(name = "flinkHost")
     private String flinkHost;
 
@@ -44,10 +42,9 @@ public class PipelineService {
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
-        this.registry = Registry.getInstance();
     }
 
-    public void ingest(SecurityToken securityToken, String entity, String jsonString){
+    public void ingest(SecurityToken securityToken, String driverConfiguration, String entity, String jsonString){
         try {
 
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
@@ -94,7 +91,7 @@ public class PipelineService {
 
 
             DataStream<String> dataEvents = env.fromCollection(input);
-            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken);
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,driverConfiguration);
             dataEvents.addSink(sinkFunction);
             env.execute();
         }catch(Exception e){

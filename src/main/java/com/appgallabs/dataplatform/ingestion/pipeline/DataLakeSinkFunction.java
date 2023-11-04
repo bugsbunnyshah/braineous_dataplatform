@@ -3,7 +3,6 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.datalake.MongoDBDataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -21,17 +20,19 @@ import java.util.Set;
 public class DataLakeSinkFunction implements SinkFunction<String> {
 
     private SecurityToken securityToken;
+    private String driverConfiguration;
 
-    public DataLakeSinkFunction(SecurityToken securityToken) {
+    public DataLakeSinkFunction(SecurityToken securityToken,String driverConfiguration) {
         this.securityToken = securityToken;
+        this.driverConfiguration = driverConfiguration;
     }
 
     @Override
     public void invoke(String value, Context context) throws Exception {
         MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
-        driver.storeIngestion(null, null);
+        driver.configure(this.driverConfiguration);
 
-        /*JsonObject object = JsonUtil.validateJson(value).getAsJsonObject();
+        JsonObject object = JsonUtil.validateJson(value).getAsJsonObject();
 
         //for timestamp
         OffsetDateTime ingestionTime = OffsetDateTime.now(ZoneOffset.UTC);
@@ -50,9 +51,6 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         //store into datalake
         Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(value);
 
-        //FileUtils.write(new File("flattenJson.debug"), flattenJson.toString(),
-        //        StandardCharsets.UTF_8);
-
         int count = 0;
         Set<Map.Entry<String, Object>> entries = flattenJson.entrySet();
         for(Map.Entry<String, Object> entry: entries){
@@ -66,21 +64,9 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
             fieldMap.put("entity",entity);
             fieldMap.put(fieldName,fieldValue);
 
-            Registry registry = Registry.getInstance();
-            System.out.println("**********************");
-            System.out.println(registry);
-            System.out.println("**********************");
+            String datalakeId = driver.storeIngestion(tenant, fieldMap);
 
-            //TODO
-            //String datalakeId = this.dataLakeDriver.storeIngestion(tenant, fieldMap);
-
-            //FileUtils.write(new File("datalakeId"+count+".debug"), datalakeId,
-            //        StandardCharsets.UTF_8);
-            //count++;
-        }*/
-
-        /*if(true){
-            throw new NullPointerException("why not (back_bhenchod2.0)?");
-        }*/
+            //TODO: (CR2) publish to the pipemanager
+        }
     }
 }

@@ -3,6 +3,7 @@ package prototype.graphql;
 import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,6 +13,7 @@ import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import test.components.BaseTest;
+import test.components.Util;
 
 import javax.inject.Inject;
 
@@ -44,9 +47,22 @@ public class GraphQLTests extends BaseTest {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
+    @BeforeEach
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
+
+        Registry registry = Registry.getInstance();
+        registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+    }
+
     @Test
     public void testAll() throws Exception{
         try {
+            String pipeId = "123";
+
             String jsonString = IOUtils.toString(Thread.currentThread().
                             getContextClassLoader().getResourceAsStream("graphql/input.json"),
                     StandardCharsets.UTF_8
@@ -55,7 +71,9 @@ public class GraphQLTests extends BaseTest {
             String originalObjectHash = JsonUtil.getJsonHash(jsonObject);
 
             String entity = TempConstants.ENTITY;
-            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity, jsonString);
+            JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),datalakeDriverConfiguration.toString(),
+                    entity,jsonString);
 
             JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
                     originalObjectHash);

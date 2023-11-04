@@ -24,7 +24,6 @@ import java.time.OffsetDateTime;
 import java.util.*;
 
 @Singleton
-@Named("braineous://datalake/mongodb")
 public class MongoDBJsonStore
 {
     private static Logger logger = LoggerFactory.getLogger(MongoDBJsonStore.class);
@@ -103,10 +102,6 @@ public class MongoDBJsonStore
 
         this.mongoClient = MongoClients.create(connectionString);
         return mongoClient;
-    }
-
-    public String name(){
-        return "braineous://datalake/mongodb";
     }
 
     @Override

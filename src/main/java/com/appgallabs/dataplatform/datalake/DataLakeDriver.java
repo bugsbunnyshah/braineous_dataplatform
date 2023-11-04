@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface DataLakeDriver extends Serializable {
 
-    public void configure(JsonObject configJson);
+    public void configure(String configJson);
 
     public String name();
 

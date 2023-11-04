@@ -2,6 +2,8 @@ package com.appgallabs.dataplatform.pipeline;
 
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -14,12 +16,21 @@ public class Registry {
     private static Logger logger = LoggerFactory.getLogger(Registry.class);
 
     private static Registry singleton = new Registry();
+
+    private JsonObject datalakeConfiguration;
     private Map<String, JsonArray> registry; //pipeId -> StoreDriver
 
     private Map<String, DataLakeDriver> datalakeDrivers;
 
     private Registry() {
-        this.registry = new HashMap<>();
+        try {
+            this.registry = new HashMap<>();
+
+            String jsonString = Util.loadResource("datalake/datalake_config.json");
+            this.datalakeConfiguration = JsonUtil.validateJson(jsonString).getAsJsonObject();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     public static Registry getInstance(){
@@ -84,6 +95,10 @@ public class Registry {
         return pipeId;
     }
 
+    public Set<String> allRegisteredPipeIds(){
+        return this.registry.keySet();
+    }
+
     public JsonArray getDriverConfigurations(){
         JsonArray driverConfigurations = new JsonArray();
 
@@ -96,7 +111,7 @@ public class Registry {
         return driverConfigurations;
     }
 
-    public Set<String> allRegisteredPipeIds(){
-        return this.registry.keySet();
+    public JsonObject getDatalakeConfiguration() {
+        return datalakeConfiguration;
     }
 }

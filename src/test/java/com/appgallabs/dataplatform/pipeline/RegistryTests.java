@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.pipeline;
 import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
+import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -12,8 +13,7 @@ import test.components.Util;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class RegistryTests extends BaseTest {
@@ -21,7 +21,7 @@ public class RegistryTests extends BaseTest {
 
     @Test
     public void registerPipe() throws Exception{
-        String jsonString = Util.loadResource("receiver/mongodb_config_1.json");
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
         Registry registry = Registry.getInstance();
@@ -37,7 +37,7 @@ public class RegistryTests extends BaseTest {
 
     @Test
     public void registerCorePipeline() throws Exception{
-        String jsonString = Util.loadResource("pipeline/mongodb_pipeline.json");
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
         Registry registry = Registry.getInstance();
@@ -49,5 +49,19 @@ public class RegistryTests extends BaseTest {
         //asserts
         assertEquals(inputPipeId, pipeId);
         assertFalse(storeDrivers.isEmpty());
+    }
+
+    @Test
+    public void findDriverConfiguration() throws Exception{
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
+        String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
+
+        Registry registry = Registry.getInstance();
+        String pipeId = registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+
+        JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+
+        //asserts
+        assertNotNull(datalakeDriverConfiguration);
     }
 }

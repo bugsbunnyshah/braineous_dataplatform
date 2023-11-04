@@ -62,10 +62,10 @@ public class DataIngestion {
             this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
 
             //TODO: (CR1)
-            String jsonString = Util.loadResource("receiver/mongodb_config_1.json");
+            String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
             Registry registry = Registry.getInstance();
-            registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
-            JsonUtil.printStdOut(JsonUtil.validateJson(registry.allRegisteredPipeIds().toString()));
+            JsonObject pipeRegistration = JsonUtil.validateJson(jsonString).getAsJsonObject();
+            registry.registerPipe(pipeRegistration);
 
             this.eventProcessor.start();
             this.eventConsumer.start();

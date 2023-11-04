@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
@@ -11,12 +12,14 @@ import com.google.gson.JsonParser;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import test.components.BaseTest;
+import test.components.Util;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
@@ -38,8 +41,21 @@ public class PipelineServiceTests extends BaseTest {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @BeforeEach
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
+
+        Registry registry = Registry.getInstance();
+        registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+    }
+
     @Test
     public void ingestArray() throws Exception{
+        String pipeId = "123";
+
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
                 StandardCharsets.UTF_8
@@ -51,7 +67,9 @@ public class PipelineServiceTests extends BaseTest {
         String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
         String entity = TempConstants.ENTITY;
-        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), entity,jsonString);
+        JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),datalakeDriverConfiguration.toString(),
+                entity,jsonString);
 
         JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
                 originalObjectHash);
@@ -70,6 +88,8 @@ public class PipelineServiceTests extends BaseTest {
 
     @Test
     public void ingestObject() throws Exception{
+        String pipeId = "123";
+
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
@@ -80,7 +100,9 @@ public class PipelineServiceTests extends BaseTest {
         String compareLeftObjectHash = JsonUtil.getJsonHash(jsonObject);
 
         String entity = TempConstants.ENTITY;
-        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),entity,jsonString);
+        JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),datalakeDriverConfiguration.toString(),
+                entity,jsonString);
 
         JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
                 originalObjectHash);

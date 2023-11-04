@@ -39,10 +39,6 @@ public class EventProcessor {
     @PostConstruct
     public void start(){
         try {
-            //TODO: (CR1)
-            Registry registry = Registry.getInstance();
-            JsonUtil.printStdOut(JsonUtil.validateJson(registry.allRegisteredPipeIds().toString()));
-
             //start all pipes which are kafka topics
             Set<String> allPipeIds = Registry.getInstance().allRegisteredPipeIds();
 

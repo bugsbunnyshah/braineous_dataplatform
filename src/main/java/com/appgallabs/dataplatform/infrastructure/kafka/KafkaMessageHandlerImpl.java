@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.google.gson.JsonElement;
@@ -51,6 +52,7 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         String securityTokenString = json.get("securityToken").getAsString();
         SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
 
-        this.pipelineService.ingest(securityToken,entity,jsonPayloadString);
+        JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);
     }
 }
