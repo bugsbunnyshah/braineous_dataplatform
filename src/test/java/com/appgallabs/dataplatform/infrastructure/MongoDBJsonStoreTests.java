@@ -127,8 +127,11 @@ public class MongoDBJsonStoreTests extends BaseTest {
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
                 StandardCharsets.UTF_8
         );
+        JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
+        String originalObjectHash = JsonUtil.getJsonHash(jsonObject);
+        System.out.println(originalObjectHash);
 
-        Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(jsonString);
+        /*Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(jsonString);
         JsonUtil.printStdOut(JsonParser.parseString(flattenJson.toString()));
 
         Tenant tenant = this.securityTokenContainer.getTenant();
@@ -139,6 +142,6 @@ public class MongoDBJsonStoreTests extends BaseTest {
 
         //Read the Json
         JsonArray result = this.mongoDBJsonStore.readIngestion(tenant,dataLakeId);
-        JsonUtil.printStdOut(result);
+        JsonUtil.printStdOut(result);*/
     }
 }

@@ -239,7 +239,7 @@ public class DataIngestion {
         }
     }
 
-    @Path("readDataLakeObject")
+    /*@Path("readDataLakeObject")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response readDataLakeObject(@QueryParam("dataLakeId") String dataLakeId)
@@ -267,5 +267,5 @@ public class DataIngestion {
             error.addProperty("exception", e.getMessage());
             return Response.status(500).entity(error.toString()).build();
         }
-    }
+    }*/
 }

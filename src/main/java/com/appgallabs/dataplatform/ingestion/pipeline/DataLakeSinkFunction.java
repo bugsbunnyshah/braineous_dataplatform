@@ -32,41 +32,34 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
         driver.configure(this.driverConfiguration);
 
-        JsonObject object = JsonUtil.validateJson(value).getAsJsonObject();
+        JsonObject datalakeObject = new JsonObject();
+
+        JsonObject jsonObject = JsonUtil.validateJson(value).getAsJsonObject();
+
+        //objectHash
+        String objectHash = JsonUtil.getJsonHash(jsonObject);
+
+        JsonObject metadata = new JsonObject();
+        metadata.addProperty("objectHash", objectHash);
 
         //for timestamp
         OffsetDateTime ingestionTime = OffsetDateTime.now(ZoneOffset.UTC);
         Long timestamp = ingestionTime.toEpochSecond();
-
-        //objectHash
-        String objectHash = JsonUtil.getJsonHash(object);
+        metadata.addProperty("timestamp", timestamp);
 
         //tenant
         Tenant tenant = new Tenant(this.securityToken.getPrincipal());
         String tenantString = tenant.toString();
+        metadata.addProperty("tenant", tenantString);
 
         //TODO: (CR1)
         String entity = TempConstants.ENTITY;
+        metadata.addProperty("entity", entity);
+
+        datalakeObject.add("metadata", metadata);
+        datalakeObject.add("source_data", jsonObject);
 
         //store into datalake
-        Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(value);
-
-        int count = 0;
-        Set<Map.Entry<String, Object>> entries = flattenJson.entrySet();
-        for(Map.Entry<String, Object> entry: entries){
-            String fieldName = entry.getKey();
-            String fieldValue = entry.getValue().toString();
-
-            Map<String,Object> fieldMap = new HashMap<>();
-            fieldMap.put("tenant",tenantString);
-            fieldMap.put("objectHash",objectHash);
-            fieldMap.put("timestamp",timestamp);
-            fieldMap.put("entity",entity);
-            fieldMap.put(fieldName,fieldValue);
-
-            String datalakeId = driver.storeIngestion(tenant, fieldMap);
-
-            //TODO: (CR2) publish to the pipemanager
-        }
+        driver.storeIngestion(tenant, datalakeObject.toString());
     }
 }

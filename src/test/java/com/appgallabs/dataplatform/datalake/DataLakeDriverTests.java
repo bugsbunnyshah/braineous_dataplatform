@@ -32,7 +32,7 @@ public class DataLakeDriverTests extends BaseTest {
     //@Test
     public void storeFlatJson() throws Exception{
         //TODO (NOW)
-        DataLakeDriver dataLakeDriver = null;
+        /*DataLakeDriver dataLakeDriver = null;
 
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
@@ -45,7 +45,7 @@ public class DataLakeDriverTests extends BaseTest {
         Tenant tenant = this.securityTokenContainer.getTenant();
 
         //Store the FlatJson
-        String dataLakeId = dataLakeDriver.storeIngestion(tenant,flattenJson);
+        //String dataLakeId = dataLakeDriver.storeIngestion(tenant,flattenJson);
 
         //Read the Json
         JsonArray result = dataLakeDriver.readIngestion(tenant,dataLakeId);
@@ -59,6 +59,6 @@ public class DataLakeDriverTests extends BaseTest {
         resultJson.remove("expensive");
         String resultHash = JsonUtil.getJsonHash(resultJson);
 
-        assertEquals(inputHash, resultHash);
+        assertEquals(inputHash, resultHash);*/
     }
 }

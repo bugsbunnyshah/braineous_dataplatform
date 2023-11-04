@@ -13,6 +13,5 @@ public interface DataLakeDriver extends Serializable {
 
     public String name();
 
-    public String storeIngestion(Tenant tenant, Map<String,Object> flatJson);
-    public JsonArray readIngestion(Tenant tenant, String dataLakeId);
+    public void storeIngestion(Tenant tenant, String jsonObject);
 }

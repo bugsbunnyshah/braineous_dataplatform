@@ -58,35 +58,12 @@ public class PipelineService {
             List<String> input = new ArrayList<>();
             if(jsonElement.isJsonArray()) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
-
                 for (int i = 0; i < jsonArray.size(); i++) {
-                    //decompose the object into its fields
-                    String json = jsonArray.get(i).getAsJsonObject().toString();
-
-                    Map<String,Object> flatObject = this.mapper.mapAll(json);
-
-                    JsonObject inputJson = new JsonObject();
-                    Set<Map.Entry<String, Object>> entries = flatObject.entrySet();
-                    for(Map.Entry<String, Object> entry: entries){
-                        String name = entry.getKey();
-                        Object value = entry.getValue();
-                        inputJson.addProperty(name, value.toString());
-                    }
+                    JsonObject inputJson = jsonArray.get(i).getAsJsonObject();
                     input.add(inputJson.toString());
                 }
             }else if(jsonElement.isJsonObject()){
-                String json = jsonElement.toString();
-
-                Map<String,Object> flatObject = this.mapper.mapAll(json);
-
-                JsonObject inputJson = new JsonObject();
-                Set<Map.Entry<String, Object>> entries = flatObject.entrySet();
-                for(Map.Entry<String, Object> entry: entries){
-                    String name = entry.getKey();
-                    Object value = entry.getValue();
-                    inputJson.addProperty(name, value.toString());
-                }
-                input.add(inputJson.toString());
+                input.add(jsonElement.toString());
             }
 
 
