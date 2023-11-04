@@ -37,7 +37,7 @@ public class StoreOrchestratorTests extends BaseTest {
     @Test
     public void receiveData() throws Exception{
         List<String> objectHashes = new ArrayList<>();
-        String jsonString = Util.loadResource("pipeline/dataset.json");
+        String jsonString = Util.loadResource("receiver/dataset.json");
         JsonArray dataSetArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
         for(int i=0; i<dataSetArray.size(); i++){
             JsonObject dataObjectJson = dataSetArray.get(i).getAsJsonObject();
