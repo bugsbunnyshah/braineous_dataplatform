@@ -2,10 +2,10 @@ package com.appgallabs.dataplatform.util;
 
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.*;
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -78,8 +78,7 @@ public class JsonUtil {
         MessageDigest md5 = MessageDigest.getInstance("md5");
         md5.update(original.getBytes(StandardCharsets.UTF_8));
         byte[] digest = md5.digest();
-        String myHash = DatatypeConverter
-                .printHexBinary(digest).toUpperCase();
+        String myHash = Hex.encodeHexString(digest).toUpperCase();
         return myHash;
     }
 
