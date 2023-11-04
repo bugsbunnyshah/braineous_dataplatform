@@ -342,24 +342,23 @@
     </dependency>
 
     <!-- java 11 issues -->
+    <!--
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
       <version>2.4.0-b180830.0359</version>
     </dependency>
-    <!-- JAXB API only -->
     <dependency>
       <groupId>jakarta.xml.bind</groupId>
       <artifactId>jakarta.xml.bind-api</artifactId>
       <version>4.0.1</version>
     </dependency>
-
-    <!-- JAXB RI, Jakarta XML Binding -->
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
       <version>4.0.4</version>
     </dependency>
+    -->
   </dependencies>
 
   <build>

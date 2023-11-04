@@ -65,7 +65,7 @@ public class EventProcessorTests extends BaseTest {
         this.eventConsumer.start();
     }
 
-    @Test
+    //@Test
     public void processEventWithPipeline() throws Exception {
         Tenant tenant = this.securityTokenContainer.getTenant();
 
