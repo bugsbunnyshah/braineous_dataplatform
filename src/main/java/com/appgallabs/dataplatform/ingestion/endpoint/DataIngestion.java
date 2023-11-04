@@ -43,12 +43,6 @@ public class DataIngestion {
     private EventConsumer eventConsumer;
 
     @Inject
-    private Instance<DataLakeDriver> dataLakeDriverInstance;
-
-    private String dataLakeDriverName;
-    private DataLakeDriver dataLakeDriver;
-
-    @Inject
     private SecurityTokenContainer securityTokenContainer;
 
     @PostConstruct
@@ -56,10 +50,6 @@ public class DataIngestion {
         try {
             JsonObject response = this.eventConsumer.checkStatus();
             logger.info(response.toString());
-
-            Config config = ConfigProvider.getConfig();
-            this.dataLakeDriverName = config.getValue("datalake_driver_name", String.class);
-            this.dataLakeDriver = dataLakeDriverInstance.select(NamedLiteral.of(dataLakeDriverName)).get();
 
             //TODO: (CR1)
             String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");

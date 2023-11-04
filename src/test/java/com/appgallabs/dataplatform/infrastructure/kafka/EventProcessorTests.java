@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class EventProcessorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(EventProcessorTests.class);
 
-    private static final long HANG_TIME =  30000l;
+    private static final long HANG_TIME =  15000l;
 
     @Inject
     private EventProcessor eventProcessor;
