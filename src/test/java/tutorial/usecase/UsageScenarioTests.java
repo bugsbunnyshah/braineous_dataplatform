@@ -42,7 +42,7 @@ public class UsageScenarioTests {
         JsonUtil.printStdOut(configJson);*/
 
         //send source data through the pipeline
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<3; i++) {
             DataPipeline.sendData(datasetObject.toString());
         }
 

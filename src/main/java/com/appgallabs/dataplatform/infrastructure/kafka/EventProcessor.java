@@ -76,8 +76,6 @@ public class EventProcessor {
         try{
             JsonObject response = new JsonObject();
 
-            JsonUtil.printStdOut(json);
-
 
             SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
                     pipeId, json.toString());
