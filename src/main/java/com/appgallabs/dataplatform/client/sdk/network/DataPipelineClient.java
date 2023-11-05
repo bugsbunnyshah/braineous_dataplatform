@@ -61,6 +61,8 @@ public class DataPipelineClient {
     //TODO: finalize_implementation (CR1)
     private JsonObject handleRestCall(String restUrl,String tenant,String generatedToken, String payload){
         try {
+            String pipeId = "123";
+
             JsonObject response = new JsonObject();
 
             String entity = TempConstants.ENTITY;
@@ -68,6 +70,7 @@ public class DataPipelineClient {
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("sourceData",payload);
             requestBody.addProperty("entity", entity);
+            requestBody.addProperty("pipeId", pipeId);
 
 
             HttpClient httpClient = HttpClient.newBuilder().build();

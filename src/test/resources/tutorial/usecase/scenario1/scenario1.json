@@ -1,17 +1,8 @@
-[
-  {
-    "name": "John Doe",
-    "age": 50,
-    "addr": {
-      "email": "test@email.com",
-      "phone": "123456"
-    }
-  },
-  {
-    "numbers": [
-      "0",
-      "1",
-      "2"
-    ]
+{
+  "name": "John Doe",
+  "age": 50,
+  "addr": {
+    "email": "test@email.com",
+    "phone": "123456"
   }
-]
+}

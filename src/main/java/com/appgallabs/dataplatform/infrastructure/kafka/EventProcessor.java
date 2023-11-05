@@ -29,11 +29,8 @@ public class EventProcessor {
 
     private Map<String, TopicListing> topicListing;
 
-    private Map<String, SimpleProducer> producer;
-
     public EventProcessor() {
         this.topicListing = new HashMap<>();
-        this.producer = new HashMap<>();
     }
 
     @PostConstruct
@@ -44,10 +41,7 @@ public class EventProcessor {
 
             for(String pipeTopic: allPipeIds) {
                 TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
-                SimpleProducer producer = SimpleProducer.getInstance();
-
                 this.topicListing.put(pipeTopic, topicListing);
-                this.producer.put(pipeTopic, producer);
             }
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -57,9 +51,7 @@ public class EventProcessor {
     @PreDestroy
     public void stop(){
         try {
-            for(SimpleProducer producer: this.producer.values()) {
-                producer.shutdown();
-            }
+            SimpleProducer.getInstance().shutdown();
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -69,15 +61,31 @@ public class EventProcessor {
         try{
             JsonObject response = new JsonObject();
 
-            /**
-             * PRODUCE_MESSAGES_FROM_EVENT
-             */
-            //TODO: (CR1)
-            SimpleProducer producer = this.producer.values().iterator().next();
-            String pipeTopic = this.producer.keySet().iterator().next();
+            System.out.println("****EVENT_PROCESSOR_DEBUG**********");
+            JsonUtil.printStdOut(json);
 
-            producer.publishToBroker(this.securityTokenContainer,
-                    pipeTopic, json.toString());
+            SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
+                    "blah", json.toString());
+            response.addProperty("statusCode", 200);
+
+
+            return response;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public JsonObject processEvent(String pipeId,JsonElement json) {
+        try{
+            JsonObject response = new JsonObject();
+
+            System.out.println("****EVENT_PROCESSOR_DEBUG**********");
+            System.out.println("TOPIC: "+pipeId);
+            JsonUtil.printStdOut(json);
+
+
+            SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
+                    pipeId, json.toString());
             response.addProperty("statusCode", 200);
 
 

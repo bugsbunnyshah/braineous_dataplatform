@@ -75,6 +75,7 @@ public class DataIngestion {
 
             String sourceData = jsonObject.get("sourceData").getAsString();
             String entity = jsonObject.get("entity").getAsString();
+            String pipeId = jsonObject.get("pipeId").getAsString();
 
             JsonArray array;
             JsonElement sourceIngestion = JsonParser.parseString(sourceData);
@@ -85,7 +86,7 @@ public class DataIngestion {
                 array = sourceIngestion.getAsJsonArray();
             }
 
-            JsonObject responseJson = this.eventProcessor.processEvent(array);
+            JsonObject responseJson = this.eventProcessor.processEvent(pipeId, array);
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
             //Get Source Object Hashes

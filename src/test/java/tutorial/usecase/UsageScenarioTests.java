@@ -20,7 +20,7 @@ public class UsageScenarioTests {
      *
      * @throws Exception
      */
-    //@Test
+    @Test
     public void scenario1() throws Exception{
         String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
         String json = Util.loadResource(datasetLocation);
@@ -36,10 +36,10 @@ public class UsageScenarioTests {
                 datasetArray);*/
 
         //register a pipeline
-        String configLocation = "tutorial/usecase/scenario1/mongodb_config_1.json";
+        /*String configLocation = "tutorial/usecase/scenario1/mongodb_config_1.json";
         json = Util.loadResource(configLocation);
         JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
-        JsonUtil.printStdOut(configJson);
+        JsonUtil.printStdOut(configJson);*/
 
         //send source data through the pipeline
         DataPipeline.sendData(datasetObject.toString());

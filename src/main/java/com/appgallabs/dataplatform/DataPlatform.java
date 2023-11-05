@@ -7,8 +7,8 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 public class DataPlatform {
     public static void main(String[] args) throws Exception
     {
-        //TODO (CR1)
-        System.out.println("Braineous DataPlatform started...");
         Quarkus.run(args);
+
+        //Listener.getInstance().start();
     }
 }

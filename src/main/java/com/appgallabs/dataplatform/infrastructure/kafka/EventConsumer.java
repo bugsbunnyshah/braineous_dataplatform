@@ -17,13 +17,11 @@ import java.util.Set;
 public class EventConsumer {
     private static Logger logger = LoggerFactory.getLogger(EventConsumer.class);
 
-    private Set<SimpleConsumer> consumers;
-
     @Inject
     private PipelineService pipelineService;
 
     public EventConsumer() {
-        this.consumers = new HashSet<>();
+
     }
 
     @PostConstruct
@@ -35,7 +33,6 @@ public class EventConsumer {
             for(String pipeTopic:allPipeIds) {
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
                 consumer.runAlways(pipeTopic, new KafkaMessageHandlerImpl(this.pipelineService));
-                this.consumers.add(consumer);
             }
         }catch(Exception e){
             throw new RuntimeException(e);
@@ -45,9 +42,7 @@ public class EventConsumer {
     @PreDestroy
     public void stop(){
         try {
-            for(SimpleConsumer consumer:this.consumers){
-                consumer.shutdown();
-            }
+            SimpleConsumer.getInstance().shutdown();
         }catch(Exception e){
             throw new RuntimeException(e);
         }
