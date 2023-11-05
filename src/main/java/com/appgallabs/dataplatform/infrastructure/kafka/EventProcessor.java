@@ -76,8 +76,6 @@ public class EventProcessor {
         try{
             JsonObject response = new JsonObject();
 
-            System.out.println("****EVENT_PROCESSOR_DEBUG**********");
-            System.out.println("TOPIC: "+pipeId);
             JsonUtil.printStdOut(json);
 
 
