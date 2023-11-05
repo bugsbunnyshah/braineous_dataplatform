@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.datalake;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;

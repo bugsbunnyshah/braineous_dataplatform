@@ -6,6 +6,8 @@ import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 
+import com.appgallabs.dataplatform.util.Debug;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -64,6 +66,10 @@ public class PipelineService {
             }else if(jsonElement.isJsonObject()){
                 input.add(jsonElement.toString());
             }
+
+            Debug.out("*********FLINK_INPUT***************");
+            JsonUtil.printStdOut(JsonUtil.validateJson(input.toString()));
+            Debug.out("************************");
 
 
             DataStream<String> dataEvents = env.fromCollection(input);

@@ -39,7 +39,7 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         Debug.out("************************");
 
         //  TODO: unhardcode entity (CR1)
-        /*String entity = TempConstants.ENTITY;
+        String entity = TempConstants.ENTITY;
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 
         String payload = json.get("message").getAsString();
@@ -52,6 +52,6 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);*/
+        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);
     }
 }
