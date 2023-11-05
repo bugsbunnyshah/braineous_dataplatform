@@ -53,12 +53,11 @@ public class StreamingAgent {
 
                     //send batch to cloud
                     if(batch.size() > 0) {
-                        JsonUtil.printStdOut(batch);
                         String batchJsonString = batch.toString();
                         JsonObject response = sendDataToCloud(batchJsonString);
 
                         //TODO: integrate with reporting service (CR2)
-                        JsonUtil.printStdOut(response);
+                        //JsonUtil.printStdOut(response);
                     }
                 }
         });
