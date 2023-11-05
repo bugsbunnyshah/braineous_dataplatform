@@ -34,8 +34,6 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         //  TODO: unhardcode entity (CR1)
         String entity = TempConstants.ENTITY;
         String messageValue = message.value();
-        System.out.println("****KAFKA_DEBUG**********");
-        System.out.println(messageValue);
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 
         String payload = json.get("message").getAsString();
@@ -46,9 +44,6 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         //SecurityToken
         String securityTokenString = json.get("securityToken").getAsString();
         SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
-
-        System.out.println("****KAFKA_DEBUG**********");
-        System.out.println(jsonPayloadString);
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
         this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);

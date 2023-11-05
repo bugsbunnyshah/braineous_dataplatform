@@ -60,8 +60,6 @@ class SimpleConsumer extends AbstractSimpleKafka{
                     }
 
                     for (ConsumerRecord<String, String> record : records) {
-                        System.out.println("****MEMEMEMEMEMEMMEMME**********");
-                        System.out.println(record.value());
                         callback.processMessage(topicName, record);
                     }
                 }

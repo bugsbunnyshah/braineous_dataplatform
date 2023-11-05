@@ -46,11 +46,6 @@ public class PipelineService {
 
     public void ingest(SecurityToken securityToken, String driverConfiguration, String entity, String jsonString){
         try {
-
-            System.out.println("****PIPELINE_DEBUG**********");
-            System.out.println(jsonString);
-            System.out.println("****PIPELINE_DEBUG**********");
-
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
                     this.flinkHost,
                     Integer.parseInt(this.flinkPort),

@@ -61,9 +61,6 @@ public class EventProcessor {
         try{
             JsonObject response = new JsonObject();
 
-            System.out.println("****EVENT_PROCESSOR_DEBUG**********");
-            JsonUtil.printStdOut(json);
-
             SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
                     "blah", json.toString());
             response.addProperty("statusCode", 200);
