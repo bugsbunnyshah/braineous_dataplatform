@@ -18,19 +18,19 @@ import org.apache.log4j.Logger;
  * The class implements the processMessage() method. Typically, this class is used
  * to supply callback behavior for this project's producers and consumers.
  */
-public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
-    static Logger log = Logger.getLogger(KafkaMessageHandlerImpl.class.getName());
+public class EventHandler implements KafkaMessageHandler {
+    static Logger log = Logger.getLogger(EventHandler.class.getName());
 
     private PipelineService pipelineService;
 
-    public KafkaMessageHandlerImpl(PipelineService pipelineService){
+    public EventHandler(PipelineService pipelineService){
         this.pipelineService = pipelineService;
     }
 
     @Override
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
-        String source = KafkaMessageHandlerImpl.class.getName();
+        String source = EventHandler.class.getName();
         String messageValue = message.value();
 
         Debug.out("************************");

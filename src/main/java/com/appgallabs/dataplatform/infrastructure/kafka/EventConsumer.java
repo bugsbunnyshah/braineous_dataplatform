@@ -10,7 +10,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.HashSet;
 import java.util.Set;
 
 @Singleton
@@ -32,7 +31,7 @@ public class EventConsumer {
 
             for(String pipeTopic:allPipeIds) {
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
-                consumer.runAlways(pipeTopic, new KafkaMessageHandlerImpl(this.pipelineService));
+                consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService));
             }
         }catch(Exception e){
             throw new RuntimeException(e);
