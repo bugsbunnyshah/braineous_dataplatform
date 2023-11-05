@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
 import com.appgallabs.dataplatform.TempConstants;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -85,7 +86,12 @@ public class DataPipelineClient {
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String statusCode = "" + httpResponse.statusCode();
 
+            //TODO: (CR2), for pipeline report service
+            JsonElement responseJson = JsonUtil.validateJson(httpResponse.body());
+            JsonUtil.printStdOut(responseJson);
+
             response.addProperty("httpResponseCode", statusCode);
+
 
             return response;
         }catch (Exception e){

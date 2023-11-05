@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
+import com.appgallabs.dataplatform.util.Debug;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -30,10 +31,15 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
         String source = KafkaMessageHandlerImpl.class.getName();
+        String messageValue = message.value();
+
+        Debug.out("************************");
+        Debug.out("position: "+position);
+        Debug.out("message: "+messageValue);
+        Debug.out("************************");
 
         //  TODO: unhardcode entity (CR1)
-        String entity = TempConstants.ENTITY;
-        String messageValue = message.value();
+        /*String entity = TempConstants.ENTITY;
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 
         String payload = json.get("message").getAsString();
@@ -46,6 +52,6 @@ public class KafkaMessageHandlerImpl implements KafkaMessageHandler {
         SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);
+        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);*/
     }
 }

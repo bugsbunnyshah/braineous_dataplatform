@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class UsageScenarioTests {
     public void scenario1() throws Exception{
         String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
         String json = Util.loadResource(datasetLocation);
-        JsonObject datasetObject = JsonUtil.validateJson(json).getAsJsonObject();
+        JsonElement datasetElement = JsonUtil.validateJson(json);
 
         //setup source data store
         /*String configLocation = "tutorial/usecase/scenario1/datalake_config.json";
@@ -42,9 +43,7 @@ public class UsageScenarioTests {
         JsonUtil.printStdOut(configJson);*/
 
         //send source data through the pipeline
-        for(int i=0; i<3; i++) {
-            DataPipeline.sendData(datasetObject.toString());
-        }
+        DataPipeline.sendData(datasetElement.toString());
 
         //confirm data is received on the receiver data store
     }

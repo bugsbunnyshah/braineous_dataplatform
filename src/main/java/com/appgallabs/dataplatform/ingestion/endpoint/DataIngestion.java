@@ -7,6 +7,7 @@ import com.appgallabs.dataplatform.infrastructure.kafka.EventProcessor;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
@@ -79,6 +80,7 @@ public class DataIngestion {
 
             JsonArray array;
             JsonElement sourceIngestion = JsonParser.parseString(sourceData);
+
             if(sourceIngestion.isJsonObject()){
                 array = new JsonArray();
                 array.add(sourceIngestion.getAsJsonObject());
@@ -97,8 +99,6 @@ public class DataIngestion {
                 sourceObjectHashes.add(sourceObjectHash);
             }
             responseJson.add("data_lake_ids", sourceObjectHashes);
-
-
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;

@@ -37,12 +37,14 @@ public class SecurityTokenProcessor implements ContainerRequestFilter
             SecurityToken securityToken = SecurityToken.fromJson(json.toString());
             this.securityTokenContainer.setSecurityToken(securityToken);
 
+            /*
             logger.info("*****************************************************************");
             logger.info("(SecurityTokenContainer): " + this.securityTokenContainer);
             logger.info("(SecurityToken): " + this.securityTokenContainer.getSecurityToken());
             logger.info("(Principal): " + this.securityTokenContainer.getSecurityToken().getPrincipal());
             logger.info("(ClientId): " + tenant);
             logger.info("*****************************************************************");
+             */
         }else{
             Response.Status status = Response.Status.UNAUTHORIZED;
             Response response = Response.status(status).build();

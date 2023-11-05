@@ -30,38 +30,45 @@ public class StreamingAgent {
         return StreamingAgent.singleton;
     }
 
+    private void handleStreamEvent(){
+        SizeOf sizeOf = SizeOf.newInstance();
+        long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
+
+        //TODO: make this configurable, depending on ingestion payload size (CR2)
+        int windowSize = 100;
+        if (dataStreamSize >= windowSize) {
+            JsonArray batch = new JsonArray();
+            for (int i = 0; i < this.queueStream.size(); i++) {
+                String element = this.queueStream.remove();
+                JsonElement batchElement = JsonUtil.validateJson(element);
+                if(batchElement == null){
+                    //TODO: integrate with reporting service (CR2)
+                    continue;
+                }
+
+                batch.add(batchElement);
+            }
+
+            //send batch to cloud
+            if(batch.size() > 0) {
+                String batchJsonString = batch.toString();
+                JsonArray payloadArray = JsonUtil.validateJson(batchJsonString).getAsJsonArray();
+                JsonElement payload = payloadArray.get(0);
+                String payloadString = payload.toString();
+
+                JsonObject response = sendDataToCloud(payloadString);
+
+                //TODO: integrate with reporting service (CR2)
+                //JsonUtil.printStdOut(response);
+            }
+        }
+    }
+
     public synchronized void sendData(String json){
         // register a listener which polls a queue and prints an element
         this.queueStream.registerListener(e -> {
-            SizeOf sizeOf = SizeOf.newInstance();
-            long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
-
-            //TODO: make this configurable, depending on ingestion payload size (CR2)
-            int windowSize = 100;
-                if (dataStreamSize >= windowSize) {
-                    JsonArray batch = new JsonArray();
-                    for (int i = 0; i < this.queueStream.size(); i++) {
-                        String element = this.queueStream.remove();
-                        JsonElement batchElement = JsonUtil.validateJson(element);
-                        if(batchElement == null){
-                            //TODO: integrate with reporting service (CR2)
-                            continue;
-                        }
-
-                        batch.add(batchElement);
-                    }
-
-                    //send batch to cloud
-                    if(batch.size() > 0) {
-                        String batchJsonString = batch.toString();
-                        JsonObject response = sendDataToCloud(batchJsonString);
-
-                        //TODO: integrate with reporting service (CR2)
-                        //JsonUtil.printStdOut(response);
-                    }
-                }
+            handleStreamEvent();
         });
-
         this.queueStream.add(json);
     }
 
