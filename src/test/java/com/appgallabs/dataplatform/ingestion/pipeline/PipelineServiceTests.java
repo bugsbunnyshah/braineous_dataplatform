@@ -68,7 +68,9 @@ public class PipelineServiceTests extends BaseTest {
 
             String entity = TempConstants.ENTITY;
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), datalakeDriverConfiguration.toString(),
+            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                    datalakeDriverConfiguration.toString(),
+                    pipeId,
                     entity, jsonString);
 
             /*
@@ -108,7 +110,9 @@ public class PipelineServiceTests extends BaseTest {
 
             String entity = TempConstants.ENTITY;
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(), datalakeDriverConfiguration.toString(),
+            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                    datalakeDriverConfiguration.toString(),
+                    pipeId,
                     entity, jsonString);
 
             /*

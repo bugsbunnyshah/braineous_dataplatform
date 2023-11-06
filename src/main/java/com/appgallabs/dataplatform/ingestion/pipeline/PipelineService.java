@@ -46,7 +46,8 @@ public class PipelineService {
         this.mapper = new SchemalessMapper();
     }
 
-    public void ingest(SecurityToken securityToken, String driverConfiguration, String entity, String jsonString){
+    public void ingest(SecurityToken securityToken, String driverConfiguration,
+                       String pipeId, String entity, String jsonString){
         try {
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
                     this.flinkHost,
@@ -73,7 +74,8 @@ public class PipelineService {
 
 
             DataStream<String> dataEvents = env.fromCollection(input);
-            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,driverConfiguration);
+            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
+                    driverConfiguration,pipeId);
             dataEvents.addSink(sinkFunction);
             env.execute();
         }catch(Exception e){

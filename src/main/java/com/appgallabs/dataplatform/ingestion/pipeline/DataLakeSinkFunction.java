@@ -22,11 +22,15 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
     private SecurityToken securityToken;
     private String driverConfiguration;
 
-    public DataLakeSinkFunction(SecurityToken securityToken,String driverConfiguration) {
+    private String pipeId;
+
+    public DataLakeSinkFunction(SecurityToken securityToken,String driverConfiguration,String pipeId) {
         this.securityToken = securityToken;
         this.driverConfiguration = driverConfiguration;
+        this.pipeId = pipeId;
     }
 
+    //processes a json object
     @Override
     public void invoke(String value, Context context) throws Exception {
         MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
@@ -56,10 +60,16 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         String entity = TempConstants.ENTITY;
         metadata.addProperty("entity", entity);
 
+        //Adddress the pipe
+        metadata.addProperty("pipeId", pipeId);
+
         datalakeObject.add("metadata", metadata);
         datalakeObject.add("source_data", jsonObject);
 
         //store into datalake
         driver.storeIngestion(tenant, datalakeObject.toString());
+
+        //TODO: (NOW) invoke configured StoreOrchestrator
+
     }
 }

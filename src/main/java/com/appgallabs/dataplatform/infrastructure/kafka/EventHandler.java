@@ -52,6 +52,7 @@ public class EventHandler implements KafkaMessageHandler {
         SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),entity,jsonPayloadString);
+        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),
+                topicName,entity,jsonPayloadString);
     }
 }

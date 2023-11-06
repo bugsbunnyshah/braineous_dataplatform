@@ -72,7 +72,9 @@ public class GraphQLTests extends BaseTest {
 
             String entity = TempConstants.ENTITY;
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),datalakeDriverConfiguration.toString(),
+            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                    datalakeDriverConfiguration.toString(),
+                    pipeId,
                     entity,jsonString);
 
             JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
