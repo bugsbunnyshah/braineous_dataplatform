@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,8 @@ public class EventConsumer {
 
             for(String pipeTopic:allPipeIds) {
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
-                consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService));
+                consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
+                        StoreOrchestrator.getInstance()));
             }
         }catch(Exception e){
             throw new RuntimeException(e);

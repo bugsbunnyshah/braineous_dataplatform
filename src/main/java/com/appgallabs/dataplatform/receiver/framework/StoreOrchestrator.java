@@ -24,10 +24,10 @@ public class StoreOrchestrator {
     }
 
     public void receiveData(String pipeId, String data) {
-        Debug.out("**************");
+        Debug.out("******STORE_ORCHESTRATOR********");
         Debug.out("PipeId: "+pipeId);
         Debug.out("Data: "+data);
-        Debug.out("**************");
+        Debug.out("*******************************&");
 
         Registry registry = Registry.getInstance();
 

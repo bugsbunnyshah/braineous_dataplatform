@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
+import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
 import com.appgallabs.dataplatform.util.Debug;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -22,9 +23,11 @@ public class EventHandler implements KafkaMessageHandler {
     static Logger log = Logger.getLogger(EventHandler.class.getName());
 
     private PipelineService pipelineService;
+    private StoreOrchestrator storeOrchestrator;
 
-    public EventHandler(PipelineService pipelineService){
+    public EventHandler(PipelineService pipelineService, StoreOrchestrator storeOrchestrator){
         this.pipelineService = pipelineService;
+        this.storeOrchestrator = storeOrchestrator;
     }
 
     @Override
@@ -32,6 +35,7 @@ public class EventHandler implements KafkaMessageHandler {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
         String source = EventHandler.class.getName();
         String messageValue = message.value();
+        String pipeId = topicName;
 
         Debug.out("************************");
         Debug.out("position: "+position);
@@ -53,6 +57,8 @@ public class EventHandler implements KafkaMessageHandler {
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
         this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),
-                topicName,entity,jsonPayloadString);
+                pipeId,entity,jsonPayloadString);
+
+        this.storeOrchestrator.receiveData(pipeId,jsonPayloadString);
     }
 }
