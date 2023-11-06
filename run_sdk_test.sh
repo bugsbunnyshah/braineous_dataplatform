@@ -1,4 +1,0 @@
-mvn test -Dtest=UsageScenarioTests
-
-
-

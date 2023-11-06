@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
 import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 
@@ -23,6 +24,11 @@ public class StoreOrchestrator {
     }
 
     public void receiveData(String pipeId, String data) {
+        Debug.out("**************");
+        Debug.out("PipeId: "+pipeId);
+        Debug.out("Data: "+data);
+        Debug.out("**************");
+
         Registry registry = Registry.getInstance();
 
         //find the registered store drivers for this pipe

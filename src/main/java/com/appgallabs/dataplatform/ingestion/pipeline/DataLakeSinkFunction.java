@@ -6,16 +6,11 @@ import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonObject;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 
 public class DataLakeSinkFunction implements SinkFunction<String> {
 
@@ -68,8 +63,5 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
         //store into datalake
         driver.storeIngestion(tenant, datalakeObject.toString());
-
-        //TODO: (NOW) invoke configured StoreOrchestrator
-
     }
 }
