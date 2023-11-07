@@ -7,7 +7,7 @@
       "config": {
         "connectionString": "mongodb://localhost:27017",
         "database": "scenario1_store",
-        "collection": "dataset"
+        "collection": "data"
       },
       "jsonpathExpression": "jsonpath:1"
     }

@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.HashSet;
 import java.util.Set;
 
 @Singleton
@@ -20,15 +21,17 @@ public class EventConsumer {
     @Inject
     private PipelineService pipelineService;
 
-    public EventConsumer() {
+    private Set<String> allPipeIds;
 
+    public EventConsumer() {
+        this.allPipeIds = new HashSet<>();
     }
 
     @PostConstruct
     public void start(){
         try {
             //start all pipes which are kafka topics
-            Set<String> allPipeIds = Registry.getInstance().allRegisteredPipeIds();
+            this.allPipeIds = Registry.getInstance().allRegisteredPipeIds();
 
             for(String pipeTopic:allPipeIds) {
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
@@ -53,5 +56,20 @@ public class EventConsumer {
         JsonObject response = new JsonObject();
         response.addProperty("status", "LISTENING...");
         return response;
+    }
+
+    public void registerPipe(String pipeId){
+        try {
+            if(!this.allPipeIds.contains(pipeId)) {
+                this.allPipeIds.add(pipeId);
+                String pipeTopic = pipeId;
+
+                SimpleConsumer consumer = SimpleConsumer.getInstance();
+                consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
+                        StoreOrchestrator.getInstance()));
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }

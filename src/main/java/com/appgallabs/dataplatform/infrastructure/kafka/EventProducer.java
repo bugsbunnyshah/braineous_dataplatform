@@ -2,7 +2,8 @@ package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
-import com.appgallabs.dataplatform.util.JsonUtil;
+
+import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -17,27 +18,31 @@ import javax.inject.Singleton;
 import org.apache.kafka.clients.admin.TopicListing;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 @Singleton
-public class EventProcessor {
-    private static Logger logger = LoggerFactory.getLogger(EventProcessor.class);
+public class EventProducer {
+    private static Logger logger = LoggerFactory.getLogger(EventProducer.class);
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
     private Map<String, TopicListing> topicListing;
 
-    public EventProcessor() {
+    private Set<String> allPipeIds;
+
+    public EventProducer() {
         this.topicListing = new HashMap<>();
+        this.allPipeIds = new HashSet<>();
     }
 
     @PostConstruct
     public void start(){
         try {
             //start all pipes which are kafka topics
-            Set<String> allPipeIds = Registry.getInstance().allRegisteredPipeIds();
+            this.allPipeIds = Registry.getInstance().allRegisteredPipeIds();
 
             for(String pipeTopic: allPipeIds) {
                 TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
@@ -84,6 +89,20 @@ public class EventProcessor {
 
             return response;
         }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void registerPipe(String pipeId){
+        try {
+            if(!this.allPipeIds.contains(pipeId)) {
+                this.allPipeIds.add(pipeId);
+                String pipeTopic = pipeId;
+
+                TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
+                this.topicListing.put(pipeTopic, topicListing);
+            }
+        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }

@@ -48,7 +48,7 @@ public class DataPipelineClient {
             String generatedToken = securityTokenJson.get("access_token").getAsString();
 
             //provide response
-            JsonObject response = this.handleRestCall(restUrl,tenant,generatedToken, payload);
+            JsonObject response = this.handleRestCallForSendData(restUrl,tenant,generatedToken, payload);
             response.addProperty("ingestionStatusCode", response.get("httpResponseCode").getAsString());
 
             return response;
@@ -59,8 +59,38 @@ public class DataPipelineClient {
         }
     }
 
+    public JsonObject registerPipe(JsonElement jsonElement){
+        try {
+            String restUrl = "http://localhost:8080/ingestion/register_pipe/";
+            String payload = jsonElement.toString();
+
+            //get OAuth Token
+            String credentials = IOUtils.resourceToString("oauth/credentials.json",
+                    StandardCharsets.UTF_8,
+                    Thread.currentThread().getContextClassLoader());
+            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
+            String tenant = credentialsJson.get("client_id").getAsString();
+
+            String token = IOUtils.resourceToString("oauth/jwtToken.json",
+                    StandardCharsets.UTF_8,
+                    Thread.currentThread().getContextClassLoader());
+            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
+            String generatedToken = securityTokenJson.get("access_token").getAsString();
+
+            //provide response
+            JsonObject response = this.handleRestCallForRegisterPipe(restUrl,tenant,generatedToken, payload);
+            response.addProperty("registerPipeStatusCode", response.get("httpResponseCode").getAsString());
+
+            return response;
+        }catch(Exception e){
+            JsonObject error = new JsonObject();
+            error.addProperty("registerPipeError",e.getMessage());
+            return error;
+        }
+    }
+
     //TODO: finalize_implementation (CR1)
-    private JsonObject handleRestCall(String restUrl,String tenant,String generatedToken, String payload){
+    private JsonObject handleRestCallForSendData(String restUrl,String tenant,String generatedToken, String payload){
         try {
             String pipeId = "123";
 
@@ -92,6 +122,38 @@ public class DataPipelineClient {
 
             response.addProperty("httpResponseCode", statusCode);
 
+
+            return response;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private JsonObject handleRestCallForRegisterPipe(String restUrl,String tenant,String generatedToken, String payload){
+        try {
+            JsonObject response = new JsonObject();
+
+            JsonObject requestBody = JsonUtil.validateJson(payload).getAsJsonObject();
+
+
+            HttpClient httpClient = HttpClient.newBuilder().build();
+            HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+            HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    .header("tenant", tenant)
+                    .header("token", "Bearer "+generatedToken)
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
+                    .build();
+
+
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String statusCode = "" + httpResponse.statusCode();
+
+            //TODO: (CR2), for pipeline report service
+            JsonElement responseJson = JsonUtil.validateJson(httpResponse.body());
+            JsonUtil.printStdOut(responseJson);
+
+            response.addProperty("httpResponseCode", statusCode);
+            response.addProperty("registerPipeResult", httpResponse.body());
 
             return response;
         }catch (Exception e){

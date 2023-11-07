@@ -12,7 +12,6 @@ import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class EventProcessorTests extends BaseTest {
     private static final long HANG_TIME =  15000l;
 
     @Inject
-    private EventProcessor eventProcessor;
+    private EventProducer eventProducer;
 
     @Inject
     private EventConsumer eventConsumer;
@@ -61,7 +60,7 @@ public class EventProcessorTests extends BaseTest {
         JsonObject pipeRegistration = JsonUtil.validateJson(jsonString).getAsJsonObject();
         registry.registerPipe(pipeRegistration);
 
-        this.eventProcessor.start();
+        this.eventProducer.start();
         this.eventConsumer.start();
     }
 
@@ -75,7 +74,7 @@ public class EventProcessorTests extends BaseTest {
         );
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
 
-        JsonObject response = this.eventProcessor.processEvent(jsonArray);
+        JsonObject response = this.eventProducer.processEvent(jsonArray);
 
         logger.info("*****************");
         logger.info(response.toString());

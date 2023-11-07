@@ -33,7 +33,6 @@ public class EventHandler implements KafkaMessageHandler {
     @Override
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
-        String source = EventHandler.class.getName();
         String messageValue = message.value();
         String pipeId = topicName;
 

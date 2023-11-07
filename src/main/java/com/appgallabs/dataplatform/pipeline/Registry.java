@@ -96,8 +96,15 @@ public class Registry {
     }
 
     public Set<String> allRegisteredPipeIds(){
-        return this.registry.keySet();
+        Collection<String> keys = this.registry.keySet();
+
+        Set<String> pipeIds = new HashSet<>();
+        pipeIds.addAll(keys);
+
+        return pipeIds;
     }
+
+
 
     public JsonArray getDriverConfigurations(){
         JsonArray driverConfigurations = new JsonArray();

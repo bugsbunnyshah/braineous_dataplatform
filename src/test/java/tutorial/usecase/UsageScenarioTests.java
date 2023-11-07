@@ -27,10 +27,9 @@ public class UsageScenarioTests {
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
         //register a pipeline
-        /*String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
+        String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
         json = Util.loadResource(configLocation);
-        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
-        JsonUtil.printStdOut(configJson);*/
+        DataPipeline.registerPipe(json);
 
         //send source data through the pipeline
         DataPipeline.sendData(datasetElement.toString());
@@ -53,10 +52,9 @@ public class UsageScenarioTests {
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
         //register a pipeline
-        /*String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
+        String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
         json = Util.loadResource(configLocation);
-        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
-        JsonUtil.printStdOut(configJson);*/
+        DataPipeline.registerPipe(json);
 
         //send source data through the pipeline
         DataPipeline.sendData(datasetElement.toString());
