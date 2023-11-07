@@ -61,15 +61,6 @@ public class UsageScenarioTests {
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
-        //setup source data store
-        /*String configLocation = "tutorial/usecase/scenario1/datalake_config.json";
-        json = Util.loadResource(configLocation);
-        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
-        JsonArray configurations = configJson.getAsJsonArray("configuration");
-        Utils.setupSourceStore(configurations.get(0).
-                        getAsJsonObject().getAsJsonObject("config"),
-                datasetArray);*/
-
         //register a pipeline
         /*String configLocation = "tutorial/usecase/scenario1/mongodb_config_1.json";
         json = Util.loadResource(configLocation);
