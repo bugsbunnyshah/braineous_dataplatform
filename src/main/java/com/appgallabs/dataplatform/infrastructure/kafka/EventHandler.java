@@ -41,8 +41,6 @@ public class EventHandler implements KafkaMessageHandler {
         Debug.out("message: "+messageValue);
         Debug.out("************************");
 
-        //  TODO: unhardcode entity (CR1)
-        String entity = TempConstants.ENTITY;
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 
         String payload = json.get("message").getAsString();
@@ -53,6 +51,9 @@ public class EventHandler implements KafkaMessageHandler {
         //SecurityToken
         String securityTokenString = json.get("securityToken").getAsString();
         SecurityToken securityToken = SecurityToken.fromJson(securityTokenString);
+
+        //Entity
+        String entity = json.get("entity").getAsString();
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
         this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),

@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 
@@ -67,7 +68,7 @@ public class EventProducer {
             JsonObject response = new JsonObject();
 
             SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
-                    "blah", json.toString());
+                    "blah", TempConstants.ENTITY, json.toString());
             response.addProperty("statusCode", 200);
 
 
@@ -77,13 +78,13 @@ public class EventProducer {
         }
     }
 
-    public JsonObject processEvent(String pipeId,JsonElement json) {
+    public JsonObject processEvent(String pipeId, String entity,JsonElement json) {
         try{
             JsonObject response = new JsonObject();
 
 
             SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
-                    pipeId, json.toString());
+                    pipeId, entity, json.toString());
             response.addProperty("statusCode", 200);
 
 

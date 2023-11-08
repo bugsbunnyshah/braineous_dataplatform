@@ -42,16 +42,18 @@ class SimpleProducer extends AbstractSimpleKafka {
     }
 
     public void publishToBroker(SecurityTokenContainer securityTokenContainer,
-                                String topicName, String message) throws Exception {
+                                String topicName, String entity, String message) throws Exception {
         String key = UUID.randomUUID().toString();
-        this.send(securityTokenContainer,topicName, key, message);
+        this.send(securityTokenContainer,topicName, entity, key, message);
     }
 
-    protected void send(SecurityTokenContainer securityTokenContainer, String topicName, String key, String message) throws Exception {
+    protected void send(SecurityTokenContainer securityTokenContainer, String topicName,
+            String entity, String key, String message) throws Exception {
         String source = SimpleProducer.class.getName();
 
         //Use the helper to create an informative log entry in JSON format
-        JSONObject obj = MessageHelper.getMessageLogEntryJSON(securityTokenContainer.getSecurityToken(), source, topicName, key, message);
+        JSONObject obj = MessageHelper.getMessageLogEntryJSON(securityTokenContainer.getSecurityToken(),
+                source, topicName, entity, key, message);
         //log.info(obj.toJSONString());
 
         //create the ProducerRecord object which will

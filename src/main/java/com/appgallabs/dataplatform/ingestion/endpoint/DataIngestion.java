@@ -111,7 +111,7 @@ public class DataIngestion {
                 array = sourceIngestion.getAsJsonArray();
             }
 
-            JsonObject responseJson = this.eventProducer.processEvent(pipeId, array);
+            JsonObject responseJson = this.eventProducer.processEvent(pipeId, entity, array);
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
             //Get Source Object Hashes

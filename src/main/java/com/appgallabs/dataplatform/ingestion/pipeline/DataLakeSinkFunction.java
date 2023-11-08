@@ -19,10 +19,13 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
     private String pipeId;
 
-    public DataLakeSinkFunction(SecurityToken securityToken,String driverConfiguration,String pipeId) {
+    private String entity;
+
+    public DataLakeSinkFunction(SecurityToken securityToken,String driverConfiguration,String pipeId, String entity) {
         this.securityToken = securityToken;
         this.driverConfiguration = driverConfiguration;
         this.pipeId = pipeId;
+        this.entity = entity;
     }
 
     //processes a json object
@@ -51,12 +54,12 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         String tenantString = tenant.toString();
         metadata.addProperty("tenant", tenantString);
 
-        //TODO: (CR1)
-        String entity = TempConstants.ENTITY;
-        metadata.addProperty("entity", entity);
 
         //Adddress the pipe
         metadata.addProperty("pipeId", pipeId);
+
+        //entity
+        metadata.addProperty("entity", entity);
 
         datalakeObject.add("metadata", metadata);
         datalakeObject.add("source_data", jsonObject);

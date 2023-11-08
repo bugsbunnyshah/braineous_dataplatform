@@ -23,13 +23,19 @@ public class MessageHelper {
      * @return the message log entry json
      * @throws Exception the exception
      */
-    public static JSONObject getMessageLogEntryJSON(SecurityToken securityToken, String source, String topic, String key, String message) throws Exception {
+    public static JSONObject getMessageLogEntryJSON(SecurityToken securityToken,
+                                                    String source,
+                                                    String topic,
+                                                    String entity,
+                                                    String key,
+                                                    String message) throws Exception {
         JSONObject obj = new JSONObject();
         String bootstrapServers = getProperties().getProperty("bootstrap.servers");
         obj.put("bootstrapServers", bootstrapServers);
         obj.put("securityToken",securityToken.toString());
         obj.put("source", source);
         obj.put("topic", topic);
+        obj.put("entity", entity);
         obj.put("key", key);
         obj.put("message", message);
 
