@@ -29,7 +29,7 @@ public class DataPipelineClient {
     }
 
     //TODO: finalize_implementation (CR1)
-    public JsonObject sendData(JsonElement jsonElement){
+    public JsonObject sendData(String pipeId, String entity, JsonElement jsonElement){
         try {
             String restUrl = "http://localhost:8080/ingestion/json/";
             String payload = jsonElement.toString();
@@ -48,7 +48,8 @@ public class DataPipelineClient {
             String generatedToken = securityTokenJson.get("access_token").getAsString();
 
             //provide response
-            JsonObject response = this.handleRestCallForSendData(restUrl,tenant,generatedToken, payload);
+            JsonObject response = this.handleRestCallForSendData(restUrl,tenant,generatedToken,
+                    pipeId, entity, payload);
             response.addProperty("ingestionStatusCode", response.get("httpResponseCode").getAsString());
 
             return response;
@@ -90,18 +91,15 @@ public class DataPipelineClient {
     }
 
     //TODO: finalize_implementation (CR1)
-    private JsonObject handleRestCallForSendData(String restUrl,String tenant,String generatedToken, String payload){
+    private JsonObject handleRestCallForSendData(String restUrl,String tenant,String generatedToken,
+            String pipeId, String entity, String payload){
         try {
-            String pipeId = "123";
-
             JsonObject response = new JsonObject();
-
-            String entity = TempConstants.ENTITY;
 
             JsonObject requestBody = new JsonObject();
             requestBody.addProperty("sourceData",payload);
-            requestBody.addProperty("entity", entity);
             requestBody.addProperty("pipeId", pipeId);
+            requestBody.addProperty("entity", entity);
 
 
             HttpClient httpClient = HttpClient.newBuilder().build();

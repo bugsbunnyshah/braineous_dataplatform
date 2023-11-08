@@ -1,9 +1,11 @@
 package tutorial.usecase;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +31,13 @@ public class UsageScenario2Tests {
         String configLocation = "tutorial/usecase/scenario2/scenario2_pipe_config.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
+        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
+
 
         //send source data through the pipeline
-        DataPipeline.sendData(datasetElement.toString());
+        String pipeId = configJson.get("pipeId").getAsString();
+        String entity = TempConstants.ENTITY;
+        DataPipeline.sendData(pipeId, entity, datasetElement.toString());
 
         //confirm data is received on the receiver data store
     }
@@ -54,9 +60,12 @@ public class UsageScenario2Tests {
         String configLocation = "tutorial/usecase/scenario2/scenario2_pipe_config.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
+        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
 
         //send source data through the pipeline
-        DataPipeline.sendData(datasetElement.toString());
+        String pipeId = configJson.get("pipeId").getAsString();
+        String entity = TempConstants.ENTITY;
+        DataPipeline.sendData(pipeId, entity, datasetElement.toString());
 
         //confirm data is received on the receiver data store
     }

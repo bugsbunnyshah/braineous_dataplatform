@@ -7,8 +7,8 @@ import com.google.gson.JsonObject;
 
 public class DataPipeline {
 
-    public static void sendData(String payload){
-        DataPipelineService.getInstance().sendData(payload);
+    public static void sendData(String pipeId, String entity, String payload){
+        DataPipelineService.getInstance().sendData(pipeId, entity, payload);
     }
 
     public static JsonObject registerPipe(String payload) throws RegisterPipeException{

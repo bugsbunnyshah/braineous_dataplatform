@@ -26,8 +26,8 @@ public class DataPipelineService {
         return DataPipelineService.singleton;
     }
 
-    public void sendData(String payload){
-        StreamingAgent.getInstance().sendData(payload);
+    public void sendData(String pipeId, String entity,String payload){
+        StreamingAgent.getInstance().sendData(pipeId, entity, payload);
     }
 
     public JsonObject registerPipe(String payload) throws RegisterPipeException {

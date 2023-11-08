@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.api;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -26,7 +27,9 @@ public class DataPipelineTests {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             json.addProperty("offset",i);
 
-            DataPipeline.sendData(json.toString());
+            String pipeId = "123";
+            String entity = TempConstants.ENTITY;
+            DataPipeline.sendData(pipeId, entity, json.toString());
         }
 
         //assertions

@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.infrastructure;
 
+import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
@@ -30,7 +31,7 @@ public class StreamingAgent {
         return StreamingAgent.singleton;
     }
 
-    private void handleStreamEvent(){
+    private void handleStreamEvent(String pipeId, String entity){
         SizeOf sizeOf = SizeOf.newInstance();
         long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
@@ -56,7 +57,7 @@ public class StreamingAgent {
                 JsonElement payload = payloadArray.get(0);
                 String payloadString = payload.toString();
 
-                JsonObject response = sendDataToCloud(payloadString);
+                JsonObject response = sendDataToCloud(pipeId, entity, payloadString);
 
                 //TODO: integrate with reporting service (CR2)
                 //JsonUtil.printStdOut(response);
@@ -64,15 +65,15 @@ public class StreamingAgent {
         }
     }
 
-    public synchronized void sendData(String json){
+    public synchronized void sendData(String pipeId, String entity,String json){
         // register a listener which polls a queue and prints an element
         this.queueStream.registerListener(e -> {
-            handleStreamEvent();
+            handleStreamEvent(pipeId,entity);
         });
         this.queueStream.add(json);
     }
 
-    private JsonObject sendDataToCloud(String payload){
+    private JsonObject sendDataToCloud(String pipeId, String entity,String payload){
         //validate and prepare rest payload
         JsonElement jsonElement = JsonUtil.validateJson(payload);
         if(jsonElement == null){
@@ -80,7 +81,7 @@ public class StreamingAgent {
         }
 
         //send data for ingestion
-        JsonObject response = this.dataPipelineClient.sendData(jsonElement);
+        JsonObject response = this.dataPipelineClient.sendData(pipeId, entity,jsonElement);
 
         //process response
         String ingestionStatusMessage = null;
