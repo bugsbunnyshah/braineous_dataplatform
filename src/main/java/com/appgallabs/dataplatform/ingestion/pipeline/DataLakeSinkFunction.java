@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
-import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.datalake.MongoDBDataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;

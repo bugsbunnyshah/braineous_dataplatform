@@ -1,6 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
-import com.appgallabs.dataplatform.TempConstants;
+import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -23,8 +23,6 @@ import test.components.Util;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -66,7 +64,7 @@ public class PipelineServiceTests extends BaseTest {
             JsonObject jsonObject = jsonArray.get(0).getAsJsonObject();
             originalObjectHash = JsonUtil.getJsonHash(jsonObject);
 
-            String entity = TempConstants.ENTITY;
+            String entity = TestConstants.ENTITY;
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
                     datalakeDriverConfiguration.toString(),
@@ -108,7 +106,7 @@ public class PipelineServiceTests extends BaseTest {
             JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
             originalObjectHash = JsonUtil.getJsonHash(jsonObject);
 
-            String entity = TempConstants.ENTITY;
+            String entity = TestConstants.ENTITY;
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
                     datalakeDriverConfiguration.toString(),

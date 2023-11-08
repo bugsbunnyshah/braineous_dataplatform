@@ -1,16 +1,14 @@
 package com.appgallabs.dataplatform.query.graphql.engine;
 
-import com.appgallabs.dataplatform.TempConstants;
+import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.infrastructure.DataLakeStore;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
-import com.appgallabs.dataplatform.infrastructure.PipelineStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mongodb.client.MongoClient;
 import graphql.language.*;
@@ -86,7 +84,7 @@ public class QueryGeneratorTests extends BaseTest {
         //JsonUtil.printStdOut(projectionJson);
 
         //Execute the query
-        String entity = TempConstants.ENTITY;
+        String entity = TestConstants.ENTITY;
         JsonArray result = dataLakeStore.readByEntity(tenant,mongoClient,
                 entity, fieldNames);
         JsonUtil.printStdOut(result);
@@ -145,7 +143,7 @@ public class QueryGeneratorTests extends BaseTest {
         }};
 
         //Execute the query
-        String entity = TempConstants.ENTITY;
+        String entity = TestConstants.ENTITY;
         JsonArray result = dataLakeStore.readByEntityFilterByAND(tenant,mongoClient,
                 entity, fieldNames, criteria);
         JsonUtil.printStdOut(result);
@@ -204,7 +202,7 @@ public class QueryGeneratorTests extends BaseTest {
         }};
 
         //Execute the query
-        String entity = TempConstants.ENTITY;
+        String entity = TestConstants.ENTITY;
         JsonArray result = dataLakeStore.readByEntityFilterByOR(tenant,mongoClient,
                 entity, fieldNames, criteria);
         JsonUtil.printStdOut(result);

@@ -1,7 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
-import com.appgallabs.dataplatform.TempConstants;
-import com.appgallabs.dataplatform.util.JsonUtil;
+import com.appgallabs.dataplatform.TestConstants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -10,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class DataPipelineServiceTests {
     private static Logger logger = LoggerFactory.getLogger(DataPipelineServiceTests.class);
@@ -33,7 +30,7 @@ public class DataPipelineServiceTests {
             json.addProperty("offset",i);
 
             String pipeId = "123";
-            String entity = TempConstants.ENTITY;
+            String entity = TestConstants.ENTITY;
             dataPipelineService.sendData(pipeId, entity,json.toString());
         }
 

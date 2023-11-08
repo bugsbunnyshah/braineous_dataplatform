@@ -1,6 +1,6 @@
 package com.appgallabs.dataplatform.query.graphql.endpoint;
 
-import com.appgallabs.dataplatform.TempConstants;
+import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -67,7 +67,7 @@ public class DataLakeGraphQlQueryEndpointTests extends BaseTest {
         JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
         String generatedToken = securityTokenJson.get("access_token").getAsString();
 
-        String entity = TempConstants.ENTITY;
+        String entity = TestConstants.ENTITY;
 
         String graphqlQuery = "query findTeas{\n" +
                 "  teas{\n" +

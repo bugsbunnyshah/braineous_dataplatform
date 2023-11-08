@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
-import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

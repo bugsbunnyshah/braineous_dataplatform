@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
-import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;

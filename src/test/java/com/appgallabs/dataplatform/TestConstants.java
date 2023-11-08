@@ -1,6 +1,6 @@
 package com.appgallabs.dataplatform;
 
-public interface TempConstants {
+public interface TestConstants {
 
     public String ENTITY = "books";
 

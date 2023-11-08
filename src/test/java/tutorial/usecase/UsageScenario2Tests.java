@@ -1,6 +1,6 @@
 package tutorial.usecase;
 
-import com.appgallabs.dataplatform.TempConstants;
+import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
@@ -36,7 +36,7 @@ public class UsageScenario2Tests {
 
         //send source data through the pipeline
         String pipeId = configJson.get("pipeId").getAsString();
-        String entity = TempConstants.ENTITY;
+        String entity = TestConstants.ENTITY;
         DataPipeline.sendData(pipeId, entity, datasetElement.toString());
 
         //confirm data is received on the receiver data store
@@ -64,7 +64,7 @@ public class UsageScenario2Tests {
 
         //send source data through the pipeline
         String pipeId = configJson.get("pipeId").getAsString();
-        String entity = TempConstants.ENTITY;
+        String entity = TestConstants.ENTITY;
         DataPipeline.sendData(pipeId, entity, datasetElement.toString());
 
         //confirm data is received on the receiver data store

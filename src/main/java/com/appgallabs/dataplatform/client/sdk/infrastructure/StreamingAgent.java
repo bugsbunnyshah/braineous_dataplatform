@@ -1,6 +1,5 @@
 package com.appgallabs.dataplatform.client.sdk.infrastructure;
 
-import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
 

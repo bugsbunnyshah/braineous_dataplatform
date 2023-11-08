@@ -1,10 +1,8 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
-import com.appgallabs.dataplatform.TempConstants;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 
-import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -63,12 +61,13 @@ public class EventProducer {
         }
     }
 
+    //TODO: REMOVE_ME (CR1) or (CR2)
     public JsonObject processEvent(JsonElement json) {
         try{
             JsonObject response = new JsonObject();
 
             SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
-                    "blah", TempConstants.ENTITY, json.toString());
+                    "blah", "books", json.toString());
             response.addProperty("statusCode", 200);
 
 
