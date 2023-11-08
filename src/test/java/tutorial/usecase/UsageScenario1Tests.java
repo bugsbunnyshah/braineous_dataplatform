@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UsageScenarioTests {
-    private static Logger logger = LoggerFactory.getLogger(UsageScenarioTests.class);
+public class UsageScenario1Tests {
+    private static Logger logger = LoggerFactory.getLogger(UsageScenario1Tests.class);
 
     /**
      * Scenario: A single MongoDB data source starts ingestion
