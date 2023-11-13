@@ -1,2 +1,2 @@
-scripts/stop_flink.sh && scripts/start_flink.sh
+#./stop_flink.sh && ./start_flink.sh
 mvn test
