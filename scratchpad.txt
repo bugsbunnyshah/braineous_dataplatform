@@ -34,4 +34,38 @@ query personByName {
   }
 
 
+  Step 1:
+  Download Braineous-1.0.0-CR1: <link>
+
+  Step 2:
+  Unzip
+
+  Step 3:
+  Start Zookeeper
+
+  Step 4:
+  Start Kafka
+
+  Step 5:
+
+  Start Flink
+
+  Step 6:
+
+  Install MongoDB
+
+  Step 7:
+
+  Start Braineous
+
+  Step 8:
+
+  Start Ingestion
+
+  Step 9:
+
+  Verify
+
+
+
 
