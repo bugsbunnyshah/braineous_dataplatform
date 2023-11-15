@@ -25,7 +25,7 @@ public class StoreOrchestrator {
     }
 
     public void receiveData(SecurityToken securityToken, String pipeId, String data) {
-        String tenant = securityToken.getToken();
+        String tenant = securityToken.getPrincipal();
 
         Debug.out("******STORE_ORCHESTRATOR********");
         Debug.out("PipeId: "+pipeId);

@@ -73,8 +73,15 @@ public class Registry {
     public List<StoreDriver> findStoreDrivers(String tenant, String pipeId){
         try {
             List<StoreDriver> result = new ArrayList<>();
+            MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+            RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
 
-            JsonArray jsonArray = this.registry.get(pipeId);
+            JsonArray jsonArray = registryStore.findStoreDrivers(
+                tenant,
+                mongoClient,
+                pipeId
+            );
+
             if (jsonArray == null || jsonArray.size() == 0) {
                 return result;
             }
@@ -82,6 +89,7 @@ public class Registry {
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
                 JsonObject storeConfigJson = configurationJson.getAsJsonObject("config");
+
                 String storeDriverClass = configurationJson.get("storeDriver").getAsString();
                 StoreDriver storeDriver = (StoreDriver) Thread.currentThread().getContextClassLoader().
                         loadClass(storeDriverClass).getDeclaredConstructor().newInstance();
@@ -99,30 +107,25 @@ public class Registry {
     }
     //write operations------------------------------------------------------------------
     public String registerPipe(Tenant tenant, JsonObject pipeRegistration) {
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+        RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
         String pipeId = pipeRegistration.get("pipeId").getAsString();
         JsonArray storeDrivers = pipeRegistration.getAsJsonArray("configuration");
 
         this.registry.put(pipeId, storeDrivers);
 
-        //flush to db
-        this.flushToDb(tenant);
+        //persist
+        registryStore.registerPipe(
+                tenant,
+                mongoClient,
+                pipeRegistration
+        );
 
         return pipeId;
     }
-    //-----------------------------------------------------------------------------------
-    private void flushToDb(Tenant tenant){
-        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
-        RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
-
-        registryStore.flushToDb(tenant, mongoClient, this);
-    }
-
-    private void loadFromDb(){
-        System.out.println(this.mongoDBJsonStore);
-    }
 
     //TODO: (CR2)
-    //----deprecate-------------
+    //----deprecate--------------------------------------------------------------------
     public JsonArray getDriverConfigurations(){
         JsonArray driverConfigurations = new JsonArray();
 
