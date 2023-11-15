@@ -34,6 +34,7 @@ public class StreamingAgent {
 
     private void handleStreamEvent(String pipeId, String entity){
         Map<String,String> configuration = DataPipeline.getConfiguration();
+        int windowSize = Integer.parseInt(configuration.get("steamSizeInBytes"));
 
         System.out.println("***SENDING_DATA_HANDLE*****");
         SizeOf sizeOf = SizeOf.newInstance();
@@ -44,8 +45,6 @@ public class StreamingAgent {
         System.out.println("SIZE: "+dataStreamSize);
         System.out.println("**********");
 
-        //TODO: make this configurable, depending on ingestion payload size (CR2)
-        int windowSize = Integer.parseInt(configuration.get("steamSizeInBytes"));
         if (dataStreamSize >= windowSize) {
             System.out.println("***SENDING_DATA_HANDLED*****");
             JsonArray batch = new JsonArray();
