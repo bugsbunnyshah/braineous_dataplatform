@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
+import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -10,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class DataLakeGrapQlQueryClient {
     private static DataLakeGrapQlQueryClient singleton = new DataLakeGrapQlQueryClient();
@@ -26,10 +29,11 @@ public class DataLakeGrapQlQueryClient {
         return DataLakeGrapQlQueryClient.singleton;
     }
 
-    //TODO: finalize_implementation (CR1)
     public JsonObject sendQuery(String graphqlQuery){
         try {
-            String restUrl = "http://localhost:8080/data/lake/query/";
+            Configuration configuration = DataPipeline.getConfiguration();
+            String baseUrl = configuration.ingestionHostUrl();
+            String restUrl = baseUrl+"data/lake/query/";
 
             //get OAuth Token
             String credentials = IOUtils.resourceToString("oauth/credentials.json",
@@ -56,7 +60,6 @@ public class DataLakeGrapQlQueryClient {
         }
     }
 
-    //TODO: finalize_implementation (CR1)
     private JsonObject handleRestCall(String restUrl,String tenant,String generatedToken, String graphqlQuery){
         try {
             JsonObject response = new JsonObject();

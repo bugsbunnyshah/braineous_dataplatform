@@ -16,6 +16,12 @@ public class DataPipelineTests {
     //TODO: solidify: (CR1)
     @Test
     public void sendData() throws Exception{
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
         String jsonResource = "ingestion/algorithm/input.json";
         //String jsonResource = "people.json";
         String jsonString = IOUtils.toString(Thread.currentThread().

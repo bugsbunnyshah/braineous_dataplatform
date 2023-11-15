@@ -52,6 +52,12 @@ public class DataLakeGraphQlQueryTests extends BaseTest {
     //TODO: solidify: (CR1)
     @Test
     public void sendQuery() throws Exception{
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
         String querySql = "query findTeas{\n" +
                 "  teas{\n" +
                 "    name\n" +

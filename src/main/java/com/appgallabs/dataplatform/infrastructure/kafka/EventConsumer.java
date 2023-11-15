@@ -1,7 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
-import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -21,26 +20,15 @@ public class EventConsumer {
     @Inject
     private PipelineService pipelineService;
 
-    private Set<String> allPipeIds;
+    private Set<String> registeredPipes;
+
 
     public EventConsumer() {
-        this.allPipeIds = new HashSet<>();
+        this.registeredPipes = new HashSet<>();
     }
 
     @PostConstruct
     public void start(){
-        try {
-            //start all pipes which are kafka topics
-            this.allPipeIds = Registry.getInstance().allRegisteredPipeIds();
-
-            for(String pipeTopic:allPipeIds) {
-                SimpleConsumer consumer = SimpleConsumer.getInstance();
-                consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
-                        StoreOrchestrator.getInstance()));
-            }
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
     }
 
     @PreDestroy
@@ -60,13 +48,14 @@ public class EventConsumer {
 
     public void registerPipe(String pipeId){
         try {
-            if(!this.allPipeIds.contains(pipeId)) {
-                this.allPipeIds.add(pipeId);
+            if(!this.registeredPipes.contains(pipeId)) {
                 String pipeTopic = pipeId;
 
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
                 consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
                         StoreOrchestrator.getInstance()));
+
+                this.registeredPipes.add(pipeId);
             }
         }catch (Exception e){
             throw new RuntimeException(e);

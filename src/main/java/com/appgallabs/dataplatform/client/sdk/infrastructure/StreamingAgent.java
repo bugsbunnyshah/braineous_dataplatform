@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.client.sdk.infrastructure;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
+import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
@@ -9,6 +11,7 @@ import com.google.gson.JsonObject;
 import org.ehcache.sizeof.SizeOf;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class StreamingAgent {
     private static StreamingAgent singleton = new StreamingAgent();
@@ -31,6 +34,9 @@ public class StreamingAgent {
     }
 
     private void handleStreamEvent(String pipeId, String entity){
+        Configuration configuration = DataPipeline.getConfiguration();
+        int windowSize = configuration.streamSizeInBytes();
+
         System.out.println("***SENDING_DATA_HANDLE*****");
         SizeOf sizeOf = SizeOf.newInstance();
         long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
@@ -40,8 +46,6 @@ public class StreamingAgent {
         System.out.println("SIZE: "+dataStreamSize);
         System.out.println("**********");
 
-        //TODO: make this configurable, depending on ingestion payload size (CR2)
-        int windowSize = 25;
         if (dataStreamSize >= windowSize) {
             System.out.println("***SENDING_DATA_HANDLED*****");
             JsonArray batch = new JsonArray();

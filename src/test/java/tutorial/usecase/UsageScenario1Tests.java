@@ -1,6 +1,7 @@
 package tutorial.usecase;
 
 import com.appgallabs.dataplatform.TestConstants;
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
@@ -41,6 +42,12 @@ public class UsageScenario1Tests {
 
         //confirm data is received on the receiver data store*/
 
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
         String dataPipeConfiguration = "{\n" +
                 "  \"pipeId\": \"123\",\n" +
                 "  \"configuration\": [\n" +
@@ -63,7 +70,7 @@ public class UsageScenario1Tests {
         String sourceData = "[\n" +
                 "  {\n" +
                 "    \"id\" : 1,\n" +
-                "    \"name\": \"Joe Black0\",\n" +
+                "    \"name\": \"Joe Black1\",\n" +
                 "    \"age\": 50,\n" +
                 "    \"addr\": {\n" +
                 "      \"email\": \"test@email.com\",\n" +
@@ -72,7 +79,7 @@ public class UsageScenario1Tests {
                 "  },\n" +
                 "  {\n" +
                 "    \"id\": \"2\",\n" +
-                "    \"name\": \"Joe Black1\",\n" +
+                "    \"name\": \"Joe Black2\",\n" +
                 "    \"age\": 50,\n" +
                 "    \"addr\": {\n" +
                 "      \"email\": \"test@email.com\",\n" +
@@ -103,6 +110,12 @@ public class UsageScenario1Tests {
      */
     @Test
     public void scenario1Object() throws Exception{
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080/");
+        DataPipeline.configure(configuration);
+
         String datasetLocation = "tutorial/usecase/scenario1/scenario1Object.json";
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);

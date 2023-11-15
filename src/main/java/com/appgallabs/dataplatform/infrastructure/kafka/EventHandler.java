@@ -58,6 +58,6 @@ public class EventHandler implements KafkaMessageHandler {
         this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),
                 pipeId,entity,jsonPayloadString);
 
-        this.storeOrchestrator.receiveData(pipeId,jsonPayloadString);
+        this.storeOrchestrator.receiveData(securityToken, pipeId,jsonPayloadString);
     }
 }
