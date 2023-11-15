@@ -1,6 +1,7 @@
 package tutorial.usecase;
 
 import com.appgallabs.dataplatform.TestConstants;
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
@@ -23,6 +24,12 @@ public class UsageScenario2Tests {
      */
     @Test
     public void scenario2Array() throws Exception{
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
         String datasetLocation = "tutorial/usecase/scenario2/scenario2Array.json";
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);
@@ -52,6 +59,12 @@ public class UsageScenario2Tests {
      */
     @Test
     public void scenario2Object() throws Exception{
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
         String datasetLocation = "tutorial/usecase/scenario2/scenario2Object.json";
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);

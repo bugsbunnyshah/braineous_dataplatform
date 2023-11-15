@@ -9,17 +9,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DataPipeline {
-    private static Map<String,String> configuration;
+    private static Configuration configuration;
 
-    static{
+    /*static{
         configuration = new HashMap<>();
 
         configuration.put("steamSizeInBytes", "80");
         configuration.put("ingestionHostBaseUrl", "http://localhost:8080/");
+    }*/
+
+    public static Configuration configure(Configuration configuration){
+        DataPipeline.configuration = configuration;
+        return DataPipeline.configuration;
     }
 
-    public static Map<String, String> getConfiguration() {
-        return configuration;
+    public static Configuration getConfiguration() {
+        return DataPipeline.configuration;
     }
 
     public static void sendData(String pipeId, String entity, String payload){

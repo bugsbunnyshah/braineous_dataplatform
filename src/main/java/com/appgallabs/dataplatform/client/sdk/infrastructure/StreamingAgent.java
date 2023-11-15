@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.infrastructure;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -33,8 +34,8 @@ public class StreamingAgent {
     }
 
     private void handleStreamEvent(String pipeId, String entity){
-        Map<String,String> configuration = DataPipeline.getConfiguration();
-        int windowSize = Integer.parseInt(configuration.get("steamSizeInBytes"));
+        Configuration configuration = DataPipeline.getConfiguration();
+        int windowSize = configuration.streamSizeInBytes();
 
         System.out.println("***SENDING_DATA_HANDLE*****");
         SizeOf sizeOf = SizeOf.newInstance();

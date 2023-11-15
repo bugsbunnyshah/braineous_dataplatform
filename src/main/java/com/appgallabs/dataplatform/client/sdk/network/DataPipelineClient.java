@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
@@ -32,8 +33,8 @@ public class DataPipelineClient {
     public JsonObject sendData(String pipeId, String entity, JsonElement jsonElement){
         System.out.println("***SENDING_DATA_NETWORK*****");
         try {
-            Map<String,String> configuration = DataPipeline.getConfiguration();
-            String baseUrl = configuration.get("ingestionHostBaseUrl");
+            Configuration configuration = DataPipeline.getConfiguration();
+            String baseUrl = configuration.ingestionHostUrl();
             String restUrl = baseUrl+"ingestion/json/";
 
             String payload = jsonElement.toString();
@@ -66,8 +67,8 @@ public class DataPipelineClient {
 
     public JsonObject registerPipe(JsonElement jsonElement){
         try {
-            Map<String,String> configuration = DataPipeline.getConfiguration();
-            String baseUrl = configuration.get("ingestionHostBaseUrl");
+            Configuration configuration = DataPipeline.getConfiguration();
+            String baseUrl = configuration.ingestionHostUrl();
             String restUrl = baseUrl+"ingestion/register_pipe/";
             String payload = jsonElement.toString();
 

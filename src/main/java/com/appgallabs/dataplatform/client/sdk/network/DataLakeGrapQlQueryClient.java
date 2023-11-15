@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,8 +31,8 @@ public class DataLakeGrapQlQueryClient {
 
     public JsonObject sendQuery(String graphqlQuery){
         try {
-            Map<String,String> configuration = DataPipeline.getConfiguration();
-            String baseUrl = configuration.get("ingestionHostBaseUrl");
+            Configuration configuration = DataPipeline.getConfiguration();
+            String baseUrl = configuration.ingestionHostUrl();
             String restUrl = baseUrl+"data/lake/query/";
 
             //get OAuth Token
