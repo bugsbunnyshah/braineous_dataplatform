@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.tutorial;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.client.sdk.api.RegisterPipeException;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -9,6 +10,12 @@ import com.google.gson.JsonObject;
 public class DataIngestionTutorial {
 
     public static void main(String[] args) throws RegisterPipeException, InterruptedException {
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
         //setup data pipe configuration json
         String dataPipeConfiguration = "{\n" +
                 "  \"pipeId\": \"123\",\n" +
