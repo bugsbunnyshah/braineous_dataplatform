@@ -1,4 +1,7 @@
-mvn clean package -Dquarkus.package.main-class=dataplatform -DskipTests && rm ./dataplatform-1.0.0-runner.jar &&
-cp target/dataplatform-1.0.0-runner.jar .
-java -jar target/dataplatform-1.0.0-runner.jar
+mvn clean package -Dquarkus.package.main-class=dataplatform -DskipTests
+
+cp target/*-runner.jar .
+cp target/*-runner.jar ./braineous-dataingestion-sdk-1.0.0-cr1.jar
+
+java -jar target/*-runner.jar
 

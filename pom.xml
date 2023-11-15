@@ -4,9 +4,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  com.appgallabs/dataplatform/1.0.0-cr1/dataplatform-1.0.0-cr1-runner.jar
-
-
   <groupId>com.appgallabs</groupId>
   <artifactId>dataplatform</artifactId>
   <version>1.0.0-cr1</version>

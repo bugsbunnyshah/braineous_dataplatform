@@ -52,7 +52,7 @@ public class PipelineService {
             final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
                     this.flinkHost,
                     Integer.parseInt(this.flinkPort),
-                    "dataplatform-1.0.0-runner.jar"
+                    "dataplatform-1.0.0-cr1-runner.jar"
             );
 
             JsonElement jsonElement = JsonParser.parseString(jsonString);

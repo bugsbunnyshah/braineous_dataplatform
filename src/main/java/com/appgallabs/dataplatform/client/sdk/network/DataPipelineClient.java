@@ -29,6 +29,7 @@ public class DataPipelineClient {
 
     //TODO: finalize_implementation (CR1)
     public JsonObject sendData(String pipeId, String entity, JsonElement jsonElement){
+        System.out.println("***SENDING_DATA_NETWORK*****");
         try {
             String restUrl = "http://localhost:8080/ingestion/json/";
             String payload = jsonElement.toString();

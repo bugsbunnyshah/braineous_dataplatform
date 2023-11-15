@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 public class DataPipeline {
 
     public static void sendData(String pipeId, String entity, String payload){
+        System.out.println("***SENDING_DATA_START*****");
         DataPipelineService.getInstance().sendData(pipeId, entity, payload);
     }
 

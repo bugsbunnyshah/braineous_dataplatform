@@ -31,12 +31,19 @@ public class StreamingAgent {
     }
 
     private void handleStreamEvent(String pipeId, String entity){
+        System.out.println("***SENDING_DATA_HANDLE*****");
         SizeOf sizeOf = SizeOf.newInstance();
         long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
+        System.out.println("**********");
+        System.out.println(this.queueStream);
+        System.out.println("SIZE: "+dataStreamSize);
+        System.out.println("**********");
+
         //TODO: make this configurable, depending on ingestion payload size (CR2)
-        int windowSize = 100;
+        int windowSize = 25;
         if (dataStreamSize >= windowSize) {
+            System.out.println("***SENDING_DATA_HANDLED*****");
             JsonArray batch = new JsonArray();
             for (int i = 0; i < this.queueStream.size(); i++) {
                 String element = this.queueStream.remove();
@@ -61,10 +68,14 @@ public class StreamingAgent {
                 //TODO: integrate with reporting service (CR2)
                 //JsonUtil.printStdOut(response);
             }
+        }else{
+            System.out.println("***SENDING_DATA_QUEUED*****");
         }
     }
 
     public synchronized void sendData(String pipeId, String entity,String json){
+        System.out.println("***SENDING_DATA_ASYNC*****");
+
         // register a listener which polls a queue and prints an element
         this.queueStream.registerListener(e -> {
             handleStreamEvent(pipeId,entity);
@@ -73,6 +84,8 @@ public class StreamingAgent {
     }
 
     private JsonObject sendDataToCloud(String pipeId, String entity,String payload){
+        System.out.println("***SENDING_DATA_START_SEND_TO_CLOUD*****");
+
         //validate and prepare rest payload
         JsonElement jsonElement = JsonUtil.validateJson(payload);
         if(jsonElement == null){
