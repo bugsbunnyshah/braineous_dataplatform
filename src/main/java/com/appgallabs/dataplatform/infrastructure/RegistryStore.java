@@ -25,6 +25,7 @@ public class RegistryStore implements Serializable {
         JsonObject registryJson = JsonUtil.validateJson(registryJsonString).getAsJsonObject();
 
         registryJson.addProperty("tenant", principal);
+        registryJson.add("datalakeConfiguration", registry.getDatalakeConfiguration());
 
         collection.insertOne(Document.parse(registryJson.toString()));
     }

@@ -1,15 +1,17 @@
 package com.appgallabs.dataplatform.pipeline;
 
-import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
 import com.mongodb.client.MongoClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +26,6 @@ public class Registry {
 
     private JsonObject datalakeConfiguration;
     private Map<String, JsonArray> registry; //pipeId -> StoreDriver
-
-    private Map<String, DataLakeDriver> datalakeDrivers;
 
     private MongoDBJsonStore mongoDBJsonStore;
 
@@ -47,18 +47,12 @@ public class Registry {
         //safe-check, cause why not
         if(Registry.singleton == null){
             Registry.singleton = new Registry();
-
-            //TODO: load from db (CR1)
         }
         return Registry.singleton;
     }
 
     public Map<String, JsonArray> getRegistry() {
         return registry;
-    }
-
-    public JsonArray findByPipeId(String pipeId){
-        return this.registry.get(pipeId);
     }
 
     public List<StoreDriver> findStoreDrivers(String pipeId){
@@ -90,7 +84,6 @@ public class Registry {
     }
 
     public String registerPipe(Tenant tenant, JsonObject pipeRegistration) {
-
         String pipeId = pipeRegistration.get("pipeId").getAsString();
         JsonArray storeDrivers = pipeRegistration.getAsJsonArray("configuration");
 
@@ -130,14 +123,14 @@ public class Registry {
     }
 
     //-----------------------------------------------------------------------------------
-    void flushToDb(Tenant tenant){
+    private void flushToDb(Tenant tenant){
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
         RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
 
         registryStore.flushToDb(tenant, mongoClient, this);
     }
 
-    void loadFromDb(){
+    private void loadFromDb(){
         System.out.println(this.mongoDBJsonStore);
     }
 }

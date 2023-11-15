@@ -7,12 +7,15 @@ import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import org.json.JSONObject;
 import org.json.XML;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -114,7 +117,11 @@ public class DataIngestion {
                 array = sourceIngestion.getAsJsonArray();
             }
 
-            JsonObject responseJson = this.eventProducer.processEvent(pipeId, entity, array);
+            JsonObject responseJson = this.eventProducer.processEvent(
+                    pipeId,
+                    entity,
+                    array
+            );
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
             //Get Source Object Hashes
@@ -149,6 +156,7 @@ public class DataIngestion {
 
             String xml = jsonObject.get("sourceData").getAsString();
             String entity = jsonObject.get("entity").getAsString();
+            String pipeId = jsonObject.get("pipeId").getAsString();
 
             JSONObject sourceJson = XML.toJSONObject(xml);
             String sourceData = sourceJson.toString(4);
@@ -162,7 +170,11 @@ public class DataIngestion {
                 array = sourceIngestion.getAsJsonArray();
             }
 
-            JsonObject responseJson = this.eventProducer.processEvent(array);
+            JsonObject responseJson = this.eventProducer.processEvent(
+                    pipeId,
+                    entity,
+                    array
+            );
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
             //Get Source Object Hashes
@@ -197,6 +209,7 @@ public class DataIngestion {
             String sourceData = jsonObject.get("sourceData").getAsString();
             boolean hasHeader = jsonObject.get("hasHeader").getAsBoolean();
             String entity = jsonObject.get("entity").getAsString();
+            String pipeId = jsonObject.get("pipeId").getAsString();
 
             String[] lines = sourceData.split("\n");
             String[] columns = null;
@@ -232,7 +245,11 @@ public class DataIngestion {
             }
 
 
-            JsonObject responseJson = this.eventProducer.processEvent(array);
+            JsonObject responseJson = this.eventProducer.processEvent(
+                    pipeId,
+                    entity,
+                    array
+            );
             responseJson.addProperty("message", "DATA_SUCCESSFULLY_INGESTED");
 
             //Get Source Object Hashes
@@ -255,34 +272,4 @@ public class DataIngestion {
             return Response.status(500).entity(error.toString()).build();
         }
     }
-
-    /*@Path("readDataLakeObject")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response readDataLakeObject(@QueryParam("dataLakeId") String dataLakeId)
-    {
-        try {
-            Tenant tenant = this.securityTokenContainer.getTenant();
-            JsonArray storedJson = this.dataLakeDriver.readIngestion(tenant,dataLakeId);
-
-            Response response = null;
-            if(storedJson != null) {
-                response = Response.ok(storedJson.toString()).build();
-            }
-            else
-            {
-                JsonObject error = new JsonObject();
-                error.addProperty("dataLakeId", dataLakeId+": NOT_FOUND");
-                response = Response.status(404).entity(error.toString()).build();
-            }
-            return response;
-        }
-        catch(Exception e)
-        {
-            logger.error(e.getMessage(), e);
-            JsonObject error = new JsonObject();
-            error.addProperty("exception", e.getMessage());
-            return Response.status(500).entity(error.toString()).build();
-        }
-    }*/
 }

@@ -76,11 +76,4 @@ public class RegistryTests extends BaseTest {
         //asserts
         assertNotNull(datalakeDriverConfiguration);
     }
-
-    @Test
-    public void loadFromDb() throws Exception{
-        Registry registry = Registry.getInstance();
-
-        registry.loadFromDb();
-    }
 }

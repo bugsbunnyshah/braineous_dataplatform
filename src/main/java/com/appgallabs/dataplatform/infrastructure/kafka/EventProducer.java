@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 
@@ -61,23 +62,7 @@ public class EventProducer {
         }
     }
 
-    //TODO: REMOVE_ME (CR1) or (CR2)
-    public JsonObject processEvent(JsonElement json) {
-        try{
-            JsonObject response = new JsonObject();
-
-            SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
-                    "blah", "books", json.toString());
-            response.addProperty("statusCode", 200);
-
-
-            return response;
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public JsonObject processEvent(String pipeId, String entity,JsonElement json) {
+    public JsonObject processEvent(String pipeId, String entity, JsonElement json) {
         try{
             JsonObject response = new JsonObject();
 
