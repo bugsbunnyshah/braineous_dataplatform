@@ -31,11 +31,12 @@ public class RegistryTests extends BaseTest {
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
         Tenant tenant = this.securityTokenContainer.getTenant();
+        String principal = tenant.getPrincipal();
 
         Registry registry = Registry.getInstance();
         String pipeId = registry.registerPipe(tenant,JsonUtil.validateJson(jsonString).getAsJsonObject());
 
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
+        List<StoreDriver> storeDrivers = registry.findStoreDrivers(principal, pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
 
         //asserts
@@ -49,11 +50,12 @@ public class RegistryTests extends BaseTest {
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
         Tenant tenant = this.securityTokenContainer.getTenant();
+        String principal = tenant.getPrincipal();
 
         Registry registry = Registry.getInstance();
         String pipeId = registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
 
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
+        List<StoreDriver> storeDrivers = registry.findStoreDrivers(principal, pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
 
         //asserts

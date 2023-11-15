@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.receiver.framework;
 
 import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
@@ -23,7 +24,9 @@ public class StoreOrchestrator {
         return StoreOrchestrator.singleton;
     }
 
-    public void receiveData(String pipeId, String data) {
+    public void receiveData(SecurityToken securityToken, String pipeId, String data) {
+        String tenant = securityToken.getToken();
+
         Debug.out("******STORE_ORCHESTRATOR********");
         Debug.out("PipeId: "+pipeId);
         Debug.out("Data: "+data);
@@ -32,7 +35,7 @@ public class StoreOrchestrator {
         Registry registry = Registry.getInstance();
 
         //find the registered store drivers for this pipe
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
+        List<StoreDriver> storeDrivers = registry.findStoreDrivers(tenant, pipeId);
         if(storeDrivers == null || storeDrivers.isEmpty()){
             return;
         }

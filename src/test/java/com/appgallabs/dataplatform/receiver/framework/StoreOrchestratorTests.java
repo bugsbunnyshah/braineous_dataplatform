@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.receiver.framework;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.MongoDBUtil;
@@ -44,6 +45,8 @@ public class StoreOrchestratorTests extends BaseTest {
 
     @Test
     public void receiveData() throws Exception{
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+
         List<String> objectHashes = new ArrayList<>();
         String jsonString = Util.loadResource("receiver/dataset.json");
         JsonArray dataSetArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
@@ -53,7 +56,7 @@ public class StoreOrchestratorTests extends BaseTest {
         }
 
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
-        storeOrchestrator.receiveData("123", jsonString);
+        storeOrchestrator.receiveData(securityToken,"123", jsonString);
 
         //assert
         Registry registry = Registry.getInstance();

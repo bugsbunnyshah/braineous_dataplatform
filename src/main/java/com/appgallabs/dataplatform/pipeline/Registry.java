@@ -24,10 +24,10 @@ public class Registry {
 
     private static Registry singleton = new Registry();
 
+    private MongoDBJsonStore mongoDBJsonStore;
+
     private JsonObject datalakeConfiguration;
     private Map<String, JsonArray> registry; //pipeId -> StoreDriver
-
-    private MongoDBJsonStore mongoDBJsonStore;
 
     private Registry() {
         try {
@@ -55,7 +55,22 @@ public class Registry {
         return registry;
     }
 
-    public List<StoreDriver> findStoreDrivers(String pipeId){
+    public JsonObject getDatalakeConfiguration() {
+        return datalakeConfiguration;
+    }
+
+
+    //read operations---------------------------------------------------------
+    public Set<String> allRegisteredPipeIds(){
+        Collection<String> keys = this.registry.keySet();
+
+        Set<String> pipeIds = new HashSet<>();
+        pipeIds.addAll(keys);
+
+        return pipeIds;
+    }
+
+    public List<StoreDriver> findStoreDrivers(String tenant, String pipeId){
         try {
             List<StoreDriver> result = new ArrayList<>();
 
@@ -82,7 +97,7 @@ public class Registry {
             throw new RuntimeException(e);
         }
     }
-
+    //write operations------------------------------------------------------------------
     public String registerPipe(Tenant tenant, JsonObject pipeRegistration) {
         String pipeId = pipeRegistration.get("pipeId").getAsString();
         JsonArray storeDrivers = pipeRegistration.getAsJsonArray("configuration");
@@ -94,34 +109,6 @@ public class Registry {
 
         return pipeId;
     }
-
-    public Set<String> allRegisteredPipeIds(){
-        Collection<String> keys = this.registry.keySet();
-
-        Set<String> pipeIds = new HashSet<>();
-        pipeIds.addAll(keys);
-
-        return pipeIds;
-    }
-
-
-
-    public JsonArray getDriverConfigurations(){
-        JsonArray driverConfigurations = new JsonArray();
-
-        Set<Map.Entry<String, JsonArray>> entries = this.registry.entrySet();
-        for(Map.Entry<String, JsonArray> entry: entries){
-            JsonArray registeredValue = entry.getValue();
-            driverConfigurations.add(registeredValue);
-        }
-
-        return driverConfigurations;
-    }
-
-    public JsonObject getDatalakeConfiguration() {
-        return datalakeConfiguration;
-    }
-
     //-----------------------------------------------------------------------------------
     private void flushToDb(Tenant tenant){
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
@@ -132,5 +119,19 @@ public class Registry {
 
     private void loadFromDb(){
         System.out.println(this.mongoDBJsonStore);
+    }
+
+    //TODO: (CR2)
+    //----deprecate-------------
+    public JsonArray getDriverConfigurations(){
+        JsonArray driverConfigurations = new JsonArray();
+
+        Set<Map.Entry<String, JsonArray>> entries = this.registry.entrySet();
+        for(Map.Entry<String, JsonArray> entry: entries){
+            JsonArray registeredValue = entry.getValue();
+            driverConfigurations.add(registeredValue);
+        }
+
+        return driverConfigurations;
     }
 }
