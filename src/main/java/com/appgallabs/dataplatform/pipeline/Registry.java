@@ -57,10 +57,6 @@ public class Registry {
         return registry;
     }
 
-    public void setRegistry(Map<String, JsonArray> registry) {
-        this.registry = registry;
-    }
-
     public JsonArray findByPipeId(String pipeId){
         return this.registry.get(pipeId);
     }

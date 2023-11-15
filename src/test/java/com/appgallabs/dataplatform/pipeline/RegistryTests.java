@@ -78,11 +78,6 @@ public class RegistryTests extends BaseTest {
     }
 
     @Test
-    public void flushToDb() throws Exception{
-
-    }
-
-    @Test
     public void loadFromDb() throws Exception{
         Registry registry = Registry.getInstance();
 
