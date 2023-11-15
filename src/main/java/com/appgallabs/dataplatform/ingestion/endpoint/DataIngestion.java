@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProducer;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
@@ -58,6 +59,8 @@ public class DataIngestion {
     {
         try
         {
+            Tenant tenant = this.securityTokenContainer.getTenant();
+
             JsonObject responseJson = new JsonObject();
 
             Registry registry = Registry.getInstance();
@@ -65,7 +68,7 @@ public class DataIngestion {
             String pipeId = pipeRegistration.get("pipeId").getAsString();
 
             //registry
-            registry.registerPipe(pipeRegistration);
+            registry.registerPipe(tenant,pipeRegistration);
 
             //event consumer
             this.eventConsumer.registerPipe(pipeId);

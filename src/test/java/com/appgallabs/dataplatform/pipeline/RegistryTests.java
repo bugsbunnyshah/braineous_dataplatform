@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.pipeline;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import test.components.BaseTest;
 import test.components.Util;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,13 +22,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RegistryTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(RegistryTests.class);
 
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
+
     @Test
     public void registerPipe() throws Exception{
         String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         Registry registry = Registry.getInstance();
-        String pipeId = registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+        String pipeId = registry.registerPipe(tenant,JsonUtil.validateJson(jsonString).getAsJsonObject());
 
         List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
@@ -40,8 +48,10 @@ public class RegistryTests extends BaseTest {
         String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         Registry registry = Registry.getInstance();
-        String pipeId = registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+        String pipeId = registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
 
         List<StoreDriver> storeDrivers = registry.findStoreDrivers(pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
@@ -56,12 +66,26 @@ public class RegistryTests extends BaseTest {
         String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         Registry registry = Registry.getInstance();
-        String pipeId = registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+        String pipeId = registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
 
         //asserts
         assertNotNull(datalakeDriverConfiguration);
+    }
+
+    @Test
+    public void flushToDb() throws Exception{
+
+    }
+
+    @Test
+    public void loadFromDb() throws Exception{
+        Registry registry = Registry.getInstance();
+
+        registry.loadFromDb();
     }
 }

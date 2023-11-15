@@ -54,11 +54,13 @@ public class EventProcessorTests extends BaseTest {
         JsonObject response = this.eventConsumer.checkStatus();
         logger.info(response.toString());
 
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         String jsonString = Util.loadResource("pipeline/temp.json");
 
         Registry registry = Registry.getInstance();
         JsonObject pipeRegistration = JsonUtil.validateJson(jsonString).getAsJsonObject();
-        registry.registerPipe(pipeRegistration);
+        registry.registerPipe(tenant, pipeRegistration);
 
         this.eventProducer.start();
         this.eventConsumer.start();

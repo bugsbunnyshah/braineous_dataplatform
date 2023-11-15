@@ -53,6 +53,9 @@ public class MongoDBJsonStore
     @Inject
     private PipelineStore pipelineStore;
 
+    @Inject
+    private RegistryStore registryStore;
+
     private MongoClient mongoClient = null;
 
 
@@ -72,6 +75,10 @@ public class MongoDBJsonStore
 
     public PipelineStore getPipelineStore() {
         return pipelineStore;
+    }
+
+    public RegistryStore getRegistryStore() {
+        return registryStore;
     }
 
     @PreDestroy

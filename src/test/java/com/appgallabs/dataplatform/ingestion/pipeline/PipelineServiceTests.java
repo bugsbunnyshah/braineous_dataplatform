@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -44,10 +45,12 @@ public class PipelineServiceTests extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
 
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
 
         Registry registry = Registry.getInstance();
-        registry.registerPipe(JsonUtil.validateJson(jsonString).getAsJsonObject());
+        registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
     }
 
     @Test
