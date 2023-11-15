@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
+import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class DataPipelineClient {
     private static DataPipelineClient singleton = new DataPipelineClient();
@@ -27,11 +29,13 @@ public class DataPipelineClient {
         return DataPipelineClient.singleton;
     }
 
-    //TODO: finalize_implementation (CR1)
     public JsonObject sendData(String pipeId, String entity, JsonElement jsonElement){
         System.out.println("***SENDING_DATA_NETWORK*****");
         try {
-            String restUrl = "http://localhost:8080/ingestion/json/";
+            Map<String,String> configuration = DataPipeline.getConfiguration();
+            String baseUrl = configuration.get("ingestionHostBaseUrl");
+            String restUrl = baseUrl+"ingestion/json/";
+
             String payload = jsonElement.toString();
 
             //get OAuth Token
@@ -62,7 +66,9 @@ public class DataPipelineClient {
 
     public JsonObject registerPipe(JsonElement jsonElement){
         try {
-            String restUrl = "http://localhost:8080/ingestion/register_pipe/";
+            Map<String,String> configuration = DataPipeline.getConfiguration();
+            String baseUrl = configuration.get("ingestionHostBaseUrl");
+            String restUrl = baseUrl+"ingestion/register_pipe/";
             String payload = jsonElement.toString();
 
             //get OAuth Token
@@ -90,7 +96,6 @@ public class DataPipelineClient {
         }
     }
 
-    //TODO: finalize_implementation (CR1)
     private JsonObject handleRestCallForSendData(String restUrl,String tenant,String generatedToken,
             String pipeId, String entity, String payload){
         try {

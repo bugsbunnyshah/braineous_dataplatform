@@ -63,7 +63,7 @@ public class UsageScenario1Tests {
         String sourceData = "[\n" +
                 "  {\n" +
                 "    \"id\" : 1,\n" +
-                "    \"name\": \"Joe Black0\",\n" +
+                "    \"name\": \"Joe Black1\",\n" +
                 "    \"age\": 50,\n" +
                 "    \"addr\": {\n" +
                 "      \"email\": \"test@email.com\",\n" +
@@ -72,7 +72,7 @@ public class UsageScenario1Tests {
                 "  },\n" +
                 "  {\n" +
                 "    \"id\": \"2\",\n" +
-                "    \"name\": \"Joe Black1\",\n" +
+                "    \"name\": \"Joe Black2\",\n" +
                 "    \"age\": 50,\n" +
                 "    \"addr\": {\n" +
                 "      \"email\": \"test@email.com\",\n" +
