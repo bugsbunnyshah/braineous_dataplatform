@@ -32,7 +32,7 @@ public class DataLakeGrapQlQueryClient {
         try {
             Map<String,String> configuration = DataPipeline.getConfiguration();
             String baseUrl = configuration.get("ingestionHostBaseUrl");
-            String restUrl = baseUrl+"ingestion/data/lake/query/";
+            String restUrl = baseUrl+"data/lake/query/";
 
             //get OAuth Token
             String credentials = IOUtils.resourceToString("oauth/credentials.json",
