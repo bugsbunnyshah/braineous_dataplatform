@@ -1,10 +1,11 @@
 package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
+import com.appgallabs.dataplatform.configuration.FrameworkServices;
+import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.github.wnameless.json.unflattener.JsonUnflattener;
+import com.google.gson.*;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -22,7 +24,7 @@ import java.time.OffsetDateTime;
 import java.util.*;
 
 @Singleton
-public class MongoDBJsonStore implements Serializable
+public class MongoDBJsonStore
 {
     private static Logger logger = LoggerFactory.getLogger(MongoDBJsonStore.class);
 
@@ -38,6 +40,7 @@ public class MongoDBJsonStore implements Serializable
     @ConfigProperty(name = "mongodbPort")
     private String mongodbPort;
 
+    //TODO: cleanup (CR1)
     private String database = "ian_qa";
     private String password = "jen";
 
@@ -47,17 +50,40 @@ public class MongoDBJsonStore implements Serializable
     @Inject
     private DataLakeStore dataLakeStore;
 
-    private MongoClient mongoClient;
-    private Map<String,MongoDatabase> databaseMap;
+    @Inject
+    private PipelineStore pipelineStore;
+
+    private MongoClient mongoClient = null;
+
 
     public MongoDBJsonStore()
     {
-        this.databaseMap = new HashMap<>();
+
+
     }
 
-    @PostConstruct
-    public void start()
-    {
+    public DataHistoryStore getDataHistoryStore() {
+        return dataHistoryStore;
+    }
+
+    public DataLakeStore getDataLakeStore() {
+        return dataLakeStore;
+    }
+
+    public PipelineStore getPipelineStore() {
+        return pipelineStore;
+    }
+
+    @PreDestroy
+    public void onStop(){
+        this.mongoClient.close();
+    }
+
+    public MongoClient getMongoClient() {
+        if(this.mongoClient != null){
+            return this.mongoClient;
+        }
+
         String connectionString;
         if(this.mongodbHost.equals("localhost"))
         {
@@ -70,29 +96,159 @@ public class MongoDBJsonStore implements Serializable
                     this.database);
         }
 
-        System.out.println("*****************************");
-        System.out.println(connectionString);
-        System.out.println("*****************************");
+        //System.out.println("*****************************");
+        //System.out.println(connectionString);
+        //System.out.println("*****************************");
 
         this.mongoClient = MongoClients.create(connectionString);
-    }
-
-    @PreDestroy
-    public void stop()
-    {
-        this.mongoClient.close();
-    }
-
-    public MongoClient getMongoClient() {
         return mongoClient;
     }
 
+    @Override
+    public String toString() {
+        return "MongoDBJsonStore{" +
+                "mongodbHost='" + mongodbHost + '\'' +
+                ", mongodbPort='" + mongodbPort + '\'' +
+                '}';
+    }
+
     //Data Ingestion related operations-----------------------------------------------------
+    public String storeIngestion(Tenant tenant,Map<String,Object> flatJson){
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
+
+        MongoCollection<Document> collection = database.getCollection("datalake");
+
+        Set<Map.Entry<String, Object>> entrySet = flatJson.entrySet();
+        Document document = new Document();
+        for(Map.Entry<String, Object> entry: entrySet){
+            String path = entry.getKey();
+            Object value = entry.getValue();
+            document.put(path,value);
+        }
+
+        collection.insertOne(document);
+
+        return (String)flatJson.get("objectHash");
+    }
+
+    public JsonArray readIngestion(Tenant tenant,String dataLakeId){
+        Gson gson = new Gson();
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
+
+        MongoCollection<Document> collection = database.getCollection("datalake");
+
+        String queryJson = "{\"objectHash\":\""+dataLakeId+"\"}";
+        //System.out.println("****************************************");
+        //System.out.println(queryJson);
+        //System.out.println("****************************************");
+        Bson bson = Document.parse(queryJson);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        Map<String,Object> wholeDocument = new LinkedHashMap<>();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            Iterator<String> keyIterator = document.keySet().iterator();
+            String key = null;
+            while(keyIterator.hasNext()){
+                key = keyIterator.next();
+                if(!key.equals("_id") &&
+                        !key.equals("objectHash") &&
+                        !key.equals("tenant") &&
+                        !key.equals("entity") &&
+                        !key.equals("timestamp")){
+                    break;
+                }
+            }
+
+            Object value = document.get(key);
+            if(value instanceof Document){
+                this.processDocument(wholeDocument, key, (Document)value);
+            }else if (value instanceof List){
+                this.processList(wholeDocument, key, ((List)value).toArray());
+            }
+            else {
+                processPrimitive(wholeDocument,key,value);
+            }
+        }
+
+        JsonArray result = new JsonArray();
+
+        String flattenedJsonString = gson.toJson(wholeDocument,LinkedHashMap.class);
+
+        String nestedJson = JsonUnflattener.unflatten(flattenedJsonString);
+        JsonElement jsonElement = JsonParser.parseString(nestedJson);
+
+        result.add(jsonElement);
+
+        return result;
+    }
+
+    private void processPrimitive(Map<String,Object> wholeDocument, String key, Object value){
+        if (value instanceof String) {
+            wholeDocument.put(key, value.toString());
+        } else if (value instanceof Boolean) {
+            wholeDocument.put(key, ((Boolean) value).booleanValue());
+        } else {
+            wholeDocument.put(key, ((Number) value).doubleValue());
+        }
+    }
+
+    private void processDocument(Map<String,Object> wholeDocument, String key, Document document){
+        Iterator<String> keyIterator = document.keySet().iterator();
+        if(!keyIterator.hasNext()){
+            wholeDocument.put(key, document);
+            return;
+        }
+
+        String variable;
+        while(keyIterator.hasNext()){
+            variable = keyIterator.next();
+            Object value = document.get(variable);
+            if(value instanceof List || value instanceof Document){
+                if(value instanceof Document){
+                    processDocument(wholeDocument, key+"."+variable, (Document) value);
+                }else{
+                    processList(wholeDocument, key +"."+variable, ((List)value).toArray());
+                }
+                continue;
+            }
+            processPrimitive(wholeDocument,key+"."+variable,value);
+        }
+    }
+
+    private void processList(Map<String,Object> wholeDocument, String key, Object[] objectArray){
+        if(objectArray.length == 0){
+            wholeDocument.put(key, objectArray);
+            return;
+        }
+
+        int counter = 0;
+        for(Object value:objectArray) {
+            if(value instanceof Document){
+                processDocument(wholeDocument, key+"["+counter+"]", (Document) value);
+            }else if(value instanceof List){
+                processList(wholeDocument, key+"["+counter+"]", ((List)value).toArray());
+            }
+            else {
+                processPrimitive(wholeDocument,key+"["+counter+"]",value);
+            }
+            counter++;
+        }
+    }
+
+
+
     public void storeIngestion(Tenant tenant,JsonObject jsonObject)
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -105,7 +261,7 @@ public class MongoDBJsonStore implements Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -132,7 +288,7 @@ public class MongoDBJsonStore implements Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -157,7 +313,7 @@ public class MongoDBJsonStore implements Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -182,7 +338,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -212,7 +368,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -228,7 +384,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -247,7 +403,7 @@ public class MongoDBJsonStore implements Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
         String queryJson = "{\"chainId\":\""+chainId+"\"}";
@@ -274,7 +430,7 @@ public class MongoDBJsonStore implements Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diffchain");
 
@@ -296,7 +452,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("diff");
 
         JsonObject jsonObject = new JsonObject();
@@ -311,7 +467,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("diff");
 
         JsonObject jsonObject = new JsonObject();
@@ -329,7 +485,7 @@ public class MongoDBJsonStore implements Serializable
 
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("diff");
 
@@ -351,7 +507,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
         String modelId = UUID.randomUUID().toString();
@@ -366,7 +522,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
@@ -387,7 +543,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
@@ -408,7 +564,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
         JsonObject currentModel = this.getModelPackage(tenant,modelId);
@@ -424,7 +580,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("aimodels");
 
         JsonObject currentModel = this.getModelPackage(tenant,modelId);
@@ -440,7 +596,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("aimodels");
         Document doc = Document.parse(modelPackage.toString());
@@ -451,7 +607,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -468,7 +624,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("datalake");
 
@@ -485,7 +641,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -502,7 +658,7 @@ public class MongoDBJsonStore implements Serializable
     {
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -530,7 +686,7 @@ public class MongoDBJsonStore implements Serializable
         String dataSettype = "training";
         String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
-        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoDatabase database = this.getMongoClient().getDatabase(databaseName);
 
         MongoCollection<Document> collection = database.getCollection("dataset");
 
@@ -554,22 +710,22 @@ public class MongoDBJsonStore implements Serializable
     }
     //---DataHistory----------------------------
     public void storeHistoryObject(Tenant tenant, JsonObject jsonObject){
-        this.dataHistoryStore.storeHistoryObject(tenant, this.mongoClient,jsonObject);
+        this.dataHistoryStore.storeHistoryObject(tenant, this.getMongoClient(),jsonObject);
     }
 
     public JsonArray readHistory(Tenant tenant, OffsetDateTime endTime){
-        return this.dataHistoryStore.readHistory(tenant, this.mongoClient,endTime);
+        return this.dataHistoryStore.readHistory(tenant, this.getMongoClient(),endTime);
     }
     //--DataLake------------------------------
     public JsonArray readByEntity(Tenant tenant, String entity){
-        return this.dataLakeStore.readByEntity(tenant,this.mongoClient,entity);
+        return this.dataLakeStore.readByEntity(tenant,this.getMongoClient(),entity);
     }
 
     public boolean entityExists(Tenant tenant, JsonObject entity){
-        return this.dataLakeStore.entityExists(tenant,this.mongoClient,entity);
+        return this.dataLakeStore.entityExists(tenant,this.getMongoClient(),entity);
     }
 
     public JsonObject readEntity(Tenant tenant,String objectHash){
-        return this.dataLakeStore.readEntity(tenant, this.mongoClient, objectHash);
+        return this.dataLakeStore.readEntity(tenant, this.getMongoClient(), objectHash);
     }
 }

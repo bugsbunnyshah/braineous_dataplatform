@@ -1,0 +1,25 @@
+{
+  "pipeId": "123",
+  "configuration": [
+    {
+      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
+      "name": "scenario2_store0",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "scenario2_store0",
+        "collection": "data"
+      },
+      "jsonpathExpression": "jsonpath:1"
+    },
+    {
+      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
+      "name": "scenario2_store1",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "scenario2_store1",
+        "collection": "data"
+      },
+      "jsonpathExpression": "jsonpath:1"
+    }
+  ]
+}

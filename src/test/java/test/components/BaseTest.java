@@ -25,16 +25,21 @@ public abstract class BaseTest
     @BeforeEach
     public void setUp() throws Exception
     {
-        this.securityTokenMockComponent.start();
+        this.tearDown();
     }
 
     @AfterEach
-    void tearDown() {
-        /*try {
+    public void tearDown() throws Exception
+    {
+        this.securityTokenMockComponent.start();
+        this.cleanup();
+    }
+
+    private void cleanup(){
+        try {
             if (this.mongoDBJsonStore == null) {
                 this.mongoDBJsonStore = new MongoDBJsonStore();
             }
-            this.mongoDBJsonStore.start();
             if(this.securityTokenContainer != null && this.securityTokenContainer.getSecurityToken()!= null) {
                 String principal = this.securityTokenContainer.getTenant().getPrincipal();
                 String databaseName = principal + "_" + "aiplatform";
@@ -43,7 +48,7 @@ public abstract class BaseTest
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-        }*/
+            logger.error(e.getMessage());
+        }
     }
 }

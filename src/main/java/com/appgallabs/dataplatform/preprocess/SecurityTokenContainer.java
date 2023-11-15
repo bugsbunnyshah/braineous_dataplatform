@@ -1,13 +1,15 @@
 package com.appgallabs.dataplatform.preprocess;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
+import java.io.Serializable;
 
 @Singleton
-public class SecurityTokenContainer
+public class SecurityTokenContainer implements Serializable
 {
     private static Logger logger = LoggerFactory.getLogger(SecurityTokenContainer.class);
 
@@ -37,6 +39,8 @@ public class SecurityTokenContainer
 
     @Override
     public String toString() {
-        return "SecurityTokenContainer{}";
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("tenant",this.getTenant().toString());
+        return jsonObject.toString();
     }
 }

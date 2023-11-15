@@ -46,3 +46,7 @@ src/main/resources/META-INF/resources/
 remember.txt
 /mlruns/
 gitpush.sh
+compare/
+/dataplatform-1.0.0-runner.jar
+/braineous-dataingestion-sdk-1.0.0-cr1.jar
+/dataplatform-1.0.0-cr1-runner.jar
