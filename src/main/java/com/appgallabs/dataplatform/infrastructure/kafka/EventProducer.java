@@ -1,8 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
-import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.pipeline.Registry;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -31,26 +29,15 @@ public class EventProducer {
 
     private Map<String, TopicListing> topicListing;
 
-    private Set<String> allPipeIds;
+    private Set<String> registeredPipes;
 
     public EventProducer() {
         this.topicListing = new HashMap<>();
-        this.allPipeIds = new HashSet<>();
+        this.registeredPipes = new HashSet<>();
     }
 
     @PostConstruct
     public void start(){
-        try {
-            //start all pipes which are kafka topics
-            this.allPipeIds = Registry.getInstance().allRegisteredPipeIds();
-
-            for(String pipeTopic: allPipeIds) {
-                TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
-                this.topicListing.put(pipeTopic, topicListing);
-            }
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
     }
 
     @PreDestroy
@@ -80,12 +67,13 @@ public class EventProducer {
 
     public void registerPipe(String pipeId){
         try {
-            if(!this.allPipeIds.contains(pipeId)) {
-                this.allPipeIds.add(pipeId);
+            if(!this.registeredPipes.contains(pipeId)) {
                 String pipeTopic = pipeId;
 
                 TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
                 this.topicListing.put(pipeTopic, topicListing);
+
+                this.registeredPipes.add(pipeId);
             }
         }catch (Exception e){
             throw new RuntimeException(e);

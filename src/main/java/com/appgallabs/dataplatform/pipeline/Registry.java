@@ -27,12 +27,9 @@ public class Registry {
     private MongoDBJsonStore mongoDBJsonStore;
 
     private JsonObject datalakeConfiguration;
-    private Map<String, JsonArray> registry; //pipeId -> StoreDriver
 
     private Registry() {
         try {
-            this.registry = new HashMap<>();
-
             //find from the Quarkus registry
             this.mongoDBJsonStore = CDI.current().select(MongoDBJsonStore.class).get();
 
@@ -51,25 +48,12 @@ public class Registry {
         return Registry.singleton;
     }
 
-    public Map<String, JsonArray> getRegistry() {
-        return registry;
-    }
-
     public JsonObject getDatalakeConfiguration() {
         return datalakeConfiguration;
     }
 
 
     //read operations---------------------------------------------------------
-    public Set<String> allRegisteredPipeIds(){
-        Collection<String> keys = this.registry.keySet();
-
-        Set<String> pipeIds = new HashSet<>();
-        pipeIds.addAll(keys);
-
-        return pipeIds;
-    }
-
     public List<StoreDriver> findStoreDrivers(String tenant, String pipeId){
         try {
             List<StoreDriver> result = new ArrayList<>();
@@ -112,8 +96,6 @@ public class Registry {
         String pipeId = pipeRegistration.get("pipeId").getAsString();
         JsonArray storeDrivers = pipeRegistration.getAsJsonArray("configuration");
 
-        this.registry.put(pipeId, storeDrivers);
-
         //persist
         registryStore.registerPipe(
                 tenant,
@@ -122,19 +104,5 @@ public class Registry {
         );
 
         return pipeId;
-    }
-
-    //TODO: (CR2)
-    //----deprecate--------------------------------------------------------------------
-    public JsonArray getDriverConfigurations(){
-        JsonArray driverConfigurations = new JsonArray();
-
-        Set<Map.Entry<String, JsonArray>> entries = this.registry.entrySet();
-        for(Map.Entry<String, JsonArray> entry: entries){
-            JsonArray registeredValue = entry.getValue();
-            driverConfigurations.add(registeredValue);
-        }
-
-        return driverConfigurations;
     }
 }
