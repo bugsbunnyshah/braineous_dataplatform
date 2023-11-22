@@ -1,6 +1,9 @@
 package prototype.stores;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 
@@ -14,16 +17,22 @@ public class JDBCMySqlStoreTests {
 
     @Test
     public void executeJdbcFlow() throws Exception{
-        this.configure(null);
-        this.storeData(null);
+        String storeConfigString = Util.loadResource("prototype/stores/mysql_store.json");
+        JsonObject storeConfigJson = JsonUtil.validateJson(storeConfigString).getAsJsonObject();
+
+        String dataSetString = Util.loadResource("prototype/stores/scenario1Array.json");
+        JsonArray dataset = JsonUtil.validateJson(dataSetString).getAsJsonArray();
+
+        this.configure(storeConfigJson);
+        this.storeData(dataset);
     }
 
     public void configure(JsonObject configJson) throws Exception{
         Statement createTableStatement = null;
         try {
-            String url = "jdbc:mysql://localhost:3306/braineous_staging_database";
-            String username = "root";
-            String password = "";
+            String url = configJson.get("connectionString").getAsString();
+            String username = configJson.get("username").getAsString();;
+            String password = configJson.get("password").getAsString();;
 
             this.connection = DriverManager.getConnection(
                     url, username, password);
@@ -50,8 +59,10 @@ public class JDBCMySqlStoreTests {
             String query = "select * from staged_data";
 
             //populate table
-            for (int i = 0; i < 10; i++) {
-                String insertSql = "insert into staged_data (data) values ('hello_" + i + "_world')";
+            int size = dataSet.size();
+            for (int i = 0; i < size; i++) {
+                JsonElement record = dataSet.get(i);
+                String insertSql = "insert into staged_data (data) values ('"+record.toString()+"')";
                 Statement insertStatement = this.connection.createStatement();
                 insertStatement.executeUpdate(insertSql);
                 insertStatement.close();
