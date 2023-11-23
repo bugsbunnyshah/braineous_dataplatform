@@ -1,5 +1,6 @@
 package prototype.stores;
 
+import com.appgallabs.dataplatform.receiver.core.driver.MySqlStoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
@@ -17,14 +18,16 @@ public class JDBCMySqlStoreTests {
 
     @Test
     public void executeJdbcFlow() throws Exception{
+        MySqlStoreDriver mySqlStoreDriver = new MySqlStoreDriver();
+
         String storeConfigString = Util.loadResource("prototype/stores/mysql_store.json");
         JsonObject storeConfigJson = JsonUtil.validateJson(storeConfigString).getAsJsonObject();
 
         String dataSetString = Util.loadResource("prototype/stores/scenario1Array.json");
         JsonArray dataset = JsonUtil.validateJson(dataSetString).getAsJsonArray();
 
-        this.configure(storeConfigJson);
-        this.storeData(dataset);
+        mySqlStoreDriver.configure(storeConfigJson);
+        mySqlStoreDriver.storeData(dataset);
     }
 
     public void configure(JsonObject configJson) throws Exception{
