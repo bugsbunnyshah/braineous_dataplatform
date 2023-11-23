@@ -2,7 +2,7 @@ package com.appgallabs.dataplatform.pipeline;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
+import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;

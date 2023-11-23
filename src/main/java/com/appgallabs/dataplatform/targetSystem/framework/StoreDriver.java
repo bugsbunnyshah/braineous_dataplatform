@@ -1,4 +1,4 @@
-package com.appgallabs.dataplatform.receiver.framework;
+package com.appgallabs.dataplatform.targetSystem.framework;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

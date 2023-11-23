@@ -2,7 +2,7 @@
   "pipeId": "123",
   "configuration": [
     {
-      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver",
+      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
       "name": "scenario1_store_mongodb",
       "config": {
         "connectionString": "mongodb://localhost:27017",
@@ -12,7 +12,7 @@
       "jsonpathExpression": "jsonpath:1"
     },
     {
-      "storeDriver" : "com.appgallabs.dataplatform.receiver.core.driver.MySqlStoreDriver",
+      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
       "name": "scenario1_store_mysql",
       "config": {
         "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",

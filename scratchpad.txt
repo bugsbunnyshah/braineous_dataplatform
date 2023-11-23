@@ -72,7 +72,7 @@ query personByName {
     pipeId: '123',
     configuration: [
       {
-        storeDriver: 'com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver',
+        storeDriver: 'com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver',
         name: 'store_1_deprecated',
         config: {
           connectionString: 'mongodb://localhost:27017',
@@ -82,7 +82,7 @@ query personByName {
         jsonpathExpression: 'jsonpath:1'
       },
       {
-        storeDriver: 'com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver',
+        storeDriver: 'com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver',
         name: 'store_2_deprecated',
         config: {
           connectionString: 'mongodb://localhost:27017',

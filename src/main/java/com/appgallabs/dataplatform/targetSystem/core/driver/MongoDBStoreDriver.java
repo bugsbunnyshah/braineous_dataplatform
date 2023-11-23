@@ -1,6 +1,6 @@
-package com.appgallabs.dataplatform.receiver.core.driver;
+package com.appgallabs.dataplatform.targetSystem.core.driver;
 
-import com.appgallabs.dataplatform.receiver.framework.StoreDriver;
+import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -1,6 +1,6 @@
 package prototype.stores;
 
-import com.appgallabs.dataplatform.receiver.core.driver.MySqlStoreDriver;
+import com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;

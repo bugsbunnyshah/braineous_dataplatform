@@ -1,11 +1,10 @@
-package com.appgallabs.dataplatform.receiver.framework;
+package com.appgallabs.dataplatform.targetSystem.framework;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.appgallabs.dataplatform.util.MongoDBUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
@@ -19,9 +18,6 @@ import test.components.Util;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class StoreOrchestratorTests extends BaseTest {

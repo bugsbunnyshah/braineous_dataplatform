@@ -1,4 +1,4 @@
-package com.appgallabs.dataplatform.receiver.framework;
+package com.appgallabs.dataplatform.targetSystem.framework;
 
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
