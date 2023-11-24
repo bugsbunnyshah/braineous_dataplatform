@@ -9,7 +9,7 @@ class Command {
     String message = arguments.toString();
 
     //
-    PackageInfo packageInfo = await getPackage('http');
+    RestInvocationResponse packageInfo = await invokeRestEndpoint('http');
     message += '\n Information about the ${packageInfo.latestVersion} :';
     message += '\n Description ${packageInfo.description} :';
 
@@ -19,13 +19,13 @@ class Command {
   }
 }
 
-Future<PackageInfo> getPackage(String packageName) async {
+Future<RestInvocationResponse> invokeRestEndpoint(String packageName) async {
   final packageUrl = Uri.https('dart.dev', '/f/packages/$packageName.json');
   final packageResponse = await http.get(packageUrl);
 
   // If the request didn't succeed, throw an exception
   if (packageResponse.statusCode != 200) {
-    throw PackageRetrievalException(
+    throw RestInvocationException(
       packageName: packageName,
       statusCode: packageResponse.statusCode,
     );
@@ -33,17 +33,17 @@ Future<PackageInfo> getPackage(String packageName) async {
 
   final packageJson = json.decode(packageResponse.body) as Map<String, dynamic>;
 
-  return PackageInfo.fromJson(packageJson);
+  return RestInvocationResponse.fromJson(packageJson);
 }
 
-class PackageInfo {
+class RestInvocationResponse {
   final String name;
   final String latestVersion;
   final String description;
   final String publisher;
   final Uri? repository;
 
-  PackageInfo({
+  RestInvocationResponse({
     required this.name,
     required this.latestVersion,
     required this.description,
@@ -51,10 +51,10 @@ class PackageInfo {
     this.repository,
   });
 
-  factory PackageInfo.fromJson(Map<String, dynamic> json) {
+  factory RestInvocationResponse.fromJson(Map<String, dynamic> json) {
     final repository = json['repository'] as String?;
 
-    return PackageInfo(
+    return RestInvocationResponse(
       name: json['name'] as String,
       latestVersion: json['latestVersion'] as String,
       description: json['description'] as String,
@@ -64,11 +64,11 @@ class PackageInfo {
   }
 }
 
-class PackageRetrievalException implements Exception {
+class RestInvocationException implements Exception {
   final String packageName;
   final int? statusCode;
 
-  PackageRetrievalException({required this.packageName, this.statusCode});
+  RestInvocationException({required this.packageName, this.statusCode});
 
   @override
   String toString() {
