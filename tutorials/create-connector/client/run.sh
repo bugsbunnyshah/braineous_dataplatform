@@ -1,3 +1,3 @@
-mvn package
+mvn -U clean install
 
-java -jar target/braineous-tutorials-1.0.0-jar-with-dependencies.jar
+java -jar target/*-with-dependencies.jar
