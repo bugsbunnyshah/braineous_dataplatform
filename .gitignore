@@ -53,3 +53,5 @@ compare/
 /manual_sdk_release/
 /manual_sdk_release/
 /release-cr1/
+/tutorials/create-connector/client/lib/braineous-dataingestion-sdk-1.0.0-cr1.jar
+/tutorials/create-connector/server/lib/dataplatform-1.0.0-cr1-runner.jar
