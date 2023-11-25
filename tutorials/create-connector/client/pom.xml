@@ -5,11 +5,22 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.appgallabs</groupId>
-  <artifactId>braineous-tutorials</artifactId>
+  <artifactId>create-connector</artifactId>
   <version>1.0.0</version>
-
-  <name>braineous-tutorials</name>
   <url>https://bugsbunnyshah.github.io/braineous/</url>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+
+    <repository>
+      <id>github</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://github.com/bugsbunnyshah/braineous_dataplatform/packages/1996272</url>
+    </repository>
+  </repositories>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,12 +33,10 @@
   <dependencies>
     <dependency>
       <groupId>com.appgallabs</groupId>
-      <artifactId>dataplatform</artifactId>
+      <artifactId>braineous-dataingestion-sdk</artifactId>
       <version>1.0.0-cr1</version>
-      <!--
       <scope>system</scope>
-      <systemPath>${project.basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr1.jar</systemPath>
-      -->
+      <systemPath>${basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr1.jar</systemPath>
     </dependency>
 
     <!-- client_sdk_dependencies -->
@@ -68,6 +77,7 @@
             <parameters>${maven.compiler.parameters}</parameters>
           </configuration>
         </plugin>
+        <!--
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
@@ -76,7 +86,7 @@
               <id>install-external</id>
               <phase>clean</phase>
               <configuration>
-                <file>${project.basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr1.jar</file>
+                <file>lib/java-client-sdk-1.0.0-cr1.jar</file>
                 <repositoryLayout>default</repositoryLayout>
                 <groupId>com.appgallabs</groupId>
                 <artifactId>dataplatform</artifactId>
@@ -90,6 +100,7 @@
             </execution>
           </executions>
         </plugin>
+        -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
@@ -117,4 +128,24 @@
         </plugin>
       </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>github</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+        <repository>
+          <id>github</id>
+          <name>GitHub OWNER Apache Maven Packages</name>
+          <url>https://github.com/bugsbunnyshah/braineous_dataplatform</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
 </project>
