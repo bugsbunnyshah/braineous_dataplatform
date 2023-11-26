@@ -27,10 +27,8 @@
       <groupId>com.appgallabs</groupId>
       <artifactId>dataplatform</artifactId>
       <version>1.0.0-cr1</version>
-      <!--
       <scope>system</scope>
       <systemPath>${basedir}/lib/dataplatform-1.0.0-cr1-runner.jar</systemPath>
-      -->
     </dependency>
 
     <!-- client_sdk_dependencies -->

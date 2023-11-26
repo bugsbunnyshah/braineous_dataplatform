@@ -3,16 +3,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.appgallabs</groupId>
-    <artifactId>braineous-create-connector-tutorial</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
 
   <groupId>com.appgallabs</groupId>
-  <artifactId>server</artifactId>
+  <artifactId>create-connector</artifactId>
   <version>1.0.0</version>
   <url>https://bugsbunnyshah.github.io/braineous/</url>
+
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+
+    <repository>
+      <id>github</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://github.com/bugsbunnyshah/braineous_dataplatform/packages/1996272</url>
+    </repository>
+  </repositories>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,12 +33,8 @@
   <dependencies>
     <dependency>
       <groupId>com.appgallabs</groupId>
-      <artifactId>dataplatform</artifactId>
+      <artifactId>braineous-dataingestion-sdk</artifactId>
       <version>1.0.0-cr1</version>
-      <!--
-      <scope>system</scope>
-      <systemPath>${basedir}/lib/dataplatform-1.0.0-cr1-runner.jar</systemPath>
-      -->
     </dependency>
 
     <!-- client_sdk_dependencies -->
@@ -79,10 +83,10 @@
               <id>install-external</id>
               <phase>clean</phase>
               <configuration>
-                <file>lib/dataplatform-1.0.0-cr1-runner.jar</file>
+                <file>lib/braineous-dataingestion-sdk-1.0.0-cr1.jar</file>
                 <repositoryLayout>default</repositoryLayout>
                 <groupId>com.appgallabs</groupId>
-                <artifactId>dataplatform</artifactId>
+                <artifactId>braineous-dataingestion-sdk</artifactId>
                 <version>1.0.0-cr1</version>
                 <packaging>jar</packaging>
                 <generatePom>true</generatePom>
@@ -101,7 +105,7 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>com.appgallabs.dataplatform.DataPlatform</mainClass>
+                <mainClass>com.appgallabs.dataplatform.tutorial.DataIngestionTutorial</mainClass>
               </manifest>
             </archive>
             <descriptorRefs>
@@ -120,4 +124,24 @@
         </plugin>
       </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>github</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+        <repository>
+          <id>github</id>
+          <name>GitHub OWNER Apache Maven Packages</name>
+          <url>https://github.com/bugsbunnyshah/braineous_dataplatform</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
 </project>
