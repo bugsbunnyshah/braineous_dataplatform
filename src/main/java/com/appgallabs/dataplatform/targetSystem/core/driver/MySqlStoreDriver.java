@@ -1,15 +1,18 @@
 package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class MySqlStoreDriver implements StoreDriver {
     private static Logger logger = LoggerFactory.getLogger(MySqlStoreDriver.class);
@@ -25,9 +28,8 @@ public class MySqlStoreDriver implements StoreDriver {
             try {
                 String url = configJson.get("connectionString").getAsString();
                 String username = configJson.get("username").getAsString();
-                ;
+
                 String password = configJson.get("password").getAsString();
-                ;
 
                 this.connection = DriverManager.getConnection(
                         url, username, password);

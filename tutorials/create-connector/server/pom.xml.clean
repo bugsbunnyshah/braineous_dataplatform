@@ -77,7 +77,7 @@
               <id>install-external</id>
               <phase>clean</phase>
               <configuration>
-                <file>lib/dataplatform-1.0.0-cr1-runner.jar</file>
+                <file>dataplatform-1.0.0-cr1-runner.jar</file>
                 <repositoryLayout>default</repositoryLayout>
                 <groupId>com.appgallabs</groupId>
                 <artifactId>dataplatform</artifactId>

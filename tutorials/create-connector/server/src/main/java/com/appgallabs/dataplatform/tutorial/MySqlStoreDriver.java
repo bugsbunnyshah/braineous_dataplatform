@@ -5,12 +5,14 @@ import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class MySqlStoreDriver implements StoreDriver {
     private static Logger logger = LoggerFactory.getLogger(MySqlStoreDriver.class);
@@ -22,13 +24,13 @@ public class MySqlStoreDriver implements StoreDriver {
     public void configure(JsonObject configJson) {
         try {
             this.configJson = configJson;
+
             Statement createTableStatement = null;
             try {
                 String url = configJson.get("connectionString").getAsString();
                 String username = configJson.get("username").getAsString();
-                ;
+
                 String password = configJson.get("password").getAsString();
-                ;
 
                 this.connection = DriverManager.getConnection(
                         url, username, password);
@@ -44,10 +46,13 @@ public class MySqlStoreDriver implements StoreDriver {
                 createTableStatement = this.connection.createStatement();
                 createTableStatement.executeUpdate(createTableSql);
 
-                //System.out.println("Created table in given database...");
+                System.out.println("Created table in given database...");
 
             } finally {
                 createTableStatement.close();
+
+                System.out.println("****MYSQL_CONNECTOR_SUCCESSFULLY_REGISTERED*****");
+                System.out.println("****BRING_THE_HEAT (lol)*****");
             }
         }catch(Exception e){
             logger.error(e.getMessage());
@@ -71,7 +76,7 @@ public class MySqlStoreDriver implements StoreDriver {
                     insertStatement.close();
                 }
 
-                /*Statement queryStatement = this.connection.createStatement();
+                Statement queryStatement = this.connection.createStatement();
                 ResultSet rs = queryStatement.executeQuery(query);
                 while (rs.next()) {
                     String id = rs.getString("id");
@@ -82,7 +87,7 @@ public class MySqlStoreDriver implements StoreDriver {
                 }
                 queryStatement.close();
 
-                System.out.println("Connection Closed....");*/
+                System.out.println("Connection Closed....");
             } finally {
                 this.connection.close();
             }

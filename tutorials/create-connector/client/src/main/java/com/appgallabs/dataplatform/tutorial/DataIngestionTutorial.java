@@ -7,6 +7,8 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;
 
+import java.util.UUID;
+
 public class DataIngestionTutorial {
 
     public static void main(String[] args) throws RegisterPipeException, InterruptedException {
@@ -16,17 +18,30 @@ public class DataIngestionTutorial {
                 ingestionHostUrl("http://localhost:8080");
         DataPipeline.configure(configuration);
 
+        //String pipeId = UUID.randomUUID().toString();
+        String pipeId = "mysql_mongodb_fan_out_to_target";
+
         //setup data pipe configuration json
         String dataPipeConfiguration = "{\n" +
-                "  \"pipeId\": \"123\",\n" +
+                "  \"pipeId\": \""+pipeId+"\",\n" +
                 "  \"configuration\": [\n" +
                 "    {\n" +
                 "      \"storeDriver\" : \"com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver\",\n" +
-                "      \"name\": \"get_started_store\",\n" +
+                "      \"name\": \"scenario1_store_mongodb\",\n" +
                 "      \"config\": {\n" +
                 "        \"connectionString\": \"mongodb://localhost:27017\",\n" +
-                "        \"database\": \"get_started_store\",\n" +
+                "        \"database\": \"scenario1_store\",\n" +
                 "        \"collection\": \"data\"\n" +
+                "      },\n" +
+                "      \"jsonpathExpression\": \"jsonpath:1\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"storeDriver\" : \"com.appgallabs.dataplatform.tutorial.MySqlStoreDriver\",\n" +
+                "      \"name\": \"scenario1_store_mysql\",\n" +
+                "      \"config\": {\n" +
+                "        \"connectionString\": \"jdbc:mysql://localhost:3306/braineous_staging_database\",\n" +
+                "        \"username\": \"root\",\n" +
+                "        \"password\": \"\"\n" +
                 "      },\n" +
                 "      \"jsonpathExpression\": \"jsonpath:1\"\n" +
                 "    }\n" +
@@ -40,20 +55,20 @@ public class DataIngestionTutorial {
         String sourceData = "[\n" +
                 "  {\n" +
                 "    \"id\" : 1,\n" +
-                "    \"name\": \"Joe Black1\",\n" +
+                "    \"name\": \"joe_1\",\n" +
                 "    \"age\": 50,\n" +
                 "    \"addr\": {\n" +
-                "      \"email\": \"test@email.com\",\n" +
+                "      \"email\": \"joe_1@email.com\",\n" +
                 "      \"phone\": \"123456\"\n" +
                 "    }\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"id\": \"2\",\n" +
-                "    \"name\": \"Joe Black2\",\n" +
-                "    \"age\": 50,\n" +
+                "    \"name\": \"joe_2\",\n" +
+                "    \"age\": 51,\n" +
                 "    \"addr\": {\n" +
-                "      \"email\": \"test@email.com\",\n" +
-                "      \"phone\": \"123456\"\n" +
+                "      \"email\": \"joe_2@email.com\",\n" +
+                "      \"phone\": \"1234567\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]";
@@ -64,7 +79,7 @@ public class DataIngestionTutorial {
         JsonUtil.printStdOut(response);
 
         //send source data through the pipeline
-        String pipeId = configJson.get("pipeId").getAsString();
+        pipeId = configJson.get("pipeId").getAsString();
         String entity = "books";
         DataPipeline.sendData(pipeId, entity, sourceData);
     }
