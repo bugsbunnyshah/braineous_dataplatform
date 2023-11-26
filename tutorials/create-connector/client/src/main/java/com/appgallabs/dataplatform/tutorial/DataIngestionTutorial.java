@@ -51,11 +51,13 @@ public class DataIngestionTutorial {
         JsonUtil.printStdOut(configJson);
 
 
+        String user1 = UUID.randomUUID().toString();
+        String user2 = UUID.randomUUID().toString();
         //setup source data for ingestion
         String sourceData = "[\n" +
                 "  {\n" +
                 "    \"id\" : 1,\n" +
-                "    \"name\": \"joe_1\",\n" +
+                "    \"name\": \""+user1+"\",\n" +
                 "    \"age\": 50,\n" +
                 "    \"addr\": {\n" +
                 "      \"email\": \"joe_1@email.com\",\n" +
@@ -64,7 +66,7 @@ public class DataIngestionTutorial {
                 "  },\n" +
                 "  {\n" +
                 "    \"id\": \"2\",\n" +
-                "    \"name\": \"joe_2\",\n" +
+                "    \"name\": \""+user2+"\",\n" +
                 "    \"age\": 51,\n" +
                 "    \"addr\": {\n" +
                 "      \"email\": \"joe_2@email.com\",\n" +
