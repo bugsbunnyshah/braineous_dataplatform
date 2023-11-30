@@ -1,7 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
-import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
+import com.appgallabs.dataplatform.targetSystem.framework.StoreOrchestrator;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

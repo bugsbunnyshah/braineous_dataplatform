@@ -4,7 +4,7 @@ import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
-import com.appgallabs.dataplatform.receiver.framework.StoreOrchestrator;
+import com.appgallabs.dataplatform.targetSystem.framework.StoreOrchestrator;
 import com.appgallabs.dataplatform.util.Debug;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

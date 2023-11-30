@@ -21,7 +21,7 @@ public class DataIngestionTutorial {
                 "  \"pipeId\": \"123\",\n" +
                 "  \"configuration\": [\n" +
                 "    {\n" +
-                "      \"storeDriver\" : \"com.appgallabs.dataplatform.receiver.core.driver.MongoDBStoreDriver\",\n" +
+                "      \"storeDriver\" : \"com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver\",\n" +
                 "      \"name\": \"get_started_store\",\n" +
                 "      \"config\": {\n" +
                 "        \"connectionString\": \"mongodb://localhost:27017\",\n" +
