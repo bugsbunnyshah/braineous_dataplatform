@@ -18,7 +18,6 @@ public class DataIngestionTutorial {
                 ingestionHostUrl("http://localhost:8080");
         DataPipeline.configure(configuration);
 
-        //String pipeId = UUID.randomUUID().toString();
         String pipeId = "mysql_mongodb_fan_out_to_target";
 
         //setup data pipe configuration json
