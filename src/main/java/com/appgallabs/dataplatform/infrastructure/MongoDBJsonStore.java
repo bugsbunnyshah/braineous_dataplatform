@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 
+import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.*;
 import com.mongodb.client.*;
@@ -79,6 +80,22 @@ public class MongoDBJsonStore
 
     public RegistryStore getRegistryStore() {
         return registryStore;
+    }
+
+    public SystemStore getSystemStore(){
+        String connectionString;
+        if(this.mongodbHost.equals("localhost"))
+        {
+            connectionString = this.mongodbConnectionString;
+        }
+        else
+        {
+            connectionString = MessageFormat.format(this.mongodbConnectionString,
+                    this.password,this.mongodbHost,
+                    this.database);
+        }
+        SystemStore systemStore = new SystemStore(connectionString);
+        return systemStore;
     }
 
     @PreDestroy

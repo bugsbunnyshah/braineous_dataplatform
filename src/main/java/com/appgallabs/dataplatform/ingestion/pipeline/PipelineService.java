@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -41,6 +42,9 @@ public class PipelineService {
     @ConfigProperty(name = "flinkPort")
     private String flinkPort;
 
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
+
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
@@ -74,8 +78,16 @@ public class PipelineService {
 
 
             DataStream<String> dataEvents = env.fromCollection(input);
+
+            SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
             DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
-                    driverConfiguration,pipeId,entity);
+                    systemStore,
+                    driverConfiguration,
+                    pipeId,
+                    entity);
+
+
+
             dataEvents.addSink(sinkFunction);
             env.execute();
         }catch(Exception e){
