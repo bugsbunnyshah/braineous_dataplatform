@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.pipeline.manager.service;
 
+import com.appgallabs.dataplatform.pipeline.manager.model.LiveDataFeed;
 import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
 import com.appgallabs.dataplatform.pipeline.manager.model.PipeStage;
 import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
@@ -9,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class PipeService {
@@ -49,5 +52,20 @@ public class PipeService {
         subscription = this.subscriptionService.updateSubscription(subscription);
 
         return subscription.getPipe();
+    }
+
+    public List<String> getLiveSnapShot(String clientIp, String snapshotId, String pipeId){
+        MonitoringSession monitoringSession = new MonitoringSession();
+        monitoringSession.setClientIp(clientIp);
+        monitoringSession.setSnapShotId(snapshotId);
+
+        MonitoringContext monitoringContext = new MonitoringContext();
+        monitoringContext.setSession(monitoringSession);
+        monitoringContext.setPipeId(pipeId);
+
+        LiveDataFeed liveDataFeed = new LiveDataFeed();
+        List<String> liveFeedSnapshot = liveDataFeed.readSnapShot(monitoringContext);
+
+        return liveFeedSnapshot;
     }
 }
