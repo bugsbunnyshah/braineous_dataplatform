@@ -11,7 +11,8 @@ import java.util.UUID;
 
 public class LiveDataFeedTests {
 
-    @Test
+    //TODO: activate_me (1.0.0-CR2)
+    /*@Test
     public void testReadSnapShot() throws Exception{
         String clientIp = UUID.randomUUID().toString();
         String snapshotId = UUID.randomUUID().toString();
@@ -28,5 +29,5 @@ public class LiveDataFeedTests {
         LiveDataFeed liveDataFeed = new LiveDataFeed();
         List<String> liveFeedSnapshot = liveDataFeed.readSnapShot(monitoringContext);
         System.out.println(liveFeedSnapshot);
-    }
+    }*/
 }

@@ -54,14 +54,14 @@ public class PipeService {
         return subscription.getPipe();
     }
 
-    public List<String> getLiveSnapShot(String clientIp, String snapshotId, String pipeId){
+    public List<String> getLiveSnapShot(String clientIp, String snapshotId, Pipe pipe){
         MonitoringSession monitoringSession = new MonitoringSession();
         monitoringSession.setClientIp(clientIp);
         monitoringSession.setSnapShotId(snapshotId);
 
         MonitoringContext monitoringContext = new MonitoringContext();
         monitoringContext.setSession(monitoringSession);
-        monitoringContext.setPipeId(pipeId);
+        monitoringContext.setPipe(pipe);
 
         LiveDataFeed liveDataFeed = new LiveDataFeed();
         List<String> liveFeedSnapshot = liveDataFeed.readSnapShot(monitoringContext);

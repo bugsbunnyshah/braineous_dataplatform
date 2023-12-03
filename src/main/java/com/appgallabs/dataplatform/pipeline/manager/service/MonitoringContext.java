@@ -1,17 +1,19 @@
 package com.appgallabs.dataplatform.pipeline.manager.service;
 
+import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
+
 public class MonitoringContext {
 
-    private String pipeId;
+    private Pipe pipe;
     private MonitoringSession session;
 
 
-    public String getPipeId() {
-        return pipeId;
+    public Pipe getPipe() {
+        return pipe;
     }
 
-    public void setPipeId(String pipeId) {
-        this.pipeId = pipeId;
+    public void setPipe(Pipe pipe) {
+        this.pipe = pipe;
     }
 
     public MonitoringSession getSession() {

@@ -198,4 +198,73 @@ public class PipeServiceTests extends BaseTest
             assertEquals(updated.getPipeStage(), PipeStage.DEPLOYED);
         }
     }
+
+    @Test
+    public void getLiveSnapShot()
+    throws Exception{
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+
+            this.subscriptionService.createSubscription(subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("PipeStageBefore: " +subscription.getPipe().getPipeStage());
+            logger.info("HASH: " + hash);
+            logger.info("**********************");
+        }
+
+        logger.info("*****************************************************************");
+        Pipe livePipe = null;
+        for(String subscriptionId: subscriptionIds) {
+            //Get all subscriptions
+            Subscription subscription = this.subscriptionService.getSubscription(subscriptionId);
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            Pipe old = subscription.getPipe();
+
+            //update the pipe
+            Pipe updated = this.pipeService.moveToDeployed(subscription.getPipe());
+            String newHash = JsonUtil.getJsonHash(updated.toJson());
+            subscriptionHashes.remove(hash);
+            subscriptionHashes.add(newHash);
+
+            logger.info("****SUBSCRIPTION_ID_HASH_UPDATED***");
+            logger.info("ID: " +updated);
+            logger.info("PipeStageBefore: " +old.getPipeStage());
+            logger.info("PipeStageAfter: " +updated.getPipeStage());
+            logger.info("OLD_HASH: " + hash);
+            logger.info("NEW_HASH: " + newHash);
+            JsonUtil.printStdOut(updated.toJson());
+            logger.info("**********************");
+
+            assertNotNull(subscription);
+            assertFalse(subscriptionHashes.contains(hash));
+            assertTrue(subscriptionHashes.contains(newHash));
+            assertEquals(old.getPipeStage(), PipeStage.DEVELOPMENT);
+            assertEquals(updated.getPipeStage(), PipeStage.DEPLOYED);
+
+            livePipe = updated;
+
+            break;
+        }
+
+        String clientIp = "127.00.1";
+        String snapshotId = UUID.randomUUID().toString();
+        List<String> liveSnapShot = this.pipeService.getLiveSnapShot(clientIp,
+                snapshotId,
+                livePipe);
+        JsonUtil.printStdOut(JsonUtil.validateJson(liveSnapShot.toString()));
+    }
 }
