@@ -49,8 +49,12 @@ public class PipelineManagerEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response moveToStaged(@RequestBody String input){
         try {
+            Pipe stagedPipe = Pipe.parse(input);
+            Pipe updated = this.pipeService.moveToStaged(stagedPipe);
+
             JsonObject responseJson = new JsonObject();
-            responseJson.addProperty("message", "PIPE_SUCCESSFULLY_REGISTERED");
+            responseJson.addProperty("message", "PIPE_SUCCESSFULLY_STAGED");
+            responseJson.add("pipe", updated.toJson());
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;
@@ -68,8 +72,33 @@ public class PipelineManagerEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response moveToDeployed(@RequestBody String input){
         try {
+            Pipe deployedPipe = Pipe.parse(input);
+            Pipe updated = this.pipeService.moveToDeployed(deployedPipe);
+
             JsonObject responseJson = new JsonObject();
-            responseJson.addProperty("message", "PIPE_SUCCESSFULLY_REGISTERED");
+            responseJson.addProperty("message", "PIPE_SUCCESSFULLY_DEPLOYED");
+            responseJson.add("pipe", updated.toJson());
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
+        }
+    }
+
+    @Path("live_snapshot")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response liveSnapShot(@RequestBody String input){
+        try {
+            //Pipe deployedPipe = Pipe.parse(input);
+            //Pipe updated = this.pipeService.moveToDeployed(deployedPipe);
+
+            JsonObject responseJson = new JsonObject();
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;

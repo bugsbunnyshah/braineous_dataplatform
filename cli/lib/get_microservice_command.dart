@@ -21,8 +21,8 @@ class GetMicroserviceCommand {
 }
 
 Future<RestInvocationResponse> invokeRestEndpoint() async {
-  final url = Uri.http('localhost:8080', '/data/microservice/');
-  final response = await http.get(url);
+  final url = Uri.http('localhost:8080', '/pipeline_manager/move_to_development/');
+  final response = await http.post(url);
 
   // If the request didn't succeed, throw an exception
   if (response.statusCode != 200) {
