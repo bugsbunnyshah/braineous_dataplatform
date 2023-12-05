@@ -3,7 +3,6 @@ package com.appgallabs.dataplatform.pipeline.manager.service;
 import com.appgallabs.dataplatform.pipeline.manager.model.*;
 import com.appgallabs.dataplatform.util.ApiUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
@@ -459,6 +458,8 @@ public class PipeServiceTests extends BaseTest
                 snapshotId,
                 livePipe);
         JsonUtil.printStdOut(JsonUtil.validateJson(liveSnapShot.toString()));
+
+        //TODO: assert (1.0.0-CR2)
     }
 
     @Test
@@ -536,5 +537,7 @@ public class PipeServiceTests extends BaseTest
                 snapshotId,
                 livePipe);
         JsonUtil.printStdOut(JsonUtil.validateJson(liveSnapShot.toString()));
+
+        //TODO: assert (1.0.0-CR2)
     }
 }
