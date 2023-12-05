@@ -48,4 +48,37 @@ public class ApiUtil {
             throw new RuntimeException(e);
         }
     }
+
+    public static JsonElement apiGetRequest(String endpoint){
+        try {
+            //get OAuth Token
+            String credentials = IOUtils.resourceToString("oauth/credentials.json",
+                    StandardCharsets.UTF_8,
+                    Thread.currentThread().getContextClassLoader());
+            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
+            String tenant = credentialsJson.get("client_id").getAsString();
+
+            String token = IOUtils.resourceToString("oauth/jwtToken.json",
+                    StandardCharsets.UTF_8,
+                    Thread.currentThread().getContextClassLoader());
+            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
+            String generatedToken = securityTokenJson.get("access_token").getAsString();
+
+            Response response = given().
+                    when().
+                    header("tenant", tenant).
+                    header("token", "Bearer "+generatedToken).
+                    get(endpoint).
+                    andReturn();
+
+            logger.info("************************");
+            logger.info(response.statusLine());
+            String responseJsonString = response.body().prettyPrint();
+            logger.info("************************");
+
+            return JsonUtil.validateJson(responseJsonString);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }

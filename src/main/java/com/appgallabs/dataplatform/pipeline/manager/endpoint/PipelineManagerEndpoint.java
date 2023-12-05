@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.pipeline.manager.endpoint;
 
 import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipeService;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ public class PipelineManagerEndpoint {
     public Response moveToDevelopment(@RequestBody String input){
         try {
             Pipe developmentPipe = Pipe.parse(input);
+            JsonUtil.printStdOut(developmentPipe.toJson());
+
             Pipe updated = this.pipeService.moveToDevelopment(developmentPipe);
 
             JsonObject responseJson = new JsonObject();

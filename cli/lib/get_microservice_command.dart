@@ -22,7 +22,14 @@ class GetMicroserviceCommand {
 
 Future<RestInvocationResponse> invokeRestEndpoint() async {
   final url = Uri.http('localhost:8080', '/pipeline_manager/move_to_development/');
-  final response = await http.post(url);
+
+  Map<String,dynamic> jsonMap = new Map();
+  jsonMap['pipeId'] = "12345678";
+  jsonMap['subscriptionId'] = "87654321";
+  jsonMap['pipeName'] = "flights";
+  String json = jsonEncode(jsonMap);
+
+  final response = await http.post(url,body: json);
 
   // If the request didn't succeed, throw an exception
   if (response.statusCode != 200) {
@@ -31,7 +38,7 @@ Future<RestInvocationResponse> invokeRestEndpoint() async {
     );
   }
 
-  final responseJson = json.decode(response.body) as Map<String, dynamic>;
+  final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
 
   return RestInvocationResponse.fromJson(responseJson);
 }
