@@ -211,30 +211,8 @@ public class SubscriptionServiceTests extends BaseTest
     }
 
     @Test
-    public void createSubscriptionEndpoint() throws Exception {
-        String endpoint = "/subscription_manager/create_subscription/";
-        JsonObject payload = new JsonObject();
-        String subscriptionId = UUID.randomUUID().toString();
-        payload.addProperty("subscriptionId", subscriptionId);
-        String payloadHash = JsonUtil.getJsonHash(payload);
-
-        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,payload.toString()).getAsJsonObject();
-        JsonObject subscriptionJson = responseJson.getAsJsonObject("subscription");
-        Subscription subscription = Subscription.parse(subscriptionJson.toString());
-
-        String subscriptionHash = JsonUtil.getJsonHash(subscriptionJson);
-
-        logger.info("****************");
-        logger.info("PayloadHash: "+payloadHash);
-        logger.info("SubscriptionHash: "+subscriptionHash);
-        logger.info("****************");
-
-        assertEquals(subscriptionId, subscription.getSubscriptionId());
-        assertEquals(payloadHash, subscriptionHash);
-    }
-
-    @Test
     public void updateSubscriptionEndpoint() throws Exception {
+        //create subscription
         String endpoint = "/subscription_manager/create_subscription/";
         JsonObject payload = new JsonObject();
         String subscriptionId = UUID.randomUUID().toString();
@@ -254,6 +232,29 @@ public class SubscriptionServiceTests extends BaseTest
 
         assertEquals(subscriptionId, subscription.getSubscriptionId());
         assertEquals(payloadHash, subscriptionHash);
+
+        //update subscription
+        Pipe pipe = new Pipe();
+        String pipeId = UUID.randomUUID().toString();
+        String pipeName = "pipeName";
+        pipe.setPipeId(pipeId);
+        pipe.setPipeName(pipeName);
+        subscription.setPipe(pipe);
+        endpoint = "/subscription_manager/update_subscription/";
+        responseJson = ApiUtil.apiPostRequest(endpoint,subscription.toString()).getAsJsonObject();
+
+        subscriptionJson = responseJson.getAsJsonObject("subscription");
+        subscription = Subscription.parse(subscriptionJson.toString());
+
+        subscriptionHash = JsonUtil.getJsonHash(subscriptionJson);
+
+        logger.info("****************");
+        logger.info("PayloadHash: "+payloadHash);
+        logger.info("SubscriptionHash: "+subscriptionHash);
+        logger.info("****************");
+
+        assertEquals(subscriptionId, subscription.getSubscriptionId());
+        assertNotEquals(payloadHash, subscriptionHash);
     }
 
     @Test
@@ -318,7 +319,9 @@ public class SubscriptionServiceTests extends BaseTest
 
         logger.info("*****************************************************************");
         for(String subscriptionId: subscriptionIds) {
-            String deleted = this.subscriptionService.deleteSubscription(subscriptionId);
+            String endpoint = "/subscription_manager/delete_subscription/"+subscriptionId+"/";
+            JsonObject responseJson = ApiUtil.apiDeleteRequest(endpoint).getAsJsonObject();
+            String deleted = responseJson.get("subscriptionId").getAsString();
 
             Subscription subscription = this.subscriptionService.getSubscription(
                     subscriptionId);
