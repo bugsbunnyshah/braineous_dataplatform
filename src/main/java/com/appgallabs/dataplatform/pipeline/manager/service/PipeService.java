@@ -28,7 +28,14 @@ public class PipeService {
         String subscriptionId = pipe.getSubscriptionId();
 
         Subscription subscription = this.subscriptionService.getSubscription(subscriptionId);
-        subscription.getPipe().setPipeStage(PipeStage.DEVELOPMENT);
+
+        Pipe subscribedPipe = subscription.getPipe();
+        if(subscribedPipe == null){
+            subscription.setPipe(pipe);
+        }else{
+            subscription.getPipe().setPipeStage(PipeStage.DEVELOPMENT);
+        }
+
         subscription = this.subscriptionService.updateSubscription(subscription);
 
         return subscription.getPipe();

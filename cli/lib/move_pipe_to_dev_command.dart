@@ -6,17 +6,18 @@ import 'package:http/http.dart' as http;
 class MovePipeToDevCommand {
 
   Future<String> execute(List<dynamic> arguments) async {
-    String message = arguments.toString();
+    String message = "";
 
     //
     RestInvocationResponse invocationResponse = await invokeRestEndpoint();
-    message += '\n Product ${invocationResponse.product} :';
-    message += '\n Oid ${invocationResponse.oid} :';
-    message += '\n Message ${invocationResponse.message} :';
+    message += '${invocationResponse.message}';
+    message += '\n${invocationResponse.json}';
 
     var unicode = art.renderUnicode(message, art.UnicodeFont.doublestruck);
 
-    return unicode.toString();
+    //return unicode.toString();
+
+    return message;
   }
 }
 
@@ -25,7 +26,7 @@ Future<RestInvocationResponse> invokeRestEndpoint() async {
 
   Map<String,dynamic> jsonMap = new Map();
   jsonMap['pipeId'] = "12345678";
-  jsonMap['subscriptionId'] = "87654321";
+  jsonMap['subscriptionId'] = "0987654321";
   jsonMap['pipeName'] = "flights";
   String json = jsonEncode(jsonMap);
 
@@ -44,21 +45,18 @@ Future<RestInvocationResponse> invokeRestEndpoint() async {
 }
 
 class RestInvocationResponse {
-  final String product;
-  final String oid;
   final String message;
+  final dynamic json;
 
   RestInvocationResponse({
-    required this.product,
-    required this.oid,
     required this.message,
+    required this.json,
   });
 
   factory RestInvocationResponse.fromJson(Map<String, dynamic> json) {
     return RestInvocationResponse(
-      product: json['product'] as String,
-      oid: json['oid'] as String,
       message: json['message'] as String,
+      json: json['pipe'],
     );
   }
 }
