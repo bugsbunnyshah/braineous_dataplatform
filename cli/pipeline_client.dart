@@ -1,7 +1,8 @@
 import 'dart:convert';
 
+import 'package:cli/create_subscription_command.dart';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
-import 'package:cli/get_microservice_command.dart';
+import 'package:cli/move_pipe_to_dev_command.dart';
 
 void main() async {
   String message = "********************\n BRAINEOUS \n *****************";
@@ -12,7 +13,15 @@ void main() async {
   var arguments = [];
   arguments.add("do_this_0");
   arguments.add("do_this_1");
-  GetMicroserviceCommand command = GetMicroserviceCommand();
-  String executionMessage = await command.execute(arguments);
+
+  //
+  CreateSubscriptionCommand createSubscriptionCommand = CreateSubscriptionCommand();
+  String executionMessage = await createSubscriptionCommand.execute(arguments);
+  print(executionMessage);
+
+  print("****************************************************************************");
+
+  MovePipeToDevCommand movePipeToDevCommand = MovePipeToDevCommand();
+  executionMessage = await movePipeToDevCommand.execute(arguments);
   print(executionMessage);
 }

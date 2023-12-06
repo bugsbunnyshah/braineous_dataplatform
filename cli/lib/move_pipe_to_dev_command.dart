@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'package:http/http.dart' as http;
 
-class GetMicroserviceCommand {
+class MovePipeToDevCommand {
 
   Future<String> execute(List<dynamic> arguments) async {
     String message = arguments.toString();
