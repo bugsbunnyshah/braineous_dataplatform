@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.pipeline.manager.service;
 import com.appgallabs.dataplatform.pipeline.manager.model.*;
 import com.appgallabs.dataplatform.util.ApiUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
@@ -539,5 +540,107 @@ public class PipeServiceTests extends BaseTest
         JsonUtil.printStdOut(JsonUtil.validateJson(liveSnapShot.toString()));
 
         //TODO: assert (1.0.0-CR2)
+    }
+
+    @Test
+    public void devPipes() throws Exception{
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+
+
+            subscription.getPipe().setPipeStage(PipeStage.DEVELOPMENT);
+
+            this.subscriptionService.createSubscription(subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("PipeStageBefore: " +subscription.getPipe().getPipeStage());
+            logger.info("HASH: " + hash);
+            logger.info("**********************");
+        }
+        logger.info("*****************************************************************");
+
+        JsonArray pipes = this.pipeService.devPipes();
+        JsonUtil.printStdOut(pipes);
+    }
+
+    @Test
+    public void stagedPipes() throws Exception{
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+
+
+            subscription.getPipe().setPipeStage(PipeStage.STAGED);
+
+            this.subscriptionService.createSubscription(subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("PipeStageBefore: " +subscription.getPipe().getPipeStage());
+            logger.info("HASH: " + hash);
+            logger.info("**********************");
+        }
+        logger.info("*****************************************************************");
+
+        JsonArray pipes = this.pipeService.stagedPipes();
+        JsonUtil.printStdOut(pipes);
+    }
+
+    @Test
+    public void deployedPipes() throws Exception{
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+
+
+            subscription.getPipe().setPipeStage(PipeStage.DEPLOYED);
+
+            this.subscriptionService.createSubscription(subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("PipeStageBefore: " +subscription.getPipe().getPipeStage());
+            logger.info("HASH: " + hash);
+            logger.info("**********************");
+        }
+        logger.info("*****************************************************************");
+
+        JsonArray pipes = this.pipeService.deployedPipes();
+        JsonUtil.printStdOut(pipes);
     }
 }

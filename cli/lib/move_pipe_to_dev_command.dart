@@ -9,7 +9,7 @@ class MovePipeToDevCommand {
     String message = "";
 
     //
-    RestInvocationResponse invocationResponse = await invokeRestEndpoint();
+    RestInvocationResponse invocationResponse = await invokeRestEndpoint(arguments);
     message += '${invocationResponse.message}';
     message += '\n${invocationResponse.json}';
 
@@ -21,13 +21,11 @@ class MovePipeToDevCommand {
   }
 }
 
-Future<RestInvocationResponse> invokeRestEndpoint() async {
+Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async {
   final url = Uri.http('localhost:8080', '/pipeline_manager/move_to_development/');
 
-  Map<String,dynamic> jsonMap = new Map();
-  jsonMap['pipeId'] = "12345678";
-  jsonMap['subscriptionId'] = "0987654321";
-  jsonMap['pipeName'] = "flights";
+  Map<String,dynamic> jsonMap = {};
+  jsonMap['pipeName'] = arguments[0];
   String json = jsonEncode(jsonMap);
 
   final response = await http.post(url,body: json);

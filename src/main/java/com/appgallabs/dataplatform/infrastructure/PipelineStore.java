@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure;
 
 import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
+import com.appgallabs.dataplatform.pipeline.manager.model.PipeStage;
 import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.*;
@@ -121,5 +122,92 @@ public class PipelineStore implements Serializable {
         subscription.setPipe(pipe);
 
         this.updateSubscription(tenant,mongoClient,subscription);
+    }
+
+    public JsonArray devPipes(Tenant tenant, MongoClient mongoClient){
+        JsonArray result = new JsonArray();
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("pipe.pipeStage", String.valueOf(PipeStage.DEVELOPMENT));
+        String queryJsonString = criteria.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+
+            JsonObject member = JsonUtil.validateJson(documentJson).getAsJsonObject();
+            member.remove("_id");
+
+            result.add(member);
+        }
+
+        return result;
+    }
+
+    public JsonArray stagedPipes(Tenant tenant, MongoClient mongoClient){
+        JsonArray result = new JsonArray();
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("pipe.pipeStage", String.valueOf(PipeStage.STAGED));
+        String queryJsonString = criteria.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+
+            JsonObject member = JsonUtil.validateJson(documentJson).getAsJsonObject();
+            member.remove("_id");
+
+            result.add(member);
+        }
+
+        return result;
+    }
+
+    public JsonArray deployedPipes(Tenant tenant, MongoClient mongoClient){
+        JsonArray result = new JsonArray();
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("pipe.pipeStage", String.valueOf(PipeStage.DEPLOYED));
+        String queryJsonString = criteria.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+
+            JsonObject member = JsonUtil.validateJson(documentJson).getAsJsonObject();
+            member.remove("_id");
+
+            result.add(member);
+        }
+
+        return result;
     }
 }

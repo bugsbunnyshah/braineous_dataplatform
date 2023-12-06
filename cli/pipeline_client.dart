@@ -11,17 +11,8 @@ void main() async {
 
   //execute command
   var arguments = [];
-  arguments.add("do_this_0");
-  arguments.add("do_this_1");
-
-  //
-  CreateSubscriptionCommand createSubscriptionCommand = CreateSubscriptionCommand();
-  String executionMessage = await createSubscriptionCommand.execute(arguments);
-  print(executionMessage);
-
-  print("****************************************************************************");
-
+  arguments.add("books");
   MovePipeToDevCommand movePipeToDevCommand = MovePipeToDevCommand();
-  executionMessage = await movePipeToDevCommand.execute(arguments);
+  String executionMessage = await movePipeToDevCommand.execute(arguments);
   print(executionMessage);
 }
