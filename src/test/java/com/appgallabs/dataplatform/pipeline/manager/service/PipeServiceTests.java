@@ -574,10 +574,47 @@ public class PipeServiceTests extends BaseTest
 
         JsonArray pipes = this.pipeService.devPipes();
         JsonUtil.printStdOut(pipes);
+        assertEquals(2, pipes.size());
     }
 
     @Test
-    public void stagedPipes() throws Exception{
+    public void devPipesEndpoint() throws Exception{
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber("1@1.com"));
+        group.addSubscriber(new Subscriber("2@1.com"));
+
+        List<String> subscriptionIds = new ArrayList<>();
+        List<String> subscriptionHashes = new ArrayList<>();
+        for(int i=0; i<group.getSubscribers().size(); i++) {
+            Pipe pushPipe = new Pipe(UUID.randomUUID().toString(),"pipe1");
+            String subscriptionId = UUID.randomUUID().toString();
+            Subscription subscription = new Subscription(subscriptionId, group, pushPipe);
+
+
+            subscription.getPipe().setPipeStage(PipeStage.DEVELOPMENT);
+
+            this.subscriptionService.createSubscription(subscription);
+
+            String hash = JsonUtil.getJsonHash(subscription.toJson());
+            subscriptionIds.add(subscriptionId);
+            subscriptionHashes.add(hash);
+
+            logger.info("****SUBSCRIPTION_HASH_CREATE***");
+            logger.info("ID: " +subscriptionId);
+            logger.info("PipeStageBefore: " +subscription.getPipe().getPipeStage());
+            logger.info("HASH: " + hash);
+            logger.info("**********************");
+        }
+        logger.info("*****************************************************************");
+
+        String endpoint = "/pipeline_manager/dev_pipes/";
+        JsonArray pipes = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
+        JsonUtil.printStdOut(pipes);
+        assertEquals(2, pipes.size());
+    }
+
+    @Test
+    public void stagedPipesEndpoint() throws Exception{
         SubscriberGroup group = new SubscriberGroup();
         group.addSubscriber(new Subscriber("1@1.com"));
         group.addSubscriber(new Subscriber("2@1.com"));
@@ -606,12 +643,14 @@ public class PipeServiceTests extends BaseTest
         }
         logger.info("*****************************************************************");
 
-        JsonArray pipes = this.pipeService.stagedPipes();
+        String endpoint = "/pipeline_manager/staged_pipes/";
+        JsonArray pipes = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
         JsonUtil.printStdOut(pipes);
+        assertEquals(2, pipes.size());
     }
 
     @Test
-    public void deployedPipes() throws Exception{
+    public void deployedPipesEndpoint() throws Exception{
         SubscriberGroup group = new SubscriberGroup();
         group.addSubscriber(new Subscriber("1@1.com"));
         group.addSubscriber(new Subscriber("2@1.com"));
@@ -640,7 +679,9 @@ public class PipeServiceTests extends BaseTest
         }
         logger.info("*****************************************************************");
 
-        JsonArray pipes = this.pipeService.deployedPipes();
+        String endpoint = "/pipeline_manager/deployed_pipes/";
+        JsonArray pipes = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
         JsonUtil.printStdOut(pipes);
+        assertEquals(2, pipes.size());
     }
 }
