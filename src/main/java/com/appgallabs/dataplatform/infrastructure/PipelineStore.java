@@ -124,6 +124,36 @@ public class PipelineStore implements Serializable {
         this.updateSubscription(tenant,mongoClient,subscription);
     }
 
+    public Pipe getPipe(Tenant tenant, MongoClient mongoClient, String pipeName){
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        JsonObject criteria = new JsonObject();
+        criteria.addProperty("pipe.pipeName", pipeName);
+        String queryJsonString = criteria.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+
+            JsonObject member = JsonUtil.validateJson(documentJson).getAsJsonObject();
+            member.remove("_id");
+
+            Subscription subscription = Subscription.parse(member.toString());
+
+            return subscription.getPipe();
+        }
+
+        return null;
+    }
+
     public JsonArray devPipes(Tenant tenant, MongoClient mongoClient){
         JsonArray result = new JsonArray();
 
@@ -192,6 +222,34 @@ public class PipelineStore implements Serializable {
 
         JsonObject criteria = new JsonObject();
         criteria.addProperty("pipe.pipeStage", String.valueOf(PipeStage.DEPLOYED));
+        String queryJsonString = criteria.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+
+            JsonObject member = JsonUtil.validateJson(documentJson).getAsJsonObject();
+            member.remove("_id");
+
+            result.add(member);
+        }
+
+        return result;
+    }
+
+    public JsonArray allPipes(Tenant tenant, MongoClient mongoClient){
+        JsonArray result = new JsonArray();
+
+        String principal = tenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("subscription");
+
+        JsonObject criteria = new JsonObject();
         String queryJsonString = criteria.toString();
 
         Bson bson = Document.parse(queryJsonString);

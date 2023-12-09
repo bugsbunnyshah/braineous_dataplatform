@@ -15,11 +15,11 @@ public class Pipe implements Serializable {
     private String subscriptionId;
 
     private String pipeName;
-    private List<DataCleanerFunction> cleanerFunctions;
 
     private PipeStage pipeStage;
 
     private PipeType pipeType;
+    private List<DataCleanerFunction> cleanerFunctions;
 
     public Pipe() {
         this.pipeStage = PipeStage.DEVELOPMENT;

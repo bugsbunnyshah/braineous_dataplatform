@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'package:http/http.dart' as http;
 
-class CreateSubscriptionCommand {
+class IngestionStatsCommand {
 
   Future<String> execute(List<dynamic> arguments) async {
     String message = "";
 
     //
-    RestInvocationResponse invocationResponse = await invokeRestEndpoint();
-    message += '${invocationResponse.message}';
+    RestInvocationResponse invocationResponse = await invokeRestEndpoint(arguments);
     message += '\n${invocationResponse.json}';
 
     var unicode = art.renderUnicode(message, art.UnicodeFont.doublestruck);
@@ -21,14 +20,11 @@ class CreateSubscriptionCommand {
   }
 }
 
-Future<RestInvocationResponse> invokeRestEndpoint() async {
-  final url = Uri.http('localhost:8080', '/subscription_manager/create_subscription/');
+Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async {
+  String pipeName = arguments[0];
+  final url = Uri.http('localhost:8080', '/pipeline_manager/ingestion_stats/$pipeName/');
 
-  Map<String,dynamic> jsonMap = new Map();
-  jsonMap['subscriptionId'] = "0987654321";
-  String json = jsonEncode(jsonMap);
-
-  final response = await http.post(url,body: json);
+  final response = await http.get(url);
 
   // If the request didn't succeed, throw an exception
   if (response.statusCode != 200) {
@@ -43,18 +39,15 @@ Future<RestInvocationResponse> invokeRestEndpoint() async {
 }
 
 class RestInvocationResponse {
-  final String message;
   final dynamic json;
 
   RestInvocationResponse({
-    required this.message,
     required this.json,
   });
 
   factory RestInvocationResponse.fromJson(Map<String, dynamic> json) {
     return RestInvocationResponse(
-      message: json['message'] as String,
-      json: json['subscription'],
+      json: json,
     );
   }
 }

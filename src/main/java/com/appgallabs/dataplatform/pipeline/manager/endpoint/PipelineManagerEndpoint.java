@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.pipeline.manager.endpoint;
 
 import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
+import com.appgallabs.dataplatform.pipeline.manager.service.PipeNotFoundException;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipeService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
@@ -10,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -30,7 +28,6 @@ public class PipelineManagerEndpoint {
     public Response moveToDevelopment(@RequestBody String input){
         try {
             Pipe developmentPipe = Pipe.parse(input);
-            JsonUtil.printStdOut(developmentPipe.toJson());
 
             Pipe updated = this.pipeService.moveToDevelopment(developmentPipe);
 
@@ -95,15 +92,12 @@ public class PipelineManagerEndpoint {
         }
     }
 
-    @Path("live_snapshot")
-    @POST
+    @Path("all_pipes")
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response liveSnapShot(@RequestBody String input){
+    public Response allPipes(){
         try {
-            //Pipe deployedPipe = Pipe.parse(input);
-            //Pipe updated = this.pipeService.moveToDeployed(deployedPipe);
-
-            JsonObject responseJson = new JsonObject();
+            JsonArray responseJson = this.pipeService.allPipes();
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;
@@ -162,6 +156,88 @@ public class PipelineManagerEndpoint {
             Response response = Response.ok(responseJson.toString()).build();
             return response;
         }catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
+        }
+    }
+
+    @Path("live_snapshot")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response liveSnapShot(@RequestBody String input){
+        try {
+            JsonObject jsonObject = JsonUtil.validateJson(input).getAsJsonObject();
+            String clientIp = jsonObject.get("clientIp").getAsString();
+            String snapshotId = jsonObject.get("snapshotId").getAsString();
+            String pipeName = jsonObject.get("pipeName").getAsString();
+
+
+
+            JsonArray responseJson = this.pipeService.getLiveSnapShot(clientIp,
+                    snapshotId,
+                    pipeName);
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }catch(PipeNotFoundException pne){
+            logger.error(pne.getMessage(), pne);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", "PIPE_NOT_FOUND");
+            return Response.status(404).entity(error.toString()).build();
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
+        }
+    }
+
+    @Path("ingestion_stats/{pipeName}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ingestion_stats(@PathParam("pipeName") String pipeName){
+        try {
+            JsonObject responseJson = this.pipeService.getIngestionStats(pipeName);
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }catch(PipeNotFoundException pne){
+            logger.error(pne.getMessage(), pne);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", "PIPE_NOT_FOUND");
+            return Response.status(404).entity(error.toString()).build();
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
+        }
+    }
+
+    @Path("delivery_stats/{pipeName}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delivery_stats(@PathParam("pipeName") String pipeName){
+        try {
+            JsonObject responseJson = this.pipeService.getDeliveryStats(pipeName);
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }
+        catch(PipeNotFoundException pne){
+            logger.error(pne.getMessage(), pne);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", "PIPE_NOT_FOUND");
+            return Response.status(404).entity(error.toString()).build();
+        }
+        catch(Exception e)
         {
             logger.error(e.getMessage(), e);
             JsonObject error = new JsonObject();
