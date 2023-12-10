@@ -80,7 +80,6 @@ public class StoreOrchestrator {
         MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("shivji", "isBossman");
         jsonObject.addProperty("targetSystem", storeDriver.getName());
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", data);

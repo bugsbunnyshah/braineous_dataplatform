@@ -31,6 +31,9 @@ public class PipeService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
+    @Inject
+    private LiveDataFeed liveDataFeed;
+
 
     public Pipe moveToDevelopment(Pipe pipe){
         return this.movePipeStage(pipe, PipeStage.DEVELOPMENT);
@@ -153,8 +156,7 @@ public class PipeService {
         monitoringContext.setSession(monitoringSession);
         monitoringContext.setPipe(pipe);
 
-        LiveDataFeed liveDataFeed = new LiveDataFeed();
-        List<String> liveFeedSnapshot = liveDataFeed.readSnapShot(monitoringContext);
+        List<String> liveFeedSnapshot = this.liveDataFeed.readSnapShot(monitoringContext);
 
         JsonArray array = JsonUtil.validateJson(liveFeedSnapshot.toString()).getAsJsonArray();
 

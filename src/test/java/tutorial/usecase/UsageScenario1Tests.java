@@ -48,6 +48,8 @@ public class UsageScenario1Tests {
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
         //confirm data is received on the receiver data store
+
+        //confirm ingestion and delivery statistics
     }
 
     /**

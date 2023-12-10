@@ -1,8 +1,12 @@
 package com.appgallabs.dataplatform.pipeline.manager.service;
 
+import com.appgallabs.dataplatform.TestConstants;
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
+import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.pipeline.manager.model.*;
 import com.appgallabs.dataplatform.util.ApiUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
+import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -1032,5 +1036,104 @@ public class PipeServiceTests extends BaseTest
         JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
 
         //TODO: assert (1.0.0-CR2)
+    }
+
+    @Test
+    public void endToEnd() throws Exception{
+        //create a pipe
+        String pipeName = "medical_records";
+        JsonObject pipeCreateResponse = this.createPipe(pipeName);
+        String pipeId = pipeCreateResponse.getAsJsonObject("pipe").
+                get("pipeId").
+                getAsString();
+
+        String message = pipeCreateResponse.get("message").getAsString();
+        assertEquals(message, "PIPE_SUCCESSFULLY_REGISTERED");
+
+        //send data to pipe via ingestion
+        JsonObject sendDataResponse = this.sendData(pipeId,pipeName);
+        JsonUtil.printStdOut(sendDataResponse);
+
+        logger.info("WAITING_ON_INGESTION_TO_COMPLETE........");
+        Thread.sleep(15000);
+
+        //get live feed
+        JsonArray liveFeed = this.getLiveFeed(pipeName);
+        logger.info("LIVE_FEED_SIZE: "+liveFeed.size());
+
+        //get ingestion stats
+        JsonObject ingestionStats = this.getIngestionStats(pipeName);
+
+        //get delivery stats
+        JsonObject deliveryStats = this.getDeliveryStats(pipeName);
+    }
+
+    private JsonObject createPipe(String pipeName){
+        String endpoint = "/pipeline_manager/move_to_development/";
+
+        JsonObject payload = new JsonObject();
+        payload.addProperty("pipeName", pipeName);
+
+        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,payload.toString())
+                .getAsJsonObject();
+
+        return responseJson;
+    }
+
+    private JsonObject sendData(String pipeId, String pipeName){
+        try {
+            //configure the DataPipeline Client
+            //configure the DataPipeline Client
+            Configuration configuration = new Configuration().
+                    streamSizeInBytes(80).
+                    ingestionHostUrl("http://localhost:8080/");
+            DataPipeline.configure(configuration);
+
+            String datasetLocation = "tutorial/usecase/scenario1/scenario1Array.json";
+            String json = Util.loadResource(datasetLocation);
+            JsonElement datasetElement = JsonUtil.validateJson(json);
+
+            //register a pipeline
+            String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
+            json = Util.loadResource(configLocation);
+            JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
+            configJson.addProperty("pipeId", pipeId);
+            JsonObject registrationJson = DataPipeline.registerPipe(configJson.toString());
+
+            //send source data through the pipeline
+            String entity = pipeName;
+            DataPipeline.sendData(pipeId, entity,datasetElement.toString());
+
+            return registrationJson;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private JsonArray getLiveFeed(String pipeName){
+        String endpoint = "/pipeline_manager/live_snapshot/";;
+        String clientIp = "127.00.1";
+        String snapshotId = UUID.randomUUID().toString();
+
+        JsonObject payload = new JsonObject();
+        payload.addProperty("clientIp", clientIp);
+        payload.addProperty("snapshotId", snapshotId);
+        payload.addProperty("pipeName", pipeName);
+        String jsonBody = payload.toString();
+        JsonArray responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody).getAsJsonArray();
+
+        return responseJson;
+    }
+
+    private JsonObject getIngestionStats(String pipeName){
+        String endpoint = "/pipeline_manager/ingestion_stats/"+pipeName+"/";;
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        return responseJson;
+    }
+
+    private JsonObject getDeliveryStats(String pipeName){
+        String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";;
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        return responseJson;
     }
 }
