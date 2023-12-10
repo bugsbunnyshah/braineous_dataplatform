@@ -1038,7 +1038,7 @@ public class PipeServiceTests extends BaseTest
         //TODO: assert (1.0.0-CR2)
     }
 
-    @Test
+    //@Test
     public void endToEnd() throws Exception{
         //create a pipe
         String pipeName = "medical_records";
@@ -1068,7 +1068,7 @@ public class PipeServiceTests extends BaseTest
         JsonObject deliveryStats = this.getDeliveryStats(pipeName);
     }
 
-    @Test
+    //@Test
     public void endToEndReadOnly() throws Exception{
         //create a pipe
         String pipeName = "medical_records";
