@@ -11,9 +11,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.bson.Document;
+import org.ehcache.sizeof.SizeOf;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class DataLakeSinkFunction implements SinkFunction<String> {
 
@@ -88,9 +91,15 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         MongoDatabase db = mongoClient.getDatabase(databaseName);
         MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
 
+        Queue<String> queue = new LinkedList<>();
+        queue.add(value);
+        SizeOf sizeOf = SizeOf.newInstance();
+        long dataStreamSize = sizeOf.deepSizeOf(queue);
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", value);
+        jsonObject.addProperty("sizeInBytes", dataStreamSize);
         jsonObject.addProperty("incoming", true);
 
         collection.insertOne(Document.parse(jsonObject.toString()));

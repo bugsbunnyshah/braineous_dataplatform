@@ -12,8 +12,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.bson.Document;
+import org.ehcache.sizeof.SizeOf;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class StoreOrchestrator {
 
@@ -79,10 +82,16 @@ public class StoreOrchestrator {
         MongoDatabase db = mongoClient.getDatabase(databaseName);
         MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
 
+        Queue<String> queue = new LinkedList<>();
+        queue.add(data);
+        SizeOf sizeOf = SizeOf.newInstance();
+        long dataStreamSize = sizeOf.deepSizeOf(queue);
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("targetSystem", storeDriver.getName());
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", data);
+        jsonObject.addProperty("sizeInBytes", dataStreamSize);
         jsonObject.addProperty("outgoing", true);
 
         collection.insertOne(Document.parse(jsonObject.toString()));

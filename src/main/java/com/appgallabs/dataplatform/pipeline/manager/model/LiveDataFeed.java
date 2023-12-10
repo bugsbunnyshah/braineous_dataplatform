@@ -63,4 +63,38 @@ public class LiveDataFeed {
 
         return snapshot;
     }
+
+    public JsonObject prepareIngestionStats(MonitoringContext monitoringContext){
+        Pipe pipe = monitoringContext.getPipe();
+        String pipeId = pipe.getPipeId();
+
+        List<String> snapshot = new ArrayList<>();
+        SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+
+        String principal = securityToken.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+
+        //setup
+        MongoClient mongoClient = systemStore.getMongoClient();
+        MongoDatabase db = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
+
+        JsonObject queryJson = new JsonObject();
+        queryJson.addProperty("pipeId", pipeId);
+
+        String queryJsonString = queryJson.toString();
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+            JsonObject cour = JsonParser.parseString(documentJson).getAsJsonObject();
+            snapshot.add(cour.toString());
+        }
+
+        return null;
+    }
 }
