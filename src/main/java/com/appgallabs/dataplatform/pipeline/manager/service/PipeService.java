@@ -173,9 +173,13 @@ public class PipeService {
             throw new PipeNotFoundException();
         }
 
-        JsonObject stats = new JsonObject();
-        stats.addProperty("type", "ingestion");
-        stats.addProperty("total_data_ingested", "1024 MB");
+        MonitoringSession monitoringSession = new MonitoringSession();
+
+        MonitoringContext monitoringContext = new MonitoringContext();
+        monitoringContext.setSession(monitoringSession);
+        monitoringContext.setPipe(pipe);
+
+        JsonObject stats = this.liveDataFeed.prepareIngestionStats(monitoringContext);
 
         return stats;
     }
@@ -190,9 +194,13 @@ public class PipeService {
             throw new PipeNotFoundException();
         }
 
-        JsonObject stats = new JsonObject();
-        stats.addProperty("type", "delivery");
-        stats.addProperty("total_data_delivered", "256 MB");
+        MonitoringSession monitoringSession = new MonitoringSession();
+
+        MonitoringContext monitoringContext = new MonitoringContext();
+        monitoringContext.setSession(monitoringSession);
+        monitoringContext.setPipe(pipe);
+
+        JsonObject stats = this.liveDataFeed.prepareDeliveryStats(monitoringContext);
 
         return stats;
     }

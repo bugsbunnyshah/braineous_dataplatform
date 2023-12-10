@@ -1068,6 +1068,22 @@ public class PipeServiceTests extends BaseTest
         JsonObject deliveryStats = this.getDeliveryStats(pipeName);
     }
 
+    @Test
+    public void endToEndReadOnly() throws Exception{
+        //create a pipe
+        String pipeName = "medical_records";
+
+        //get live feed
+        JsonArray liveFeed = this.getLiveFeed(pipeName);
+        logger.info("LIVE_FEED_SIZE: "+liveFeed.size());
+
+        //get ingestion stats
+        JsonObject ingestionStats = this.getIngestionStats(pipeName);
+
+        //get delivery stats
+        JsonObject deliveryStats = this.getDeliveryStats(pipeName);
+    }
+
     private JsonObject createPipe(String pipeName){
         String endpoint = "/pipeline_manager/move_to_development/";
 
