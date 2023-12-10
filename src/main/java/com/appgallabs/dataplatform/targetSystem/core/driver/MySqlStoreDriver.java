@@ -92,4 +92,9 @@ public class MySqlStoreDriver implements StoreDriver {
             //TODO: (CR2) report to the pipeline monitoring service
         }
     }
+
+    @Override
+    public String getName() {
+        return this.configJson.get("connectionString").getAsString();
+    }
 }

@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mongodb.client.MongoClient;
@@ -21,6 +22,8 @@ public class MongoDBStoreDriver implements StoreDriver {
     private static Logger logger = LoggerFactory.getLogger(MongoDBStoreDriver.class);
 
     private JsonObject configJson;
+
+
 
     @Override
     public void configure(JsonObject configJson) {
@@ -58,5 +61,10 @@ public class MongoDBStoreDriver implements StoreDriver {
             logger.error(e.getMessage());
             //TODO: (CR2) report to the pipeline monitoring service
         }
+    }
+
+    @Override
+    public String getName() {
+        return this.configJson.get("connectionString").getAsString();
     }
 }

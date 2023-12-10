@@ -34,4 +34,6 @@ public interface StoreDriver {
      * @param dataSet
      */
     public void storeData(JsonArray dataSet);
+
+    public String getName();
 }

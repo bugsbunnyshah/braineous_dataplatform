@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
+import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
@@ -24,8 +25,11 @@ public class EventHandler implements KafkaMessageHandler {
     private PipelineService pipelineService;
     private StoreOrchestrator storeOrchestrator;
 
-    public EventHandler(PipelineService pipelineService, StoreOrchestrator storeOrchestrator){
+    private SystemStore systemStore;
+
+    public EventHandler(PipelineService pipelineService, SystemStore systemStore, StoreOrchestrator storeOrchestrator){
         this.pipelineService = pipelineService;
+        this.systemStore = systemStore;
         this.storeOrchestrator = storeOrchestrator;
     }
 
@@ -58,6 +62,6 @@ public class EventHandler implements KafkaMessageHandler {
         this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),
                 pipeId,entity,jsonPayloadString);
 
-        this.storeOrchestrator.receiveData(securityToken, pipeId,jsonPayloadString);
+        this.storeOrchestrator.receiveData(securityToken, this.systemStore, pipeId,jsonPayloadString);
     }
 }

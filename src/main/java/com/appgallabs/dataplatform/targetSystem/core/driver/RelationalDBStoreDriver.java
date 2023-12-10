@@ -16,4 +16,9 @@ public class RelationalDBStoreDriver implements StoreDriver {
     public void storeData(JsonArray dataSet) {
 
     }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }

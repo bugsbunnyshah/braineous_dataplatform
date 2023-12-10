@@ -1,6 +1,8 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
+import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.targetSystem.framework.StoreOrchestrator;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -19,6 +21,9 @@ public class EventConsumer {
 
     @Inject
     private PipelineService pipelineService;
+
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
 
     private Set<String> registeredPipes;
 
@@ -51,8 +56,11 @@ public class EventConsumer {
             if(!this.registeredPipes.contains(pipeId)) {
                 String pipeTopic = pipeId;
 
+                SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
+
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
                 consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
+                        systemStore,
                         StoreOrchestrator.getInstance()));
 
                 this.registeredPipes.add(pipeId);

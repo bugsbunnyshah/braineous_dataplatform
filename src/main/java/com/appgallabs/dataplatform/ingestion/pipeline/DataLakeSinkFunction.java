@@ -77,8 +77,6 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
         //store into datalake
         driver.storeIngestion(tenant, datalakeObject.toString());
-
-        this.postProcess(value,context);
     }
 
     private void preProcess(String value, Context context){
@@ -91,24 +89,9 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
 
         JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", value);
         jsonObject.addProperty("incoming", true);
-
-        collection.insertOne(Document.parse(jsonObject.toString()));
-    }
-
-    private void postProcess(String value, Context context){
-        String principal = this.securityToken.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
-
-        //setup driver components
-        MongoClient mongoClient = this.systemStore.getMongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("message", value);
-        jsonObject.addProperty("outgoing", true);
 
         collection.insertOne(Document.parse(jsonObject.toString()));
     }

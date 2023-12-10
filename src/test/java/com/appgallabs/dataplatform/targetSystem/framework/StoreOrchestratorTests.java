@@ -1,6 +1,8 @@
 package com.appgallabs.dataplatform.targetSystem.framework;
 
+import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -26,6 +28,9 @@ public class StoreOrchestratorTests extends BaseTest {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {
@@ -43,6 +48,8 @@ public class StoreOrchestratorTests extends BaseTest {
     public void receiveData() throws Exception{
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
 
+        SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
+
         List<String> objectHashes = new ArrayList<>();
         String jsonString = Util.loadResource("receiver/dataset.json");
         JsonArray dataSetArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
@@ -52,7 +59,7 @@ public class StoreOrchestratorTests extends BaseTest {
         }
 
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
-        storeOrchestrator.receiveData(securityToken,"123", jsonString);
+        storeOrchestrator.receiveData(securityToken, systemStore,"123", jsonString);
 
         //TODO: (CR2)
         //assert
