@@ -606,8 +606,6 @@ public class PipeServiceTests extends BaseTest
                 snapshotId,
                 livePipe.getPipeName());
         JsonUtil.printStdOut(liveSnapShot);
-
-        //TODO: assert (1.0.0-CR2)
     }
 
     @Test
@@ -682,8 +680,6 @@ public class PipeServiceTests extends BaseTest
         String jsonBody = payload.toString();
         JsonArray responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody).getAsJsonArray();
         JsonUtil.printStdOut(responseJson);
-
-        //TODO: assert (1.0.0-CR2)
     }
 
     @Test
@@ -759,7 +755,10 @@ public class PipeServiceTests extends BaseTest
         JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody).getAsJsonObject();
         JsonUtil.printStdOut(responseJson);
 
-        //TODO: assert (1.0.0-CR2)
+        //assert
+        String exception = responseJson.get("exception").getAsString();
+        String expected = "PIPE_NOT_FOUND";
+        assertEquals(exception, expected);
     }
 
     @Test
@@ -823,12 +822,25 @@ public class PipeServiceTests extends BaseTest
             break;
         }
 
+        String pipeId = livePipe.getPipeId();
         String pipeName = livePipe.getPipeName();
         String endpoint = "/pipeline_manager/ingestion_stats/"+pipeName+"/";;
 
         JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        JsonUtil.printStdOut(responseJson);
 
-        //TODO: assert (1.0.0-CR2)
+        //asserts
+        String type = responseJson.get("type").getAsString();
+        String typeExpected = "ingestion";
+        assertEquals(type, typeExpected);
+
+        String pipeIdStored = responseJson.get("pipeId").getAsString();
+        String pipeIdExpected = pipeId;
+        assertEquals(pipeIdStored, pipeIdExpected);
+
+        String pipeNameStored = responseJson.get("pipeName").getAsString();
+        String pipeNameExpected = pipeName;
+        assertEquals(pipeNameStored, pipeNameExpected);
     }
 
     @Test
@@ -897,7 +909,10 @@ public class PipeServiceTests extends BaseTest
 
         JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
 
-        //TODO: assert (1.0.0-CR2)
+        //assert
+        String exception = responseJson.get("exception").getAsString();
+        String expected = "PIPE_NOT_FOUND";
+        assertEquals(exception, expected);
     }
 
     @Test
@@ -961,12 +976,24 @@ public class PipeServiceTests extends BaseTest
             break;
         }
 
+        String pipeId = livePipe.getPipeId();
         String pipeName = livePipe.getPipeName();
         String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";;
 
         JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
 
-        //TODO: assert (1.0.0-CR2)
+        //asserts
+        String type = responseJson.get("type").getAsString();
+        String typeExpected = "delivery";
+        assertEquals(type, typeExpected);
+
+        String pipeIdStored = responseJson.get("pipeId").getAsString();
+        String pipeIdExpected = pipeId;
+        assertEquals(pipeIdStored, pipeIdExpected);
+
+        String pipeNameStored = responseJson.get("pipeName").getAsString();
+        String pipeNameExpected = pipeName;
+        assertEquals(pipeNameStored, pipeNameExpected);
     }
 
     @Test
@@ -1035,7 +1062,10 @@ public class PipeServiceTests extends BaseTest
 
         JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
 
-        //TODO: assert (1.0.0-CR2)
+        //assert
+        String exception = responseJson.get("exception").getAsString();
+        String expected = "PIPE_NOT_FOUND";
+        assertEquals(exception, expected);
     }
 
     //@Test
