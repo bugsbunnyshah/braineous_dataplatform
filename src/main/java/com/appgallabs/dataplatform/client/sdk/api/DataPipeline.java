@@ -1,22 +1,12 @@
 package com.appgallabs.dataplatform.client.sdk.api;
 
-import com.appgallabs.dataplatform.client.sdk.service.DataLakeGraphQlQueryService;
 import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
 public class DataPipeline {
     private static Configuration configuration;
-
-    /*static{
-        configuration = new HashMap<>();
-
-        configuration.put("steamSizeInBytes", "80");
-        configuration.put("ingestionHostBaseUrl", "http://localhost:8080/");
-    }*/
 
     public static Configuration configure(Configuration configuration){
         DataPipeline.configuration = configuration;
@@ -40,5 +30,21 @@ public class DataPipeline {
 
         //throw exception
         throw new RegisterPipeException("unknown_query_error");
+    }
+
+    public static TargetSystemBuilder createPipe(String pipeName) throws RegisterPipeException{
+        TargetSystemBuilder targetSystemBuilder = new TargetSystemBuilder();
+        String pipeId = UUID.randomUUID().toString();
+
+        targetSystemBuilder.setPipeId(pipeId);
+        targetSystemBuilder.setPipeName(pipeName);
+
+        return targetSystemBuilder;
+    }
+
+    public static JsonObject registerPipe(TargetSystemBuilder targetSystemBuilder)
+            throws RegisterPipeException{
+        String jsonString = targetSystemBuilder.toString();
+        return registerPipe(jsonString);
     }
 }

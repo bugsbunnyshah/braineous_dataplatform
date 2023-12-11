@@ -58,12 +58,15 @@ public class EventConsumer {
 
                 SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
 
+                //TODO: (CR2) dig deeper
                 SimpleConsumer consumer = SimpleConsumer.getInstance();
-                consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
-                        systemStore,
-                        StoreOrchestrator.getInstance()));
+                try {
+                    consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
+                            systemStore,
+                            StoreOrchestrator.getInstance()));
 
-                this.registeredPipes.add(pipeId);
+                    this.registeredPipes.add(pipeId);
+                }catch (Exception ex){}
             }
         }catch (Exception e){
             throw new RuntimeException(e);

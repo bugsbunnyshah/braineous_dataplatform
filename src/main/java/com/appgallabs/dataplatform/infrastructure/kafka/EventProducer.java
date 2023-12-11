@@ -70,10 +70,16 @@ public class EventProducer {
             if(!this.registeredPipes.contains(pipeId)) {
                 String pipeTopic = pipeId;
 
-                TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
-                this.topicListing.put(pipeTopic, topicListing);
+                //TODO: (CR2) dig deeper
+                TopicListing topicListing = null;
+                try {
+                    topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
+                }catch(Exception ex){}
 
-                this.registeredPipes.add(pipeId);
+                if(topicListing != null) {
+                    this.topicListing.put(pipeTopic, topicListing);
+                    this.registeredPipes.add(pipeId);
+                }
             }
         }catch (Exception e){
             throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.client.sdk.api;
 
 import com.appgallabs.dataplatform.TestConstants;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
@@ -42,5 +43,53 @@ public class DataPipelineTests {
         //System.out.println("********************************");
         //JsonUtil.printStdOut(response);
         //assertNotNull(response);
+    }
+
+    @Test
+    public void createTargetSystemRegistration() throws Exception
+    {
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                streamSizeInBytes(80).
+                ingestionHostUrl("http://localhost:8080");
+        DataPipeline.configure(configuration);
+
+        String pipeName = "telescope_data";
+
+        TargetSystemBuilder targetSystemBuilder = DataPipeline.createPipe(pipeName);
+        String pipeId = targetSystemBuilder.getPipeId();
+
+        targetSystemBuilder.setPipeName(pipeName);
+        targetSystemBuilder.setPipeId(pipeId);
+
+        String storeDriver = "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver";
+        String storeName = "scenario1_store_mongodb";
+        String jsonPathExpression = "jsonpath:mongodb";
+        JsonObject config = new JsonObject();
+        config.addProperty("connectionString","mongodb://localhost:27017");
+        config.addProperty("database","scenario1_store");
+        config.addProperty("collection","data");
+        targetSystemBuilder.setStoreDriver(storeDriver).
+                setStoreName(storeName).
+                setJsonPathExpression(jsonPathExpression).
+                setConfig(config).
+                addTargetSystem();
+
+
+        storeDriver = "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver";
+        storeName = "scenario1_store_mysql";
+        jsonPathExpression = "jsonpath:mysql";
+        config = new JsonObject();
+        config.addProperty("connectionString","jdbc:mysql://localhost:3306/braineous_staging_database");
+        config.addProperty("username","root");
+        config.addProperty("password","");
+        JsonObject registryEntry = targetSystemBuilder.setStoreDriver(storeDriver).
+                setStoreName(storeName).
+                setJsonPathExpression(jsonPathExpression).
+                setConfig(config).
+                build();
+
+        JsonObject registration = DataPipeline.registerPipe(targetSystemBuilder);
+        JsonUtil.printStdOut(registration);
     }
 }
