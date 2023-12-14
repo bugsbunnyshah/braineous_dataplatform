@@ -978,7 +978,7 @@ public class PipeServiceTests extends BaseTest
 
         String pipeId = livePipe.getPipeId();
         String pipeName = livePipe.getPipeName();
-        String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";;
+        String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";
 
         JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
 

@@ -32,7 +32,7 @@ public abstract class BaseTest
     public void tearDown() throws Exception
     {
         this.securityTokenMockComponent.start();
-        this.cleanup();
+        //this.cleanup();
     }
 
     private void cleanup(){

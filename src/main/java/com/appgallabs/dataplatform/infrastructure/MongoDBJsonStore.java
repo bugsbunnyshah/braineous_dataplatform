@@ -55,6 +55,9 @@ public class MongoDBJsonStore
     private PipelineStore pipelineStore;
 
     @Inject
+    private TenantStore tenantStore;
+
+    @Inject
     private RegistryStore registryStore;
 
     private MongoClient mongoClient = null;
@@ -80,6 +83,10 @@ public class MongoDBJsonStore
 
     public RegistryStore getRegistryStore() {
         return registryStore;
+    }
+
+    public TenantStore getTenantStore() {
+        return tenantStore;
     }
 
     public SystemStore getSystemStore(){
