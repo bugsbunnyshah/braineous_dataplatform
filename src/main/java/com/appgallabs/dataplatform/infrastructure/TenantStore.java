@@ -42,4 +42,29 @@ public class TenantStore implements Serializable {
 
         return null;
     }
+
+    public Tenant getTenant(Tenant adminTenant, MongoClient mongoClient,String name, String email) {
+        String principal = adminTenant.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("tenant");
+
+        JsonObject queryJson = new JsonObject();
+        queryJson.addProperty("name",name);
+        queryJson.addProperty("email",email);
+        String queryJsonString = queryJson.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+            Tenant result = Tenant.parse(documentJson);
+            return result;
+        }
+
+        return null;
+    }
 }

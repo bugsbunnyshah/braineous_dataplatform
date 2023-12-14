@@ -1,7 +1,9 @@
 package com.appgallabs.dataplatform.infrastructure;
 
+import com.appgallabs.dataplatform.common.ValidationException;
 import com.appgallabs.dataplatform.infrastructure.security.ApiKeyManager;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.util.ValidationUtil;
 import com.google.gson.JsonObject;
 
 import com.mongodb.client.MongoClient;
@@ -24,10 +26,44 @@ public class TenantService {
     @Inject
     private ApiKeyManager apiKeyManager;
 
-    public Tenant createTenant(String name, String email){
+    public Tenant createTenant(String name, String email) throws ValidationException {
         Tenant adminTenant = this.securityTokenContainer.getTenant();
         TenantStore tenantStore = this.mongoDBJsonStore.getTenantStore();
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+
+        //Perform Validation
+        JsonObject errorJson = new JsonObject();
+        boolean validationIssuesFound = false;
+
+        //name is required
+        if(name == null || name.trim().length()==0){
+            validationIssuesFound = true;
+            errorJson.addProperty("tenant_name_required", "Tenant Name is required");
+        }
+
+        //email is required
+        if(email == null || email.trim().length()==0){
+            validationIssuesFound = true;
+            errorJson.addProperty("tenant_email_required", "Tenant Email is required");
+        }else if(!ValidationUtil.isEmailValid(email)){
+            validationIssuesFound = true;
+            errorJson.addProperty("tenant_email_invalid", "Tenant Email is invalid");
+        }
+
+        //name "and" email should be unique
+        Tenant unique = tenantStore.getTenant(adminTenant,
+                mongoClient,
+                name,
+                email);
+        if(unique != null){
+            validationIssuesFound = true;
+            errorJson.addProperty("tenant_exists", "A tenant with this name and email already exists");
+        }
+
+        if(validationIssuesFound){
+            ValidationException validationException = new ValidationException(errorJson.toString());
+            throw validationException;
+        }
 
         Tenant tenant = new Tenant();
 

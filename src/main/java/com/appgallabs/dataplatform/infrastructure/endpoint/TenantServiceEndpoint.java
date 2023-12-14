@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.endpoint;
 
+import com.appgallabs.dataplatform.common.ValidationException;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.TenantService;
 
@@ -53,7 +54,13 @@ public class TenantServiceEndpoint {
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;
-        }catch(Exception e)
+        }
+        catch(ValidationException validationException){
+            logger.error(validationException.getMessage(), validationException);
+            JsonObject error = validationException.toJson();
+            return Response.status(403).entity(error.toString()).build();
+        }
+        catch(Exception e)
         {
             logger.error(e.getMessage(), e);
             JsonObject error = new JsonObject();

@@ -28,6 +28,71 @@ public class TenantServiceEndpointTests extends BaseTest {
     private ApiKeyManager apiKeyManager;
 
     @Test
+    public void testValidationNameRequired() throws Exception{
+        String tenantName = UUID.randomUUID().toString();
+        String tenantEmail = tenantName+"@email.com";
+
+        //create tenant
+        String createEndpoint = "/tenant_manager/create_tenant";
+        JsonObject payload = new JsonObject();
+        //payload.addProperty("name", tenantName);
+        payload.addProperty("email", tenantEmail);
+
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+                .getAsJsonObject();
+        assertTrue(createResponseJson.has("tenant_name_required"));
+    }
+
+    @Test
+    public void testValidationEmailRequired() throws Exception{
+        String tenantName = UUID.randomUUID().toString();
+        String tenantEmail = tenantName+"@email.com";
+
+        //create tenant
+        String createEndpoint = "/tenant_manager/create_tenant";
+        JsonObject payload = new JsonObject();
+        payload.addProperty("name", tenantName);
+        //payload.addProperty("email", tenantEmail);
+
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+                .getAsJsonObject();
+        assertTrue(createResponseJson.has("tenant_email_required"));
+    }
+
+    @Test
+    public void testValidationEmailInvalid() throws Exception{
+        String tenantName = UUID.randomUUID().toString();
+        String tenantEmail = tenantName+"email.com";
+
+        //create tenant
+        String createEndpoint = "/tenant_manager/create_tenant";
+        JsonObject payload = new JsonObject();
+        payload.addProperty("name", tenantName);
+        payload.addProperty("email", tenantEmail);
+
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+                .getAsJsonObject();
+        assertTrue(createResponseJson.has("tenant_email_invalid"));
+    }
+
+    @Test
+    public void testValidationUniqueness() throws Exception{
+        String tenantName = UUID.randomUUID().toString();
+        String tenantEmail = tenantName+"@email.com";
+
+        //create tenant
+        String createEndpoint = "/tenant_manager/create_tenant";
+        JsonObject payload = new JsonObject();
+        payload.addProperty("name", tenantName);
+        payload.addProperty("email", tenantEmail);
+
+        for(int i=0; i<2; i++) {
+            ApiUtil.apiPostRequest(createEndpoint, payload.toString())
+                    .getAsJsonObject();
+        }
+    }
+
+    @Test
     public void endToEnd() throws Exception{
         String tenantName = UUID.randomUUID().toString();
         String tenantEmail = tenantName+"@email.com";
@@ -40,7 +105,6 @@ public class TenantServiceEndpointTests extends BaseTest {
 
         JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
                 .getAsJsonObject();
-        JsonUtil.printStdOut(createResponseJson);
         String apiKey = createResponseJson.get("apiKey").getAsString();
 
         //read tenant
