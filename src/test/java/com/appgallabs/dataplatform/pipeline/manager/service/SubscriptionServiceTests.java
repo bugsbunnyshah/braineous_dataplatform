@@ -5,6 +5,8 @@ import com.appgallabs.dataplatform.pipeline.manager.model.Subscriber;
 import com.appgallabs.dataplatform.pipeline.manager.model.SubscriberGroup;
 import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.ApiUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
@@ -32,6 +34,9 @@ public class SubscriptionServiceTests extends BaseTest
 
     @Inject
     private SubscriptionService subscriptionService;
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
 
     @Test
     public void getAllSubscriptions() throws Exception
@@ -70,7 +75,8 @@ public class SubscriptionServiceTests extends BaseTest
         }
 
         String endpoint = "/subscription_manager/subscriptions_all/";
-        JsonArray all = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonArray all = ApiUtil.apiGetRequest(endpoint, securityToken).getAsJsonArray();
         assertNotNull(all);
         JsonUtil.printStdOut(all);
         assertEquals(numberOfSubscriptions, all.size());
@@ -144,7 +150,8 @@ public class SubscriptionServiceTests extends BaseTest
         for(String subscriptionId: subscriptionIds) {
             //Get all subscriptions
             String endpoint = "/subscription_manager/get_subscription/"+subscriptionId+"/";
-            JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            JsonObject responseJson = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonObject();
             Subscription subscription = Subscription.parse(responseJson.toString());
 
             String hash = JsonUtil.getJsonHash(subscription.toJson());
@@ -219,7 +226,8 @@ public class SubscriptionServiceTests extends BaseTest
         payload.addProperty("subscriptionId", subscriptionId);
         String payloadHash = JsonUtil.getJsonHash(payload);
 
-        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,payload.toString()).getAsJsonObject();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,payload.toString(),securityToken).getAsJsonObject();
         JsonObject subscriptionJson = responseJson.getAsJsonObject("subscription");
         Subscription subscription = Subscription.parse(subscriptionJson.toString());
 
@@ -241,7 +249,7 @@ public class SubscriptionServiceTests extends BaseTest
         pipe.setPipeName(pipeName);
         subscription.setPipe(pipe);
         endpoint = "/subscription_manager/update_subscription/";
-        responseJson = ApiUtil.apiPostRequest(endpoint,subscription.toString()).getAsJsonObject();
+        responseJson = ApiUtil.apiPostRequest(endpoint,subscription.toString(),securityToken).getAsJsonObject();
 
         subscriptionJson = responseJson.getAsJsonObject("subscription");
         subscription = Subscription.parse(subscriptionJson.toString());
@@ -320,7 +328,8 @@ public class SubscriptionServiceTests extends BaseTest
         logger.info("*****************************************************************");
         for(String subscriptionId: subscriptionIds) {
             String endpoint = "/subscription_manager/delete_subscription/"+subscriptionId+"/";
-            JsonObject responseJson = ApiUtil.apiDeleteRequest(endpoint).getAsJsonObject();
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            JsonObject responseJson = ApiUtil.apiDeleteRequest(endpoint,securityToken).getAsJsonObject();
             String deleted = responseJson.get("subscriptionId").getAsString();
 
             Subscription subscription = this.subscriptionService.getSubscription(

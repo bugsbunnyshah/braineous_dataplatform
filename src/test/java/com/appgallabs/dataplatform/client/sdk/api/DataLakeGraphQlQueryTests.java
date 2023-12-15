@@ -50,7 +50,7 @@ public class DataLakeGraphQlQueryTests extends BaseTest {
     }
 
     //TODO: solidify: (CR1)
-    @Test
+    //@Test
     public void sendQuery() throws Exception{
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().

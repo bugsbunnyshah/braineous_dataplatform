@@ -1,9 +1,10 @@
 package com.appgallabs.dataplatform.pipeline.manager.service;
 
-import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.pipeline.manager.model.*;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.ApiUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
@@ -33,6 +34,9 @@ public class PipeServiceTests extends BaseTest
 
     @Inject
     private PipeService pipeService;
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
 
     @Test
     public void moveToDevelopment() throws Exception
@@ -135,7 +139,8 @@ public class PipeServiceTests extends BaseTest
 
             //update the pipe
             String jsonBody = old.toString();
-            JsonElement responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody);
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            JsonElement responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody,securityToken);
             JsonObject updatedJson = responseJson.getAsJsonObject().get("pipe").getAsJsonObject();
             Pipe updated = Pipe.parse(updatedJson.toString());
 
@@ -198,7 +203,8 @@ public class PipeServiceTests extends BaseTest
             //update the pipe
             //update the pipe
             String jsonBody = old.toString();
-            JsonElement responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody);
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            JsonElement responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody,securityToken);
             JsonObject updatedJson = responseJson.getAsJsonObject().get("pipe").getAsJsonObject();
             Pipe updated = Pipe.parse(updatedJson.toString());
 
@@ -371,7 +377,8 @@ public class PipeServiceTests extends BaseTest
 
             //update the pipe
             String jsonBody = old.toString();
-            JsonElement responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody);
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            JsonElement responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody,securityToken);
             JsonObject updatedJson = responseJson.getAsJsonObject().get("pipe").getAsJsonObject();
             Pipe updated = Pipe.parse(updatedJson.toString());
 
@@ -462,7 +469,8 @@ public class PipeServiceTests extends BaseTest
         logger.info("*****************************************************************");
 
         String endpoint = "/pipeline_manager/dev_pipes/";
-        JsonArray pipes = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonArray pipes = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonArray();
         JsonUtil.printStdOut(pipes);
         assertEquals(2, pipes.size());
     }
@@ -498,7 +506,8 @@ public class PipeServiceTests extends BaseTest
         logger.info("*****************************************************************");
 
         String endpoint = "/pipeline_manager/staged_pipes/";
-        JsonArray pipes = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonArray pipes = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonArray();
         JsonUtil.printStdOut(pipes);
         assertEquals(2, pipes.size());
     }
@@ -534,7 +543,8 @@ public class PipeServiceTests extends BaseTest
         logger.info("*****************************************************************");
 
         String endpoint = "/pipeline_manager/deployed_pipes/";
-        JsonArray pipes = ApiUtil.apiGetRequest(endpoint).getAsJsonArray();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonArray pipes = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonArray();
         JsonUtil.printStdOut(pipes);
         assertEquals(2, pipes.size());
     }
@@ -678,7 +688,10 @@ public class PipeServiceTests extends BaseTest
         payload.addProperty("snapshotId", snapshotId);
         payload.addProperty("pipeName", livePipe.getPipeName());
         String jsonBody = payload.toString();
-        JsonArray responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody).getAsJsonArray();
+
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+
+        JsonArray responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody,securityToken).getAsJsonArray();
         JsonUtil.printStdOut(responseJson);
     }
 
@@ -752,7 +765,8 @@ public class PipeServiceTests extends BaseTest
         payload.addProperty("snapshotId", snapshotId);
         payload.addProperty("pipeName", "blah");
         String jsonBody = payload.toString();
-        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody).getAsJsonObject();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody,securityToken).getAsJsonObject();
         JsonUtil.printStdOut(responseJson);
 
         //assert
@@ -825,8 +839,8 @@ public class PipeServiceTests extends BaseTest
         String pipeId = livePipe.getPipeId();
         String pipeName = livePipe.getPipeName();
         String endpoint = "/pipeline_manager/ingestion_stats/"+pipeName+"/";;
-
-        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonObject();
         JsonUtil.printStdOut(responseJson);
 
         //asserts
@@ -906,8 +920,8 @@ public class PipeServiceTests extends BaseTest
 
         String pipeName = "blah";
         String endpoint = "/pipeline_manager/ingestion_stats/"+pipeName+"/";;
-
-        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonObject();
 
         //assert
         String exception = responseJson.get("exception").getAsString();
@@ -980,7 +994,8 @@ public class PipeServiceTests extends BaseTest
         String pipeName = livePipe.getPipeName();
         String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";
 
-        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint, securityToken).getAsJsonObject();
 
         //asserts
         String type = responseJson.get("type").getAsString();
@@ -1060,7 +1075,8 @@ public class PipeServiceTests extends BaseTest
         String pipeName = "blah";
         String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";;
 
-        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint, securityToken).getAsJsonObject();
 
         //assert
         String exception = responseJson.get("exception").getAsString();
@@ -1120,7 +1136,8 @@ public class PipeServiceTests extends BaseTest
         JsonObject payload = new JsonObject();
         payload.addProperty("pipeName", pipeName);
 
-        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,payload.toString())
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiPostRequest(endpoint,payload.toString(),securityToken)
                 .getAsJsonObject();
 
         return responseJson;
@@ -1166,20 +1183,23 @@ public class PipeServiceTests extends BaseTest
         payload.addProperty("snapshotId", snapshotId);
         payload.addProperty("pipeName", pipeName);
         String jsonBody = payload.toString();
-        JsonArray responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody).getAsJsonArray();
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonArray responseJson = ApiUtil.apiPostRequest(endpoint,jsonBody, securityToken).getAsJsonArray();
 
         return responseJson;
     }
 
     private JsonObject getIngestionStats(String pipeName){
-        String endpoint = "/pipeline_manager/ingestion_stats/"+pipeName+"/";;
-        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        String endpoint = "/pipeline_manager/ingestion_stats/"+pipeName+"/";
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonObject();
         return responseJson;
     }
 
     private JsonObject getDeliveryStats(String pipeName){
-        String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";;
-        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint).getAsJsonObject();
+        String endpoint = "/pipeline_manager/delivery_stats/"+pipeName+"/";
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject responseJson = ApiUtil.apiGetRequest(endpoint,securityToken).getAsJsonObject();
         return responseJson;
     }
 }

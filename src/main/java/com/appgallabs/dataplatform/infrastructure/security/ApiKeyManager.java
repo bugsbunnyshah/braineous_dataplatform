@@ -41,11 +41,13 @@ public class ApiKeyManager {
         Tenant tenant = tenantStore.getTenant(adminTenant,
                 mongoClient,
                 apiKey);
-        String storedApiSecret = tenant.getApiSecret();
-        String storedApiKey = tenant.getPrincipal();
+        if(tenant != null) {
+            String storedApiSecret = tenant.getApiSecret();
+            String storedApiKey = tenant.getPrincipal();
 
-        if((apiKey.equals(storedApiKey)) && (apiSecret.equals(storedApiSecret))){
-            return true;
+            if ((apiKey.equals(storedApiKey)) && (apiSecret.equals(storedApiSecret))) {
+                return true;
+            }
         }
 
         return false;

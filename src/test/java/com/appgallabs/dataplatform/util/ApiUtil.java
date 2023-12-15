@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.util;
 
 import com.appgallabs.dataplatform.endpoint.OAuthAuthenticateTests;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -16,25 +17,15 @@ import static io.restassured.RestAssured.given;
 public class ApiUtil {
     private static Logger logger = LoggerFactory.getLogger(ApiUtil.class);
 
-    public static JsonElement apiPostRequest(String endpoint, String body){
+    public static JsonElement apiPostRequest(String endpoint, String body, SecurityToken securityToken){
         try {
-            //get OAuth Token
-            String credentials = IOUtils.resourceToString("oauth/credentials.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String tenant = credentialsJson.get("client_id").getAsString();
-
-            String token = IOUtils.resourceToString("oauth/jwtToken.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
-            String generatedToken = securityTokenJson.get("access_token").getAsString();
+            String apiKey = securityToken.getPrincipal();
+            String apiKeySecret = securityToken.getToken();
 
             Response response = given().body(body).
                     when().
-                    header("tenant", tenant).
-                    header("token", "Bearer "+generatedToken).
+                    header("x-api-key", apiKey).
+                    header("x-api-key-secret", apiKeySecret).
                     post(endpoint).
                     andReturn();
 
@@ -49,25 +40,16 @@ public class ApiUtil {
         }
     }
 
-    public static JsonElement apiGetRequest(String endpoint){
-        try {
-            //get OAuth Token
-            String credentials = IOUtils.resourceToString("oauth/credentials.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String tenant = credentialsJson.get("client_id").getAsString();
 
-            String token = IOUtils.resourceToString("oauth/jwtToken.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
-            String generatedToken = securityTokenJson.get("access_token").getAsString();
+    public static JsonElement apiGetRequest(String endpoint, SecurityToken securityToken){
+        try {
+            String apiKey = securityToken.getPrincipal();
+            String apiKeySecret = securityToken.getToken();
 
             Response response = given().
                     when().
-                    header("tenant", tenant).
-                    header("token", "Bearer "+generatedToken).
+                    header("x-api-key", apiKey).
+                    header("x-api-key-secret", apiKeySecret).
                     get(endpoint).
                     andReturn();
 
@@ -82,25 +64,15 @@ public class ApiUtil {
         }
     }
 
-    public static JsonElement apiDeleteRequest(String endpoint){
+    public static JsonElement apiDeleteRequest(String endpoint, SecurityToken securityToken){
         try {
-            //get OAuth Token
-            String credentials = IOUtils.resourceToString("oauth/credentials.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String tenant = credentialsJson.get("client_id").getAsString();
-
-            String token = IOUtils.resourceToString("oauth/jwtToken.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
-            String generatedToken = securityTokenJson.get("access_token").getAsString();
+            String apiKey = securityToken.getPrincipal();
+            String apiKeySecret = securityToken.getToken();
 
             Response response = given().
                     when().
-                    header("tenant", tenant).
-                    header("token", "Bearer "+generatedToken).
+                    header("x-api-key", apiKey).
+                    header("x-api-key-secret", apiKeySecret).
                     delete(endpoint).
                     andReturn();
 

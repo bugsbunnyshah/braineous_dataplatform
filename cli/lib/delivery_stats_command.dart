@@ -24,7 +24,10 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
   String pipeName = arguments[0];
   final url = Uri.http('localhost:8080', '/pipeline_manager/delivery_stats/$pipeName/');
 
-  final response = await http.get(url);
+  final response = await http.get(url,headers: {
+    "x-api-key":"0132d8be-c85c-423a-a168-4767f4dd638b",
+    "x-api-key-secret": "d8e452ea-9968-434c-b84c-5276781a60b6",
+  },);
 
   // If the request didn't succeed, throw an exception
   if (response.statusCode != 200) {

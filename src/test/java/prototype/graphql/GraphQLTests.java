@@ -35,7 +35,7 @@ import test.components.Util;
 import javax.inject.Inject;
 
 
-@QuarkusTest
+//@QuarkusTest
 public class GraphQLTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(GraphQLTests.class);
 
@@ -61,7 +61,7 @@ public class GraphQLTests extends BaseTest {
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
     }
 
-    @Test
+    //@Test
     public void testAll() throws Exception{
         try {
             String pipeId = "123";

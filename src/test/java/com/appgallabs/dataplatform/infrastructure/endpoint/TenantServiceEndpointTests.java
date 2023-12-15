@@ -3,6 +3,8 @@ package com.appgallabs.dataplatform.infrastructure.endpoint;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.TenantService;
 import com.appgallabs.dataplatform.infrastructure.security.ApiKeyManager;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.ApiUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
@@ -22,6 +24,8 @@ public class TenantServiceEndpointTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(TenantServiceEndpointTests.class);
 
     @Inject
+    private SecurityTokenContainer securityTokenContainer;
+    @Inject
     private TenantService tenantService;
 
     @Inject
@@ -38,7 +42,8 @@ public class TenantServiceEndpointTests extends BaseTest {
         //payload.addProperty("name", tenantName);
         payload.addProperty("email", tenantEmail);
 
-        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString(),securityToken)
                 .getAsJsonObject();
         assertTrue(createResponseJson.has("tenant_name_required"));
     }
@@ -54,7 +59,8 @@ public class TenantServiceEndpointTests extends BaseTest {
         payload.addProperty("name", tenantName);
         //payload.addProperty("email", tenantEmail);
 
-        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString(),securityToken)
                 .getAsJsonObject();
         assertTrue(createResponseJson.has("tenant_email_required"));
     }
@@ -70,7 +76,8 @@ public class TenantServiceEndpointTests extends BaseTest {
         payload.addProperty("name", tenantName);
         payload.addProperty("email", tenantEmail);
 
-        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString(),securityToken)
                 .getAsJsonObject();
         assertTrue(createResponseJson.has("tenant_email_invalid"));
     }
@@ -87,7 +94,8 @@ public class TenantServiceEndpointTests extends BaseTest {
         payload.addProperty("email", tenantEmail);
 
         for(int i=0; i<2; i++) {
-            ApiUtil.apiPostRequest(createEndpoint, payload.toString())
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            ApiUtil.apiPostRequest(createEndpoint, payload.toString(),securityToken)
                     .getAsJsonObject();
         }
     }
@@ -103,13 +111,14 @@ public class TenantServiceEndpointTests extends BaseTest {
         payload.addProperty("name", tenantName);
         payload.addProperty("email", tenantEmail);
 
-        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString())
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString(),securityToken)
                 .getAsJsonObject();
         String apiKey = createResponseJson.get("apiKey").getAsString();
 
         //read tenant
         String readEndpoint = "/tenant_manager/get_tenant/"+apiKey+"/";
-        JsonObject readResponseJson = ApiUtil.apiGetRequest(readEndpoint).getAsJsonObject();
+        JsonObject readResponseJson = ApiUtil.apiGetRequest(readEndpoint,securityToken).getAsJsonObject();
         Tenant storedTenant = Tenant.parse(readResponseJson.toString());
         assertEquals(tenantName,storedTenant.getName());
         assertEquals(tenantEmail,storedTenant.getEmail());
