@@ -19,8 +19,10 @@ public class DataPipelineTests {
     public void sendData() throws Exception{
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
-                streamSizeInBytes(80).
-                ingestionHostUrl("http://localhost:8080");
+                ingestionHostUrl("http://localhost:8080/").
+                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
+                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
         String jsonResource = "ingestion/algorithm/input.json";
@@ -50,8 +52,10 @@ public class DataPipelineTests {
     {
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
-                streamSizeInBytes(80).
-                ingestionHostUrl("http://localhost:8080");
+                ingestionHostUrl("http://localhost:8080/").
+                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
+                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
         String pipeName = "telescope_data";

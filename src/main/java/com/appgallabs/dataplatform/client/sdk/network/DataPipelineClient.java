@@ -39,21 +39,14 @@ public class DataPipelineClient {
 
             String payload = jsonElement.toString();
 
-            //get OAuth Token
-            String credentials = IOUtils.resourceToString("oauth/credentials.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String tenant = credentialsJson.get("client_id").getAsString();
+            //get apikey
+            String apiKey = configuration.getApiKey();
 
-            String token = IOUtils.resourceToString("oauth/jwtToken.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
-            String generatedToken = securityTokenJson.get("access_token").getAsString();
+            //get apiSecret
+            String apiSecret = configuration.getApiSecret();
 
             //provide response
-            JsonObject response = this.handleRestCallForSendData(restUrl,tenant,generatedToken,
+            JsonObject response = this.handleRestCallForSendData(restUrl,apiKey,apiSecret,
                     pipeId, entity, payload);
             response.addProperty("ingestionStatusCode", response.get("httpResponseCode").getAsString());
 
@@ -72,21 +65,14 @@ public class DataPipelineClient {
             String restUrl = baseUrl+"ingestion/register_pipe/";
             String payload = jsonElement.toString();
 
-            //get OAuth Token
-            String credentials = IOUtils.resourceToString("oauth/credentials.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String tenant = credentialsJson.get("client_id").getAsString();
+            //get apikey
+            String apiKey = configuration.getApiKey();
 
-            String token = IOUtils.resourceToString("oauth/jwtToken.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
-            String generatedToken = securityTokenJson.get("access_token").getAsString();
+            //get apiSecret
+            String apiSecret = configuration.getApiSecret();
 
             //provide response
-            JsonObject response = this.handleRestCallForRegisterPipe(restUrl,tenant,generatedToken, payload);
+            JsonObject response = this.handleRestCallForRegisterPipe(restUrl,apiKey,apiSecret, payload);
             response.addProperty("registerPipeStatusCode", response.get("httpResponseCode").getAsString());
 
             return response;
@@ -97,7 +83,7 @@ public class DataPipelineClient {
         }
     }
 
-    private JsonObject handleRestCallForSendData(String restUrl,String tenant,String generatedToken,
+    private JsonObject handleRestCallForSendData(String restUrl,String apiKey,String apiSecret,
             String pipeId, String entity, String payload){
         try {
             JsonObject response = new JsonObject();
@@ -111,8 +97,8 @@ public class DataPipelineClient {
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    .header("tenant", tenant)
-                    .header("token", "Bearer "+generatedToken)
+                    .header("x-api-key", apiKey)
+                    .header("x-api-key-secret", apiSecret)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
                     .build();
 
@@ -133,7 +119,7 @@ public class DataPipelineClient {
         }
     }
 
-    private JsonObject handleRestCallForRegisterPipe(String restUrl,String tenant,String generatedToken, String payload){
+    private JsonObject handleRestCallForRegisterPipe(String restUrl,String apiKey,String apiSecret, String payload){
         try {
             JsonObject response = new JsonObject();
 
@@ -143,8 +129,8 @@ public class DataPipelineClient {
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    .header("tenant", tenant)
-                    .header("token", "Bearer "+generatedToken)
+                    .header("x-api-key", apiKey)
+                    .header("x-api-key-secret", apiSecret)
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString()))
                     .build();
 

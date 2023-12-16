@@ -26,10 +26,11 @@ public class UsageScenario1Tests {
     @Test
     public void scenario1Array() throws Exception{
         //configure the DataPipeline Client
-        //configure the DataPipeline Client
         Configuration configuration = new Configuration().
-                streamSizeInBytes(80).
-                ingestionHostUrl("http://localhost:8080/");
+                ingestionHostUrl("http://localhost:8080/").
+                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
+                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
         String datasetLocation = "tutorial/usecase/scenario1/scenario1Array.json";
@@ -64,8 +65,10 @@ public class UsageScenario1Tests {
     public void scenario1Object() throws Exception{
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
-                streamSizeInBytes(80).
-                ingestionHostUrl("http://localhost:8080/");
+                ingestionHostUrl("http://localhost:8080/").
+                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
+                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
         String datasetLocation = "tutorial/usecase/scenario1/scenario1Object.json";
