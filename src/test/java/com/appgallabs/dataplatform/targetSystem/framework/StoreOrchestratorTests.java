@@ -2,6 +2,7 @@ package com.appgallabs.dataplatform.targetSystem.framework;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
@@ -31,6 +32,9 @@ public class StoreOrchestratorTests extends BaseTest {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
+    @Inject
+    private SchemalessMapper schemalessMapper;
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {
@@ -51,7 +55,7 @@ public class StoreOrchestratorTests extends BaseTest {
         SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
 
         List<String> objectHashes = new ArrayList<>();
-        String jsonString = Util.loadResource("receiver/dataset.json");
+        String jsonString = Util.loadResource("receiver/input.json");
         JsonArray dataSetArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
         for(int i=0; i<dataSetArray.size(); i++){
             JsonObject dataObjectJson = dataSetArray.get(i).getAsJsonObject();
@@ -59,7 +63,8 @@ public class StoreOrchestratorTests extends BaseTest {
         }
 
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
-        storeOrchestrator.receiveData(securityToken, systemStore,"123", jsonString);
+        storeOrchestrator.receiveData(securityToken,
+                systemStore, this.schemalessMapper,"123", jsonString);
 
         //TODO: (CR2)
         //assert

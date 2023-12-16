@@ -7,9 +7,9 @@
       "config": {
         "connectionString": "mongodb://localhost:27017",
         "database": "scenario2_store0_mongodb",
-        "collection": "data"
-      },
-      "jsonpathExpression": "jsonpath:1"
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
     },
     {
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
@@ -17,9 +17,9 @@
       "config": {
         "connectionString": "mongodb://localhost:27017",
         "database": "scenario2_store1_mongodb",
-        "collection": "data"
-      },
-      "jsonpathExpression": "jsonpath:1"
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
     },
     {
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
@@ -27,9 +27,9 @@
       "config": {
         "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
         "username": "root",
-        "password": ""
-      },
-      "jsonpathExpression": "jsonpath:1"
+        "password": "",
+        "jsonpathExpressions": []
+      }
     }
   ]
 }

@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.targetSystem.framework;
 
+import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
@@ -14,6 +15,7 @@ import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.bson.Document;
 import org.ehcache.sizeof.SizeOf;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -34,7 +36,10 @@ public class StoreOrchestrator {
         return StoreOrchestrator.singleton;
     }
 
-    public void receiveData(SecurityToken securityToken, SystemStore systemStore, String pipeId, String data) {
+    public void receiveData(SecurityToken securityToken,
+                            SystemStore systemStore,
+                            SchemalessMapper schemalessMapper,
+                            String pipeId, String data) {
         String tenant = securityToken.getPrincipal();
 
         Debug.out("******STORE_ORCHESTRATOR********");
@@ -56,9 +61,10 @@ public class StoreOrchestrator {
         storeDrivers.stream().forEach(storeDriver -> {
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
-                //TODO: adjust based on configured jsonpath expression (CR2)
+                //adjust based on configured jsonpath expression (CR2)
+                JsonArray mapped = this.mapDataSet(storeDriver, schemalessMapper,preStorageDataSet);
 
-                storeDriver.storeData(preStorageDataSet);
+                storeDriver.storeData(mapped);
 
                 postProcess(securityToken,
                         systemStore,
@@ -68,6 +74,36 @@ public class StoreOrchestrator {
                         );
             }
         );
+    }
+
+    private JsonArray mapDataSet(StoreDriver storeDriver, SchemalessMapper schemalessMapper, JsonArray dataset){
+        try {
+            JsonArray mapped = new JsonArray();
+
+            JsonObject configuration = storeDriver.getConfiguration();
+            if (!configuration.has("jsonpathExpressions")) {
+                return dataset;
+            }
+
+
+            JsonArray jsonPathExpressions = configuration.getAsJsonArray("jsonpathExpressions");
+
+            List<String> queries = new ArrayList<>();
+            for (int i = 0; i < jsonPathExpressions.size(); i++) {
+                String jsonPathExpression = jsonPathExpressions.get(i).getAsString();
+                queries.add(jsonPathExpression);
+            }
+
+            for (int i = 0; i < dataset.size(); i++) {
+                JsonObject datasetElement = dataset.get(i).getAsJsonObject();
+                JsonObject ingestedJson = schemalessMapper.mapSubsetDataset(datasetElement.toString(), queries);
+                mapped.add(ingestedJson);
+            }
+
+            return mapped;
+        }catch(Exception e){
+            return dataset;
+        }
     }
 
     private void postProcess(SecurityToken securityToken, SystemStore systemStore,

@@ -36,4 +36,6 @@ public interface StoreDriver {
     public void storeData(JsonArray dataSet);
 
     public String getName();
+
+    public JsonObject getConfiguration();
 }

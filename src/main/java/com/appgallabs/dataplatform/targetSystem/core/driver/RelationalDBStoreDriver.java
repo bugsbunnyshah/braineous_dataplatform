@@ -21,4 +21,11 @@ public class RelationalDBStoreDriver implements StoreDriver {
     public String getName() {
         return null;
     }
+
+    @Override
+    public JsonObject getConfiguration() {
+        return null;
+    }
+
+
 }

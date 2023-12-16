@@ -1,7 +1,12 @@
 package com.appgallabs.dataplatform.ingestion.algorithm;
 
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.github.wnameless.json.flattener.JsonFlattener;
+import com.github.wnameless.json.unflattener.JsonUnflattener;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.EvaluationListener;
 import com.jayway.jsonpath.JsonPath;
@@ -21,6 +26,26 @@ public class SchemalessMapper {
     public Map<String,Object> mapAll(String json){
         Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(json);
         return flattenJson;
+    }
+
+    public JsonObject mapAllDataset(String json){
+        Map<String, Object> flatJson = this.mapAll(json);
+
+        String nestedJson = JsonUnflattener.unflatten(flatJson.toString());
+        JsonObject ingestedJson = JsonParser.parseString(nestedJson).getAsJsonObject();
+
+        return ingestedJson;
+    }
+
+    public JsonObject mapSubsetDataset(String json, List<String> queries){
+        Gson gson = JsonUtil.getGson();
+        Map<String, Object> flatJson = this.mapSubset(json, queries);
+
+        String flattenedJsonString = gson.toJson(flatJson, LinkedHashMap.class);
+        String ingestedJsonString = JsonUnflattener.unflatten(flattenedJsonString);
+        JsonObject ingestedJson = JsonParser.parseString(ingestedJsonString).getAsJsonObject();
+
+        return ingestedJson;
     }
 
     public Map<String,Object> mapSubset(String json, List<String> queries){

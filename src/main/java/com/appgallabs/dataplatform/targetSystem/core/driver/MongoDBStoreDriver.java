@@ -67,4 +67,9 @@ public class MongoDBStoreDriver implements StoreDriver {
     public String getName() {
         return this.configJson.get("connectionString").getAsString();
     }
+
+    @Override
+    public JsonObject getConfiguration() {
+        return this.configJson;
+    }
 }

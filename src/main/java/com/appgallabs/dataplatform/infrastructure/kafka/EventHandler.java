@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
@@ -27,9 +28,15 @@ public class EventHandler implements KafkaMessageHandler {
 
     private SystemStore systemStore;
 
-    public EventHandler(PipelineService pipelineService, SystemStore systemStore, StoreOrchestrator storeOrchestrator){
+    private SchemalessMapper schemalessMapper;
+
+    public EventHandler(PipelineService pipelineService,
+                        SystemStore systemStore,
+                        SchemalessMapper schemalessMapper,
+                        StoreOrchestrator storeOrchestrator){
         this.pipelineService = pipelineService;
         this.systemStore = systemStore;
+        this.schemalessMapper = schemalessMapper;
         this.storeOrchestrator = storeOrchestrator;
     }
 
@@ -62,6 +69,10 @@ public class EventHandler implements KafkaMessageHandler {
         this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),
                 pipeId,entity,jsonPayloadString);
 
-        this.storeOrchestrator.receiveData(securityToken, this.systemStore, pipeId,jsonPayloadString);
+        this.storeOrchestrator.receiveData(securityToken,
+                this.systemStore,
+                this.schemalessMapper,
+                pipeId,
+                jsonPayloadString);
     }
 }

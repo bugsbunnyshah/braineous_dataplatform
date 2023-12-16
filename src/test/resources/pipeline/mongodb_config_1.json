@@ -7,9 +7,13 @@
       "config": {
         "connectionString": "mongodb://localhost:27017",
         "database": "scenario1_store",
-        "collection": "data"
-      },
-      "jsonpathExpression": "jsonpath:1"
+        "collection": "data",
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
     }
   ]
 }

@@ -21,4 +21,9 @@ public class RESTfulStoreDriver implements StoreDriver {
     public String getName() {
         return null;
     }
+
+    @Override
+    public JsonObject getConfiguration() {
+        return null;
+    }
 }
