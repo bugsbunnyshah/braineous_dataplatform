@@ -50,7 +50,8 @@ public class TenantService {
         }
 
         //name "and" email should be unique
-        boolean tenantExists = tenantStore.doesTenantExist();
+        boolean tenantExists = tenantStore.doesTenantExist(mongoClient,
+                name,email);
         if(tenantExists){
             validationIssuesFound = true;
             errorJson.addProperty("tenant_exists", "A tenant with this name and email already exists");

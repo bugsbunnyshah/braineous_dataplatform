@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cli/create_tenant_command.dart';
 import 'package:cli/delivery_stats_command.dart';
@@ -10,14 +11,30 @@ import 'package:cli/list_stagedpipes_command.dart';
 import 'package:cli/live_snapshot_command.dart';
 import 'package:cli/move_pipe_to_deployed_command.dart';
 import 'package:cli/move_pipe_to_staging_command.dart';
+import 'package:cli/session/perform_login.dart';
+import 'package:cli/session/session.dart';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'package:cli/move_pipe_to_dev_command.dart';
 
-void main() async {
+import 'package:args/args.dart';
+
+void main(List<String> arguments) async {
   String message = "********************\n BRAINEOUS \n *****************";
   var unicode = art.renderUnicode(message, art.UnicodeFont.doublestruck);
   print(unicode);
 
+  final parser = ArgParser();
+  parser.addOption("host", defaultsTo: "localhost");
+  parser.addOption("port", defaultsTo: "8080");
+
+  var results = parser.parse(arguments);
+  Session.session.host = results['host'];
+  Session.session.port = results['port'];
+
+  PerformLogin performLogin = PerformLogin();
+  performLogin.startLogin();
+
+  /*
   //execute command
   var arguments = [];
   arguments.add("flights");
@@ -117,5 +134,5 @@ void main() async {
     print('Exception: $e');
   }
 
-  print("*********************************************************************");
+  print("*********************************************************************");*/
 }

@@ -11,7 +11,24 @@ import java.io.Serializable;
 @Singleton
 public class TenantStore implements Serializable {
 
-    public boolean doesTenantExist(){
+    public boolean doesTenantExist(MongoClient mongoClient, String name, String email){
+        String databaseName = "braineous_system";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("registered_tenants");
+
+        JsonObject queryJson = new JsonObject();
+        queryJson.addProperty("name",name);
+        queryJson.addProperty("email", email);
+        String queryJsonString = queryJson.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        if(cursor.hasNext())
+        {
+            return true;
+        }
+
         return false;
     }
 
@@ -20,7 +37,11 @@ public class TenantStore implements Serializable {
         String databaseName = principal + "_" + "aiplatform";
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("tenant");
+        collection.insertOne(Document.parse(tenant.toJsonForStore().toString()));
 
+        databaseName = "braineous_system";
+        database = mongoClient.getDatabase(databaseName);
+        collection = database.getCollection("registered_tenants");
         collection.insertOne(Document.parse(tenant.toJsonForStore().toString()));
     }
 
