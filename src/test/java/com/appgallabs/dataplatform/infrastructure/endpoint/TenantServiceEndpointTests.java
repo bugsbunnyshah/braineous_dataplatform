@@ -115,6 +115,13 @@ public class TenantServiceEndpointTests extends BaseTest {
         JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString(),securityToken)
                 .getAsJsonObject();
         String apiKey = createResponseJson.get("apiKey").getAsString();
+        String apiSecret = createResponseJson.get("apiSecret").getAsString();
+
+        //update the securityTokenContainer
+        securityToken = new SecurityToken();
+        securityToken.setPrincipal(apiKey);
+        securityToken.setToken(apiSecret);
+        this.securityTokenContainer.setSecurityToken(securityToken);
 
         //read tenant
         String readEndpoint = "/tenant_manager/get_tenant/"+apiKey+"/";
@@ -126,7 +133,7 @@ public class TenantServiceEndpointTests extends BaseTest {
 
         //authenticate tenant
         Tenant tenant = this.tenantService.getTenant(apiKey);
-        String apiSecret = tenant.getApiSecret();
+        apiSecret = tenant.getApiSecret();
         boolean success = this.apiKeyManager.authenticate(apiKey,apiSecret);
         boolean failure = this.apiKeyManager.authenticate(apiKey, "blah");
         assertTrue(success);
