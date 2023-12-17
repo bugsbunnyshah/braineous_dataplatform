@@ -27,7 +27,6 @@ public class TenantService {
     private ApiKeyManager apiKeyManager;
 
     public Tenant createTenant(String name, String email) throws ValidationException {
-        Tenant adminTenant = this.securityTokenContainer.getTenant();
         TenantStore tenantStore = this.mongoDBJsonStore.getTenantStore();
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
 
@@ -51,11 +50,8 @@ public class TenantService {
         }
 
         //name "and" email should be unique
-        Tenant unique = tenantStore.getTenant(adminTenant,
-                mongoClient,
-                name,
-                email);
-        if(unique != null){
+        boolean tenantExists = tenantStore.doesTenantExist();
+        if(tenantExists){
             validationIssuesFound = true;
             errorJson.addProperty("tenant_exists", "A tenant with this name and email already exists");
         }
@@ -78,8 +74,7 @@ public class TenantService {
         tenant.setApiSecret(apiSecret);
 
         //store to the tenant store
-        tenantStore.createTenant(adminTenant,
-                mongoClient,
+        tenantStore.createTenant(mongoClient,
                 tenant);
 
         return tenant;

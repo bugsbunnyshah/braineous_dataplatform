@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cli/create_tenant_command.dart';
 import 'package:cli/delivery_stats_command.dart';
 import 'package:cli/ingestion_stats_command.dart';
 import 'package:cli/list_allpipes_command.dart';
@@ -20,6 +21,21 @@ void main() async {
   //execute command
   var arguments = [];
   arguments.add("flights");
+
+  String apiKey;
+  String apiSecret;
+  //create tenant
+  var createTenantArgs = [];
+  createTenantArgs.add("test");
+  createTenantArgs.add("test@email.com");
+  CreateTenantCommand createTenantCommand = CreateTenantCommand();
+  Map<String,dynamic> credentials = await createTenantCommand.execute(createTenantArgs);
+  apiKey = credentials['apiKey'];
+  apiSecret = credentials['apiSecret'];
+  print(apiKey);
+  print(apiSecret);
+  arguments.add(apiKey);
+  arguments.add(apiSecret);
 
   MovePipeToDevCommand movePipeToDevCommand = MovePipeToDevCommand();
   String moveResponse = await movePipeToDevCommand.execute(arguments);
@@ -59,34 +75,9 @@ void main() async {
   print(liveSnapshotCommandResponse);
 
   print("*********************************************************************");
-  try {
-    var params = [];
-    params.add("blah");
-    LiveSnapshotCommand liveSnapshot404Command = LiveSnapshotCommand();
-    String liveSnapshot404CommandResponse = await liveSnapshot404Command
-        .execute(params);
-    print(liveSnapshot404CommandResponse);
-  } catch(e){
-    print('Exception: $e');
-  }
-
-
-  print("*********************************************************************");
   IngestionStatsCommand ingestionStatsCommand = IngestionStatsCommand();
   String ingestionStatsCommandResponse = await ingestionStatsCommand.execute(arguments);
   print(ingestionStatsCommandResponse);
-
-  print("*********************************************************************");
-  try {
-    var params = [];
-    params.add("blah");
-    IngestionStatsCommand ingestionStats404Command = IngestionStatsCommand();
-    String ingestionStats404CommandResponse = await ingestionStats404Command
-        .execute(params);
-    print(ingestionStats404CommandResponse);
-  } catch(e){
-    print('Exception: $e');
-  }
 
   print("*********************************************************************");
   DeliveryStatsCommand deliveryStatsCommand = DeliveryStatsCommand();
@@ -95,11 +86,32 @@ void main() async {
 
   print("*********************************************************************");
   try {
-    var params = [];
-    params.add("blah");
+    arguments[0] = "blah";
+    LiveSnapshotCommand liveSnapshot404Command = LiveSnapshotCommand();
+    String liveSnapshot404CommandResponse = await liveSnapshot404Command
+        .execute(arguments);
+    print(liveSnapshot404CommandResponse);
+  } catch(e){
+    print('Exception: $e');
+  }
+
+  print("*********************************************************************");
+  try {
+    arguments[0] = "blah";
+    IngestionStatsCommand ingestionStats404Command = IngestionStatsCommand();
+    String ingestionStats404CommandResponse = await ingestionStats404Command
+        .execute(arguments);
+    print(ingestionStats404CommandResponse);
+  } catch(e){
+    print('Exception: $e');
+  }
+
+  print("*********************************************************************");
+  try {
+    arguments[0] = "blah";
     DeliveryStatsCommand deliveryStats404Command = DeliveryStatsCommand();
     String deliveryStats404CommandResponse = await deliveryStats404Command
-        .execute(params);
+        .execute(arguments);
     print(deliveryStats404CommandResponse);
   } catch(e){
     print('Exception: $e');

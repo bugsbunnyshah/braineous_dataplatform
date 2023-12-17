@@ -50,7 +50,7 @@ public class TenantServiceEndpoint {
 
             tenant = this.tenantService.createTenant(tenant.getName(), tenant.getEmail());
 
-            JsonObject responseJson = tenant.toJson();
+            JsonObject responseJson = tenant.toJsonForStore();
 
             Response response = Response.ok(responseJson.toString()).build();
             return response;

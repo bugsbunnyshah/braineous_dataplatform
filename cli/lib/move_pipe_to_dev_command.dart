@@ -29,8 +29,8 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
   String json = jsonEncode(jsonMap);
 
   final response = await http.post(url,headers: {
-    "x-api-key":"0132d8be-c85c-423a-a168-4767f4dd638b",
-    "x-api-key-secret": "d8e452ea-9968-434c-b84c-5276781a60b6",
+    "x-api-key":arguments[1],
+    "x-api-key-secret": arguments[2],
   },body: json);
 
   // If the request didn't succeed, throw an exception

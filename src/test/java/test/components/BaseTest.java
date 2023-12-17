@@ -72,8 +72,7 @@ public abstract class BaseTest
             tenant.setApiSecret(apiKeySecret);
 
             Tenant adminTenant = tenant;
-            tenantStore.createTenant(adminTenant,
-                    mongoClient,
+            tenantStore.createTenant(mongoClient,
                     tenant);
 
 

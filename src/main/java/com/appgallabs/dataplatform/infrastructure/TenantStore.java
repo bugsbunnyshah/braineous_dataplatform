@@ -10,8 +10,13 @@ import java.io.Serializable;
 
 @Singleton
 public class TenantStore implements Serializable {
-    public void createTenant(Tenant adminTenant, MongoClient mongoClient, Tenant tenant){
-        String principal = adminTenant.getPrincipal();
+
+    public boolean doesTenantExist(){
+        return false;
+    }
+
+    public void createTenant(MongoClient mongoClient, Tenant tenant){
+        String principal = tenant.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("tenant");

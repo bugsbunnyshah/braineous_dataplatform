@@ -9,6 +9,7 @@ import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
@@ -29,6 +30,12 @@ public class SecurityTokenProcessor implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext context) throws IOException
     {
+        String requestUri = String.valueOf(context.getUriInfo().getRequestUri());
+        boolean allowed = UnauthenticatedRequests.isAllowed(requestUri);
+        if(allowed){
+            return;
+        }
+
         String apiKey = context.getHeaderString("x-api-key");
         String apiKeySecret = context.getHeaderString("x-api-key-secret");
         if(apiKey != null && apiKeySecret != null)
