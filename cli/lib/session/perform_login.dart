@@ -68,6 +68,26 @@ class PerformLogin{
     String pipeName = "medical_records";
     headers.add(pipeName);
 
+    while(session.apiKey == ''){
+    }
+
+    String apiKey = session.apiKey;
+    while(true) {
+      print("$apiKey > Press exit or CTRL+C to exit");
+      var command = stdin.readLineSync(encoding: utf8);
+      if(command == "exit"){
+        break;
+      }
+
+      dynamic executableCommand = CommandRegistry.registry.commands[command];
+      if(executableCommand != null) {
+        await executableCommand.execute(headers);
+      }else{
+        print("Command unrecognized");
+      }
+    }
+
+    /*
     //show pipes
     ListAllPipesCommand allPipesCommand = CommandRegistry.registry.commands['show pipes'];
     await allPipesCommand.execute(headers);
@@ -94,7 +114,7 @@ class PerformLogin{
 
     //show live_snapshot
     LiveSnapshotCommand liveSnapshotCommand = CommandRegistry.registry.commands['show live_snapshot'];
-    await liveSnapshotCommand.execute(headers);
+    await liveSnapshotCommand.execute(headers);*/
   }
 
 }

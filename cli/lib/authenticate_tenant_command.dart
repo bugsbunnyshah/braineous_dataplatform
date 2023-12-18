@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cli/session/session.dart';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
@@ -20,6 +21,24 @@ class AuthenticateTenantCommand {
       session.apiSecret = apiSecret;
     }on RestInvocationException catch (_, e){
       print(_.json);
+
+      Session session = Session.session;
+      AuthenticateTenantCommand command = AuthenticateTenantCommand();
+      var arguments = [];
+
+      print("Login");
+      print("> email: ");
+      var email = stdin.readLineSync(encoding: utf8);
+      session.email = email!;
+
+      print("> password: ");
+      var password = stdin.readLineSync(encoding: utf8);
+
+      arguments.add(email);
+      arguments.add(password);
+
+      //login
+      await command.execute(arguments);
     }
   }
 }

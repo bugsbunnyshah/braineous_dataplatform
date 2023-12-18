@@ -13,7 +13,6 @@ class ListAllPipesCommand {
           arguments);
 
       List<dynamic> result = invocationResponse.json;
-      print("Api Key: $arguments[0]");
       print("*******All registered pipes********");
       print(result);
     }on RestInvocationException catch (_, e){
