@@ -6,13 +6,20 @@ import 'package:http/http.dart' as http;
 
 class AuthenticateTenantCommand {
 
-  Future<Map<String,dynamic>> execute(List<dynamic> arguments) async {
+  Future<void> execute(List<dynamic> arguments) async {
     try {
+      Session session = Session.session;
+
       RestInvocationResponse invocationResponse = await invokeRestEndpoint(
           arguments);
-      return invocationResponse.json;
+
+      Map<String,dynamic> result = invocationResponse.json;
+      String apiKey = result['apiKey'];
+      String apiSecret = result['apiSecret'];
+      session.apiKey = apiKey;
+      session.apiSecret = apiSecret;
     }on RestInvocationException catch (_, e){
-      return _.json;
+      print(_.json);
     }
   }
 }

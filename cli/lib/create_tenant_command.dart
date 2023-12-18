@@ -6,13 +6,20 @@ import 'package:http/http.dart' as http;
 
 class CreateTenantCommand {
 
-  Future<Map<String,dynamic>> execute(List<dynamic> arguments) async {
+  Future<void> execute(List<dynamic> arguments) async {
     try {
+      Session session = Session.session;
+
       RestInvocationResponse invocationResponse = await invokeRestEndpoint(
           arguments);
-      return invocationResponse.json;
+
+      Map<String,dynamic> result = invocationResponse.json;
+      String apiKey = result['apiKey'];
+      String apiSecret = result['apiSecret'];
+      session.apiKey = apiKey;
+      session.apiSecret = apiSecret;
     }on RestInvocationException catch (_, e){
-      return _.json;
+      print(_.json);
     }
   }
 }
@@ -32,6 +39,19 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
 
   final response = await http.post(url,
       body: json);
+
+  // If the request didn't succeed, throw an exception
+  if (response.statusCode != 200) {
+    Map<String,dynamic> responseJsonMap = {};
+    if(response.body.trim() != "") {
+      responseJsonMap = jsonDecode(response.body) as Map<String, dynamic>;
+    }
+
+    responseJsonMap["statusCode"] = response.statusCode;
+    throw RestInvocationException(
+        statusCode: response.statusCode, responseJsonMap
+    );
+  }
 
   final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
 

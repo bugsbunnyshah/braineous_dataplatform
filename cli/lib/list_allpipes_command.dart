@@ -6,18 +6,19 @@ import 'package:http/http.dart' as http;
 
 class ListAllPipesCommand {
 
-  Future<String> execute(List<dynamic> arguments) async {
-    String message = "";
+  Future<void> execute(List<dynamic> arguments) async {
+    try {
+      //
+      RestInvocationResponse invocationResponse = await invokeRestEndpoint(
+          arguments);
 
-    //
-    RestInvocationResponse invocationResponse = await invokeRestEndpoint(arguments);
-    message += '${invocationResponse.json}';
-
-    var unicode = art.renderUnicode(message, art.UnicodeFont.doublestruck);
-
-    //return unicode.toString();
-
-    return message;
+      List<dynamic> result = invocationResponse.json;
+      print("Api Key: $arguments[0]");
+      print("*******All registered pipes********");
+      print(result);
+    }on RestInvocationException catch (_, e){
+      return print(_.json);
+    }
   }
 }
 
@@ -36,8 +37,14 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
 
   // If the request didn't succeed, throw an exception
   if (response.statusCode != 200) {
+    Map<String,dynamic> responseJsonMap = {};
+    if(response.body.trim() != "") {
+      responseJsonMap = jsonDecode(response.body) as Map<String, dynamic>;
+    }
+
+    responseJsonMap["statusCode"] = response.statusCode;
     throw RestInvocationException(
-      statusCode: response.statusCode,
+        statusCode: response.statusCode, responseJsonMap
     );
   }
 
@@ -62,8 +69,9 @@ class RestInvocationResponse {
 
 class RestInvocationException implements Exception {
   final int? statusCode;
+  final dynamic json;
 
-  RestInvocationException({this.statusCode});
+  RestInvocationException(this.json, {this.statusCode});
 
   @override
   String toString() {

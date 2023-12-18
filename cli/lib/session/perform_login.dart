@@ -29,11 +29,7 @@ class PerformLogin{
       arguments.add(password);
 
       //login
-      Map<String,dynamic> credentials = await command.execute(arguments);
-      String apiKey = credentials['apiKey'];
-      String apiSecret = credentials['apiSecret'];
-      session.apiKey = apiKey;
-      session.apiSecret = apiSecret;
+      await command.execute(arguments);
     }else{
       CreateTenantCommand createTenantCommand = CreateTenantCommand();
       var arguments = [];
@@ -54,22 +50,15 @@ class PerformLogin{
       arguments.add(email);
       arguments.add(password);
 
-      Map<String,dynamic> credentials = await createTenantCommand.execute(arguments);
-      String apiKey = credentials['apiKey'];
-      String apiSecret = credentials['apiSecret'];
-      session.apiKey = apiKey;
-      session.apiSecret = apiSecret;
+      await createTenantCommand.execute(arguments);
     }
 
     //list all pipes
-    print("*********************************************************************");
     var headers = [];
     headers.add(session.apiKey);
     headers.add(session.apiSecret);
-    print(headers);
     ListAllPipesCommand allPipesCommand = CommandRegistry.registry.commands['show pipes'];
-    String allPipesResponse = await allPipesCommand.execute(headers);
-    print(allPipesResponse);
+    await allPipesCommand.execute(headers);
   }
 
 }
