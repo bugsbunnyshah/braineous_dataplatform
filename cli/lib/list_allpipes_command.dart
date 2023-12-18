@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cli/session/session.dart';
 import 'package:enough_ascii_art/enough_ascii_art.dart' as art;
 import 'package:http/http.dart' as http;
 
@@ -21,12 +22,16 @@ class ListAllPipesCommand {
 }
 
 Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async {
-  final url = Uri.http('localhost:8080', '/pipeline_manager/all_pipes/');
+  Session session = Session.session;
+  String host = session.host;
+  String port = session.port;
+  String hostUrl = "$host:$port";
+  final url = Uri.http(hostUrl, '/pipeline_manager/all_pipes/');
 
   final response = await http.get(url,
     headers: {
-      "x-api-key":arguments[1],
-      "x-api-key-secret": arguments[2],
+      "x-api-key":arguments[0],
+      "x-api-key-secret": arguments[1],
     },);
 
   // If the request didn't succeed, throw an exception

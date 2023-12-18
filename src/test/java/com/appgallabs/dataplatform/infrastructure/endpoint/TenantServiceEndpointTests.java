@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.endpoint;
 
+import com.appgallabs.dataplatform.common.AuthenticationException;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.TenantService;
 import com.appgallabs.dataplatform.infrastructure.security.ApiKeyManager;
@@ -104,12 +105,14 @@ public class TenantServiceEndpointTests extends BaseTest {
     public void endToEnd() throws Exception{
         String tenantName = UUID.randomUUID().toString();
         String tenantEmail = tenantName+"@email.com";
+        String password = "password";
 
         //create tenant
         String createEndpoint = "/tenant_manager/create_tenant";
         JsonObject payload = new JsonObject();
         payload.addProperty("name", tenantName);
         payload.addProperty("email", tenantEmail);
+        payload.addProperty("password", password);
 
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
         JsonObject createResponseJson = ApiUtil.apiPostRequest(createEndpoint,payload.toString(),securityToken)
@@ -138,5 +141,27 @@ public class TenantServiceEndpointTests extends BaseTest {
         boolean failure = this.apiKeyManager.authenticate(apiKey, "blah");
         assertTrue(success);
         assertFalse(failure);
+
+        //authenticate admin user
+        String authenticateEndpoint = "/tenant_manager/authenticate_tenant";
+        payload = new JsonObject();
+        payload.addProperty("name", tenantName);
+        payload.addProperty("email", tenantEmail);
+        payload.addProperty("password", password);
+
+        //when success
+        JsonObject authResponseJson = ApiUtil.apiPostRequest(authenticateEndpoint,
+                        payload.toString(),
+                        securityToken)
+                .getAsJsonObject();
+        assertFalse(authResponseJson.has("authentication_failed"));
+
+        //when fails
+        payload.addProperty("password", "blah");
+        authResponseJson = ApiUtil.apiPostRequest(authenticateEndpoint,
+                        payload.toString(),
+                        securityToken)
+                .getAsJsonObject();
+        assertTrue(authResponseJson.has("authentication_failed"));
     }
 }

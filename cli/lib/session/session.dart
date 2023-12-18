@@ -5,6 +5,8 @@ class Session{
   String port = "";
   String tenant = "";
   String email = "";
+  String apiKey = "";
+  String apiSecret = "";
 
   @override
   String toString() {

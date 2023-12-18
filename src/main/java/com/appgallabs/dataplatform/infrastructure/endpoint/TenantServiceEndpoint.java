@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.endpoint;
 
+import com.appgallabs.dataplatform.common.AuthenticationException;
 import com.appgallabs.dataplatform.common.ValidationException;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.TenantService;
@@ -48,7 +49,9 @@ public class TenantServiceEndpoint {
         try {
             Tenant tenant = Tenant.parse(input);
 
-            tenant = this.tenantService.createTenant(tenant.getName(), tenant.getEmail());
+            tenant = this.tenantService.createTenant(tenant.getName(),
+                    tenant.getEmail(),
+                    tenant.getPassword());
 
             JsonObject responseJson = tenant.toJsonForStore();
 
@@ -58,6 +61,34 @@ public class TenantServiceEndpoint {
         catch(ValidationException validationException){
             logger.error(validationException.getMessage(), validationException);
             JsonObject error = validationException.toJson();
+            return Response.status(403).entity(error.toString()).build();
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
+        }
+    }
+
+    @Path("authenticate_tenant")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authenticateTenant(@RequestBody String input){
+        try {
+            Tenant tenant = Tenant.parse(input);
+
+            Tenant storedTenant = this.tenantService.authenticateTenant(tenant);
+
+            JsonObject responseJson = storedTenant.toJsonForStore();
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }
+        catch(AuthenticationException authenticationException){
+            logger.error(authenticationException.getMessage(), authenticationException);
+            JsonObject error = authenticationException.toJson();
             return Response.status(403).entity(error.toString()).build();
         }
         catch(Exception e)

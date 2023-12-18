@@ -16,6 +16,8 @@ public class Tenant implements Serializable {
 
     private String email;
 
+    private String password;
+
     public Tenant() {
     }
 
@@ -53,6 +55,14 @@ public class Tenant implements Serializable {
 
     public void setApiSecret(String apiSecret) {
         this.apiSecret = apiSecret;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

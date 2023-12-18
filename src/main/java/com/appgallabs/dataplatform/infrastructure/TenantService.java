@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure;
 
+import com.appgallabs.dataplatform.common.AuthenticationException;
 import com.appgallabs.dataplatform.common.ValidationException;
 import com.appgallabs.dataplatform.infrastructure.security.ApiKeyManager;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
@@ -7,6 +8,7 @@ import com.appgallabs.dataplatform.util.ValidationUtil;
 import com.google.gson.JsonObject;
 
 import com.mongodb.client.MongoClient;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +28,39 @@ public class TenantService {
     @Inject
     private ApiKeyManager apiKeyManager;
 
-    public Tenant createTenant(String name, String email) throws ValidationException {
+    public Tenant authenticateTenant(Tenant tenant) throws AuthenticationException {
+        TenantStore tenantStore = this.mongoDBJsonStore.getTenantStore();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+
+        JsonObject errorJson = new JsonObject();
+
+        String email = tenant.getEmail();
+        String password = tenant.getPassword();
+        String md5HexPassword = DigestUtils
+                .md5Hex(password).toUpperCase();
+
+        //get the stored tenant
+        Tenant storedTenant = tenantStore.getTenantByEmail(mongoClient,
+                email);
+
+        boolean authSuccess = (
+                md5HexPassword.equals(storedTenant.getPassword()) &&
+                email.equals(storedTenant.getEmail())
+        );
+
+        //if authentication failed
+        if(!authSuccess){
+            errorJson.addProperty("authentication_failed", "authentication_failed");
+            AuthenticationException authenticationException =
+                    new AuthenticationException(errorJson.toString());
+            throw authenticationException;
+        }
+
+        storedTenant.setPassword(null);
+        return storedTenant;
+    }
+
+    public Tenant createTenant(String name, String email, String password) throws ValidationException {
         TenantStore tenantStore = this.mongoDBJsonStore.getTenantStore();
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
 
@@ -38,6 +72,12 @@ public class TenantService {
         if(name == null || name.trim().length()==0){
             validationIssuesFound = true;
             errorJson.addProperty("tenant_name_required", "Tenant Name is required");
+        }
+
+        //password is required
+        if(password == null || password.trim().length()==0){
+            validationIssuesFound = true;
+            errorJson.addProperty("tenant_password_required", "Tenant Password is required");
         }
 
         //email is required
@@ -66,6 +106,9 @@ public class TenantService {
 
         tenant.setName(name);
         tenant.setEmail(email);
+        String md5HexPassword = DigestUtils
+                .md5Hex(password).toUpperCase();
+        tenant.setPassword(md5HexPassword);
 
         JsonObject credentials = this.apiKeyManager.generareApiKey();
         String apiKey = credentials.get("apiKey").getAsString();
