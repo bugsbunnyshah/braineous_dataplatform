@@ -8,7 +8,9 @@ import 'package:cli/move_pipe_to_dev_command.dart';
 import 'package:cli/session/session.dart';
 
 import '../create_tenant_command.dart';
+import '../delivery_stats_command.dart';
 import '../list_allpipes_command.dart';
+import '../live_snapshot_command.dart';
 import '../move_pipe_to_deployed_command.dart';
 import '../move_pipe_to_staging_command.dart';
 
@@ -87,8 +89,12 @@ class PerformLogin{
     await ingestionStatsCommand.execute(headers);
 
     //show delivery_stats
+    DeliveryStatsCommand deliveryStatsCommand = CommandRegistry.registry.commands['show delivery_stats'];
+    await deliveryStatsCommand.execute(headers);
 
     //show live_snapshot
+    LiveSnapshotCommand liveSnapshotCommand = CommandRegistry.registry.commands['show live_snapshot'];
+    await liveSnapshotCommand.execute(headers);
   }
 
 }
