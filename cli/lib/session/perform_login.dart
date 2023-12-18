@@ -64,16 +64,17 @@ class PerformLogin{
     headers.add(session.apiKey);
     headers.add(session.apiSecret);
 
-    //TODO: collect from user
-    String pipeName = "medical_records";
-    headers.add(pipeName);
-
     while(session.apiKey == ''){
     }
 
     String apiKey = session.apiKey;
     while(true) {
-      print("$apiKey > Press exit or CTRL+C to exit");
+      if(session.usingPipe == '') {
+        print("$apiKey > Press exit or CTRL+C to exit");
+      }else{
+        String pipeName = session.usingPipe;
+        print("$pipeName > Press exit or CTRL+C to exit");
+      }
       var command = stdin.readLineSync(encoding: utf8);
       if(command == "exit"){
         break;
@@ -83,7 +84,14 @@ class PerformLogin{
       if(executableCommand != null) {
         await executableCommand.execute(headers);
       }else{
-        print("Command unrecognized");
+        if(command != null && command.contains("use")){
+          final splitted = command.split(' ');
+          String pipeName = splitted[1];
+          session.usingPipe = pipeName;
+          print("Using pipe: $pipeName");
+        }else {
+          print("Command unrecognized");
+        }
       }
     }
 
