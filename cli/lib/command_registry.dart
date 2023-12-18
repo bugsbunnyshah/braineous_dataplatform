@@ -1,3 +1,5 @@
+import 'package:cli/move_pipe_to_dev_command.dart';
+
 import 'list_allpipes_command.dart';
 
 class CommandRegistry{
@@ -7,5 +9,6 @@ class CommandRegistry{
 
   CommandRegistry(){
     commands['show pipes'] = ListAllPipesCommand();
+    commands['move pipe_to_development'] = MovePipeToDevCommand();
   }
 }

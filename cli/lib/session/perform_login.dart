@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cli/authenticate_tenant_command.dart';
 import 'package:cli/command_registry.dart';
+import 'package:cli/move_pipe_to_dev_command.dart';
 import 'package:cli/session/session.dart';
 
 import '../create_tenant_command.dart';
@@ -53,12 +54,17 @@ class PerformLogin{
       await createTenantCommand.execute(arguments);
     }
 
-    //list all pipes
     var headers = [];
     headers.add(session.apiKey);
     headers.add(session.apiSecret);
+
+    //show pipes
     ListAllPipesCommand allPipesCommand = CommandRegistry.registry.commands['show pipes'];
     await allPipesCommand.execute(headers);
+
+    //move pipe_to_development
+    MovePipeToDevCommand movePipeToDevCommand = CommandRegistry.registry.commands['move pipe_to_development'];
+    await movePipeToDevCommand.execute(headers);
   }
 
 }

@@ -34,6 +34,11 @@ void main(List<String> arguments) async {
   PerformLogin performLogin = PerformLogin();
   performLogin.startLogin();
 
+  /*while(true){
+    print(">");
+    var command = stdin.readLineSync(encoding: utf8);
+  }*/
+
   /*
   //execute command
   var arguments = [];
