@@ -8,6 +8,8 @@ import 'package:cli/session/session.dart';
 
 import '../create_tenant_command.dart';
 import '../list_allpipes_command.dart';
+import '../move_pipe_to_deployed_command.dart';
+import '../move_pipe_to_staging_command.dart';
 
 class PerformLogin{
 
@@ -19,6 +21,7 @@ class PerformLogin{
       AuthenticateTenantCommand command = AuthenticateTenantCommand();
       var arguments = [];
 
+      print("Login");
       print("> email: ");
       var email = stdin.readLineSync(encoding: utf8);
       session.email = email!;
@@ -58,6 +61,10 @@ class PerformLogin{
     headers.add(session.apiKey);
     headers.add(session.apiSecret);
 
+    //TODO: collect from user
+    String pipeName = "medical_records";
+    headers.add(pipeName);
+
     //show pipes
     ListAllPipesCommand allPipesCommand = CommandRegistry.registry.commands['show pipes'];
     await allPipesCommand.execute(headers);
@@ -65,6 +72,14 @@ class PerformLogin{
     //move pipe_to_development
     MovePipeToDevCommand movePipeToDevCommand = CommandRegistry.registry.commands['move pipe_to_development'];
     await movePipeToDevCommand.execute(headers);
+
+    //move pipe_to_staging
+    MovePipeToStagingCommand movePipeToStagingCommand = CommandRegistry.registry.commands['move pipe_to_staging'];
+    await movePipeToStagingCommand.execute(headers);
+
+    //move pipe_to_production
+    MovePipeToDeployedCommand movePipeToDeployedCommand = CommandRegistry.registry.commands['move pipe_to_production'];
+    await movePipeToDeployedCommand.execute(headers);
   }
 
 }

@@ -7,6 +7,7 @@ class Session{
   String email = "";
   String apiKey = "";
   String apiSecret = "";
+  String usingPipe = "";
 
   @override
   String toString() {

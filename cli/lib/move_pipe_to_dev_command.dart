@@ -8,12 +8,15 @@ class MovePipeToDevCommand {
 
   Future<void> execute(List<dynamic> arguments) async {
     try {
+      Session session = Session.session;
+
       //
       RestInvocationResponse invocationResponse = await invokeRestEndpoint(
           arguments);
 
       Map<String,dynamic> result = invocationResponse.json;
       print("*******Move pipe to development********");
+      print(invocationResponse.message);
       print(result);
     }on RestInvocationException catch (_, e){
       print(_.json);
@@ -29,7 +32,7 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
   final url = Uri.http(hostUrl, '/pipeline_manager/move_to_development/');
 
   Map<String,dynamic> jsonMap = {};
-  jsonMap['pipeName'] = arguments[0];
+  jsonMap['pipeName'] = arguments[2];
   String json = jsonEncode(jsonMap);
 
   final response = await http.post(url,headers: {
@@ -57,13 +60,16 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
 
 class RestInvocationResponse {
   final dynamic json;
+  final String message;
 
   RestInvocationResponse({
+    required this.message,
     required this.json,
   });
 
   factory RestInvocationResponse.fromJson(Map<String, dynamic> json) {
     return RestInvocationResponse(
+      message: json['message'] as String,
       json: json['pipe'],
     );
   }
