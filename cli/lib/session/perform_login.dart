@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cli/authenticate_tenant_command.dart';
 import 'package:cli/command_registry.dart';
+import 'package:cli/ingestion_stats_command.dart';
 import 'package:cli/move_pipe_to_dev_command.dart';
 import 'package:cli/session/session.dart';
 
@@ -80,6 +81,14 @@ class PerformLogin{
     //move pipe_to_production
     MovePipeToDeployedCommand movePipeToDeployedCommand = CommandRegistry.registry.commands['move pipe_to_production'];
     await movePipeToDeployedCommand.execute(headers);
+
+    //show ingestion_stats
+    IngestionStatsCommand ingestionStatsCommand = CommandRegistry.registry.commands['show ingestion_stats'];
+    await ingestionStatsCommand.execute(headers);
+
+    //show delivery_stats
+
+    //show live_snapshot
   }
 
 }
