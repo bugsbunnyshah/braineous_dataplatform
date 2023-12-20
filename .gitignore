@@ -50,6 +50,7 @@ compare/
 /dataplatform-1.0.0-runner.jar
 /braineous-dataingestion-sdk-1.0.0-cr1.jar
 /dataplatform-1.0.0-cr1-runner.jar
+/dataplatform-1.0.0-cr2-runner.jar
 /manual_sdk_release/
 /manual_sdk_release/
 /release-cr1/
@@ -58,3 +59,4 @@ compare/
 /tutorials/get-started/lib/braineous-dataingestion-sdk-1.0.0-cr1.jar
 /tutorials/create-connector.zip
 /dataplatform-1.0.1-cr1-runner.jar
+/releases/
