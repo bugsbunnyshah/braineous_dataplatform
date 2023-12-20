@@ -1,5 +1,10 @@
 ./build.sh
 
+cd cli
+./build.sh
+
+cd ..
+
 ./package_sdk_1.0.0-cr2.sh
 
 rm -rf releases/braineous-1.0.0-cr2
@@ -10,6 +15,8 @@ cd releases/braineous-1.0.0-cr2
 mkdir bin
 mkdir tutorials
 mkdir client-sdk
+mkdir pipeline_monitor
+
 cd tutorials
 mkdir get-started
 mkdir create-connector
@@ -30,6 +37,7 @@ cp -r braineous-dataingestion-sdk-1.0.0-cr2.jar releases/braineous-1.0.0-cr2/cli
 cp -r releases/dependency/* releases/braineous-1.0.0-cr2/bin
 cp -r tutorials/get-started/* releases/braineous-1.0.0-cr2/tutorials/get-started
 cp -r tutorials/create-connector/* releases/braineous-1.0.0-cr2/tutorials/create-connector
+cp -r cli/pipemon releases/braineous-1.0.0-cr2/pipeline_monitor
 
 cd releases
 zip -r braineous-1.0.0-cr2.zip braineous-1.0.0-cr2
