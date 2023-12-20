@@ -1,4 +1,4 @@
-package com.appgallabs.dataplatform.tutorial;
+package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 
@@ -24,7 +24,6 @@ public class MySqlStoreDriver implements StoreDriver {
     public void configure(JsonObject configJson) {
         try {
             this.configJson = configJson;
-
             Statement createTableStatement = null;
             try {
                 String url = configJson.get("connectionString").getAsString();
@@ -46,13 +45,10 @@ public class MySqlStoreDriver implements StoreDriver {
                 createTableStatement = this.connection.createStatement();
                 createTableStatement.executeUpdate(createTableSql);
 
-                System.out.println("Created table in given database...");
+                //System.out.println("Created table in given database...");
 
             } finally {
                 createTableStatement.close();
-
-                System.out.println("****MYSQL_CONNECTOR_SUCCESSFULLY_REGISTERED*****");
-                System.out.println("****BRING_THE_HEAT (lol)*****");
             }
         }catch(Exception e){
             logger.error(e.getMessage());
@@ -76,7 +72,7 @@ public class MySqlStoreDriver implements StoreDriver {
                     insertStatement.close();
                 }
 
-                Statement queryStatement = this.connection.createStatement();
+                /*Statement queryStatement = this.connection.createStatement();
                 ResultSet rs = queryStatement.executeQuery(query);
                 while (rs.next()) {
                     String id = rs.getString("id");
@@ -87,7 +83,7 @@ public class MySqlStoreDriver implements StoreDriver {
                 }
                 queryStatement.close();
 
-                System.out.println("Connection Closed....");
+                System.out.println("Connection Closed....");*/
             } finally {
                 this.connection.close();
             }
@@ -95,5 +91,15 @@ public class MySqlStoreDriver implements StoreDriver {
             logger.error(e.getMessage());
             //TODO: (CR2) report to the pipeline monitoring service
         }
+    }
+
+    @Override
+    public String getName() {
+        return this.configJson.get("connectionString").getAsString();
+    }
+
+    @Override
+    public JsonObject getConfiguration() {
+        return this.configJson;
     }
 }

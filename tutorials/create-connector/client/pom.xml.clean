@@ -9,19 +9,6 @@
   <version>1.0.0</version>
   <url>https://bugsbunnyshah.github.io/braineous/</url>
 
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://repo1.maven.org/maven2</url>
-    </repository>
-
-    <repository>
-      <id>github</id>
-      <name>GitHub OWNER Apache Maven Packages</name>
-      <url>https://github.com/bugsbunnyshah/braineous_dataplatform/packages/1996272</url>
-    </repository>
-  </repositories>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
@@ -33,10 +20,10 @@
   <dependencies>
     <dependency>
       <groupId>com.appgallabs</groupId>
-      <artifactId>braineous-dataingestion-sdk</artifactId>
-      <version>1.0.0-cr1</version>
+      <artifactId>dataplatform</artifactId>
+      <version>1.0.0-cr2</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr1.jar</systemPath>
+      <systemPath>${project.basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr2.jar</systemPath>
     </dependency>
 
     <!-- client_sdk_dependencies -->
@@ -85,10 +72,10 @@
               <id>install-external</id>
               <phase>clean</phase>
               <configuration>
-                <file>lib/braineous-dataingestion-sdk-1.0.0-cr1.jar</file>
+                <file>lib/braineous-dataingestion-sdk-1.0.0-cr2.jar</file>
                 <repositoryLayout>default</repositoryLayout>
                 <groupId>com.appgallabs</groupId>
-                <artifactId>braineous-dataingestion-sdk</artifactId>
+                <artifactId>dataplatform</artifactId>
                 <version>1.0.0-cr1</version>
                 <packaging>jar</packaging>
                 <generatePom>true</generatePom>
