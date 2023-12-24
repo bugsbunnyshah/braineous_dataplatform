@@ -20,25 +20,25 @@ public class DataIngestionTutorial {
                 streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
-        String pipeId = "mysql_mongodb_fan_out_to_target";
+        String pipeId = UUID.randomUUID().toString();
 
         //setup data pipe configuration json
         String dataPipeConfiguration = "{\n" +
-                "\"pipeId\": \"mysql_mongodb_fan_out_to_target\",\n" +
+                "  \"pipeId\": \""+pipeId+"\",\n" +
                 "\"configuration\": [\n" +
                 "{\n" +
                 "\"storeDriver\": \"com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver\",\n" +
-                "\"name\": \"scenario1_store_mongodb\",\n" +
+                "\"name\": \"target_store_mongodb\",\n" +
                 "\"config\": {\n" +
                 "\"connectionString\": \"mongodb://localhost:27017\",\n" +
-                "\"database\": \"scenario1_store\",\n" +
+                "\"database\": \"target_store_mongodb\",\n" +
                 "\"collection\": \"data\",\n" +
                 "\"jsonpathExpressions\": []\n" +
                 "}\n" +
                 "},\n" +
                 "{\n" +
                 "\"storeDriver\": \"com.appgallabs.dataplatform.tutorial.MySqlStoreDriver\",\n" +
-                "\"name\": \"scenario1_store_mysql\",\n" +
+                "\"name\": \"target_store_mysql\",\n" +
                 "\"config\": {\n" +
                 "\"connectionString\": \"jdbc:mysql://localhost:3306/braineous_staging_database\",\n" +
                 "\"username\": \"root\",\n" +

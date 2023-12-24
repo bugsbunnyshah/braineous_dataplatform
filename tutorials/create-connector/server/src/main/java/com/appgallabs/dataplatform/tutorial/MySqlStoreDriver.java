@@ -1,4 +1,4 @@
-package com.appgallabs.dataplatform.targetSystem.core.driver;
+package com.appgallabs.dataplatform.tutorial;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 

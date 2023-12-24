@@ -42,7 +42,7 @@ public abstract class BaseTest
     @AfterEach
     public void tearDown() throws Exception
     {
-        //this.cleanup();
+        this.cleanup();
     }
 
     private void cleanup(){
