@@ -7,6 +7,8 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;
 
+import java.util.UUID;
+
 public class DataIngestionTutorial {
 
     public static void main(String[] args) throws RegisterPipeException, InterruptedException {
@@ -19,22 +21,23 @@ public class DataIngestionTutorial {
         DataPipeline.configure(configuration);
 
         //setup data pipe configuration json
+        String pipeId = UUID.randomUUID().toString();
         String dataPipeConfiguration = "{\n" +
-                "  \"pipeId\": \"123\",\n" +
+                "  \"pipeId\": \""+pipeId+"\",\n" +
                 "  \"configuration\": [\n" +
                 "    {\n" +
                 "      \"storeDriver\" : \"com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver\",\n" +
-                "      \"name\": \"scenario1_store_mongodb\",\n" +
+                "      \"name\": \"get_started_store_mongodb\",\n" +
                 "      \"config\": {\n" +
                 "        \"connectionString\": \"mongodb://localhost:27017\",\n" +
-                "        \"database\": \"scenario1_store\",\n" +
+                "        \"database\": \"get_started_store\",\n" +
                 "        \"collection\": \"data\",\n" +
                 "        \"jsonpathExpressions\": []\n" +
                 "      }\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"storeDriver\" : \"com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver\",\n" +
-                "      \"name\": \"scenario1_store_mysql\",\n" +
+                "      \"name\": \"get_started_store_mysql\",\n" +
                 "      \"config\": {\n" +
                 "        \"connectionString\": \"jdbc:mysql://localhost:3306/braineous_staging_database\",\n" +
                 "        \"username\": \"root\",\n" +
@@ -76,7 +79,7 @@ public class DataIngestionTutorial {
         JsonUtil.printStdOut(response);
 
         //send source data through the pipeline
-        String pipeId = configJson.get("pipeId").getAsString();
+        pipeId = configJson.get("pipeId").getAsString();
         String entity = "books";
         DataPipeline.sendData(pipeId, entity, sourceData);
     }

@@ -87,6 +87,9 @@ public class StoreOrchestrator {
 
 
             JsonArray jsonPathExpressions = configuration.getAsJsonArray("jsonpathExpressions");
+            if(jsonPathExpressions.size() == 0) {
+                return dataset;
+            }
 
             List<String> queries = new ArrayList<>();
             for (int i = 0; i < jsonPathExpressions.size(); i++) {
