@@ -59,6 +59,10 @@ public class StoreOrchestrator {
         //TODO: make this transactional (GA)
         //fan out storage to each store
         storeDrivers.stream().forEach(storeDriver -> {
+                System.out.println("****DEBUG******");
+                JsonUtil.printStdOut(storeDriver.getConfiguration());
+                System.out.println("***************");
+
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
                 //adjust based on configured jsonpath expression (CR2)

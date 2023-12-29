@@ -91,7 +91,8 @@ public class PipelineService {
             dataEvents.addSink(sinkFunction);
             env.execute();
         }catch(Exception e){
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            //throw new RuntimeException(e);
         }
     }
 }

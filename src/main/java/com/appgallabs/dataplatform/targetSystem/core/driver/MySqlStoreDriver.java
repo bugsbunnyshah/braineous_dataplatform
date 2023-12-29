@@ -2,6 +2,8 @@ package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,7 +41,7 @@ public class MySqlStoreDriver implements StoreDriver {
                 //create schema and tables
                 String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data (\n" +
                         "    id int NOT NULL AUTO_INCREMENT,\n" +
-                        "    data varchar(255) NOT NULL,\n" +
+                        "    data longtext NOT NULL,\n" +
                         "    PRIMARY KEY (id)\n" +
                         ")";
                 createTableStatement = this.connection.createStatement();
@@ -60,8 +62,6 @@ public class MySqlStoreDriver implements StoreDriver {
     public void storeData(JsonArray dataSet) {
         try {
             try {
-                String query = "select * from staged_data";
-
                 //populate table
                 int size = dataSet.size();
                 for (int i = 0; i < size; i++) {
@@ -72,7 +72,8 @@ public class MySqlStoreDriver implements StoreDriver {
                     insertStatement.close();
                 }
 
-                /*Statement queryStatement = this.connection.createStatement();
+                /*String query = "SELECT count(*) FROM staged_data;";
+                Statement queryStatement = this.connection.createStatement();
                 ResultSet rs = queryStatement.executeQuery(query);
                 while (rs.next()) {
                     String id = rs.getString("id");
@@ -88,6 +89,7 @@ public class MySqlStoreDriver implements StoreDriver {
                 this.connection.close();
             }
         }catch(Exception e){
+            e.printStackTrace();
             logger.error(e.getMessage());
             //TODO: (CR2) report to the pipeline monitoring service
         }

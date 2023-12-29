@@ -1,0 +1,15 @@
+{
+  "pipeId": "123",
+  "configuration": [
+    {
+      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
+      "name": "small_flight_store_mongodb",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "small_flight_store",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}
