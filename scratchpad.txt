@@ -107,3 +107,15 @@ CREATE TABLE STAGED_DATA (
     data varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
+
+
+
+
+
+
+./bin/sql-client.sh embedded -j lib/hudi-flink1.17-bundle-0.14.1.jar shell
+
+CREATE TABLE hudi_table(ts BIGINT, uuid VARCHAR(40) PRIMARY KEY NOT ENFORCED, rider VARCHAR(20),driver VARCHAR(20),fare DOUBLE,city VARCHAR(20))PARTITIONED BY (`city`) WITH ('connector' = 'hudi','path' = 'file:///tmp/hudi_table','table.type' = 'MERGE_ON_READ');
+
+-- insert data using values
+INSERT INTO hudi_table VALUES (1695159649087,'334e26e9-8355-45cc-97c6-c31daf0df330','rider-A','driver-K',19.10,'san_francisco');

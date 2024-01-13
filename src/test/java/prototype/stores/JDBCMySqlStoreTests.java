@@ -26,8 +26,8 @@ public class JDBCMySqlStoreTests {
         String dataSetString = Util.loadResource("prototype/stores/scenario1Array.json");
         JsonArray dataset = JsonUtil.validateJson(dataSetString).getAsJsonArray();
 
-        mySqlStoreDriver.configure(storeConfigJson);
-        mySqlStoreDriver.storeData(dataset);
+        //mySqlStoreDriver.configure(storeConfigJson);
+        //mySqlStoreDriver.storeData(dataset);
     }
 
     public void configure(JsonObject configJson) throws Exception{

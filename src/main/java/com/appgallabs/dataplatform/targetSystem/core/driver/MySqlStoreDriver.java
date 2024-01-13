@@ -35,8 +35,6 @@ public class MySqlStoreDriver implements StoreDriver {
 
                 this.connection = DriverManager.getConnection(
                         url, username, password);
-                System.out.println(
-                        "Connection Established successfully");
 
                 //create schema and tables
                 String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data (\n" +
@@ -61,16 +59,17 @@ public class MySqlStoreDriver implements StoreDriver {
     @Override
     public void storeData(JsonArray dataSet) {
         try {
+            Statement insertStatement = this.connection.createStatement();
             try {
                 //populate table
                 int size = dataSet.size();
                 for (int i = 0; i < size; i++) {
                     JsonElement record = dataSet.get(i);
                     String insertSql = "insert into staged_data (data) values ('" + record.toString() + "')";
-                    Statement insertStatement = this.connection.createStatement();
-                    insertStatement.executeUpdate(insertSql);
-                    insertStatement.close();
+                    insertStatement.addBatch(insertSql);
                 }
+
+                insertStatement.executeBatch();
 
                 /*String query = "SELECT count(*) FROM staged_data;";
                 Statement queryStatement = this.connection.createStatement();
@@ -83,10 +82,14 @@ public class MySqlStoreDriver implements StoreDriver {
                     System.out.println("***************");
                 }
                 queryStatement.close();
+                System.out.println("Connection Closed....");
+                */
 
-                System.out.println("Connection Closed....");*/
             } finally {
+                insertStatement.close();
                 this.connection.close();
+                System.out.println(
+                        "MYSQL: STORED_SUCCESSFULLY");
             }
         }catch(Exception e){
             e.printStackTrace();

@@ -1,8 +1,9 @@
 package prototype.infrastructure.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of the interface {@link com.demo.kafka.KafkaMessageHandler}.
@@ -11,7 +12,7 @@ import org.json.simple.JSONObject;
  * to supply callback behavior for this project's producers and consumers.
  */
 public class KafkaMessageHandlerImpl implements KafkaMessageHandler{
-    static Logger log = Logger.getLogger(KafkaMessageHandlerImpl.class.getName());
+    static Logger log = LoggerFactory.getLogger(KafkaMessageHandlerImpl.class.getName());
 
     @Override
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {

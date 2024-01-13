@@ -45,6 +45,22 @@ public class PipelineService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
+    public String getFlinkHost() {
+        return flinkHost;
+    }
+
+    public void setFlinkHost(String flinkHost) {
+        this.flinkHost = flinkHost;
+    }
+
+    public String getFlinkPort() {
+        return flinkPort;
+    }
+
+    public void setFlinkPort(String flinkPort) {
+        this.flinkPort = flinkPort;
+    }
+
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
@@ -72,9 +88,9 @@ public class PipelineService {
                 input.add(jsonElement.toString());
             }
 
-            Debug.out("*********FLINK_INPUT***************");
+            /*Debug.out("*********FLINK_INPUT***************");
             JsonUtil.printStdOut(JsonUtil.validateJson(input.toString()));
-            Debug.out("************************");
+            Debug.out("************************");*/
 
 
             DataStream<String> dataEvents = env.fromCollection(input);

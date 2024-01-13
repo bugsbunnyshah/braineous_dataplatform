@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.targetSystem.framework;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
+import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
@@ -35,6 +36,9 @@ public class StoreOrchestratorTests extends BaseTest {
     @Inject
     private SchemalessMapper schemalessMapper;
 
+    @Inject
+    private PipelineService pipelineService;
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {
@@ -64,7 +68,12 @@ public class StoreOrchestratorTests extends BaseTest {
 
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
         storeOrchestrator.receiveData(securityToken,
-                systemStore, this.schemalessMapper,"123", jsonString);
+                systemStore,
+                this.pipelineService.getFlinkHost(),
+                this.pipelineService.getFlinkPort(),
+                this.schemalessMapper,"123", jsonString);
+
+        Thread.sleep(5000);
 
         //TODO: (CR2)
         //assert

@@ -1,0 +1,15 @@
+{
+  "pipeId": "123",
+  "configuration": [
+    {
+      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
+      "name": "perf_store_mysql",
+      "config": {
+        "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
+        "username": "root",
+        "password": "",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

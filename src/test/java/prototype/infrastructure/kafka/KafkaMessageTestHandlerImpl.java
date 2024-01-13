@@ -1,8 +1,9 @@
 package prototype.infrastructure.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
 /**
@@ -15,7 +16,7 @@ import org.testng.Assert;
  */
 public class KafkaMessageTestHandlerImpl implements KafkaMessageHandler{
 
-    static Logger log = Logger.getLogger(KafkaMessageHandlerImpl.class.getName());
+    static Logger log = LoggerFactory.getLogger(KafkaMessageTestHandlerImpl.class);
     private int numberOfCalls = 0;
 
     @Override

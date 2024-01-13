@@ -2,8 +2,9 @@ package prototype.infrastructure.kafka;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 import java.util.UUID;
@@ -22,7 +23,7 @@ class SimpleProducer extends AbstractSimpleKafka {
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
 
-    private final Logger log = Logger.getLogger(SimpleProducer.class.getName());
+    private final Logger log = LoggerFactory.getLogger(SimpleProducer.class.getName());
 
     /**
      * Instantiates a new Abstract class, SimpleKafka.
@@ -123,7 +124,7 @@ class SimpleProducer extends AbstractSimpleKafka {
 
     public void shutdown() throws Exception {
         closed.set(true);
-        log.info(MessageHelper.getSimpleJSONObject("Shutting down producer"));
+        log.info(MessageHelper.getSimpleJSONObject("Shutting down producer").toJSONString());
         getKafkaProducer().close();
     }
 }

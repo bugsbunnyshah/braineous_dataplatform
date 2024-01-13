@@ -3,7 +3,9 @@ package com.appgallabs.dataplatform.targetSystem.framework;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-public interface StoreDriver {
+import java.io.Serializable;
+
+public interface StoreDriver extends Serializable {
 
     /**
      * This used to configure your Store Driver.

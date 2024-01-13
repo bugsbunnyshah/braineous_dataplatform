@@ -22,12 +22,19 @@ public class MongoDBStoreDriver implements StoreDriver {
     private static Logger logger = LoggerFactory.getLogger(MongoDBStoreDriver.class);
 
     private JsonObject configJson;
+    private MongoClient mongoClient;
 
 
 
     @Override
     public void configure(JsonObject configJson) {
         this.configJson = configJson;
+
+        //get the driver configuration
+        String connectionString = this.configJson.get("connectionString").getAsString();
+
+        //setup driver components
+        this.mongoClient = MongoClients.create(connectionString);
     }
 
     @Override
@@ -39,8 +46,7 @@ public class MongoDBStoreDriver implements StoreDriver {
             String collection = this.configJson.get("collection").getAsString();
 
             //setup driver components
-            MongoClient mongoClient = MongoClients.create(connectionString);
-            MongoDatabase db = mongoClient.getDatabase(database);
+            MongoDatabase db = this.mongoClient.getDatabase(database);
             MongoCollection<Document> dbCollection = db.getCollection(collection);
 
             //bulk insert
@@ -60,6 +66,10 @@ public class MongoDBStoreDriver implements StoreDriver {
         }catch(Exception e){
             logger.error(e.getMessage());
             //TODO: (CR2) report to the pipeline monitoring service
+        }
+        finally{
+            System.out.println(
+                    "MONGODB: STORED_SUCCESSFULLY");
         }
     }
 

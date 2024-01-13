@@ -13,7 +13,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -21,7 +25,7 @@ import org.apache.log4j.Logger;
  * to supply callback behavior for this project's producers and consumers.
  */
 public class EventHandler implements KafkaMessageHandler {
-    static Logger log = Logger.getLogger(EventHandler.class.getName());
+    static Logger log = LoggerFactory.getLogger(EventHandler.class.getName());
 
     private PipelineService pipelineService;
     private StoreOrchestrator storeOrchestrator;
@@ -29,6 +33,8 @@ public class EventHandler implements KafkaMessageHandler {
     private SystemStore systemStore;
 
     private SchemalessMapper schemalessMapper;
+
+    ExecutorService threadpool = Executors.newCachedThreadPool();
 
     public EventHandler(PipelineService pipelineService,
                         SystemStore systemStore,
@@ -40,16 +46,20 @@ public class EventHandler implements KafkaMessageHandler {
         this.storeOrchestrator = storeOrchestrator;
     }
 
+    public void shutdown(){
+        this.threadpool.shutdown();
+    }
+
     @Override
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
         String messageValue = message.value();
         String pipeId = topicName;
 
-        Debug.out("************************");
+        /*Debug.out("************************");
         Debug.out("position: "+position);
         Debug.out("message: "+messageValue);
-        Debug.out("************************");
+        Debug.out("************************");*/
 
         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
 
@@ -65,14 +75,40 @@ public class EventHandler implements KafkaMessageHandler {
         //Entity
         String entity = json.get("entity").getAsString();
 
+        //TODO: REACTIVATE (CR2)
+        /*
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration.toString(),
-                pipeId,entity,jsonPayloadString);
+        this.executeIngestion(securityToken, datalakeDriverConfiguration.toString(),
+                pipeId,entity,jsonPayloadString);*/
 
-        this.storeOrchestrator.receiveData(securityToken,
+        this.executeTargetSystemDelivery(securityToken,
                 this.systemStore,
                 this.schemalessMapper,
                 pipeId,
                 jsonPayloadString);
+    }
+
+    private void executeIngestion(SecurityToken securityToken,
+                                  String datalakeDriverConfiguration,
+                                  String pipeId, String entity,String jsonPayloadString){
+        this.threadpool.execute(() -> {
+            this.pipelineService.ingest(securityToken, datalakeDriverConfiguration,
+                    pipeId,entity,jsonPayloadString);
+        });
+    }
+
+    private void executeTargetSystemDelivery(SecurityToken securityToken,
+                                             SystemStore systemStore,
+                                             SchemalessMapper schemalessMapper,
+                                             String pipeId, String jsonPayloadString){
+        this.threadpool.execute(() -> {
+            this.storeOrchestrator.receiveData(securityToken,
+                    systemStore,
+                    this.pipelineService.getFlinkHost(),
+                    this.pipelineService.getFlinkPort(),
+                    schemalessMapper,
+                    pipeId,
+                    jsonPayloadString);
+        });
     }
 }
