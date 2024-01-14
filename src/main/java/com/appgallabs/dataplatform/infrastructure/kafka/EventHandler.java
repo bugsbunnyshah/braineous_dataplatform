@@ -80,12 +80,11 @@ public class EventHandler implements KafkaMessageHandler {
         this.executeIngestion(securityToken, datalakeDriverConfiguration.toString(),
                 pipeId,entity,jsonPayloadString);
 
-        //TODO: REACTIVATE (CR2)
-        this.executeTargetSystemDelivery(securityToken,
+        /*this.executeTargetSystemDelivery(securityToken,
                 this.systemStore,
                 this.schemalessMapper,
                 pipeId,
-                jsonPayloadString);
+                jsonPayloadString);*/
     }
 
     private void executeIngestion(SecurityToken securityToken,

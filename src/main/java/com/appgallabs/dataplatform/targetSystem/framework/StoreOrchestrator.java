@@ -60,7 +60,7 @@ public class StoreOrchestrator {
             this.performanceReport.counter++;
         }
 
-        if(this.performanceReport.counter == 999){
+        if(this.performanceReport.counter == 9999){
             this.performanceReport.end = System.currentTimeMillis();
             Debug.out("****PERFORMANCE_REPORT*****");
             Debug.out("PROCESSING_TIME: "+ this.performanceReport.toString());

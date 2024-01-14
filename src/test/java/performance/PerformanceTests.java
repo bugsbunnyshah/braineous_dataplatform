@@ -34,7 +34,6 @@ public class PerformanceTests {
         for(int i=0; i<100; i++){
             datasetElement.add(flightJson);
         }
-        //JsonUtil.printStdOut(datasetElement);
 
         String pipeId = "small_flight_pipe";
         String configLocation = "performance/small_pipe_config_both.json";
@@ -59,30 +58,42 @@ public class PerformanceTests {
     }
 
     @Test
-    public void startMediumDataset() throws Exception{
+    public void startFlightDataset() throws Exception{
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
                 ingestionHostUrl("http://localhost:8080/").
-                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
-                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                apiKey("ffb2969c-5182-454f-9a0b-f3f2fb0ebf75").
+                apiSecret("5960253b-6645-41bf-b520-eede5754196e").
                 streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
-        String datasetLocation = "performance/southwest_medium.json";
+        String datasetLocation = "performance/flight.json";
         String json = Util.loadResource(datasetLocation);
-        JsonElement datasetElement = JsonUtil.validateJson(json);
-        JsonUtil.printStdOut(datasetElement);
+        JsonObject flightJson = JsonUtil.validateJson(json).getAsJsonObject();
+        JsonArray datasetElement = new JsonArray();
+        for(int i=0; i<10; i++){
+            datasetElement.add(flightJson);
+        }
 
         String pipeId = "small_flight_pipe";
-        String configLocation = "performance/small_pipe_config_mysql.json";
+        String configLocation = "performance/small_pipe_config_both.json";
         String configJsonString = Util.loadResource(configLocation);
         JsonObject configJson = JsonUtil.validateJson(configJsonString).getAsJsonObject();
         configJson.addProperty("pipeId", pipeId);
         DataPipeline.registerPipe(configJson.toString());
         JsonUtil.printStdOut(configJson);
 
-        //send source data through the pipeline
         String entity = "flights";
-        DataPipeline.sendData(pipeId, entity, datasetElement.toString());
+        int loopCount = 1;
+
+        //send source data through the pipeline 1250
+        String payload = datasetElement.toString();
+
+        //loopCount = 100; //1k records
+        //loopCount = 1000; //10k records
+        loopCount = 10000; //100k records
+        for(int i=0; i<loopCount; i++) {
+            DataPipeline.sendData(pipeId, entity, payload);
+        }
     }
 }

@@ -140,7 +140,8 @@ public class PipelineService {
                     }
 
                     List<String> batchCopy = new ArrayList<>(batch);
-                    submitBatch(batchIndex,batchCopy,securityToken,driverConfiguration,pipeId,entity);
+                    int totalBuffer = stream.size();
+                    submitBatch(totalBuffer,batchIndex,batchCopy,securityToken,driverConfiguration,pipeId,entity);
 
                     batch.clear();
                     batchIndex++;
@@ -152,7 +153,7 @@ public class PipelineService {
         }
     }
 
-    private void submitBatch(int batchIndex,List<String> batch,
+    private void submitBatch(int totalBuffer,int batchIndex,List<String> batch,
                              SecurityToken securityToken, String driverConfiguration,
                              String pipeId, String entity){
         /*this.threadpool.execute(() -> {
@@ -198,6 +199,7 @@ public class PipelineService {
 
             System.out.println("****JOB_SUCCESS****");
             System.out.println("BATCH_INDEX: "+batchIndex);
+            System.out.println("TOTAL_BUFFER_SIZE: "+totalBuffer);
             System.out.println("*******************");
         }catch(Exception e){
             e.printStackTrace();
