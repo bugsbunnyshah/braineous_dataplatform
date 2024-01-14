@@ -89,9 +89,9 @@ public class PerformanceTests {
         //send source data through the pipeline 1250
         String payload = datasetElement.toString();
 
-        //loopCount = 100; //1k records
+        loopCount = 100; //1k records
         //loopCount = 1000; //10k records
-        loopCount = 10000; //100k records
+        //loopCount = 10000; //100k records
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }

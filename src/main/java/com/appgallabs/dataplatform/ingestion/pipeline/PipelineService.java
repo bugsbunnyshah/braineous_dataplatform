@@ -95,6 +95,8 @@ public class PipelineService {
     public void ingest(SecurityToken securityToken, String driverConfiguration,
                        String pipeId, String entity, String jsonString){
         try {
+            int batchSize = 500;
+
             JsonElement jsonElement = JsonParser.parseString(jsonString);
 
             List<String> input = new ArrayList<>();
@@ -122,7 +124,7 @@ public class PipelineService {
             stream = this.readyBuffer.get(tenant);
             stream.addAll(input);
 
-            if(stream.size() < 1){
+            if(stream.size() < batchSize){
                 System.out.println("**STREAM_SIZE***");
                 System.out.println(stream.size());
                 System.out.println("************");
@@ -135,7 +137,6 @@ public class PipelineService {
                     return;
                 }
 
-                int batchSize = 1;
                 int batchIndex = 1;
                 List<String> batch = new ArrayList<>();
                 for(String entry:copy){
