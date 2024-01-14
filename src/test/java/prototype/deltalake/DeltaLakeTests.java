@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 
 //@QuarkusTest
@@ -34,33 +35,41 @@ public class DeltaLakeTests  {
 
     @Test
     public void createBoundedDeltaSourceAllColumns() throws Exception{
-        Schema schema = SchemaBuilder
-                .record("MyRecord")
-                .namespace("mynamespace")
-                .fields().requiredString("myfield")
-                .endRecord();
+        boolean metaDataCreated = false;
+        for(int i=0; i<10; i++) {
+            String fileName =i+".parquet";
+            Schema schema = SchemaBuilder
+                    .record("MyRecord")
+                    .namespace("mynamespace")
+                    .fields().requiredString("myfield")
+                    .endRecord();
 
-        ParquetWriter<GenericRecord> writer = AvroParquetWriter.
-                <GenericRecord>builder(new Path("delta/file.parquet"))
-                .withSchema(schema)
-                .build();
+            ParquetWriter<GenericRecord> writer = AvroParquetWriter.
+                    <GenericRecord>builder(new Path("delta/"+fileName))
+                    .withSchema(schema)
+                    .build();
 
-        GenericRecord record = new GenericData.Record(schema);
-        record.put("myfield", "myvalue");
-        writer.write(record);
-        long size = writer.getDataSize();
-        System.out.println("SIZE: "+size);
-        writer.close();
+            GenericRecord record = new GenericData.Record(schema);
+            record.put("myfield", "myvalue");
+            writer.write(record);
+            long size = writer.getDataSize();
+            System.out.println("SIZE: " + size);
+            writer.close();
 
-        DeltaLog log = DeltaLog.forTable(new Configuration(), "delta");
-        List<Action> actions = List.of(new AddFile("file.parquet", new HashMap<String, String>(), size, System.currentTimeMillis(), true, null, null));
-        OptimisticTransaction txn = log.startTransaction();
-        Metadata metaData = txn.metadata()
-                .copyBuilder()
-                .partitionColumns(new ArrayList<String>())
-                .schema(new StructType()
-                        .add(new StructField("myfield", new StringType(), true))).build();
-        txn.updateMetadata(metaData);
-        txn.commit(actions, new Operation(Operation.Name.CREATE_TABLE), "myproject");
+            DeltaLog log = DeltaLog.forTable(new Configuration(), "delta");
+            List<Action> actions = List.of(new AddFile(fileName, new HashMap<String, String>(), size, System.currentTimeMillis(), true, null, null));
+            OptimisticTransaction txn = log.startTransaction();
+
+            if (!metaDataCreated) {
+                Metadata metaData = txn.metadata()
+                        .copyBuilder()
+                        .partitionColumns(new ArrayList<String>())
+                        .schema(new StructType()
+                                .add(new StructField("myfield", new StringType(), true))).build();
+                txn.updateMetadata(metaData);
+                metaDataCreated = true;
+            }
+            txn.commit(actions, new Operation(Operation.Name.CREATE_TABLE), "myproject");
+        }
     }
 }

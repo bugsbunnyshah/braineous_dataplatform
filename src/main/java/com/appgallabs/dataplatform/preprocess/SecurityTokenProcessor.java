@@ -48,11 +48,11 @@ public class SecurityTokenProcessor implements ContainerRequestFilter
             boolean success = this.apiKeyManager.authenticate(apiKey, apiKeySecret);
 
             if(success) {
-                logger.info("*************************SERVER_COMPONENT****************************************");
+                /*logger.info("*************************SERVER_COMPONENT****************************************");
                 logger.info("(SecurityTokenContainer): " + this.securityTokenContainer);
                 logger.info("(Principal): " + this.securityTokenContainer.getSecurityToken().getPrincipal());
                 logger.info("(Token): " + this.securityTokenContainer.getSecurityToken().getToken());
-                logger.info("*****************************************************************");
+                logger.info("*****************************************************************");*/
             }else{
                 this.unauthorized(context);
             }

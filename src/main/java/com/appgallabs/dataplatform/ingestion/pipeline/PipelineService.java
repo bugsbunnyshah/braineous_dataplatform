@@ -14,6 +14,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.apache.flink.api.common.restartstrategy.RestartStrategies;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -25,6 +27,9 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 public class PipelineService {
@@ -61,20 +66,30 @@ public class PipelineService {
         this.flinkPort = flinkPort;
     }
 
+    private StreamExecutionEnvironment env;
+
+    private ExecutorService threadpool = Executors.newCachedThreadPool();
+
+    //TODO: Make this a Offset based implementation (CR2)
+    private Map<String, List<String>> readyBuffer = new HashMap<>();
+
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
+        this.env = StreamExecutionEnvironment.createRemoteEnvironment(
+                this.flinkHost,
+                Integer.parseInt(this.flinkPort),
+                "dataplatform-1.0.0-cr2-runner.jar"
+        );
+        this.env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+                3, // number of restart attempts
+                Time.of(10, TimeUnit.SECONDS) // delay
+        ));
     }
 
     public void ingest(SecurityToken securityToken, String driverConfiguration,
                        String pipeId, String entity, String jsonString){
         try {
-            final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
-                    this.flinkHost,
-                    Integer.parseInt(this.flinkPort),
-                    "dataplatform-1.0.0-cr2-runner.jar"
-            );
-
             JsonElement jsonElement = JsonParser.parseString(jsonString);
 
             List<String> input = new ArrayList<>();
@@ -92,9 +107,80 @@ public class PipelineService {
             JsonUtil.printStdOut(JsonUtil.validateJson(input.toString()));
             Debug.out("************************");*/
 
+            String tenant = securityToken.getPrincipal();
+            List<String> stream = this.readyBuffer.get(tenant);
+            if(stream == null){
+                stream = new ArrayList<>();
+                this.readyBuffer.put(tenant,stream);
+            }
 
-            DataStream<String> dataEvents = env.fromCollection(input);
+            stream = this.readyBuffer.get(tenant);
+            stream.addAll(input);
 
+            if(stream.size() < 1000){
+                System.out.println("**STREAM_SIZE***");
+                System.out.println(stream.size());
+                System.out.println("************");
+                return;
+            }
+
+            synchronized (stream) {
+                List<String> copy = new ArrayList<>(stream);
+                if(copy.isEmpty()){
+                    return;
+                }
+
+                int batchSize = 500;
+                int batchIndex = 1;
+                List<String> batch = new ArrayList<>();
+                for(String entry:copy){
+                    batch.add(entry);
+                    if(batch.size() < batchSize){
+                        continue;
+                    }
+
+                    List<String> batchCopy = new ArrayList<>(batch);
+                    submitBatch(batchIndex,batchCopy,securityToken,driverConfiguration,pipeId,entity);
+
+                    batch.clear();
+                    batchIndex++;
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            //throw new RuntimeException(e);
+        }
+    }
+
+    private void submitBatch(int batchIndex,List<String> batch,
+                             SecurityToken securityToken, String driverConfiguration,
+                             String pipeId, String entity){
+        /*this.threadpool.execute(() -> {
+            try {
+                SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
+                DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
+                        systemStore,
+                        driverConfiguration,
+                        pipeId,
+                        entity);
+
+                DataStream<String> dataEvents = this.env.fromCollection(batch);
+                System.out.println("**BATCH_SIZE***");
+                System.out.println(batch.size());
+                System.out.println("************");
+
+                dataEvents.addSink(sinkFunction);
+                this.env.execute();
+
+                System.out.println("****JOB_SUCCESS****");
+                System.out.println("BATCH_INDEX: "+batchIndex);
+                System.out.println("*******************");
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        });*/
+
+        try {
             SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
             DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
                     systemStore,
@@ -102,13 +188,19 @@ public class PipelineService {
                     pipeId,
                     entity);
 
-
+            DataStream<String> dataEvents = this.env.fromCollection(batch);
+            System.out.println("**BATCH_SIZE***");
+            System.out.println(batch.size());
+            System.out.println("************");
 
             dataEvents.addSink(sinkFunction);
-            env.execute();
+            this.env.execute();
+
+            System.out.println("****JOB_SUCCESS****");
+            System.out.println("BATCH_INDEX: "+batchIndex);
+            System.out.println("*******************");
         }catch(Exception e){
             e.printStackTrace();
-            //throw new RuntimeException(e);
         }
     }
 }

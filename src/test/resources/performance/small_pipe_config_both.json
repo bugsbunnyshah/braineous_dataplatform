@@ -2,16 +2,6 @@
   "pipeId": "123",
   "configuration": [
     {
-      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
-      "name": "perf_store_mongodb",
-      "config": {
-        "connectionString": "mongodb://localhost:27017",
-        "database": "perf_store",
-        "collection": "data",
-        "jsonpathExpressions": []
-      }
-    },
-    {
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
       "name": "perf_store_mysql",
       "config": {

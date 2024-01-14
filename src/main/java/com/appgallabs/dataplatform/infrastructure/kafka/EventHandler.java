@@ -75,12 +75,12 @@ public class EventHandler implements KafkaMessageHandler {
         //Entity
         String entity = json.get("entity").getAsString();
 
-        //TODO: REACTIVATE (CR2)
-        /*
+
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
         this.executeIngestion(securityToken, datalakeDriverConfiguration.toString(),
-                pipeId,entity,jsonPayloadString);*/
+                pipeId,entity,jsonPayloadString);
 
+        //TODO: REACTIVATE (CR2)
         this.executeTargetSystemDelivery(securityToken,
                 this.systemStore,
                 this.schemalessMapper,

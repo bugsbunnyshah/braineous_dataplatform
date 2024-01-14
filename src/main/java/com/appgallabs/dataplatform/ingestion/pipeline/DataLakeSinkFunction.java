@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.UUID;
 
 public class DataLakeSinkFunction implements SinkFunction<String> {
 
@@ -43,7 +44,12 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
     //processes a json object
     @Override
     public void invoke(String value, Context context) throws Exception {
-        this.preProcess(value,context);
+        System.out.println("****TASK_RUNNING****");
+        System.out.println(value);
+        System.out.println("********************");
+
+        //TODO: REACTIVE (CR2)
+        //this.preProcess(value);
 
         MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
         driver.configure(this.driverConfiguration);
@@ -82,7 +88,7 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         driver.storeIngestion(tenant, datalakeObject.toString());
     }
 
-    private void preProcess(String value, Context context){
+    private void preProcess(String value){
         String principal = this.securityToken.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
 

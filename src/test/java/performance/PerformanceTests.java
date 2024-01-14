@@ -48,18 +48,14 @@ public class PerformanceTests {
         int loopCount = 1;
 
         //send source data through the pipeline 1250
-        List<String> elementList = new ArrayList<>();
+        String payload = datasetElement.toString();
+
         //loopCount = 10; //1k records
         //loopCount = 100; //10k records
         loopCount = 1000; //100k records
         for(int i=0; i<loopCount; i++) {
-            elementList.add(datasetElement.toString());
+            DataPipeline.sendData(pipeId, entity, payload);
         }
-
-
-        elementList.parallelStream().forEach(jsonString->{
-            DataPipeline.sendData(pipeId, entity, jsonString);
-        });
     }
 
     @Test
