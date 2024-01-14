@@ -14,12 +14,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import org.bson.Document;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.ehcache.sizeof.SizeOf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,7 +122,7 @@ public class PipelineService {
             stream = this.readyBuffer.get(tenant);
             stream.addAll(input);
 
-            if(stream.size() < 1000){
+            if(stream.size() < 1){
                 System.out.println("**STREAM_SIZE***");
                 System.out.println(stream.size());
                 System.out.println("************");
@@ -130,7 +135,7 @@ public class PipelineService {
                     return;
                 }
 
-                int batchSize = 500;
+                int batchSize = 1;
                 int batchIndex = 1;
                 List<String> batch = new ArrayList<>();
                 for(String entry:copy){
@@ -156,32 +161,12 @@ public class PipelineService {
     private void submitBatch(int totalBuffer,int batchIndex,List<String> batch,
                              SecurityToken securityToken, String driverConfiguration,
                              String pipeId, String entity){
-        /*this.threadpool.execute(() -> {
-            try {
-                SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
-                DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
-                        systemStore,
-                        driverConfiguration,
-                        pipeId,
-                        entity);
-
-                DataStream<String> dataEvents = this.env.fromCollection(batch);
-                System.out.println("**BATCH_SIZE***");
-                System.out.println(batch.size());
-                System.out.println("************");
-
-                dataEvents.addSink(sinkFunction);
-                this.env.execute();
-
-                System.out.println("****JOB_SUCCESS****");
-                System.out.println("BATCH_INDEX: "+batchIndex);
-                System.out.println("*******************");
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        });*/
-
         try {
+            //pre-process
+            for(String entry:batch){
+                this.preProcess(entry, securityToken, pipeId);
+            }
+
             SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
             DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
                     systemStore,
@@ -204,5 +189,30 @@ public class PipelineService {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void preProcess(String value,
+                            SecurityToken securityToken,
+                            String pipeId){
+        String principal = securityToken.getPrincipal();
+        String databaseName = principal + "_" + "aiplatform";
+
+        //setup driver components
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+        MongoDatabase db = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
+
+        Queue<String> queue = new LinkedList<>();
+        queue.add(value);
+        SizeOf sizeOf = SizeOf.newInstance();
+        long dataStreamSize = sizeOf.deepSizeOf(queue);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("pipeId", pipeId);
+        jsonObject.addProperty("message", value);
+        jsonObject.addProperty("sizeInBytes", dataStreamSize);
+        jsonObject.addProperty("incoming", true);
+
+        collection.insertOne(Document.parse(jsonObject.toString()));
     }
 }

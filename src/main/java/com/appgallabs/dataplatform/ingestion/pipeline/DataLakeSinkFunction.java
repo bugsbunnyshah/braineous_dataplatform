@@ -6,18 +6,10 @@ import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.bson.Document;
-import org.ehcache.sizeof.SizeOf;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.UUID;
 
 public class DataLakeSinkFunction implements SinkFunction<String> {
 
@@ -47,9 +39,6 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
         System.out.println("****TASK_RUNNING****");
         System.out.println(value);
         System.out.println("********************");
-
-        //TODO: REACTIVE (CR2)
-        //this.preProcess(value);
 
         MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
         driver.configure(this.driverConfiguration);
@@ -86,28 +75,5 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
         //store into datalake
         driver.storeIngestion(tenant, datalakeObject.toString());
-    }
-
-    private void preProcess(String value){
-        String principal = this.securityToken.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
-
-        //setup driver components
-        MongoClient mongoClient = this.systemStore.getMongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
-
-        Queue<String> queue = new LinkedList<>();
-        queue.add(value);
-        SizeOf sizeOf = SizeOf.newInstance();
-        long dataStreamSize = sizeOf.deepSizeOf(queue);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("pipeId", pipeId);
-        jsonObject.addProperty("message", value);
-        jsonObject.addProperty("sizeInBytes", dataStreamSize);
-        jsonObject.addProperty("incoming", true);
-
-        collection.insertOne(Document.parse(jsonObject.toString()));
     }
 }
