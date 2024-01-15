@@ -53,6 +53,7 @@ public class EventHandler implements KafkaMessageHandler {
     @Override
     public void processMessage(String topicName, ConsumerRecord<String, String> message) throws Exception {
         String position = "PARTITION: " + message.partition() + "-" + "OFFSET: " + message.offset();
+        long offset = message.offset();
         String messageValue = message.value();
         String pipeId = topicName;
 
@@ -78,7 +79,7 @@ public class EventHandler implements KafkaMessageHandler {
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
         this.executeIngestion(securityToken, datalakeDriverConfiguration.toString(),
-                pipeId,entity,jsonPayloadString);
+                pipeId, offset,entity,jsonPayloadString);
 
         /*this.executeTargetSystemDelivery(securityToken,
                 this.systemStore,
@@ -89,11 +90,14 @@ public class EventHandler implements KafkaMessageHandler {
 
     private void executeIngestion(SecurityToken securityToken,
                                   String datalakeDriverConfiguration,
-                                  String pipeId, String entity,String jsonPayloadString){
-        this.threadpool.execute(() -> {
+                                  String pipeId, long offset, String entity,String jsonPayloadString){
+        /*this.threadpool.execute(() -> {
             this.pipelineService.ingest(securityToken, datalakeDriverConfiguration,
-                    pipeId,entity,jsonPayloadString);
-        });
+                    pipeId, offset,entity,jsonPayloadString);
+        });*/
+
+        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration,
+                pipeId, offset,entity,jsonPayloadString);
     }
 
     private void executeTargetSystemDelivery(SecurityToken securityToken,

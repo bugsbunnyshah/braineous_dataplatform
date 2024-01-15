@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class SimpleConsumer extends AbstractSimpleKafka{
+public class SimpleConsumer extends AbstractSimpleKafka{
     private static Logger log = LoggerFactory.getLogger(SimpleConsumer.class);
 
     private static SimpleConsumer singleton;
@@ -40,6 +40,14 @@ class SimpleConsumer extends AbstractSimpleKafka{
             SimpleConsumer.singleton = new SimpleConsumer();
         }
         return SimpleConsumer.singleton;
+    }
+
+    public KafkaConsumer<String, String> getKafkaConsumer() {
+        return kafkaConsumer;
+    }
+
+    public void setKafkaConsumer(KafkaConsumer<String, String> kafkaConsumer) {
+        this.kafkaConsumer = kafkaConsumer;
     }
 
     public void close() throws Exception {

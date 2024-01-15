@@ -46,6 +46,9 @@ public class PipelineService {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @Inject
+    private JobManager jobManager;
+
     @ConfigProperty(name = "flinkHost")
     private String flinkHost;
 
@@ -93,127 +96,7 @@ public class PipelineService {
     }
 
     public void ingest(SecurityToken securityToken, String driverConfiguration,
-                       String pipeId, String entity, String jsonString){
-        try {
-            int batchSize = 500;
-
-            JsonElement jsonElement = JsonParser.parseString(jsonString);
-
-            List<String> input = new ArrayList<>();
-            if(jsonElement.isJsonArray()) {
-                JsonArray jsonArray = jsonElement.getAsJsonArray();
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JsonObject inputJson = jsonArray.get(i).getAsJsonObject();
-                    input.add(inputJson.toString());
-                }
-            }else if(jsonElement.isJsonObject()){
-                input.add(jsonElement.toString());
-            }
-
-            /*Debug.out("*********FLINK_INPUT***************");
-            JsonUtil.printStdOut(JsonUtil.validateJson(input.toString()));
-            Debug.out("************************");*/
-
-            String tenant = securityToken.getPrincipal();
-            List<String> stream = this.readyBuffer.get(tenant);
-            if(stream == null){
-                stream = new ArrayList<>();
-                this.readyBuffer.put(tenant,stream);
-            }
-
-            stream = this.readyBuffer.get(tenant);
-            stream.addAll(input);
-
-            if(stream.size() < batchSize){
-                System.out.println("**STREAM_SIZE***");
-                System.out.println(stream.size());
-                System.out.println("************");
-                return;
-            }
-
-            synchronized (stream) {
-                List<String> copy = new ArrayList<>(stream);
-                if(copy.isEmpty()){
-                    return;
-                }
-
-                int batchIndex = 1;
-                List<String> batch = new ArrayList<>();
-                for(String entry:copy){
-                    batch.add(entry);
-                    if(batch.size() < batchSize){
-                        continue;
-                    }
-
-                    List<String> batchCopy = new ArrayList<>(batch);
-                    int totalBuffer = stream.size();
-                    submitBatch(totalBuffer,batchIndex,batchCopy,securityToken,driverConfiguration,pipeId,entity);
-
-                    batch.clear();
-                    batchIndex++;
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            //throw new RuntimeException(e);
-        }
-    }
-
-    private void submitBatch(int totalBuffer,int batchIndex,List<String> batch,
-                             SecurityToken securityToken, String driverConfiguration,
-                             String pipeId, String entity){
-        try {
-            //pre-process
-            for(String entry:batch){
-                this.preProcess(entry, securityToken, pipeId);
-            }
-
-            SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
-            DataLakeSinkFunction sinkFunction = new DataLakeSinkFunction(securityToken,
-                    systemStore,
-                    driverConfiguration,
-                    pipeId,
-                    entity);
-
-            DataStream<String> dataEvents = this.env.fromCollection(batch);
-            System.out.println("**BATCH_SIZE***");
-            System.out.println(batch.size());
-            System.out.println("************");
-
-            dataEvents.addSink(sinkFunction);
-            this.env.execute();
-
-            System.out.println("****JOB_SUCCESS****");
-            System.out.println("BATCH_INDEX: "+batchIndex);
-            System.out.println("TOTAL_BUFFER_SIZE: "+totalBuffer);
-            System.out.println("*******************");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void preProcess(String value,
-                            SecurityToken securityToken,
-                            String pipeId){
-        String principal = securityToken.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
-
-        //setup driver components
-        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
-
-        Queue<String> queue = new LinkedList<>();
-        queue.add(value);
-        SizeOf sizeOf = SizeOf.newInstance();
-        long dataStreamSize = sizeOf.deepSizeOf(queue);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("pipeId", pipeId);
-        jsonObject.addProperty("message", value);
-        jsonObject.addProperty("sizeInBytes", dataStreamSize);
-        jsonObject.addProperty("incoming", true);
-
-        collection.insertOne(Document.parse(jsonObject.toString()));
+                       String pipeId, long offset, String entity, String jsonString){
+        this.jobManager.submit(this.env, securityToken, driverConfiguration, entity, pipeId, offset);
     }
 }
