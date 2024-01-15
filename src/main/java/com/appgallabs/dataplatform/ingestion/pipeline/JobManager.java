@@ -110,6 +110,8 @@ public class JobManager {
                         entity);
             }catch (Exception e){
                 throw new RuntimeException(e);
+            }finally{
+                kafkaConsumer.close();
             }
         });
         t.start();

@@ -61,24 +61,7 @@ public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
 
     @Override
     public void storeIngestion(Tenant tenant, String jsonObjectString) {
-        /*try {
-            String principal = tenant.getPrincipal();
-            String databaseName = principal + "_" + "aiplatform";
-
-            //setup driver components
-            MongoClient mongoClient = MongoClients.create(connectionString);
-            MongoDatabase db = mongoClient.getDatabase(databaseName);
-            MongoCollection<Document> dbCollection = db.getCollection(collection);
-
-            //store
-            Document document = Document.parse(jsonObjectString);
-
-            dbCollection.insertOne(document);
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }*/
-
-        /*try {
+        try {
             System.out.println("************DELTA_LAKE***********************");
             String fileName = UUID.randomUUID().toString()+".parquet";
 
@@ -113,7 +96,7 @@ public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
 
             System.out.println("*******DATALAKE_STORAGE_SUCCESS******");
         }catch(Exception e){
-        }*/
+        }
     }
 
     private void createMetaData(OptimisticTransaction txn){
