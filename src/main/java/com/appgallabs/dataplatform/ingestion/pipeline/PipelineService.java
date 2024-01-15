@@ -97,6 +97,6 @@ public class PipelineService {
 
     public void ingest(SecurityToken securityToken, String driverConfiguration,
                        String pipeId, long offset, String entity, String jsonString){
-        this.jobManager.submit(this.env, securityToken, driverConfiguration, entity, pipeId, offset);
+        this.jobManager.submit(this.env, securityToken, driverConfiguration, entity, pipeId, offset, jsonString);
     }
 }

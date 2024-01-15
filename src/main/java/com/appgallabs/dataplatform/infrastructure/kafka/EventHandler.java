@@ -91,13 +91,10 @@ public class EventHandler implements KafkaMessageHandler {
     private void executeIngestion(SecurityToken securityToken,
                                   String datalakeDriverConfiguration,
                                   String pipeId, long offset, String entity,String jsonPayloadString){
-        /*this.threadpool.execute(() -> {
+        this.threadpool.execute(() -> {
             this.pipelineService.ingest(securityToken, datalakeDriverConfiguration,
                     pipeId, offset,entity,jsonPayloadString);
-        });*/
-
-        this.pipelineService.ingest(securityToken, datalakeDriverConfiguration,
-                pipeId, offset,entity,jsonPayloadString);
+        });
     }
 
     private void executeTargetSystemDelivery(SecurityToken securityToken,

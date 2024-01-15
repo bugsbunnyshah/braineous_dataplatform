@@ -61,7 +61,7 @@ public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
 
     @Override
     public void storeIngestion(Tenant tenant, String jsonObjectString) {
-        try {
+        /*try {
             System.out.println("************DELTA_LAKE***********************");
             String fileName = UUID.randomUUID().toString()+".parquet";
 
@@ -96,7 +96,7 @@ public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
 
             System.out.println("*******DATALAKE_STORAGE_SUCCESS******");
         }catch(Exception e){
-        }
+        }*/
     }
 
     private void createMetaData(OptimisticTransaction txn){

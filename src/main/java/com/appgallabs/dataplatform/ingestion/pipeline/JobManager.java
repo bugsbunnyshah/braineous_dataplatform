@@ -34,10 +34,29 @@ public class JobManager {
 
     private Map<String,Long> pipeToOffset = new HashMap<>();
 
-    public void submit(StreamExecutionEnvironment env, SecurityToken securityToken,
+    public synchronized void submit(StreamExecutionEnvironment env, SecurityToken securityToken,
                        String driverConfiguration, String entity,
-                       String pipeId, long offset){
-        Long pipeOffset = this.pipeToOffset.get(pipeId);
+                       String pipeId, long offset, String jsonString){
+        List<String> input = new ArrayList<>();
+        JsonElement jsonElement = JsonParser.parseString(jsonString);
+
+        if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonObject inputJson = jsonArray.get(i).getAsJsonObject();
+                input.add(inputJson.toString());
+            }
+        } else if (jsonElement.isJsonObject()) {
+            input.add(jsonElement.toString());
+        }
+        submitJob(env,
+                input,
+                securityToken,
+                driverConfiguration,
+                pipeId,
+                entity);
+
+        /*Long pipeOffset = this.pipeToOffset.get(pipeId);
         if(pipeOffset == null){
             this.pipeToOffset.put(pipeId, offset);
             return;
@@ -52,21 +71,19 @@ public class JobManager {
         String topic = pipeId;
         this.pipeToOffset.put(pipeId, offset);
 
-        Properties props;
-        KafkaConsumer<String, String> kafkaConsumer;
-        TopicPartition tp = new TopicPartition(topic, 0);
-        try {
-            props = PropertiesHelper.getProperties();
-            kafkaConsumer = new KafkaConsumer<>(props);
-            kafkaConsumer.assign(Arrays.asList(tp));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-
         Thread t = new Thread(() -> {
-            //keep running forever or until shutdown() is called from another thread.
+            KafkaConsumer<String, String> kafkaConsumer = null;
             try {
+                Properties props;
+                TopicPartition tp = new TopicPartition(topic, 0);
+                try {
+                    props = PropertiesHelper.getProperties();
+                    kafkaConsumer = new KafkaConsumer<>(props);
+                    kafkaConsumer.assign(Arrays.asList(tp));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
                 kafkaConsumer.seek(tp, startOffset);
 
                 boolean exit = false;
@@ -86,17 +103,17 @@ public class JobManager {
                         String jsonString = payloadElem.toString();
                         JsonElement jsonElement = JsonParser.parseString(jsonString);
 
-                        if(jsonElement.isJsonArray()) {
+                        if (jsonElement.isJsonArray()) {
                             JsonArray jsonArray = jsonElement.getAsJsonArray();
                             for (int i = 0; i < jsonArray.size(); i++) {
                                 JsonObject inputJson = jsonArray.get(i).getAsJsonObject();
                                 input.add(inputJson.toString());
                             }
-                        }else if(jsonElement.isJsonObject()){
+                        } else if (jsonElement.isJsonObject()) {
                             input.add(jsonElement.toString());
                         }
 
-                        if(record.offset() == endOffset) {
+                        if (record.offset() == endOffset) {
                             exit = true;
                         }
                     }
@@ -108,13 +125,11 @@ public class JobManager {
                         driverConfiguration,
                         pipeId,
                         entity);
-            }catch (Exception e){
-                throw new RuntimeException(e);
-            }finally{
+            }finally {
                 kafkaConsumer.close();
             }
         });
-        t.start();
+        t.start();*/
     }
 
     private synchronized void submitJob(StreamExecutionEnvironment env, List<String> input, SecurityToken securityToken,
@@ -122,6 +137,10 @@ public class JobManager {
                                         String pipeId,
                                         String entity){
         try {
+            System.out.println("****NUM_OF_RECORDS****");
+            System.out.println(input.size());
+            System.out.println("**********************");
+
             //pre-process
             for(String entry:input){
                 this.preProcess(entry, securityToken, pipeId);
