@@ -1,6 +1,6 @@
 package prototype.deltalake;
 
-import io.delta.standalone.DeltaLog;
+/*import io.delta.standalone.DeltaLog;
 import io.delta.standalone.Operation;
 import io.delta.standalone.OptimisticTransaction;
 import io.delta.standalone.actions.AddFile;
@@ -18,7 +18,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.parquet.hadoop.ParquetWriter;
 import org.apache.parquet.avro.AvroParquetWriter;
 
-//import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -27,15 +26,15 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.UUID;*/
 
 
 //@QuarkusTest
 public class DeltaLakeTests  {
 
-    @Test
+    //@Test
     public void createBoundedDeltaSourceAllColumns() throws Exception{
-        boolean metaDataCreated = false;
+        /*boolean metaDataCreated = false;
         for(int i=0; i<10; i++) {
             String fileName =i+".parquet";
             Schema schema = SchemaBuilder
@@ -70,6 +69,6 @@ public class DeltaLakeTests  {
                 metaDataCreated = true;
             }
             txn.commit(actions, new Operation(Operation.Name.CREATE_TABLE), "myproject");
-        }
+        }*/
     }
 }

@@ -175,6 +175,17 @@
       <artifactId>flink-clients</artifactId>
       <version>1.18.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.hudi</groupId>
+      <artifactId>hudi-flink1.17-bundle</artifactId>
+      <version>0.14.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
       <groupId>io.delta</groupId>
@@ -187,6 +198,7 @@
       <version>${hadoop-version}</version>
     </dependency>
 
+    <!--
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
@@ -197,6 +209,7 @@
       <artifactId>parquet-avro</artifactId>
       <version>1.13.1</version>
     </dependency>
+    -->
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
