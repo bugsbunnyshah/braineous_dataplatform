@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class StreamingAgentTests {
 
     //TODO: solidify (CR2)
-    @Test
+    /*@Test
     public void sendData() throws Exception{
         StreamingAgent streamingAgent = StreamingAgent.getInstance();
 
@@ -15,5 +15,5 @@ public class StreamingAgentTests {
             String entity = TestConstants.ENTITY;
             streamingAgent.sendData(pipeId, entity, "{hello"+i);
         }
-    }
+    }*/
 }

@@ -1,40 +1,13 @@
 package com.appgallabs.dataplatform.datalake;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import io.delta.standalone.DeltaLog;
-import io.delta.standalone.Operation;
-import io.delta.standalone.OptimisticTransaction;
-import io.delta.standalone.actions.Action;
-import io.delta.standalone.actions.AddFile;
-import io.delta.standalone.actions.Metadata;
-import io.delta.standalone.types.StringType;
-import io.delta.standalone.types.StructField;
-import io.delta.standalone.types.StructType;
-import org.apache.avro.Schema;
-import org.apache.avro.SchemaBuilder;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
-import org.apache.parquet.avro.AvroParquetWriter;
-import org.apache.parquet.hadoop.ParquetWriter;
-import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
     private static Logger logger = LoggerFactory.getLogger(MongoDBDataLakeDriver.class);
@@ -99,7 +72,7 @@ public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
         }*/
     }
 
-    private void createMetaData(OptimisticTransaction txn){
+    /*private void createMetaData(OptimisticTransaction txn){
         try {
             Metadata metaData = txn.metadata()
                     .copyBuilder()
@@ -110,5 +83,5 @@ public class MongoDBDataLakeDriver implements DataLakeDriver, Serializable {
             this.isMetaDataCreated = true;
         }catch(Exception e){
         }
-    }
+    }*/
 }
