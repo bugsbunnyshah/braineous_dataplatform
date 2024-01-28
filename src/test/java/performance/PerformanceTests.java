@@ -42,14 +42,14 @@ public class PerformanceTests {
         JsonUtil.printStdOut(configJson);
 
         String entity = "flights";
-        int loopCount = 1;
+        int loopCount = 1; // 1 flink job, 100 records
 
         //send source data through the pipeline 1250
         String payload = datasetElement.toString();
 
-        //loopCount = 10; //1k records
-        //loopCount = 100; //10k records
-        //loopCount = 1000; //100k records
+        //loopCount = 10; //1k records, 10 flink jobs
+        //loopCount = 100; //10k records, 100 flink jobs
+        loopCount = 500; //500k records, 500 flink jobs
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }
