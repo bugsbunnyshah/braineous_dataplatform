@@ -20,16 +20,20 @@ package org.apache.flink.table.examples.java.basics;
 
 import org.apache.flink.table.examples.utils.ExampleOutputTestBase;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /** Test for Java {@link StreamSQLExample}. */
 class StreamSQLExampleITCase extends ExampleOutputTestBase {
+    private static Logger log = LoggerFactory.getLogger(StreamSQLExampleITCase.class);
 
     @Test
     void testExample() throws Exception {
         StreamSQLExample.main(new String[0]);
         final String consoleOutput = getOutputString();
+        log.info(consoleOutput);
         assertThat(consoleOutput)
                 .contains("Order{user=1, product='beer', amount=3}")
                 .contains("Order{user=4, product='beer', amount=1}")

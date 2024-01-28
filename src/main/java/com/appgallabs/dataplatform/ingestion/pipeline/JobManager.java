@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.kafka.PropertiesHelper;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,6 +13,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.examples.java.basics.StreamSQLExample;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -23,6 +27,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @ApplicationScoped
 public class JobManager {
@@ -33,6 +39,9 @@ public class JobManager {
     private MongoDBJsonStore mongoDBJsonStore;
 
     private Map<String,Long> pipeToOffset = new HashMap<>();
+
+    private ExecutorService submitJobPool = Executors.newFixedThreadPool(25);
+    private ExecutorService retryJobPool = Executors.newFixedThreadPool(25);
 
     public synchronized void submit(StreamExecutionEnvironment env, SecurityToken securityToken,
                        String driverConfiguration, String entity,
@@ -49,6 +58,9 @@ public class JobManager {
         } else if (jsonElement.isJsonObject()) {
             input.add(jsonElement.toString());
         }
+
+        JsonUtil.printStdOut(jsonElement);
+
         submitJob(env,
                 input,
                 securityToken,
@@ -136,7 +148,7 @@ public class JobManager {
                                         String driverConfiguration,
                                         String pipeId,
                                         String entity){
-        try {
+        /*try {
             System.out.println("****NUM_OF_RECORDS****");
             System.out.println(input.size());
             System.out.println("**********************");
@@ -159,7 +171,70 @@ public class JobManager {
             env.execute();
         }catch(Exception e){
             throw new RuntimeException(e);
+        }*/
+        submitJobPool.execute(() -> {
+            while(true){
+                boolean success = submitJob(env);
+                if(!success){
+                    retryJob(env);
+                }
+                break;
+            }
+        });
+    }
+
+    private void retryJob(StreamExecutionEnvironment env){
+        retryJobPool.execute(() -> {
+            while(true){
+                boolean success = submitJob(env);
+                if(success){
+                    break;
+                }
+            }
+            System.out.println("******RETRY_WAS_SUCCESSFULL******");
+        });
+    }
+
+    private boolean submitJob(StreamExecutionEnvironment env)
+    {
+        // set up the Java Table API
+        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+        final DataStream<StreamSQLExample.Order> orderA =
+                env.fromCollection(
+                        Arrays.asList(
+                                new StreamSQLExample.Order(1L, "beer1", 3),
+                                new StreamSQLExample.Order(1L, "diaper2", 4),
+                                new StreamSQLExample.Order(3L, "rubber3", 2)));
+
+        final DataStream<StreamSQLExample.Order> orderB =
+                env.fromCollection(
+                        Arrays.asList(
+                                new StreamSQLExample.Order(2L, "pen", 3),
+                                new StreamSQLExample.Order(2L, "rubber", 3),
+                                new StreamSQLExample.Order(4L, "beer", 1)));
+
+        // convert the first DataStream to a Table object
+        // it will be used "inline" and is not registered in a catalog
+        final Table tableA = tableEnv.fromDataStream(orderA);
+
+        String sql = "SELECT * FROM "
+                + tableA;
+
+        final Table result =
+                tableEnv.sqlQuery(sql);
+
+        tableEnv.toDataStream(result, StreamSQLExample.Order.class).print();
+
+        // after the table program is converted to a DataStream program,
+        // we must use `env.execute()` to submit the job
+        boolean success = true;
+        try {
+            env.execute();
+        }catch (Exception e){
+            success = false;
         }
+        return success;
     }
 
     private void preProcess(String value,

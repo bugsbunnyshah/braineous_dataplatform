@@ -18,12 +18,18 @@
 
 package org.apache.flink.table.examples.java.basics;
 
+import org.apache.flink.api.common.restartstrategy.RestartStrategies;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 import java.util.Arrays;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Simple example for demonstrating the use of SQL on a table backed by a {@link DataStream} in Java
@@ -42,24 +48,57 @@ import java.util.Arrays;
  */
 public final class StreamSQLExample {
 
-    // *************************************************************************
-    //     PROGRAM
-    // *************************************************************************
+    private static ExecutorService executorService = Executors.newFixedThreadPool(25);
+    private static ExecutorService retryService = Executors.newFixedThreadPool(25);
 
     public static void main(String[] args) throws Exception {
-
         // set up the Java DataStream API
-        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        //final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
+                "0.0.0.0",
+                8081,
+                "dataplatform-1.0.0-cr2-runner.jar"
+        );
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+                10, // number of restart attempts
+                Time.of(15, TimeUnit.SECONDS) // delay
+        ));
 
+        int number_of_jobs = 1500; //localhost / baremetal
+        for(int i=0; i<number_of_jobs; i++) {
+            executorService.execute(() -> {
+                while(true){
+                    boolean success = submitJob(env);
+                    if(!success){
+                        retryJob(env);
+                    }
+                }
+            });
+        }
+    }
+
+    private static void retryJob(StreamExecutionEnvironment env){
+        retryService.execute(() -> {
+            while(true){
+                boolean success = submitJob(env);
+                if(success){
+                    break;
+                }
+            }
+        });
+    }
+
+    private static boolean submitJob(StreamExecutionEnvironment env)
+    {
         // set up the Java Table API
         final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
         final DataStream<Order> orderA =
                 env.fromCollection(
                         Arrays.asList(
-                                new Order(1L, "beer", 3),
-                                new Order(1L, "diaper", 4),
-                                new Order(3L, "rubber", 2)));
+                                new Order(1L, "beer1", 3),
+                                new Order(1L, "diaper2", 4),
+                                new Order(3L, "rubber3", 2)));
 
         final DataStream<Order> orderB =
                 env.fromCollection(
@@ -72,24 +111,23 @@ public final class StreamSQLExample {
         // it will be used "inline" and is not registered in a catalog
         final Table tableA = tableEnv.fromDataStream(orderA);
 
-        // convert the second DataStream and register it as a view
-        // it will be accessible under a name
-        tableEnv.createTemporaryView("TableB", orderB);
+        String sql = "SELECT * FROM "
+                + tableA;
 
-        // union the two tables
         final Table result =
-                tableEnv.sqlQuery(
-                        "SELECT * FROM "
-                                + tableA
-                                + " WHERE amount > 2 UNION ALL "
-                                + "SELECT * FROM TableB WHERE amount < 2");
+                tableEnv.sqlQuery(sql);
 
-        // convert the Table back to an insert-only DataStream of type `Order`
         tableEnv.toDataStream(result, Order.class).print();
 
         // after the table program is converted to a DataStream program,
         // we must use `env.execute()` to submit the job
-        env.execute();
+        boolean success = true;
+        try {
+            env.execute();
+        }catch (Exception e){
+            success = false;
+        }
+        return success;
     }
 
     // *************************************************************************

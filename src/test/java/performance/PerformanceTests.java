@@ -49,7 +49,7 @@ public class PerformanceTests {
 
         //loopCount = 10; //1k records
         //loopCount = 100; //10k records
-        loopCount = 1000; //100k records
+        //loopCount = 1000; //100k records
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }
