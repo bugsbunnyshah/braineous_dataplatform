@@ -49,7 +49,7 @@ public class PerformanceTests {
 
         //loopCount = 10; //1k records, 10 flink jobs
         //loopCount = 100; //10k records, 100 flink jobs
-        loopCount = 500; //50k records, 500 flink jobs
+        loopCount = 1000; //100k records, 500 flink jobs
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }

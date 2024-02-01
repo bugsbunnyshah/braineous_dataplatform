@@ -29,7 +29,7 @@
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>2.4.2.Final</quarkus.platform.version>
+    <quarkus.platform.version>2.16.12.Final</quarkus.platform.version>
     <dl4j-master.version>1.0.0-beta7</dl4j-master.version>
     <jcommon.version>1.0.23</jcommon.version>
     <jfreechart.version>1.0.13</jfreechart.version>
@@ -63,6 +63,10 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mongodb-client</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -106,11 +110,15 @@
     </dependency>
 
     <!-- MongoDB storage related -->
+    <!--
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
-      <version>4.3.3</version>
+      <version>4.3.4</version>
     </dependency>
+    -->
+
+
 
     <dependency>
       <groupId>com.github.wnameless.json</groupId>
@@ -173,6 +181,11 @@
 
     <!-- flink_based_data_processor -->
     <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.12.18</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-core</artifactId>
       <version>1.18.0</version>
@@ -209,8 +222,51 @@
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-test-utils-junit</artifactId>
+      <artifactId>flink-sql-gateway-api</artifactId>
       <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-hive_2.12</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>libthrift</artifactId>
+      <version>0.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-hadoop-fs</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop.hive</groupId>
+      <artifactId>hive-common</artifactId>
+      <version>3.1.3</version>
+      <systemPath>${project.basedir}/thirdpartylibs/hive/hive-common-3.1.3.jar</systemPath>
+      <scope>system</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <version>3.1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-metastore</artifactId>
+      <version>3.1.3</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <version>3.3.6</version>
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>

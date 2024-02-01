@@ -9,18 +9,26 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import org.apache.flink.table.catalog.CatalogDatabaseImpl;
+import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.types.Row;
 
 import org.bson.Document;
 import org.ehcache.sizeof.SizeOf;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -30,6 +38,8 @@ import java.util.concurrent.Executors;
 
 @ApplicationScoped
 public class JobManager {
+    private static Logger logger = LoggerFactory.getLogger(JobManager.class);
+
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
@@ -41,60 +51,150 @@ public class JobManager {
     private ExecutorService submitJobPool = Executors.newFixedThreadPool(25);
     private ExecutorService retryJobPool = Executors.newFixedThreadPool(25);
 
+    private String table;
+
+    @PostConstruct
+    public void start(){
+
+    }
+
     public synchronized void submit(StreamExecutionEnvironment env, SecurityToken securityToken,
                        String driverConfiguration, String entity,
                        String pipeId, long offset, String jsonString){
-        JsonElement jsonElement = JsonParser.parseString(jsonString);
+        try {
+            JsonElement jsonElement = JsonParser.parseString(jsonString);
 
-        JsonArray ingestion = new JsonArray();
-        if (jsonElement.isJsonArray()) {
-            ingestion = jsonElement.getAsJsonArray();
-        } else if (jsonElement.isJsonObject()) {
-            ingestion.add(jsonElement);
+            JsonArray ingestion = new JsonArray();
+            if (jsonElement.isJsonArray()) {
+                ingestion = jsonElement.getAsJsonArray();
+            } else if (jsonElement.isJsonObject()) {
+                ingestion.add(jsonElement);
+            }
+
+            //ingestion array
+            List<Map<String, Object>> flatArray = new ArrayList();
+            for (int i = 0; i < ingestion.size(); i++) {
+                JsonObject jsonObject = ingestion.get(i).getAsJsonObject();
+                Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
+                flatArray.add(flatJson);
+            }
+
+            if (this.table == null) {
+                this.table = this.createTable(env);
+            }
+
+
+            submitJob(env,
+                    flatArray,
+                    securityToken,
+                    table,
+                    driverConfiguration,
+                    pipeId,
+                    entity);
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+
+            //TODO: handle system level errors
         }
-
-        //ingestion array
-        List<Map<String, Object>> flatArray = new ArrayList();
-        for(int i=0; i<ingestion.size(); i++) {
-            JsonObject jsonObject = ingestion.get(i).getAsJsonObject();
-            Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
-            flatArray.add(flatJson);
-        }
-
-
-        submitJob(env,
-                flatArray,
-                securityToken,
-                driverConfiguration,
-                pipeId,
-                entity);
     }
 
-    private synchronized void submitJob(StreamExecutionEnvironment env, List<Map<String, Object>> flatArray, SecurityToken securityToken,
+    private synchronized void submitJob(StreamExecutionEnvironment env, List<Map<String, Object>> flatArray,
+                                        SecurityToken securityToken,
+                                        String table,
                                         String driverConfiguration,
                                         String pipeId,
                                         String entity){
         submitJobPool.execute(() -> {
-            while(true){
-                boolean success = submitJob(env,flatArray);
-                if(!success){
-                    retryJob(env,flatArray);
-                }
-                break;
+            try {
+                this.addData(env, table, flatArray);
+                logger.info("****JOB_SUCCESS*****");
+            }catch(Exception e){
+                this.retryJob(env, table, flatArray);
             }
         });
     }
 
-    private void retryJob(StreamExecutionEnvironment env,List<Map<String, Object>> flatArray){
+    private void retryJob(StreamExecutionEnvironment env,
+                          String table,
+                          List<Map<String, Object>> flatArray){
         retryJobPool.execute(() -> {
             while(true){
-                boolean success = submitJob(env,flatArray);
-                if(success){
+                try {
+                    this.addData(env, table, flatArray);
+                    logger.info("****JOB_RETRY_SUCCESS*****");
                     break;
+                }catch(Exception e){
+
                 }
             }
-            System.out.println("******RETRY_WAS_SUCCESSFULL******");
         });
+    }
+
+    private String createTable(StreamExecutionEnvironment env) throws Exception{
+        // set up the Java Table API
+        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+        // Create a HiveCatalog
+        String name            = "myhive";
+        String database = "mydatabase";
+        String hiveConfDir     = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
+        String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        String table = name + "." + database + "." + tableName;
+
+        HiveCatalog hive = new HiveCatalog(name, null, hiveConfDir);
+        tableEnv.registerCatalog(name, hive);
+
+        // set the HiveCatalog as the current catalog of the session
+        tableEnv.useCatalog(name);
+
+        // Create a catalog database
+        hive.createDatabase(database,
+                new CatalogDatabaseImpl(new HashMap<>(), "db_metadata"), true);
+
+        // Create a catalog table
+        final Schema schema = Schema.newBuilder()
+                .column("name", DataTypes.STRING())
+                .column("age", DataTypes.INT())
+                .build();
+
+        TableDescriptor tableDescriptor = TableDescriptor.forConnector("filesystem")
+                .option("path", "file:///Users/babyboy/datalake/"+tableName)
+                .option("format", "csv")
+                .schema(schema)
+                .build();
+
+        tableEnv.createTable(table, tableDescriptor);
+
+        return table;
+    }
+
+    private void addData(StreamExecutionEnvironment env, String table, List<Map<String, Object>> flatArray) throws Exception
+    {
+        // set up the Java Table API
+        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+        // Create a HiveCatalog
+        String name            = "myhive";
+        String hiveConfDir     = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
+
+        HiveCatalog hive = new HiveCatalog(name, null, hiveConfDir);
+        tableEnv.registerCatalog(name, hive);
+
+        // set the HiveCatalog as the current catalog of the session
+        tableEnv.useCatalog(name);
+
+
+        String sql = "INSERT INTO " + table + " VALUES"
+                + "  ('shah', 46), "
+                + "  ('blah', 55)";
+
+        final TableResult insertionResult =
+                tableEnv.executeSql(sql);
+
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        insertionResult.await();
     }
 
     private boolean submitJob(StreamExecutionEnvironment env, List<Map<String, Object>> flatArray)
