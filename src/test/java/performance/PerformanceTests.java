@@ -47,9 +47,9 @@ public class PerformanceTests {
         //send source data through the pipeline 1250
         String payload = datasetElement.toString();
 
-        //loopCount = 10; //1k records, 10 flink jobs
+        loopCount = 10; //1k records, 10 flink jobs
         //loopCount = 100; //10k records, 100 flink jobs
-        loopCount = 1000; //100k records, 500 flink jobs
+        //loopCount = 1000; //100k records, 500 flink jobs
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }
