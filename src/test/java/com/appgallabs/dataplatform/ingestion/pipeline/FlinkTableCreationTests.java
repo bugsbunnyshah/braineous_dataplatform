@@ -2,23 +2,26 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.quarkus.test.junit.QuarkusTest;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
+
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.apache.flink.table.catalog.CatalogDatabaseImpl;
-import org.apache.flink.table.catalog.hive.HiveCatalog;
+
+import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.*;
 
 @QuarkusTest
@@ -27,6 +30,15 @@ public class FlinkTableCreationTests {
 
     @Inject
     private SchemalessMapper schemalessMapper;
+
+    @Inject
+    private DataLakeTableGenerator dataLakeTableGenerator;
+
+    @Inject
+    private DataLakeSessionManager dataLakeSessionManager;
+
+    @Inject
+    private DataLakeSqlGenerator dataLakeSqlGenerator;
 
     private StreamExecutionEnvironment env;
 
@@ -60,41 +72,23 @@ public class FlinkTableCreationTests {
     }
 
     private String createTable(Map<String,Object> row) throws Exception{
-        // set up the Java Table API
-        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(this.env);
-
-        // Create a HiveCatalog
-        String name            = "myhive";
+        String name  = "myhive";
         String database = "mydatabase";
-        String hiveConfDir     = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
+                this.env,
+                name,
+                database
+        );
+
+
         String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
         String table = name + "." + database + "." + tableName;
+        String filePath = "file:///Users/babyboy/datalake/"+tableName;
+        String format = "csv";
 
-        HiveCatalog hive = new HiveCatalog(name, null, hiveConfDir);
-        tableEnv.registerCatalog(name, hive);
-
-        // set the HiveCatalog as the current catalog of the session
-        tableEnv.useCatalog(name);
-
-        // Create a catalog database
-        hive.createDatabase(database,
-                new CatalogDatabaseImpl(new HashMap<>(), "db_metadata"), true);
-
-        Schema.Builder schemaBuilder = Schema.newBuilder();
-        Set<String> columnNames = row.keySet();
-
-        for(String columnName: columnNames){
-            schemaBuilder.column(columnName, DataTypes.STRING());
-        }
-
-        Schema schema = schemaBuilder.build();
-        logger.info(schema.toString());
-
-        TableDescriptor tableDescriptor = TableDescriptor.forConnector("filesystem")
-                .option("path", "file:///Users/babyboy/datalake/"+tableName)
-                .option("format", "csv")
-                .schema(schema)
-                .build();
+        TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
+                filePath,
+                format);
 
         tableEnv.createTable(table, tableDescriptor);
 
@@ -102,48 +96,13 @@ public class FlinkTableCreationTests {
     }
 
     private void addData(String table, List<Map<String,Object>> rows) throws Exception{
-        // set up the Java Table API
-        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(this.env);
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.env,
+                name
+        );
 
-        // Create a HiveCatalog
-        String name            = "myhive";
-        String hiveConfDir     = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
-
-        HiveCatalog hive = new HiveCatalog(name, null, hiveConfDir);
-        tableEnv.registerCatalog(name, hive);
-
-        // set the HiveCatalog as the current catalog of the session
-        tableEnv.useCatalog(name);
-
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("INSERT INTO " + table + " VALUES {0}");
-        String insertSqlTemplate = sqlBuilder.toString();
-
-        StringBuilder batchBuilder = new StringBuilder();
-        for(Map<String,Object> row:rows) {
-            Collection<Object> values = row.values();
-            StringBuilder rowBuilder = new StringBuilder();
-            rowBuilder.append("(");
-            StringBuilder valueBuilder = new StringBuilder();
-            for (Object value : values) {
-                String insert = "'" + value + "',";
-                valueBuilder.append(insert);
-            }
-            String valueBuilderStr = valueBuilder.toString();
-            String rowValue = valueBuilderStr.substring(0, valueBuilderStr.length()-1);
-            rowBuilder.append(rowValue);
-            rowBuilder.append("),");
-            batchBuilder.append(rowBuilder+"\n");
-        }
-
-        String batchBuilderStr = batchBuilder.toString();
-        String insertValues = batchBuilderStr.substring(0, batchBuilderStr.length()-2);
-
-        String insertSql = MessageFormat.format(insertSqlTemplate, insertValues);
-        logger.info("*********************************");
-        logger.info(insertSql);
-        logger.info("*********************************");
-
+        String insertSql = this.dataLakeSqlGenerator.generateInsertSql(table, rows);
         // insert some example data into the table
         final TableResult insertionResult =
                 tableEnv.executeSql(insertSql);
