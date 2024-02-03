@@ -46,6 +46,15 @@ public class JobManager {
     @Inject
     private SchemalessMapper schemalessMapper;
 
+    @Inject
+    private DataLakeTableGenerator dataLakeTableGenerator;
+
+    @Inject
+    private DataLakeSessionManager dataLakeSessionManager;
+
+    @Inject
+    private DataLakeSqlGenerator dataLakeSqlGenerator;
+
     private Map<String,Long> pipeToOffset = new HashMap<>();
 
     private ExecutorService submitJobPool = Executors.newFixedThreadPool(25);
@@ -79,8 +88,9 @@ public class JobManager {
                 flatArray.add(flatJson);
             }
 
+            Map<String, Object> row = flatArray.get(0);
             if (this.table == null) {
-                this.table = this.createTable(env);
+                this.table = this.createTable(env, row);
             }
 
 
@@ -130,66 +140,45 @@ public class JobManager {
         });
     }
 
-    private String createTable(StreamExecutionEnvironment env) throws Exception{
-        // set up the Java Table API
-        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
-
-        // Create a HiveCatalog
-        String name            = "myhive";
+    private String createTable(StreamExecutionEnvironment env, Map<String,Object> row) throws Exception{
+        String name  = "myhive";
         String database = "mydatabase";
-        String hiveConfDir     = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
+                env,
+                name,
+                database
+        );
+
         String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
         String table = name + "." + database + "." + tableName;
-
-        HiveCatalog hive = new HiveCatalog(name, null, hiveConfDir);
-        tableEnv.registerCatalog(name, hive);
-
-        // set the HiveCatalog as the current catalog of the session
-        tableEnv.useCatalog(name);
-
-        // Create a catalog database
-        hive.createDatabase(database,
-                new CatalogDatabaseImpl(new HashMap<>(), "db_metadata"), true);
+        String filePath = "file:///Users/babyboy/datalake/"+tableName;
+        String format = "csv";
 
         // Create a catalog table
-        final Schema schema = Schema.newBuilder()
-                .column("name", DataTypes.STRING())
-                .column("age", DataTypes.INT())
-                .build();
-
-        TableDescriptor tableDescriptor = TableDescriptor.forConnector("filesystem")
-                .option("path", "file:///Users/babyboy/datalake/"+tableName)
-                .option("format", "csv")
-                .schema(schema)
-                .build();
+        TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
+                filePath,
+                format);
 
         tableEnv.createTable(table, tableDescriptor);
 
         return table;
     }
 
-    private void addData(StreamExecutionEnvironment env, String table, List<Map<String, Object>> flatArray) throws Exception
+    private void addData(StreamExecutionEnvironment env,
+                         String table,
+                         List<Map<String, Object>> rows) throws Exception
     {
-        // set up the Java Table API
-        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
-
-        // Create a HiveCatalog
-        String name            = "myhive";
-        String hiveConfDir     = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
-
-        HiveCatalog hive = new HiveCatalog(name, null, hiveConfDir);
-        tableEnv.registerCatalog(name, hive);
-
-        // set the HiveCatalog as the current catalog of the session
-        tableEnv.useCatalog(name);
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                env,
+                name
+        );
 
 
-        String sql = "INSERT INTO " + table + " VALUES"
-                + "  ('shah', 46), "
-                + "  ('blah', 55)";
-
+        String insertSql = this.dataLakeSqlGenerator.generateInsertSql(table, rows);
+        // insert some example data into the table
         final TableResult insertionResult =
-                tableEnv.executeSql(sql);
+                tableEnv.executeSql(insertSql);
 
         // since all cluster operations of the Table API are executed asynchronously,
         // we need to wait until the insertion has been completed,
@@ -197,6 +186,8 @@ public class JobManager {
         insertionResult.await();
     }
 
+    //TODO: (remove this code) (CR2)
+    //---------------------------
     private boolean submitJob(StreamExecutionEnvironment env, List<Map<String, Object>> flatArray)
     {
         // set up the Java Table API

@@ -47,9 +47,9 @@ public class PerformanceTests {
         //send source data through the pipeline 1250
         String payload = datasetElement.toString();
 
-        loopCount = 10; //1k records, 10 flink jobs
+        //loopCount = 10; //1k records, 10 flink jobs
         //loopCount = 100; //10k records, 100 flink jobs
-        //loopCount = 1000; //100k records, 500 flink jobs
+        loopCount = 1000; //100k records, 500 flink jobs
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }
@@ -73,7 +73,7 @@ public class PerformanceTests {
             datasetElement.add(flightJson);
         }
 
-        String pipeId = "small_flight_pipe";
+        String pipeId = "flight_pipe";
         String configLocation = "performance/small_pipe_config_both.json";
         String configJsonString = Util.loadResource(configLocation);
         JsonObject configJson = JsonUtil.validateJson(configJsonString).getAsJsonObject();
@@ -87,7 +87,7 @@ public class PerformanceTests {
         //send source data through the pipeline 1250
         String payload = datasetElement.toString();
 
-        loopCount = 100; //1k records
+        //loopCount = 100; //1k records
         //loopCount = 1000; //10k records
         //loopCount = 10000; //100k records
         for(int i=0; i<loopCount; i++) {
