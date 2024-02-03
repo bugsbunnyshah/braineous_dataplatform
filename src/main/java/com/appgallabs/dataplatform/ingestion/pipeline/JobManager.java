@@ -1,9 +1,9 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
-import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -18,8 +18,8 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.apache.flink.table.catalog.CatalogDatabaseImpl;
-import org.apache.flink.table.catalog.hive.HiveCatalog;
+import org.apache.flink.table.catalog.Catalog;
+import org.apache.flink.table.catalog.ObjectPath;
 import org.apache.flink.types.Row;
 
 import org.bson.Document;
@@ -60,7 +60,6 @@ public class JobManager {
     private ExecutorService submitJobPool = Executors.newFixedThreadPool(25);
     private ExecutorService retryJobPool = Executors.newFixedThreadPool(25);
 
-    private String table;
 
     @PostConstruct
     public void start(){
@@ -71,6 +70,14 @@ public class JobManager {
                        String driverConfiguration, String entity,
                        String pipeId, long offset, String jsonString){
         try {
+            //tenant
+            Tenant tenant = new Tenant(securityToken.getPrincipal());
+
+            String catalog = tenant.getPrincipal().replaceAll("-","").toLowerCase();
+            String database = pipeId.replaceAll("-", "").toLowerCase();
+            String tableName = entity.replaceAll("-", "").toLowerCase();
+
+
             JsonElement jsonElement = JsonParser.parseString(jsonString);
 
             JsonArray ingestion = new JsonArray();
@@ -89,18 +96,10 @@ public class JobManager {
             }
 
             Map<String, Object> row = flatArray.get(0);
-            if (this.table == null) {
-                this.table = this.createTable(env, row);
-            }
+            String table = this.createTable(env, catalog, database, tableName, row);
 
-
-            submitJob(env,
-                    flatArray,
-                    securityToken,
-                    table,
-                    driverConfiguration,
-                    pipeId,
-                    entity);
+            //asynchronous
+            this.submitJob(env, catalog, table, flatArray);
         }catch(Exception e){
             logger.error(e.getMessage(), e);
 
@@ -108,29 +107,58 @@ public class JobManager {
         }
     }
 
-    private synchronized void submitJob(StreamExecutionEnvironment env, List<Map<String, Object>> flatArray,
-                                        SecurityToken securityToken,
+    private String createTable(StreamExecutionEnvironment env, String catalogName,
+            String database, String tableName, Map<String,Object> row) throws Exception{
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
+                env,
+                catalogName,
+                database
+        );
+
+        //String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        String table = catalogName + "." + database + "." + tableName;
+        String objectPath = database + "." + tableName;
+        String filePath = "file:///Users/babyboy/datalake/"+tableName;
+        String format = "csv";
+
+        String currentCatalog = tableEnv.getCurrentCatalog();
+        Optional<Catalog> catalog = tableEnv.getCatalog(currentCatalog);
+        boolean tableExists = catalog.get().tableExists(ObjectPath.fromString(objectPath));
+
+        if(!tableExists) {
+            // Create a catalog table
+            TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
+                    filePath,
+                    format);
+
+            tableEnv.createTable(table, tableDescriptor);
+        }
+
+        return table;
+    }
+
+    private synchronized void submitJob(StreamExecutionEnvironment env,
+                                        String catalogName,
                                         String table,
-                                        String driverConfiguration,
-                                        String pipeId,
-                                        String entity){
+                                        List<Map<String, Object>> flatArray){
         submitJobPool.execute(() -> {
             try {
-                this.addData(env, table, flatArray);
+                this.addData(env,catalogName, table, flatArray);
                 logger.info("****JOB_SUCCESS*****");
             }catch(Exception e){
-                this.retryJob(env, table, flatArray);
+                this.retryJob(env, catalogName, table, flatArray);
             }
         });
     }
 
     private void retryJob(StreamExecutionEnvironment env,
+                          String catalogName,
                           String table,
                           List<Map<String, Object>> flatArray){
         retryJobPool.execute(() -> {
             while(true){
                 try {
-                    this.addData(env, table, flatArray);
+                    this.addData(env, catalogName, table, flatArray);
                     logger.info("****JOB_RETRY_SUCCESS*****");
                     break;
                 }catch(Exception e){
@@ -140,38 +168,14 @@ public class JobManager {
         });
     }
 
-    private String createTable(StreamExecutionEnvironment env, Map<String,Object> row) throws Exception{
-        String name  = "myhive";
-        String database = "mydatabase";
-        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
-                env,
-                name,
-                database
-        );
-
-        String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-        String table = name + "." + database + "." + tableName;
-        String filePath = "file:///Users/babyboy/datalake/"+tableName;
-        String format = "csv";
-
-        // Create a catalog table
-        TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
-                filePath,
-                format);
-
-        tableEnv.createTable(table, tableDescriptor);
-
-        return table;
-    }
-
     private void addData(StreamExecutionEnvironment env,
+                         String catalogName,
                          String table,
                          List<Map<String, Object>> rows) throws Exception
     {
-        String name  = "myhive";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
                 env,
-                name
+                catalogName
         );
 
 
@@ -184,64 +188,6 @@ public class JobManager {
         // we need to wait until the insertion has been completed,
         // an exception is thrown in case of an error
         insertionResult.await();
-    }
-
-    //TODO: (remove this code) (CR2)
-    //---------------------------
-    private boolean submitJob(StreamExecutionEnvironment env, List<Map<String, Object>> flatArray)
-    {
-        // set up the Java Table API
-        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
-
-        // create a table with example data without a connector required
-        List<Row> rows = this.rows(flatArray);
-        final Table ingestionTable = tableEnv.fromValues(rows);
-
-        String sql = "SELECT * FROM "
-                + ingestionTable;
-
-        final Table result =
-                tableEnv.sqlQuery(sql);
-
-        tableEnv.toDataStream(result, Row.class).print();
-
-        // after the table program is converted to a DataStream program,
-        // we must use `env.execute()` to submit the job
-        boolean success = true;
-        try {
-            env.execute();
-        }catch (Exception e){
-            success = false;
-        }
-        return success;
-    }
-
-    private List<Row> rows(List<Map<String, Object>> flatArray){
-        List<Row> rows = new ArrayList<>();
-
-        for(Map<String,Object> flatJson:flatArray) {
-            Row row = this.row(flatJson);
-            rows.add(row);
-        }
-
-        return rows;
-    }
-
-    private Row row(Map<String,Object> flatJson){
-        Collection<Object> values = flatJson.values();
-
-        Row row = new Row(values.size());
-
-        int i =0;
-        Set<Map.Entry<String,Object>> entrySet = flatJson.entrySet();
-        for(Map.Entry<String,Object> entry: entrySet){
-            String name = entry.getKey();
-            Object value = entry.getValue();
-            row.setField(i, value);
-            i++;
-        }
-
-        return row;
     }
     //-----------------------------------------------------------------------------------------------------------
     private void preProcess(String value,

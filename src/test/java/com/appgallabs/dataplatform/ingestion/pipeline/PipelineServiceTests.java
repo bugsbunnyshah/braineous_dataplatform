@@ -57,7 +57,7 @@ public class PipelineServiceTests extends BaseTest {
     public void ingestArray() throws Exception{
         String originalObjectHash = null;
         try {
-            String pipeId = "123";
+            String pipeId = "my_pipe";
 
             String jsonString = IOUtils.toString(Thread.currentThread().
                             getContextClassLoader().getResourceAsStream("ingestion/pipeline/obj1_array.json"),

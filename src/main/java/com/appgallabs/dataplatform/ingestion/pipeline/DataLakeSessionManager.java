@@ -44,9 +44,13 @@ public class DataLakeSessionManager {
             // set the HiveCatalog as the current catalog of the session
             tableEnv.useCatalog(catalog);
 
+            boolean databaseExists = hive.databaseExists(database);
+
             // Create a catalog database
-            hive.createDatabase(database,
-                    new CatalogDatabaseImpl(new HashMap<>(), "db_metadata"), true);
+            if(!databaseExists) {
+                hive.createDatabase(database,
+                        new CatalogDatabaseImpl(new HashMap<>(), "db_metadata"), true);
+            }
 
             return tableEnv;
         }catch(DatabaseAlreadyExistException exists){

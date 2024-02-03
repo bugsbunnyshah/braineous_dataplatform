@@ -14,6 +14,8 @@ import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.apache.flink.table.catalog.Catalog;
+import org.apache.flink.table.catalog.ObjectPath;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
@@ -42,6 +44,8 @@ public class FlinkTableCreationTests {
 
     private StreamExecutionEnvironment env;
 
+    private String tableName = "unit_test";
+
     @Test
     public void testDynamicSchema() throws Exception{
         this.env = StreamExecutionEnvironment.createRemoteEnvironment(
@@ -67,11 +71,11 @@ public class FlinkTableCreationTests {
 
         Map<String, Object> row = flatArray.get(0);
 
-        String table = this.createTable(row);
+        String table = this.createTable(this.tableName,row);
         this.addData(table, flatArray);
     }
 
-    private String createTable(Map<String,Object> row) throws Exception{
+    private String createTable(String tableName, Map<String,Object> row) throws Exception{
         String name  = "myhive";
         String database = "mydatabase";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
@@ -81,16 +85,24 @@ public class FlinkTableCreationTests {
         );
 
 
-        String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
         String table = name + "." + database + "." + tableName;
+        String objectPath = database + "." + tableName;
         String filePath = "file:///Users/babyboy/datalake/"+tableName;
         String format = "csv";
 
-        TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
-                filePath,
-                format);
+        String currentCatalog = tableEnv.getCurrentCatalog();
+        Optional<Catalog> catalog = tableEnv.getCatalog(currentCatalog);
+        boolean tableExists = catalog.get().tableExists(ObjectPath.fromString(objectPath));
 
-        tableEnv.createTable(table, tableDescriptor);
+        if(!tableExists) {
+            System.out.println("TABLE: "+table);
+            TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
+                    filePath,
+                    format);
+
+            tableEnv.createTable(table, tableDescriptor);
+        }
 
         return table;
     }
