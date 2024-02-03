@@ -70,6 +70,9 @@ public class JobManager {
                        String driverConfiguration, String entity,
                        String pipeId, long offset, String jsonString){
         try {
+            //pre-process for pipeline monitor
+            this.preProcess(jsonString, securityToken, pipeId);
+
             //tenant
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
