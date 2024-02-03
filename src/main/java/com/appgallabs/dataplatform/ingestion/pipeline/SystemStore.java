@@ -9,20 +9,17 @@ import java.text.MessageFormat;
 public class SystemStore implements Serializable {
     private String mongodbConnectionString;
 
+    private MongoClient mongoClient;
+
     public SystemStore(String mongodbConnectionString) {
         this.mongodbConnectionString = mongodbConnectionString;
     }
 
-    public String getMongodbConnectionString() {
-        return mongodbConnectionString;
-    }
-
-    public void setMongodbConnectionString(String mongodbConnectionString) {
-        this.mongodbConnectionString = mongodbConnectionString;
-    }
 
     public MongoClient getMongoClient() {
-        MongoClient mongoClient = MongoClients.create(this.mongodbConnectionString);
+        if(this.mongoClient == null) {
+            this.mongoClient = MongoClients.create(this.mongodbConnectionString);
+        }
         return mongoClient;
     }
 }
