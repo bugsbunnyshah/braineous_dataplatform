@@ -15,11 +15,8 @@ import java.util.Map;
 public class StagingArea {
     private static Logger logger = LoggerFactory.getLogger(StagingArea.class);
 
-    private Storage storage;
-
-    private DataIntegrationAgent dataIntegrationAgent;
-
     private Map<String, Storage> registeredStores;
+    private Map<String, DataIntegrationAgent> registeredAgents;
 
     @Inject
     private RecordGenerator recordGenerator;
@@ -27,12 +24,16 @@ public class StagingArea {
     @PostConstruct
     public void start(){
         this.registeredStores = new HashMap<>();
+        this.registeredAgents = new HashMap<>();
 
         String pipeId = "staging_pipe";
         String registration = pipeId;
 
         SqlStorage sqlStorage = new SqlStorage();
         this.registeredStores.put(registration, sqlStorage);
+
+        CoreDataIntegrationAgent agent = new CoreDataIntegrationAgent();
+        this.registeredAgents.put(registration, agent);
     }
 
     public void receiveDataForStorage(SecurityToken securityToken,
@@ -52,6 +53,11 @@ public class StagingArea {
 
     public void runIntegrationAgent(SecurityToken securityToken,
                                     String pipeId){
+        //Find the registered 'Agent' for this tenant/pipeId
+        String registration = pipeId;
+        DataIntegrationAgent agent = this.registeredAgents.get(registration);
 
+        //Execute the agent and runners
+        agent.executeIntegrationRunner();
     }
 }
