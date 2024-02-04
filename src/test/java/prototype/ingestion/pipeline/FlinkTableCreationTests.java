@@ -1,6 +1,9 @@
-package com.appgallabs.dataplatform.ingestion.pipeline;
+package prototype.ingestion.pipeline;
 
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
+import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSessionManager;
+import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSqlGenerator;
+import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeTableGenerator;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
