@@ -58,7 +58,7 @@ public class StagingArea {
 
 
         //Store the records into the Staging Area Store
-        registeredStore.storeData(records);
+        registeredStore.storeData(tenant, pipeId, records);
     }
 
     public void runIntegrationAgent(String pipeId){
