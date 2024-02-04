@@ -36,7 +36,7 @@ public class StagingFrameworkTests extends BaseTest {
     }
 
     @Test
-    public void testModelIntegration() throws Exception{
+    public void receiveData() throws Exception{
         String datasetLocation = "ingestion/algorithm/input_array.json";
         String json = Util.loadResource(datasetLocation);
 
