@@ -30,5 +30,7 @@ public class StagingFrameworkTests extends BaseTest {
         this.stagingArea.receiveDataForStorage(securityToken,
                 pipeId,
                 data);
+
+        this.stagingArea.runIntegrationAgent(securityToken, pipeId);
     }
 }
