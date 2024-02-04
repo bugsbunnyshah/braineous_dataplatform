@@ -1,6 +1,10 @@
 package prototype.ingestion;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
+
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +23,14 @@ public class StagingArea {
     private Map<String, DataIntegrationAgent> registeredAgents;
 
     @Inject
+    private SecurityTokenContainer securityTokenContainer;
+
+    @Inject
     private RecordGenerator recordGenerator;
 
     @PostConstruct
     public void start(){
+        //TODO: integrate with pipeline_registry (CR2)
         this.registeredStores = new HashMap<>();
         this.registeredAgents = new HashMap<>();
 
@@ -36,8 +44,10 @@ public class StagingArea {
         this.registeredAgents.put(registration, agent);
     }
 
-    public void receiveDataForStorage(SecurityToken securityToken,
-                            String pipeId, String data){
+    public void receiveDataForStorage(String pipeId, String data){
+        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         //Find the registered 'Storage' component for
         //this tenant/pipeId
         String registration = pipeId;
@@ -51,13 +61,14 @@ public class StagingArea {
         registeredStore.storeData(records);
     }
 
-    public void runIntegrationAgent(SecurityToken securityToken,
-                                    String pipeId){
+    public void runIntegrationAgent(String pipeId){
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
         //Find the registered 'Agent' for this tenant/pipeId
         String registration = pipeId;
         DataIntegrationAgent agent = this.registeredAgents.get(registration);
 
         //Execute the agent and runners
-        agent.executeIntegrationRunner();
+        agent.executeIntegrationRunner(tenant, pipeId);
     }
 }

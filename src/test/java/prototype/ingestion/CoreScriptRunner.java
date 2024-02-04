@@ -1,5 +1,6 @@
 package prototype.ingestion;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,14 +23,14 @@ public class CoreScriptRunner implements IntegrationRunner {
     }
 
     @Override
-    public void runIntegration() {
+    public void runIntegration(Tenant tenant, String pipeId) {
         logger.info("*************");
         logger.info("RUNNING_SCRIPT: "+ this);
         logger.info("************");
 
         Collection<ScriptComponent> components = this.components.values();
         for(ScriptComponent component: components){
-            component.runComponent();
+            component.runComponent(tenant, pipeId);
         }
     }
 }

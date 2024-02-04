@@ -1,19 +1,20 @@
 package prototype.ingestion;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CoreDataIntegrationAgent implements DataIntegrationAgent{
     private static Logger logger = LoggerFactory.getLogger(CoreDataIntegrationAgent.class);
 
-    private IntegrationRunner runner = new CoreScriptRunner();
+    private IntegrationRunner runner;
+
+    public CoreDataIntegrationAgent() {
+        this.runner = new CoreScriptRunner();
+    }
 
     @Override
-    public void executeIntegrationRunner() {
-        logger.info("**********************");
-        logger.info("RUNNING: "+this);
-        logger.info("**********************");
-
-        this.runner.runIntegration();
+    public void executeIntegrationRunner(Tenant tenant, String pipeId) {
+        this.runner.runIntegration(tenant, pipeId);
     }
 }
