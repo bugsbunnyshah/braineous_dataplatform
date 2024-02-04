@@ -46,7 +46,7 @@ public class StoreOrchestratorTests extends BaseTest {
 
         Tenant tenant = this.securityTokenContainer.getTenant();
 
-        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
+        String jsonString = Util.loadResource("pipeline/mysql_config_1.json");
 
         Registry registry = Registry.getInstance();
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
@@ -59,27 +59,29 @@ public class StoreOrchestratorTests extends BaseTest {
         SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
 
         List<String> objectHashes = new ArrayList<>();
-        String jsonString = Util.loadResource("receiver/input.json");
+        String jsonString = Util.loadResource("receiver/input_array.json");
         JsonArray dataSetArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
         for(int i=0; i<dataSetArray.size(); i++){
             JsonObject dataObjectJson = dataSetArray.get(i).getAsJsonObject();
             objectHashes.add(JsonUtil.getJsonHash(dataObjectJson));
         }
 
+        String pipeId = "staging_pipe";
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
         storeOrchestrator.receiveData(securityToken,
                 systemStore,
                 this.pipelineService.getFlinkHost(),
                 this.pipelineService.getFlinkPort(),
-                this.schemalessMapper,"123", jsonString);
+                this.schemalessMapper,pipeId, jsonString);
 
         Thread.sleep(5000);
 
         //TODO: (CR2)
         //assert
+        /*
         Registry registry = Registry.getInstance();
 
-        /*JsonArray driverConfigurations = registry.getDriverConfigurations();
+        JsonArray driverConfigurations = registry.getDriverConfigurations();
         JsonArray storeConfiguration = driverConfigurations.get(0).getAsJsonArray();
         JsonObject driverConfiguration = storeConfiguration.get(0).getAsJsonObject().getAsJsonObject("config");
         String connectionString = driverConfiguration.get("connectionString").getAsString();
