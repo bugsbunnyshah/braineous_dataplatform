@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 public class CoreDataIntegrationAgent implements DataIntegrationAgent{
     private static Logger logger = LoggerFactory.getLogger(CoreDataIntegrationAgent.class);
 
-    private ScriptRunner runner = new ScriptRunner();
+    private IntegrationRunner runner = new CoreScriptRunner();
 
     @Override
     public void executeIntegrationRunner() {

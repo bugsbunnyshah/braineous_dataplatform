@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScriptRunner implements IntegrationRunner {
-    private static Logger logger = LoggerFactory.getLogger(ScriptRunner.class);
+public class CoreScriptRunner implements IntegrationRunner {
+    private static Logger logger = LoggerFactory.getLogger(CoreScriptRunner.class);
 
     private Map<String, ScriptComponent> components;
 
-    public ScriptRunner() {
+    public CoreScriptRunner() {
         this.components = new HashMap<>();
 
         for(int i=0; i<2; i++){
