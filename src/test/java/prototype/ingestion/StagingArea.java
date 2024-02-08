@@ -40,35 +40,55 @@ public class StagingArea {
         SqlStorage sqlStorage = new SqlStorage();
         this.registeredStores.put(registration, sqlStorage);
 
-        CoreDataIntegrationAgent agent = new CoreDataIntegrationAgent();
+        DataIntegrationAgent agent = new DataIntegrationAgent();
         this.registeredAgents.put(registration, agent);
     }
 
-    public void receiveDataForStorage(String pipeId, String data){
-        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
-        Tenant tenant = this.securityTokenContainer.getTenant();
+    public void receiveDataForStorage(String pipeId,
+                                      String entity,
+                                      String data){
+        try {
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            Tenant tenant = this.securityTokenContainer.getTenant();
 
-        //Find the registered 'Storage' component for
-        //this tenant/pipeId
-        String registration = pipeId;
-        Storage registeredStore = this.registeredStores.get(registration);
+            //Find the registered 'Storage' component for
+            //this tenant/pipeId
+            String registration = pipeId;
+            Storage registeredStore = this.registeredStores.get(registration);
 
-        //Parse the data into Records
-        List<Record> records = this.recordGenerator.parsePayload(data);
+            //Parse the data into Records
+            List<Record> records = this.recordGenerator.parsePayload(
+                    tenant,
+                    pipeId,
+                    entity,
+                    data);
 
 
-        //Store the records into the Staging Area Store
-        registeredStore.storeData(tenant, pipeId, records);
+            //Store the records into the Staging Area Store
+            registeredStore.storeData(tenant, pipeId, entity, records);
+        }catch (Exception e){
+            //TODO: reporting (CR2)
+
+            throw new RuntimeException(e);
+        }
     }
 
-    public void runIntegrationAgent(String pipeId){
-        Tenant tenant = this.securityTokenContainer.getTenant();
+    public void runIntegrationAgent(String pipeId,
+                                    String entity){
+        try {
+            Tenant tenant = this.securityTokenContainer.getTenant();
 
-        //Find the registered 'Agent' for this tenant/pipeId
-        String registration = pipeId;
-        DataIntegrationAgent agent = this.registeredAgents.get(registration);
+            //Find the registered 'Agent' for this tenant/pipeId
+            String registration = pipeId;
+            DataIntegrationAgent agent = this.registeredAgents.get(registration);
+            Storage registeredStore = this.registeredStores.get(registration);
 
-        //Execute the agent and runners
-        agent.executeIntegrationRunner(tenant, pipeId);
+            //Execute the agent and runners
+            agent.executeIntegrationRunner(registeredStore, tenant, pipeId, entity);
+        }catch(Exception e){
+            //TODO: reporting (CR2)
+
+            throw new RuntimeException(e);
+        }
     }
 }

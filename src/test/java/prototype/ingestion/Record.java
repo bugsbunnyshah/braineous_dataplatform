@@ -1,10 +1,21 @@
 package prototype.ingestion;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class Record {
+import java.io.Serializable;
+
+public class Record implements Serializable {
     private RecordMetaData recordMetaData;
     private JsonObject data;
+
+    public Record() {
+        this.data = new JsonObject();
+        this.recordMetaData = new RecordMetaData();
+    }
 
     public RecordMetaData getRecordMetaData() {
         return recordMetaData;
@@ -24,9 +35,12 @@ public class Record {
 
     @Override
     public String toString() {
-        return "Record{" +
-                "recordMetaData=" + recordMetaData +
-                ", data=" + data +
-                '}';
+        return this.toJson().toString();
+    }
+
+    public JsonObject toJson(){
+        Gson gson = JsonUtil.getGson();
+        JsonElement jsonElement = gson.toJsonTree(this);
+        return jsonElement.getAsJsonObject();
     }
 }

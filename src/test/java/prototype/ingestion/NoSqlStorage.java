@@ -6,7 +6,12 @@ import java.util.List;
 
 public class NoSqlStorage implements Storage{
     @Override
-    public void storeData(Tenant tenant, String pipeId, List<Record> dataset) {
+    public void storeData(Tenant tenant, String pipeId,String entity, List<Record> dataset) {
 
+    }
+
+    @Override
+    public List<Record> getRecords(Tenant tenant, String pipeId, String entity) {
+        return null;
     }
 }

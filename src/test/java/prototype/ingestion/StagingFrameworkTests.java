@@ -40,13 +40,15 @@ public class StagingFrameworkTests extends BaseTest {
         String datasetLocation = "ingestion/algorithm/input_array.json";
         String json = Util.loadResource(datasetLocation);
 
-        SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
         String pipeId = "staging_pipe";
+        String entity = "books";
         String data = json;
 
-        this.stagingArea.receiveDataForStorage(pipeId,
+        this.stagingArea.receiveDataForStorage(
+                pipeId,
+                entity,
                 data);
 
-        this.stagingArea.runIntegrationAgent(pipeId);
+        this.stagingArea.runIntegrationAgent(pipeId, entity);
     }
 }

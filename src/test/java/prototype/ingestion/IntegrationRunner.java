@@ -2,7 +2,14 @@ package prototype.ingestion;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 
+import java.util.List;
+
 public interface IntegrationRunner {
 
-    public void runIntegration(Tenant tenant, String pipeId);
+    public void preProcess(Tenant tenant, String pipeId, String entity);
+
+    public void process(Tenant tenant, String pipeId, String entity,
+                        List<Record> records);
+
+    public void postProcess(Tenant tenant, String pipeId, String entity);
 }

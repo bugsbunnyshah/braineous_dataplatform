@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CoreScriptRunner implements IntegrationRunner {
@@ -22,8 +23,7 @@ public class CoreScriptRunner implements IntegrationRunner {
         }
     }
 
-    @Override
-    public void runIntegration(Tenant tenant, String pipeId) {
+    public void runIntegration(Tenant tenant, String pipeId, String entity) {
         logger.info("*************");
         logger.info("RUNNING_SCRIPT: "+ this);
         logger.info("************");
@@ -32,5 +32,20 @@ public class CoreScriptRunner implements IntegrationRunner {
         for(ScriptComponent component: components){
             component.runComponent(tenant, pipeId);
         }
+    }
+
+    @Override
+    public void preProcess(Tenant tenant, String pipeId, String entity) {
+
+    }
+
+    @Override
+    public void process(Tenant tenant, String pipeId, String entity, List<Record> records) {
+
+    }
+
+    @Override
+    public void postProcess(Tenant tenant, String pipeId, String entity) {
+
     }
 }
