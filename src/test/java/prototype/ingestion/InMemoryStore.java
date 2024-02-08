@@ -1,7 +1,6 @@
 package prototype.ingestion;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import prototype.ingestion.Record;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -37,7 +37,7 @@ public class StagingArea {
         String pipeId = "staging_pipe";
         String registration = pipeId;
 
-        SqlStorage sqlStorage = new SqlStorage();
+        InMemoryStorage sqlStorage = new InMemoryStorage();
         this.registeredStores.put(registration, sqlStorage);
 
         DataIntegrationAgent agent = new DataIntegrationAgent();
