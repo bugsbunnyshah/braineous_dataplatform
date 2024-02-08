@@ -4,8 +4,10 @@ import com.appgallabs.dataplatform.infrastructure.Tenant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
+@ApplicationScoped
 public class DataIntegrationAgent{
     private static Logger logger = LoggerFactory.getLogger(DataIntegrationAgent.class);
 

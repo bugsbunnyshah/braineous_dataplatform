@@ -20,6 +20,9 @@ public class StagingFrameworkTests extends BaseTest {
     private SecurityTokenContainer securityTokenContainer;
 
     @Inject
+    private ConfigurationService configurationService;
+
+    @Inject
     private StagingArea stagingArea;
 
     @BeforeEach
@@ -29,7 +32,7 @@ public class StagingFrameworkTests extends BaseTest {
 
         Tenant tenant = this.securityTokenContainer.getTenant();
 
-        String jsonString = test.components.Util.loadResource("pipeline/mysql_config_1.json");
+        String jsonString = test.components.Util.loadResource("prototype/pipeline/pipeline_config_1.json");
 
         Registry registry = Registry.getInstance();
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
@@ -40,7 +43,7 @@ public class StagingFrameworkTests extends BaseTest {
         String datasetLocation = "ingestion/algorithm/input_array.json";
         String json = Util.loadResource(datasetLocation);
 
-        String pipeId = "staging_pipe";
+        String pipeId = "book_pipe";
         String entity = "books";
         String data = json;
 
@@ -50,5 +53,14 @@ public class StagingFrameworkTests extends BaseTest {
                 data);
 
         this.stagingArea.runIntegrationAgent(pipeId, entity);
+    }
+
+    @Test
+    public void testConfigurationService() throws Exception{
+        String confLocation = "localhost-services/braineous/conf/braineous.config";
+        this.configurationService.configure(confLocation);
+
+        String property = "colors.background";
+        System.out.println(this.configurationService.getProperty(property));
     }
 }

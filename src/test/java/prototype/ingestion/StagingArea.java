@@ -20,7 +20,9 @@ public class StagingArea {
     private static Logger logger = LoggerFactory.getLogger(StagingArea.class);
 
     private Map<String, Storage> registeredStores;
-    private Map<String, DataIntegrationAgent> registeredAgents;
+
+    @Inject
+    private DataIntegrationAgent dataIntegrationAgent;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
@@ -32,16 +34,14 @@ public class StagingArea {
     public void start(){
         //TODO: integrate with pipeline_registry (CR2)
         this.registeredStores = new HashMap<>();
-        this.registeredAgents = new HashMap<>();
 
-        String pipeId = "staging_pipe";
+        String pipeId = "book_pipe";
         String registration = pipeId;
 
         InMemoryStorage sqlStorage = new InMemoryStorage();
         this.registeredStores.put(registration, sqlStorage);
 
         DataIntegrationAgent agent = new DataIntegrationAgent();
-        this.registeredAgents.put(registration, agent);
     }
 
     public void receiveDataForStorage(String pipeId,
@@ -80,11 +80,13 @@ public class StagingArea {
 
             //Find the registered 'Agent' for this tenant/pipeId
             String registration = pipeId;
-            DataIntegrationAgent agent = this.registeredAgents.get(registration);
             Storage registeredStore = this.registeredStores.get(registration);
 
             //Execute the agent and runners
-            agent.executeIntegrationRunner(registeredStore, tenant, pipeId, entity);
+            this.dataIntegrationAgent.executeIntegrationRunner(registeredStore,
+                    tenant,
+                    pipeId,
+                    entity);
         }catch(Exception e){
             //TODO: reporting (CR2)
 
