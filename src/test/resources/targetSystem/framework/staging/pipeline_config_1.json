@@ -1,0 +1,20 @@
+{
+  "pipeId": "book_pipe",
+  "configuration": [
+    {
+      "stagingStore" : "prototype.ingestion.InMemoryStore",
+      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
+      "name": "book_pipe_store_mongodb",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "book_pipe_store",
+        "collection": "staging_area",
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
+    }
+  ]
+}
