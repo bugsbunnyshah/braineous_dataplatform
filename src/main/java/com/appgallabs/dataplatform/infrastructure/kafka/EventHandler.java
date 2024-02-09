@@ -7,7 +7,6 @@ import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreOrchestrator;
-import com.appgallabs.dataplatform.util.Debug;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -79,14 +78,19 @@ public class EventHandler implements KafkaMessageHandler {
 
         //Deliver to DataLake
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-        this.executeIngestion(securityToken, datalakeDriverConfiguration.toString(),
-                pipeId, offset,entity,jsonPayloadString);
+        this.executeIngestion(securityToken,
+                datalakeDriverConfiguration.toString(),
+                pipeId,
+                offset,
+                entity,
+                jsonPayloadString);
 
         //Deliver to Target System
         this.executeTargetSystemDelivery(securityToken,
                 this.systemStore,
                 this.schemalessMapper,
                 pipeId,
+                entity,
                 jsonPayloadString);
     }
 
@@ -94,22 +98,25 @@ public class EventHandler implements KafkaMessageHandler {
                                   String datalakeDriverConfiguration,
                                   String pipeId, long offset, String entity,String jsonPayloadString){
         this.threadpool.execute(() -> {
-            this.pipelineService.ingest(securityToken, datalakeDriverConfiguration,
-                    pipeId, offset,entity,jsonPayloadString);
+            this.pipelineService.ingest(securityToken,
+                    datalakeDriverConfiguration,
+                    pipeId,
+                    offset,
+                    entity,
+                    jsonPayloadString);
         });
     }
 
     private void executeTargetSystemDelivery(SecurityToken securityToken,
                                              SystemStore systemStore,
                                              SchemalessMapper schemalessMapper,
-                                             String pipeId, String jsonPayloadString){
+                                             String pipeId, String entity, String jsonPayloadString){
         this.threadpool.execute(() -> {
             this.storeOrchestrator.receiveData(securityToken,
                     systemStore,
-                    this.pipelineService.getFlinkHost(),
-                    this.pipelineService.getFlinkPort(),
                     schemalessMapper,
                     pipeId,
+                    entity,
                     jsonPayloadString);
         });
     }

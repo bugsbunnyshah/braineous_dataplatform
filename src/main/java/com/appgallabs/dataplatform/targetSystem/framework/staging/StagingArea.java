@@ -23,9 +23,6 @@ public class StagingArea {
     private DataIntegrationAgent dataIntegrationAgent;
 
     @Inject
-    private SecurityTokenContainer securityTokenContainer;
-
-    @Inject
     private RecordGenerator recordGenerator;
 
     @PostConstruct
@@ -42,12 +39,12 @@ public class StagingArea {
         DataIntegrationAgent agent = new DataIntegrationAgent();
     }
 
-    public void receiveDataForStorage(String pipeId,
+    public void receiveDataForStorage(SecurityToken securityToken,
+                                      String pipeId,
                                       String entity,
                                       String data){
         try {
-            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
-            Tenant tenant = this.securityTokenContainer.getTenant();
+            Tenant tenant = new Tenant(securityToken.getPrincipal());
 
             //Find the registered 'Storage' component for
             //this tenant/pipeId
@@ -71,10 +68,11 @@ public class StagingArea {
         }
     }
 
-    public void runIntegrationAgent(String pipeId,
+    public Storage runIntegrationAgent(SecurityToken securityToken,
+                                    String pipeId,
                                     String entity){
         try {
-            Tenant tenant = this.securityTokenContainer.getTenant();
+            Tenant tenant = new Tenant(securityToken.getPrincipal());
 
             //Find the registered 'Agent' for this tenant/pipeId
             String registration = pipeId;
@@ -85,6 +83,8 @@ public class StagingArea {
                     tenant,
                     pipeId,
                     entity);
+
+            return registeredStore;
         }catch(Exception e){
             //TODO: reporting (CR2)
 

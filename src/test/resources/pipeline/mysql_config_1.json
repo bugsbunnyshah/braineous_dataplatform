@@ -1,7 +1,8 @@
 {
-  "pipeId": "staging_pipe",
+  "pipeId": "book_pipe",
   "configuration": [
     {
+      "stagingStore" : "prototype.ingestion.InMemoryStore",
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
       "name": "staging_database",
       "config": {

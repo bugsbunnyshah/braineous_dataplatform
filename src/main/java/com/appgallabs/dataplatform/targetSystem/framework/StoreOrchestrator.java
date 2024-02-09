@@ -4,21 +4,22 @@ import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingArea;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.Storage;
 import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.SinkFunction;
+
 import org.bson.Document;
 import org.ehcache.sizeof.SizeOf;
 
+import javax.enterprise.inject.spi.CDI;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class StoreOrchestrator {
 
     private static StoreOrchestrator singleton = new StoreOrchestrator();
 
+    private StagingArea stagingArea;
+
     ExecutorService threadpool = Executors.newCachedThreadPool();
 
     PerformanceReport performanceReport;
@@ -37,6 +40,9 @@ public class StoreOrchestrator {
 
     private StoreOrchestrator(){
         this.performanceReport = new PerformanceReport();
+
+        //find the staging area service
+        this.stagingArea = CDI.current().select(StagingArea.class).get();
     }
 
     public static StoreOrchestrator getInstance(){
@@ -49,10 +55,8 @@ public class StoreOrchestrator {
 
     public void receiveData(SecurityToken securityToken,
                             SystemStore systemStore,
-                            String flinkHost,
-                            String flinkPort,
                             SchemalessMapper schemalessMapper,
-                            String pipeId, String data) {
+                            String pipeId, String entity, String data) {
         if(!this.performanceReport.started){
             this.performanceReport.started = true;
             this.performanceReport.start = System.currentTimeMillis();
@@ -73,10 +77,6 @@ public class StoreOrchestrator {
 
         String tenant = securityToken.getPrincipal();
 
-        /*Debug.out("******STORE_ORCHESTRATOR********");
-        Debug.out("PipeId: "+pipeId);
-        Debug.out("Data: "+data);
-        Debug.out("*******************************&");*/
 
         Registry registry = Registry.getInstance();
 
@@ -90,18 +90,15 @@ public class StoreOrchestrator {
         //TODO: make this transactional (GA)
         //fan out storage to each store
         storeDrivers.parallelStream().forEach(storeDriver -> {
-                /*System.out.println("****DEBUG******");
-                JsonUtil.printStdOut(storeDriver.getConfiguration());
-                System.out.println("***************");*/
-
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
                 //adjust based on configured jsonpath expression (CR2)
                 JsonArray mapped = this.mapDataSet(storeDriver, schemalessMapper,preStorageDataSet);
 
-                this.storeDataToTarget(flinkHost,
-                        flinkPort,
-                        storeDriver,
+                this.storeDataToTarget(
+                        securityToken,
+                        pipeId,
+                        entity,
                         mapped);
 
                 //TODO: (CR2)
@@ -148,6 +145,26 @@ public class StoreOrchestrator {
         }
     }
 
+    private void storeDataToTarget(SecurityToken securityToken, String pipeId,
+                                   String entity,
+                                   JsonArray mapped){
+
+        final String data = mapped.toString();
+
+        this.threadpool.execute(() -> {
+            stagingArea.receiveDataForStorage(
+                    securityToken,
+                    pipeId,
+                    entity,
+                    data);
+
+            Storage storage = this.stagingArea.runIntegrationAgent(
+                    securityToken,
+                    pipeId,
+                    entity);
+        });
+    }
+
     private void postProcess(SecurityToken securityToken, SystemStore systemStore,
                              StoreDriver storeDriver,
                              String pipeId,
@@ -173,45 +190,5 @@ public class StoreOrchestrator {
         jsonObject.addProperty("outgoing", true);
 
         collection.insertOne(Document.parse(jsonObject.toString()));
-    }
-
-    private void storeDataToTarget(String flinkHost,
-                                   String flinkPort,
-                                   StoreDriver storeDriver,
-                                   JsonArray mapped){
-        /*try {
-            final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
-                    flinkHost,
-                    Integer.parseInt(flinkPort),
-                    "dataplatform-1.0.0-cr2-runner.jar"
-            );
-
-            List<String> input = new ArrayList<>();
-            for (int i = 0; i < mapped.size(); i++) {
-                JsonObject inputJson = mapped.get(i).getAsJsonObject();
-                input.add(inputJson.toString());
-            }
-
-            DataStream<String> dataEvents = env.fromCollection(input);
-
-            StoreSinkFunction storeSinkFunction = new StoreSinkFunction(storeDriver);
-
-            dataEvents.addSink(storeSinkFunction);
-
-            env.execute();
-        }catch(Exception e){
-            e.printStackTrace();
-        }*/
-        this.threadpool.execute(() -> {
-            //Debug.out("****STORE_SINK_FUNCTION*****");
-            //Debug.out(value);
-            //Debug.out("***************************");
-
-            //TODO:
-            //MySqlStoreDriver mySqlStoreDriver = new MySqlStoreDriver();
-            //mySqlStoreDriver.storeData(data.toString());
-
-            storeDriver.storeData(mapped);
-        });
     }
 }

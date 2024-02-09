@@ -9,13 +9,17 @@ import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import test.components.BaseTest;
 import test.components.Util;
 
@@ -46,7 +50,7 @@ public class StoreOrchestratorTests extends BaseTest {
 
         Tenant tenant = this.securityTokenContainer.getTenant();
 
-        String jsonString = Util.loadResource("pipeline/mysql_config_1.json");
+        String jsonString = Util.loadResource("pipeline/pipeline_config_1.json");
 
         Registry registry = Registry.getInstance();
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
@@ -66,13 +70,15 @@ public class StoreOrchestratorTests extends BaseTest {
             objectHashes.add(JsonUtil.getJsonHash(dataObjectJson));
         }
 
-        String pipeId = "staging_pipe";
+        String pipeId = "book_pipe";
+        String entity = "books";
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
         storeOrchestrator.receiveData(securityToken,
                 systemStore,
-                this.pipelineService.getFlinkHost(),
-                this.pipelineService.getFlinkPort(),
-                this.schemalessMapper,pipeId, jsonString);
+                this.schemalessMapper,
+                pipeId,
+                entity,
+                jsonString);
 
         Thread.sleep(5000);
 
