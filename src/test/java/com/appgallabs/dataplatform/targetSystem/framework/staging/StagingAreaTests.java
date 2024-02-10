@@ -62,10 +62,11 @@ public class StagingAreaTests extends BaseTest {
                 entity,
                 data);
 
-        Storage storage = this.stagingArea.runIntegrationAgent(
+        List<Storage> storages = this.stagingArea.runIntegrationAgent(
                 this.securityTokenContainer.getSecurityToken(),
                 pipeId, entity);
 
+        Storage storage = storages.get(0);
         //assert
         List<Record> stored = storage.getRecords(tenant,
                 pipeId,

@@ -37,21 +37,22 @@ public class StagingArea {
             Registry registry = Registry.getInstance();
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
-            //Find the registered 'Storage' component for
+            //Find the registered 'Storage' components for
             //this tenant/pipeId
             List<Storage> registeredStores = registry.findStorages(tenant.getPrincipal(),pipeId);
-            Storage registeredStore = registeredStores.get(0);
 
-            //Parse the data into Records
-            List<Record> records = this.recordGenerator.parsePayload(
-                    tenant,
-                    pipeId,
-                    entity,
-                    data);
+            for(Storage registeredStore: registeredStores) {
+                //Parse the data into Records
+                List<Record> records = this.recordGenerator.parsePayload(
+                        tenant,
+                        pipeId,
+                        entity,
+                        data);
 
 
-            //Store the records into the Staging Area Store
-            registeredStore.storeData(tenant, pipeId, entity, records);
+                //Store the records into the Staging Area Store
+                registeredStore.storeData(tenant, pipeId, entity, records);
+            }
         }catch (Exception e){
             //TODO: reporting (CR2)
 
@@ -59,24 +60,27 @@ public class StagingArea {
         }
     }
 
-    public Storage runIntegrationAgent(SecurityToken securityToken,
+    public List<Storage> runIntegrationAgent(SecurityToken securityToken,
                                     String pipeId,
                                     String entity){
         try {
             Registry registry = Registry.getInstance();
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
-            //Find the registered 'Agent' for this tenant/pipeId
+            //Find the registered 'Storage' components for
+            //this tenant/pipeId
             List<Storage> registeredStores = registry.findStorages(tenant.getPrincipal(),pipeId);
-            Storage registeredStore = registeredStores.get(0);
 
-            //Execute the agent and runners
-            this.dataIntegrationAgent.executeIntegrationRunner(registeredStore,
-                    tenant,
-                    pipeId,
-                    entity);
+            for(Storage registeredStore: registeredStores) {
+                //Execute the agent and runners
+                this.dataIntegrationAgent.executeIntegrationRunner(registeredStore,
+                        tenant,
+                        pipeId,
+                        entity);
 
-            return registeredStore;
+            }
+
+            return registeredStores;
         }catch(Exception e){
             //TODO: reporting (CR2)
 

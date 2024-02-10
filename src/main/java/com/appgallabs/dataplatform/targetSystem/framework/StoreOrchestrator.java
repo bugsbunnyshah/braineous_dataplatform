@@ -158,7 +158,7 @@ public class StoreOrchestrator {
                     entity,
                     data);
 
-            Storage storage = this.stagingArea.runIntegrationAgent(
+            this.stagingArea.runIntegrationAgent(
                     securityToken,
                     pipeId,
                     entity);
