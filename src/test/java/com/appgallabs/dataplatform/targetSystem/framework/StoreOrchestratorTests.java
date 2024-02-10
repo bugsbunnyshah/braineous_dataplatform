@@ -31,6 +31,8 @@ import java.util.List;
 public class StoreOrchestratorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(StoreOrchestratorTests.class);
 
+    private static String pipeConf = "pipeline/pipeline_config_1.json";
+
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
@@ -50,7 +52,7 @@ public class StoreOrchestratorTests extends BaseTest {
 
         Tenant tenant = this.securityTokenContainer.getTenant();
 
-        String jsonString = Util.loadResource("pipeline/pipeline_config_1.json");
+        String jsonString = Util.loadResource(pipeConf);
 
         Registry registry = Registry.getInstance();
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
@@ -58,6 +60,12 @@ public class StoreOrchestratorTests extends BaseTest {
 
     @Test
     public void receiveData() throws Exception{
+        String pipeConfigString = Util.loadResource(pipeConf);
+        JsonObject pipeConfig = JsonUtil.validateJson(pipeConfigString).getAsJsonObject();
+
+        String pipeId = pipeConfig.get("pipeId").getAsString();
+        String entity = pipeConfig.get("entity").getAsString();
+
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
 
         SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
@@ -70,8 +78,6 @@ public class StoreOrchestratorTests extends BaseTest {
             objectHashes.add(JsonUtil.getJsonHash(dataObjectJson));
         }
 
-        String pipeId = "book_pipe";
-        String entity = "books";
         StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
         storeOrchestrator.receiveData(securityToken,
                 systemStore,

@@ -7,6 +7,7 @@ import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
+import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ import java.util.List;
 
 @QuarkusTest
 public class StagingAreaTests extends BaseTest {
+
+    private static String pipeConf = "targetSystem/framework/staging/pipeline_config_1.json";
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
@@ -33,7 +36,7 @@ public class StagingAreaTests extends BaseTest {
 
         Tenant tenant = this.securityTokenContainer.getTenant();
 
-        String jsonString = test.components.Util.loadResource("targetSystem/framework/staging/pipeline_config_1.json");
+        String jsonString = test.components.Util.loadResource(pipeConf);
 
         Registry registry = Registry.getInstance();
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
@@ -41,13 +44,17 @@ public class StagingAreaTests extends BaseTest {
 
     @Test
     public void receiveData() throws Exception{
+        String pipeConfigString = test.components.Util.loadResource(pipeConf);
+        JsonObject pipeConfig = JsonUtil.validateJson(pipeConfigString).getAsJsonObject();
+
+        String pipeId = pipeConfig.get("pipeId").getAsString();
+        String entity = pipeConfig.get("entity").getAsString();
+
         String datasetLocation = "ingestion/algorithm/input_array.json";
         String json = Util.loadResource(datasetLocation);
 
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
         Tenant tenant = new Tenant(securityToken.getPrincipal());
-        String pipeId = "book_pipe";
-        String entity = "books";
         String data = json;
 
         this.stagingArea.receiveDataForStorage(this.securityTokenContainer.getSecurityToken(),

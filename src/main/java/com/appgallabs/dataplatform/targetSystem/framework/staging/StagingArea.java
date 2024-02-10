@@ -1,10 +1,12 @@
 package com.appgallabs.dataplatform.targetSystem.framework.staging;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.stringtemplate.v4.ST;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -17,8 +19,6 @@ import java.util.Map;
 public class StagingArea {
     private static Logger logger = LoggerFactory.getLogger(StagingArea.class);
 
-    private Map<String, Storage> registeredStores;
-
     @Inject
     private DataIntegrationAgent dataIntegrationAgent;
 
@@ -27,16 +27,6 @@ public class StagingArea {
 
     @PostConstruct
     public void start(){
-        //TODO: integrate with pipeline_registry (CR2)
-        this.registeredStores = new HashMap<>();
-
-        String pipeId = "book_pipe";
-        String registration = pipeId;
-
-        InMemoryStorage sqlStorage = new InMemoryStorage();
-        this.registeredStores.put(registration, sqlStorage);
-
-        DataIntegrationAgent agent = new DataIntegrationAgent();
     }
 
     public void receiveDataForStorage(SecurityToken securityToken,
@@ -44,12 +34,13 @@ public class StagingArea {
                                       String entity,
                                       String data){
         try {
+            Registry registry = Registry.getInstance();
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
             //Find the registered 'Storage' component for
             //this tenant/pipeId
-            String registration = pipeId;
-            Storage registeredStore = this.registeredStores.get(registration);
+            List<Storage> registeredStores = registry.findStorages(tenant.getPrincipal(),pipeId);
+            Storage registeredStore = registeredStores.get(0);
 
             //Parse the data into Records
             List<Record> records = this.recordGenerator.parsePayload(
@@ -72,11 +63,12 @@ public class StagingArea {
                                     String pipeId,
                                     String entity){
         try {
+            Registry registry = Registry.getInstance();
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
             //Find the registered 'Agent' for this tenant/pipeId
-            String registration = pipeId;
-            Storage registeredStore = this.registeredStores.get(registration);
+            List<Storage> registeredStores = registry.findStorages(tenant.getPrincipal(),pipeId);
+            Storage registeredStore = registeredStores.get(0);
 
             //Execute the agent and runners
             this.dataIntegrationAgent.executeIntegrationRunner(registeredStore,

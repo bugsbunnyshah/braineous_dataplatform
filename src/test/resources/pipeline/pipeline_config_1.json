@@ -1,13 +1,14 @@
 {
-  "pipeId": "book_pipe",
+  "pipeId": "flight_pipe",
+  "entity": "flight",
   "configuration": [
     {
-      "stagingStore" : "prototype.ingestion.InMemoryStore",
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStorage",
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
-      "name": "book_pipe_store_mongodb",
+      "name": "flight_pipe_store_mongodb",
       "config": {
         "connectionString": "mongodb://localhost:27017",
-        "database": "book_pipe_store",
+        "database": "flight_pipe_store",
         "collection": "staging_area",
         "jsonpathExpressions": [
           "$.store.book[?(@.price >20)]",

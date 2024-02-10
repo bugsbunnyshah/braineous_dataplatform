@@ -9,23 +9,12 @@ import java.util.List;
 public class InMemoryStorage implements Storage{
     private static Logger logger = LoggerFactory.getLogger(InMemoryStorage.class);
 
-    private InMemoryStore inMemoryStore = new InMemoryStore();
+    private InMemoryStore inMemoryStore = InMemoryStore.getInstance();
 
     @Override
     public void storeData(Tenant tenant, String pipeId,String entity, List<Record> dataset) {
         logger.info(dataset.toString());
 
-        /*Registry registry = Registry.getInstance();
-
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(tenant.getPrincipal(), pipeId);
-
-        StoreDriver storeDriver = storeDrivers.get(0);
-        JsonArray jsonArray = new JsonArray();
-        for(Record record: dataset){
-            jsonArray.add(record.toJson());
-        }
-
-        storeDriver.storeData(jsonArray);*/
         this.inMemoryStore.addRecords(tenant,
                 pipeId,
                 entity,

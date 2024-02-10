@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.Storage;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
@@ -81,6 +82,40 @@ public class Registry {
                 storeDriver.configure(storeConfigJson);
 
                 result.add(storeDriver);
+            }
+
+            return result;
+        }catch(Exception e){
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Storage> findStorages(String tenant, String pipeId){
+        try {
+            List<Storage> result = new ArrayList<>();
+            MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+            RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
+
+            JsonArray jsonArray = registryStore.findStoreDrivers(
+                    tenant,
+                    mongoClient,
+                    pipeId
+            );
+
+            if (jsonArray == null || jsonArray.size() == 0) {
+                return result;
+            }
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
+                JsonObject storeConfigJson = configurationJson.getAsJsonObject("config");
+
+                String storageClass = configurationJson.get("stagingStore").getAsString();
+                Storage storage = (Storage) Thread.currentThread().getContextClassLoader().
+                        loadClass(storageClass).getDeclaredConstructor().newInstance();
+
+                result.add(storage);
             }
 
             return result;

@@ -9,8 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryStore implements Serializable {
+    private static InMemoryStore singleton = new InMemoryStore();
 
     private Map<String, List<Record>> recordStore = new HashMap<>();
+
+    private InMemoryStore() {
+    }
+
+    public static InMemoryStore getInstance(){
+        return singleton;
+    }
 
     public void addRecords(Tenant tenant, String pipeId, String entity, List<Record> records){
         String key = this.getKey(tenant, pipeId, entity);
