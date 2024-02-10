@@ -13,7 +13,7 @@ public class LogicRunner implements IntegrationRunner {
 
     @Override
     public void process(Tenant tenant, String pipeId, String entity, List<Record> records) {
-        JsonUtil.printStdOut(JsonUtil.validateJson(records.toString()));
+        System.out.println("PROCESSING: # of records: "+ records.size());
     }
 
     @Override

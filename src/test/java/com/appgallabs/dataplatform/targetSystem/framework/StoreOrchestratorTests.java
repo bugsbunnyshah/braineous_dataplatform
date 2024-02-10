@@ -8,6 +8,7 @@ import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
@@ -32,6 +33,7 @@ public class StoreOrchestratorTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(StoreOrchestratorTests.class);
 
     private static String pipeConf = "pipeline/pipeline_config_1.json";
+    //private static String pipeConf = "pipeline/pipeline_config_multiple.json";
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
@@ -49,6 +51,7 @@ public class StoreOrchestratorTests extends BaseTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        InMemoryStore.getInstance().clear();
 
         Tenant tenant = this.securityTokenContainer.getTenant();
 
@@ -86,7 +89,8 @@ public class StoreOrchestratorTests extends BaseTest {
                 entity,
                 jsonString);
 
-        Thread.sleep(5000);
+        //Thread.sleep(5000);
+        while(true);
 
         //TODO: (CR2)
         //assert

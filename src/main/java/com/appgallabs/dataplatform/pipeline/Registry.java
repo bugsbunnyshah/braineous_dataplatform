@@ -3,7 +3,7 @@ package com.appgallabs.dataplatform.pipeline;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StoreDriver;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Storage;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;

@@ -81,22 +81,23 @@ public class StoreOrchestrator {
         Registry registry = Registry.getInstance();
 
         //find the registered store drivers for this pipe
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(tenant, pipeId);
-        if(storeDrivers == null || storeDrivers.isEmpty()){
+        List<Storage> registeredStores = registry.findStorages(tenant, pipeId);
+        if(registeredStores == null || registeredStores.isEmpty()){
             return;
         }
 
 
         //TODO: make this transactional (GA)
         //fan out storage to each store
-        storeDrivers.parallelStream().forEach(storeDriver -> {
+        registeredStores.parallelStream().forEach(storage -> {
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
                 //adjust based on configured jsonpath expression (CR2)
-                JsonArray mapped = this.mapDataSet(storeDriver, schemalessMapper,preStorageDataSet);
+                JsonArray mapped = this.mapDataSet(storage, schemalessMapper,preStorageDataSet);
 
                 this.storeDataToTarget(
                         securityToken,
+                        storage,
                         pipeId,
                         entity,
                         mapped);
@@ -112,11 +113,11 @@ public class StoreOrchestrator {
         );
     }
 
-    private JsonArray mapDataSet(StoreDriver storeDriver, SchemalessMapper schemalessMapper, JsonArray dataset){
+    private JsonArray mapDataSet(Storage storage, SchemalessMapper schemalessMapper, JsonArray dataset){
         try {
             JsonArray mapped = new JsonArray();
 
-            JsonObject configuration = storeDriver.getConfiguration();
+            JsonObject configuration = storage.getConfiguration();
             if (!configuration.has("jsonpathExpressions")) {
                 return dataset;
             }
@@ -145,7 +146,8 @@ public class StoreOrchestrator {
         }
     }
 
-    private void storeDataToTarget(SecurityToken securityToken, String pipeId,
+    private void storeDataToTarget(SecurityToken securityToken, Storage storage,
+                                   String pipeId,
                                    String entity,
                                    JsonArray mapped){
 
@@ -154,19 +156,21 @@ public class StoreOrchestrator {
         this.threadpool.execute(() -> {
             stagingArea.receiveDataForStorage(
                     securityToken,
+                    storage,
                     pipeId,
                     entity,
                     data);
 
             this.stagingArea.runIntegrationAgent(
                     securityToken,
+                    storage,
                     pipeId,
                     entity);
         });
     }
 
     private void postProcess(SecurityToken securityToken, SystemStore systemStore,
-                             StoreDriver storeDriver,
+                             Storage storage,
                              String pipeId,
                              String data){
         String principal = securityToken.getPrincipal();
@@ -182,8 +186,9 @@ public class StoreOrchestrator {
         SizeOf sizeOf = SizeOf.newInstance();
         long dataStreamSize = sizeOf.deepSizeOf(queue);
 
+        //TODO: (CR2)
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("targetSystem", storeDriver.getName());
+        jsonObject.addProperty("targetSystem", storage.getName());
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", data);
         jsonObject.addProperty("sizeInBytes", dataStreamSize);

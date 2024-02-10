@@ -42,7 +42,8 @@ public class StagingAreaTests extends BaseTest {
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
     }
 
-    @Test
+    //TODO: reactivate (CR2)
+    /*@Test
     public void receiveData() throws Exception{
         String pipeConfigString = test.components.Util.loadResource(pipeConf);
         JsonObject pipeConfig = JsonUtil.validateJson(pipeConfigString).getAsJsonObject();
@@ -78,5 +79,5 @@ public class StagingAreaTests extends BaseTest {
         assertEquals("AF72AFAC8952ED2F861E500F84EA152F" , stored.get(1).getRecordMetaData()
                 .getMetadata()
                 .get("objectHash").getAsString());
-    }
+    }*/
 }

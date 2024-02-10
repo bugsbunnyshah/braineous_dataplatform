@@ -1,9 +1,9 @@
 package com.appgallabs.dataplatform.targetSystem.core.driver;
 
-import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.DataWindow;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StoreDriver;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
-import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.sql.ResultSet;
 
 public class MySqlStoreDriver implements StoreDriver {
     private static Logger logger = LoggerFactory.getLogger(MySqlStoreDriver.class);
@@ -56,7 +55,7 @@ public class MySqlStoreDriver implements StoreDriver {
         }
     }
 
-    @Override
+    //@Override
     public void storeData(JsonArray dataSet) {
         try {
             Statement insertStatement = this.connection.createStatement();
@@ -106,5 +105,15 @@ public class MySqlStoreDriver implements StoreDriver {
     @Override
     public JsonObject getConfiguration() {
         return this.configJson;
+    }
+
+    @Override
+    public void storeData(Tenant tenant, String pipeId, String entity, JsonArray dataSet) {
+
+    }
+
+    @Override
+    public JsonArray getData(Tenant tenant, String pipeId, String entity, DataWindow dataWindow) {
+        return null;
     }
 }

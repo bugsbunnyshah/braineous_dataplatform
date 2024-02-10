@@ -1,8 +1,9 @@
 package com.appgallabs.dataplatform.targetSystem.core.driver;
 
-import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.DataWindow;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StoreDriver;
 
-import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mongodb.client.MongoClient;
@@ -37,7 +38,7 @@ public class MongoDBStoreDriver implements StoreDriver {
         this.mongoClient = MongoClients.create(connectionString);
     }
 
-    @Override
+    //@Override
     public void storeData(JsonArray dataSet) {
         try {
             //get the driver configuration
@@ -81,5 +82,15 @@ public class MongoDBStoreDriver implements StoreDriver {
     @Override
     public JsonObject getConfiguration() {
         return this.configJson;
+    }
+
+    @Override
+    public void storeData(Tenant tenant, String pipeId, String entity, JsonArray dataSet) {
+
+    }
+
+    @Override
+    public JsonArray getData(Tenant tenant, String pipeId, String entity, DataWindow dataWindow) {
+        return null;
     }
 }

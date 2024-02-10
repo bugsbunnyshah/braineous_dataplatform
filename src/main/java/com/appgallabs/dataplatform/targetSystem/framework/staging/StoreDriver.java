@@ -1,9 +1,13 @@
-package com.appgallabs.dataplatform.targetSystem.framework;
+package com.appgallabs.dataplatform.targetSystem.framework.staging;
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.DataWindow;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface StoreDriver extends Serializable {
 
@@ -29,15 +33,24 @@ public interface StoreDriver extends Serializable {
      */
     public void configure(JsonObject configJson);
 
+    public String getName();
+
+    public JsonObject getConfiguration();
+
     /**
      * Implementation logic for storing the dataset processed by the
      * ingestion engine sent as an array of JsonObjects
      *
      * @param dataSet
      */
-    public void storeData(JsonArray dataSet);
+    public void storeData(Tenant tenant,
+                          String pipeId,
+                          String entity,
+                          JsonArray dataSet
+    );
 
-    public String getName();
-
-    public JsonObject getConfiguration();
+    public JsonArray getData(Tenant tenant,
+                             String pipeId,
+                             String entity,
+                             DataWindow dataWindow);
 }
