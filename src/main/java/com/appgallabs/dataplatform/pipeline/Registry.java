@@ -109,9 +109,8 @@ public class Registry {
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
-                JsonObject storeConfigJson = configurationJson.getAsJsonObject("config");
 
-                String storageClass = configurationJson.get("stagingStore").getAsString();
+                String storageClass = configurationJson.get("stagingStorage").getAsString();
                 Storage storage = (Storage) Thread.currentThread().getContextClassLoader().
                         loadClass(storageClass).getDeclaredConstructor().newInstance();
 

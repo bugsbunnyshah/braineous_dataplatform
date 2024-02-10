@@ -3,7 +3,7 @@
   "entity": "staged_data",
   "configuration": [
     {
-      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStorage",
+      "stagingStorage" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStorage",
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
       "name": "staging_pipe_store_mongodb",
       "config": {

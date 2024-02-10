@@ -3,7 +3,7 @@
   "entity": "flight",
   "configuration": [
     {
-      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStorage",
+      "stagingStorage" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStorage",
       "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStoreDriver",
       "name": "flight_pipe_store_mongodb",
       "config": {
