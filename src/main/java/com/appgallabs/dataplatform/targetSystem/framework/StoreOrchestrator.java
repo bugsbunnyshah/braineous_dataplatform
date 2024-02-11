@@ -90,7 +90,7 @@ public class StoreOrchestrator {
 
         //TODO: make this transactional (GA)
         //fan out storage to each store
-        registeredStores.parallelStream().forEach(stagingStore -> {
+        /*registeredStores.parallelStream().forEach(stagingStore -> {
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
                 //adjust based on configured jsonpath expression (CR2)
@@ -104,14 +104,28 @@ public class StoreOrchestrator {
                         mapped);
 
                 //TODO: (CR2)
-                /*postProcess(securityToken,
+                postProcess(securityToken,
                         systemStore,
                         storeDriver,
                         pipeId,
                         data
-                        );*/
+                        );
             }
-        );
+        );*/
+
+        for(StagingStore stagingStore: registeredStores){
+            JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
+
+            //adjust based on configured jsonpath expression (CR2)
+            JsonArray mapped = this.mapDataSet(stagingStore, schemalessMapper,preStorageDataSet);
+
+            this.storeDataToTarget(
+                    securityToken,
+                    stagingStore,
+                    pipeId,
+                    entity,
+                    mapped);
+        }
     }
 
     private JsonArray mapDataSet(StagingStore stagingStore, SchemalessMapper schemalessMapper, JsonArray dataset){
@@ -154,7 +168,7 @@ public class StoreOrchestrator {
 
         final String data = mapped.toString();
 
-        this.threadpool.execute(() -> {
+        /*this.threadpool.execute(() -> {
             List<Record> records = stagingArea.receiveDataForStorage(
                     securityToken,
                     stagingStore,
@@ -168,7 +182,21 @@ public class StoreOrchestrator {
                     pipeId,
                     entity,
                     records);
-        });
+        });*/
+
+        List<Record> records = stagingArea.receiveDataForStorage(
+                securityToken,
+                stagingStore,
+                pipeId,
+                entity,
+                data);
+
+        this.stagingArea.runIntegrationAgent(
+                securityToken,
+                stagingStore,
+                pipeId,
+                entity,
+                records);
     }
 
     private void postProcess(SecurityToken securityToken, SystemStore systemStore,

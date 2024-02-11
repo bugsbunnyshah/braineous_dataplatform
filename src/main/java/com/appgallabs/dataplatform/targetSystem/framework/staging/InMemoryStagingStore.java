@@ -2,30 +2,18 @@ package com.appgallabs.dataplatform.targetSystem.framework.staging;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InMemoryStagingStore implements Serializable, StagingStore {
-    private static InMemoryStagingStore singleton = new InMemoryStagingStore();
 
     private JsonObject configuration;
 
-    private Map<String, List<Record>> recordStore = new HashMap<>();
-
-    public void clear(){
-        this.recordStore.clear();
-    }
-
     public InMemoryStagingStore() {
-    }
-
-    public static InMemoryStagingStore getInstance(){
-        return singleton;
     }
 
 
@@ -46,21 +34,24 @@ public class InMemoryStagingStore implements Serializable, StagingStore {
     }
 
     @Override
-    public void storeData(Tenant tenant, String pipeId, String entity, List<Record> dataSet) {
+    public synchronized void storeData(Tenant tenant, String pipeId, String entity, List<Record> dataSet) {
         String key = this.getKey(tenant, pipeId, entity);
-        List<Record> stored = this.recordStore.get(key);
+        List<Record> stored = InMemoryDB.getInstance().getRecordStore().get(key);
         if(stored == null){
             stored = new ArrayList<>();
-            this.recordStore.put(key, stored);
+            InMemoryDB.getInstance().getRecordStore().put(key, stored);
+            stored = InMemoryDB.getInstance().getRecordStore().get(key);
         }
+
         stored.addAll(dataSet);
+        //JsonUtil.printStdOut(JsonUtil.validateJson(dataSet.toString()));
     }
 
 
     @Override
     public List<Record> getData(Tenant tenant, String pipeId, String entity) {
         String key = this.getKey(tenant, pipeId, entity);
-        List<Record> records = this.recordStore.get(key);
+        List<Record> records = InMemoryDB.getInstance().getRecordStore().get(key);
         if(records == null){
             return new ArrayList<>();
         }
@@ -68,7 +59,7 @@ public class InMemoryStagingStore implements Serializable, StagingStore {
     }
 
     //-----------------------------------------------------------
-    private String getKey(Tenant tenant, String pipeId, String entity){
+    public static String getKey(Tenant tenant, String pipeId, String entity){
         String principal = tenant.getPrincipal();
 
         String key = principal + pipeId + entity;
