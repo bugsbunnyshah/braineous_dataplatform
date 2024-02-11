@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
 import java.util.List;
 
 @Singleton
@@ -23,6 +24,9 @@ public class StagingArea {
 
     @PostConstruct
     public void start(){
+        logger.info("**********************");
+        logger.info("STAGING_AREA_SERVICE (STATUS): 200OK");
+        logger.info("**********************");
     }
 
     public List<Record> receiveDataForStorage(SecurityToken securityToken,

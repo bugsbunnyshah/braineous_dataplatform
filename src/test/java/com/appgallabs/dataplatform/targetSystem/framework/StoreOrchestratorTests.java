@@ -56,6 +56,7 @@ public class StoreOrchestratorTests extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
         InMemoryDB.getInstance().clear();
+        StoreOrchestrator.getInstance().runInDevMode();
     }
 
     @Test
@@ -88,9 +89,6 @@ public class StoreOrchestratorTests extends BaseTest {
                 pipeId,
                 entity,
                 jsonString);
-
-        //Thread.sleep(5000);
-        //while(true);
 
         //assert
         String key = InMemoryStagingStore.getKey(tenant, pipeId, entity);
@@ -155,9 +153,6 @@ public class StoreOrchestratorTests extends BaseTest {
                 pipeId,
                 entity,
                 jsonString);
-
-        //Thread.sleep(20000);
-        //while(true);
 
         //assert
         String key = InMemoryStagingStore.getKey(tenant, pipeId, entity);

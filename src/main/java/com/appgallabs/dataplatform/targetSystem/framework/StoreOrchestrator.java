@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.targetSystem.framework;
 
+import com.appgallabs.dataplatform.container.RuntimeMode;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
@@ -25,8 +26,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class StoreOrchestrator {
 
@@ -34,15 +33,19 @@ public class StoreOrchestrator {
 
     private StagingArea stagingArea;
 
-    ExecutorService threadpool = Executors.newCachedThreadPool();
+    //ExecutorService threadpool = Executors.newCachedThreadPool();
 
     PerformanceReport performanceReport;
+
+    private RuntimeMode runtimeMode;
 
 
     private StoreOrchestrator(){
         this.performanceReport = new PerformanceReport();
 
-        //find the staging area service
+        this.runtimeMode = RuntimeMode.PROD;
+
+        //find the container services
         this.stagingArea = CDI.current().select(StagingArea.class).get();
     }
 
@@ -52,6 +55,14 @@ public class StoreOrchestrator {
             StoreOrchestrator.singleton = new StoreOrchestrator();
         }
         return StoreOrchestrator.singleton;
+    }
+
+    public void runInDevMode(){
+        this.runtimeMode = RuntimeMode.DEV;
+    }
+
+    public void runInProdMode(){
+        this.runtimeMode = RuntimeMode.PROD;
     }
 
     public void receiveData(SecurityToken securityToken,
@@ -88,44 +99,55 @@ public class StoreOrchestrator {
         }
 
 
-        //TODO: make this transactional (GA)
-        //fan out storage to each store
-        /*registeredStores.parallelStream().forEach(stagingStore -> {
-                JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
-
-                //adjust based on configured jsonpath expression (CR2)
-                JsonArray mapped = this.mapDataSet(stagingStore, schemalessMapper,preStorageDataSet);
-
-                this.storeDataToTarget(
-                        securityToken,
+        if(this.runtimeMode == RuntimeMode.PROD) {
+            //TODO: make this transactional (GA)
+            //fan out storage to each store
+            registeredStores.parallelStream().forEach(stagingStore -> {
+                    this.orchestrate(securityToken,
+                            stagingStore,
+                            pipeId,
+                            entity,
+                            schemalessMapper,
+                            data);
+                }
+            );
+        }else{
+            for(StagingStore stagingStore: registeredStores) {
+                this.orchestrate(securityToken,
                         stagingStore,
                         pipeId,
                         entity,
-                        mapped);
-
-                //TODO: (CR2)
-                postProcess(securityToken,
-                        systemStore,
-                        storeDriver,
-                        pipeId,
-                        data
-                        );
+                        schemalessMapper,
+                        data);
             }
-        );*/
-
-        for(StagingStore stagingStore: registeredStores){
-            JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
-
-            //adjust based on configured jsonpath expression (CR2)
-            JsonArray mapped = this.mapDataSet(stagingStore, schemalessMapper,preStorageDataSet);
-
-            this.storeDataToTarget(
-                    securityToken,
-                    stagingStore,
-                    pipeId,
-                    entity,
-                    mapped);
         }
+    }
+
+    private void orchestrate(SecurityToken securityToken,
+                             StagingStore stagingStore,
+                             String pipeId,
+                             String entity,
+                             SchemalessMapper schemalessMapper,
+                             String data){
+        JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
+
+        //adjust based on configured jsonpath expression (CR2)
+        JsonArray mapped = this.mapDataSet(stagingStore, schemalessMapper,preStorageDataSet);
+
+        this.storeDataToTarget(
+                securityToken,
+                stagingStore,
+                pipeId,
+                entity,
+                mapped);
+
+        //TODO: (CR2)
+        /*postProcess(securityToken,
+                systemStore,
+                storeDriver,
+                pipeId,
+                data
+                );*/
     }
 
     private JsonArray mapDataSet(StagingStore stagingStore, SchemalessMapper schemalessMapper, JsonArray dataset){
