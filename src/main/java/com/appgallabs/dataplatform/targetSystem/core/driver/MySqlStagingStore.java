@@ -56,8 +56,33 @@ public class MySqlStagingStore implements StagingStore {
         }
     }
 
-    //@Override
-    public void storeData(JsonArray dataSet) {
+    @Override
+    public String getName() {
+        return this.configJson.get("connectionString").getAsString();
+    }
+
+    @Override
+    public JsonObject getConfiguration() {
+        return this.configJson;
+    }
+
+    @Override
+    public void storeData(Tenant tenant, String pipeId, String entity, List<Record> records) {
+        JsonArray dataSet = new JsonArray();
+        for(Record record: records){
+            JsonObject data = record.getData();
+            dataSet.add(data);
+        }
+        this.storeData(dataSet);
+    }
+
+    @Override
+    public List<Record> getData(Tenant tenant, String pipeId, String entity) {
+        return null;
+    }
+
+    //----------------------------------------------------------------------------------------------
+    private void storeData(JsonArray dataSet) {
         try {
             Statement insertStatement = this.connection.createStatement();
             try {
@@ -96,25 +121,5 @@ public class MySqlStagingStore implements StagingStore {
             logger.error(e.getMessage());
             //TODO: (CR2) report to the pipeline monitoring service
         }
-    }
-
-    @Override
-    public String getName() {
-        return this.configJson.get("connectionString").getAsString();
-    }
-
-    @Override
-    public JsonObject getConfiguration() {
-        return this.configJson;
-    }
-
-    @Override
-    public void storeData(Tenant tenant, String pipeId, String entity, List<Record> dataSet) {
-
-    }
-
-    @Override
-    public List<Record> getData(Tenant tenant, String pipeId, String entity) {
-        return null;
     }
 }

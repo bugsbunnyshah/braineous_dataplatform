@@ -29,14 +29,6 @@ public class InMemoryStagingStore implements Serializable, StagingStore {
     }
 
 
-    private String getKey(Tenant tenant, String pipeId, String entity){
-        String principal = tenant.getPrincipal();
-
-        String key = principal + pipeId + entity;
-
-        return key;
-    }
-
     @Override
     public void configure(JsonObject configJson) {
         this.configuration = configJson;
@@ -73,5 +65,14 @@ public class InMemoryStagingStore implements Serializable, StagingStore {
             return new ArrayList<>();
         }
         return records;
+    }
+
+    //-----------------------------------------------------------
+    private String getKey(Tenant tenant, String pipeId, String entity){
+        String principal = tenant.getPrincipal();
+
+        String key = principal + pipeId + entity;
+
+        return key;
     }
 }

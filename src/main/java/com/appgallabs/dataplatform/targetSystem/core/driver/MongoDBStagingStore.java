@@ -38,8 +38,33 @@ public class MongoDBStagingStore implements StagingStore {
         this.mongoClient = MongoClients.create(connectionString);
     }
 
-    //@Override
-    public void storeData(JsonArray dataSet) {
+    @Override
+    public String getName() {
+        return this.configJson.get("connectionString").getAsString();
+    }
+
+    @Override
+    public JsonObject getConfiguration() {
+        return this.configJson;
+    }
+
+    @Override
+    public void storeData(Tenant tenant, String pipeId, String entity, List<Record> records) {
+        JsonArray dataSet = new JsonArray();
+        for(Record record: records){
+            JsonObject data = record.getData();
+            dataSet.add(data);
+        }
+        this.storeData(dataSet);
+    }
+
+    @Override
+    public List<Record> getData(Tenant tenant, String pipeId, String entity) {
+        return null;
+    }
+
+    //------------------------------------------------------------------------------------
+    private void storeData(JsonArray dataSet) {
         try {
             //get the driver configuration
             String connectionString = this.configJson.get("connectionString").getAsString();
@@ -72,25 +97,5 @@ public class MongoDBStagingStore implements StagingStore {
             System.out.println(
                     "MONGODB: STORED_SUCCESSFULLY");
         }
-    }
-
-    @Override
-    public String getName() {
-        return this.configJson.get("connectionString").getAsString();
-    }
-
-    @Override
-    public JsonObject getConfiguration() {
-        return this.configJson;
-    }
-
-    @Override
-    public void storeData(Tenant tenant, String pipeId, String entity, List<Record> dataSet) {
-
-    }
-
-    @Override
-    public List<Record> getData(Tenant tenant, String pipeId, String entity) {
-        return null;
     }
 }
