@@ -29,6 +29,9 @@ public class EventConsumer {
     @Inject
     private SchemalessMapper schemalessMapper;
 
+    @Inject
+    private StoreOrchestrator storeOrchestrator;
+
     private Set<String> registeredPipes;
 
 
@@ -68,7 +71,8 @@ public class EventConsumer {
                     consumer.runAlways(pipeTopic, new EventHandler(this.pipelineService,
                             systemStore,
                             this.schemalessMapper,
-                            StoreOrchestrator.getInstance()));
+                            this.storeOrchestrator)
+                    );
 
                     this.registeredPipes.add(pipeId);
                 }catch (Exception ex){}

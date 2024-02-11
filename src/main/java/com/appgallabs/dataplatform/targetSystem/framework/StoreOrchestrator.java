@@ -21,19 +21,18 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.ehcache.sizeof.SizeOf;
 
-import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+@Singleton
 public class StoreOrchestrator {
 
-    private static StoreOrchestrator singleton = new StoreOrchestrator();
-
+    @Inject
     private StagingArea stagingArea;
-
-    //ExecutorService threadpool = Executors.newCachedThreadPool();
 
     PerformanceReport performanceReport;
 
@@ -44,17 +43,6 @@ public class StoreOrchestrator {
         this.performanceReport = new PerformanceReport();
 
         this.runtimeMode = RuntimeMode.PROD;
-
-        //find the container services
-        this.stagingArea = CDI.current().select(StagingArea.class).get();
-    }
-
-    public static StoreOrchestrator getInstance(){
-        //safe-check, cause why not
-        if(StoreOrchestrator.singleton == null){
-            StoreOrchestrator.singleton = new StoreOrchestrator();
-        }
-        return StoreOrchestrator.singleton;
     }
 
     public void runInDevMode(){
@@ -189,22 +177,6 @@ public class StoreOrchestrator {
                                    JsonArray mapped){
 
         final String data = mapped.toString();
-
-        /*this.threadpool.execute(() -> {
-            List<Record> records = stagingArea.receiveDataForStorage(
-                    securityToken,
-                    stagingStore,
-                    pipeId,
-                    entity,
-                    data);
-
-            this.stagingArea.runIntegrationAgent(
-                    securityToken,
-                    stagingStore,
-                    pipeId,
-                    entity,
-                    records);
-        });*/
 
         List<Record> records = stagingArea.receiveDataForStorage(
                 securityToken,

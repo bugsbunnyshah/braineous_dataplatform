@@ -51,12 +51,15 @@ public class StoreOrchestratorTests extends BaseTest {
     @Inject
     private PipelineService pipelineService;
 
+    @Inject
+    private StoreOrchestrator storeOrchestrator;
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {
         super.setUp();
         InMemoryDB.getInstance().clear();
-        StoreOrchestrator.getInstance().runInDevMode();
+        this.storeOrchestrator.runInDevMode();
     }
 
     @Test
@@ -82,8 +85,7 @@ public class StoreOrchestratorTests extends BaseTest {
             objectHashes.add(JsonUtil.getJsonHash(dataObjectJson));
         }
 
-        StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
-        storeOrchestrator.receiveData(securityToken,
+        this.storeOrchestrator.receiveData(securityToken,
                 systemStore,
                 this.schemalessMapper,
                 pipeId,
@@ -146,8 +148,8 @@ public class StoreOrchestratorTests extends BaseTest {
             objectHashes.add(JsonUtil.getJsonHash(dataObjectJson));
         }
 
-        StoreOrchestrator storeOrchestrator = StoreOrchestrator.getInstance();
-        storeOrchestrator.receiveData(securityToken,
+
+        this.storeOrchestrator.receiveData(securityToken,
                 systemStore,
                 this.schemalessMapper,
                 pipeId,
