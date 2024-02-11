@@ -44,7 +44,6 @@ public class InMemoryStagingStore implements Serializable, StagingStore {
         }
 
         stored.addAll(dataSet);
-        //JsonUtil.printStdOut(JsonUtil.validateJson(dataSet.toString()));
     }
 
 
