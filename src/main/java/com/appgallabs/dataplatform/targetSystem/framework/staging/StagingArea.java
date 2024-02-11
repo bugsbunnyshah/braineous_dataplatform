@@ -25,8 +25,8 @@ public class StagingArea {
     public void start(){
     }
 
-    public void receiveDataForStorage(SecurityToken securityToken,
-                                      Storage storage,
+    public List<Record> receiveDataForStorage(SecurityToken securityToken,
+                                      StagingStore stagingStore,
                                       String pipeId,
                                       String entity,
                                       String data){
@@ -41,7 +41,9 @@ public class StagingArea {
                     data);
 
             //Store the records into the Staging Area Store
-            storage.storeData(tenant, pipeId, entity, records);
+            stagingStore.storeData(tenant, pipeId, entity, records);
+
+            return records;
         }catch (Exception e){
             //TODO: reporting (CR2)
 
@@ -49,19 +51,21 @@ public class StagingArea {
         }
     }
 
-    public Storage runIntegrationAgent(SecurityToken securityToken,
-                                    Storage storage,
+    public StagingStore runIntegrationAgent(SecurityToken securityToken,
+                                    StagingStore stagingStore,
                                     String pipeId,
-                                    String entity){
+                                    String entity,
+                                            List<Record> records){
         try {
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
-            this.dataIntegrationAgent.executeIntegrationRunner(storage,
+            this.dataIntegrationAgent.executeIntegrationRunner(stagingStore,
                     tenant,
                     pipeId,
-                    entity);
+                    entity,
+                    records);
 
-            return storage;
+            return stagingStore;
         }catch(Exception e){
             //TODO: reporting (CR2)
 

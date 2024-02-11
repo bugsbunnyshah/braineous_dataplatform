@@ -2,8 +2,7 @@
   "pipeId": "book_pipe",
   "configuration": [
     {
-      "stagingStore" : "prototype.ingestion.InMemoryStore",
-      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStagingStore",
       "name": "staging_database",
       "config": {
         "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",

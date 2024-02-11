@@ -2,7 +2,7 @@ package com.appgallabs.dataplatform.pipeline;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.StoreDriver;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;
@@ -36,12 +36,12 @@ public class RegistryTests extends BaseTest {
         Registry registry = Registry.getInstance();
         String pipeId = registry.registerPipe(tenant,JsonUtil.validateJson(jsonString).getAsJsonObject());
 
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(principal, pipeId);
-        JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
+        List<StagingStore> stagingStores = registry.findStagingStores(principal, pipeId);
+        JsonUtil.printStdOut(JsonUtil.validateJson(stagingStores.toString()));
 
         //asserts
         assertEquals(inputPipeId, pipeId);
-        assertFalse(storeDrivers.isEmpty());
+        assertFalse(stagingStores.isEmpty());
     }
 
     @Test
@@ -55,12 +55,12 @@ public class RegistryTests extends BaseTest {
         Registry registry = Registry.getInstance();
         String pipeId = registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
 
-        List<StoreDriver> storeDrivers = registry.findStoreDrivers(principal, pipeId);
-        JsonUtil.printStdOut(JsonUtil.validateJson(storeDrivers.toString()));
+        List<StagingStore> stagingStores = registry.findStagingStores(principal, pipeId);
+        JsonUtil.printStdOut(JsonUtil.validateJson(stagingStores.toString()));
 
         //asserts
         assertEquals(inputPipeId, pipeId);
-        assertFalse(storeDrivers.isEmpty());
+        assertFalse(stagingStores.isEmpty());
     }
 
     @Test

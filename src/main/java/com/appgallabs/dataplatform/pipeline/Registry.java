@@ -3,8 +3,7 @@ package com.appgallabs.dataplatform.pipeline;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.StoreDriver;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.Storage;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
@@ -55,13 +54,13 @@ public class Registry {
 
 
     //read operations---------------------------------------------------------
-    public List<StoreDriver> findStoreDrivers(String tenant, String pipeId){
+    public List<StagingStore> findStagingStores(String tenant, String pipeId){
         try {
-            List<StoreDriver> result = new ArrayList<>();
+            List<StagingStore> result = new ArrayList<>();
             MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
             RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
 
-            JsonArray jsonArray = registryStore.findStoreDrivers(
+            JsonArray jsonArray = registryStore.findStagingStores(
                 tenant,
                 mongoClient,
                 pipeId
@@ -75,46 +74,13 @@ public class Registry {
                 JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
                 JsonObject storeConfigJson = configurationJson.getAsJsonObject("config");
 
-                String storeDriverClass = configurationJson.get("storeDriver").getAsString();
-                StoreDriver storeDriver = (StoreDriver) Thread.currentThread().getContextClassLoader().
+                String storeDriverClass = configurationJson.get("stagingStore").getAsString();
+                StagingStore stagingStore = (StagingStore) Thread.currentThread().getContextClassLoader().
                         loadClass(storeDriverClass).getDeclaredConstructor().newInstance();
 
-                storeDriver.configure(storeConfigJson);
+                stagingStore.configure(storeConfigJson);
 
-                result.add(storeDriver);
-            }
-
-            return result;
-        }catch(Exception e){
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<Storage> findStorages(String tenant, String pipeId){
-        try {
-            List<Storage> result = new ArrayList<>();
-            MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
-            RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
-
-            JsonArray jsonArray = registryStore.findStoreDrivers(
-                    tenant,
-                    mongoClient,
-                    pipeId
-            );
-
-            if (jsonArray == null || jsonArray.size() == 0) {
-                return result;
-            }
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
-
-                String storageClass = configurationJson.get("stagingStorage").getAsString();
-                Storage storage = (Storage) Thread.currentThread().getContextClassLoader().
-                        loadClass(storageClass).getDeclaredConstructor().newInstance();
-
-                result.add(storage);
+                result.add(stagingStore);
             }
 
             return result;

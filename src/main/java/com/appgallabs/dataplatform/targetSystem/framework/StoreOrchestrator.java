@@ -4,8 +4,9 @@ import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingArea;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.Storage;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.Debug;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
@@ -81,7 +82,7 @@ public class StoreOrchestrator {
         Registry registry = Registry.getInstance();
 
         //find the registered store drivers for this pipe
-        List<Storage> registeredStores = registry.findStorages(tenant, pipeId);
+        List<StagingStore> registeredStores = registry.findStagingStores(tenant, pipeId);
         if(registeredStores == null || registeredStores.isEmpty()){
             return;
         }
@@ -89,15 +90,15 @@ public class StoreOrchestrator {
 
         //TODO: make this transactional (GA)
         //fan out storage to each store
-        registeredStores.parallelStream().forEach(storage -> {
+        registeredStores.parallelStream().forEach(stagingStore -> {
                 JsonArray preStorageDataSet = JsonUtil.validateJson(data).getAsJsonArray();
 
                 //adjust based on configured jsonpath expression (CR2)
-                JsonArray mapped = this.mapDataSet(storage, schemalessMapper,preStorageDataSet);
+                JsonArray mapped = this.mapDataSet(stagingStore, schemalessMapper,preStorageDataSet);
 
                 this.storeDataToTarget(
                         securityToken,
-                        storage,
+                        stagingStore,
                         pipeId,
                         entity,
                         mapped);
@@ -113,11 +114,11 @@ public class StoreOrchestrator {
         );
     }
 
-    private JsonArray mapDataSet(Storage storage, SchemalessMapper schemalessMapper, JsonArray dataset){
+    private JsonArray mapDataSet(StagingStore stagingStore, SchemalessMapper schemalessMapper, JsonArray dataset){
         try {
             JsonArray mapped = new JsonArray();
 
-            JsonObject configuration = storage.getConfiguration();
+            JsonObject configuration = stagingStore.getConfiguration();
             if (!configuration.has("jsonpathExpressions")) {
                 return dataset;
             }
@@ -146,7 +147,7 @@ public class StoreOrchestrator {
         }
     }
 
-    private void storeDataToTarget(SecurityToken securityToken, Storage storage,
+    private void storeDataToTarget(SecurityToken securityToken, StagingStore stagingStore,
                                    String pipeId,
                                    String entity,
                                    JsonArray mapped){
@@ -154,23 +155,24 @@ public class StoreOrchestrator {
         final String data = mapped.toString();
 
         this.threadpool.execute(() -> {
-            stagingArea.receiveDataForStorage(
+            List<Record> records = stagingArea.receiveDataForStorage(
                     securityToken,
-                    storage,
+                    stagingStore,
                     pipeId,
                     entity,
                     data);
 
             this.stagingArea.runIntegrationAgent(
                     securityToken,
-                    storage,
+                    stagingStore,
                     pipeId,
-                    entity);
+                    entity,
+                    records);
         });
     }
 
     private void postProcess(SecurityToken securityToken, SystemStore systemStore,
-                             Storage storage,
+                             StagingStore stagingStore,
                              String pipeId,
                              String data){
         String principal = securityToken.getPrincipal();
@@ -188,7 +190,7 @@ public class StoreOrchestrator {
 
         //TODO: (CR2)
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("targetSystem", storage.getName());
+        jsonObject.addProperty("targetSystem", stagingStore.getName());
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", data);
         jsonObject.addProperty("sizeInBytes", dataStreamSize);

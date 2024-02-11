@@ -1,8 +1,8 @@
 {
-  "pipeId": "123",
+  "pipeId": "perf_store_mysql",
   "configuration": [
     {
-      "storeDriver" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStoreDriver",
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStagingStore",
       "name": "perf_store_mysql",
       "config": {
         "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",

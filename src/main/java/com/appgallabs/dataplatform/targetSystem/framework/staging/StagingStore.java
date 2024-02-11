@@ -1,15 +1,12 @@
 package com.appgallabs.dataplatform.targetSystem.framework.staging;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.DataWindow;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface StoreDriver extends Serializable {
+public interface StagingStore extends Serializable {
 
     /**
      * This used to configure your Store Driver.
@@ -46,11 +43,10 @@ public interface StoreDriver extends Serializable {
     public void storeData(Tenant tenant,
                           String pipeId,
                           String entity,
-                          JsonArray dataSet
+                          List<Record> dataSet
     );
 
-    public JsonArray getData(Tenant tenant,
+    public List<Record> getData(Tenant tenant,
                              String pipeId,
-                             String entity,
-                             DataWindow dataWindow);
+                             String entity);
 }

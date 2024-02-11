@@ -1,9 +1,9 @@
 package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.DataWindow;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.StoreDriver;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mongodb.client.MongoClient;
@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MongoDBStoreDriver implements StoreDriver {
-    private static Logger logger = LoggerFactory.getLogger(MongoDBStoreDriver.class);
+public class MongoDBStagingStore implements StagingStore {
+    private static Logger logger = LoggerFactory.getLogger(MongoDBStagingStore.class);
 
     private JsonObject configJson;
     private MongoClient mongoClient;
@@ -85,12 +85,12 @@ public class MongoDBStoreDriver implements StoreDriver {
     }
 
     @Override
-    public void storeData(Tenant tenant, String pipeId, String entity, JsonArray dataSet) {
+    public void storeData(Tenant tenant, String pipeId, String entity, List<Record> dataSet) {
 
     }
 
     @Override
-    public JsonArray getData(Tenant tenant, String pipeId, String entity, DataWindow dataWindow) {
+    public List<Record> getData(Tenant tenant, String pipeId, String entity) {
         return null;
     }
 }

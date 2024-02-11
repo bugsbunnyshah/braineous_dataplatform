@@ -17,12 +17,11 @@ public class DataIntegrationAgent{
         this.runner = new LogicRunner();
     }
 
-    public void executeIntegrationRunner(Storage storage,
+    public void executeIntegrationRunner(StagingStore stagingStore,
                                          Tenant tenant,
                                          String pipeId,
-                                         String entity) {
-        List<Record> records = storage.getRecords(tenant, pipeId, entity);
-
+                                         String entity,
+                                         List<Record> records) {
         //pre-process
         this.runner.preProcess(tenant, pipeId, entity);
 
