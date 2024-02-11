@@ -1,14 +1,12 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
-import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 
 public class DataEvent implements Serializable {
     private String json;

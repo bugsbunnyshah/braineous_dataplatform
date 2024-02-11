@@ -4,7 +4,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 
 public class SystemStore implements Serializable {
     private String mongodbConnectionString;

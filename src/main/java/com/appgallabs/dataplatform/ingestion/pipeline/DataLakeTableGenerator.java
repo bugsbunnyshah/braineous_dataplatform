@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.Schema;
 import org.apache.flink.table.api.TableDescriptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

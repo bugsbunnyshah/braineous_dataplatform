@@ -1,11 +1,11 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.catalog.CatalogDatabaseImpl;
 import org.apache.flink.table.catalog.exceptions.DatabaseAlreadyExistException;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class DataLakeSessionManager {
     private static Logger logger = LoggerFactory.getLogger(DataLakeSessionManager.class);
 
-    //TODO: make it part of configuration (CR2)
+    //TODO: make it part of configuration (NOW)
     private String hiveConfDirectory = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
 
     public StreamTableEnvironment newDataLakeCatalogSession(StreamExecutionEnvironment env,
