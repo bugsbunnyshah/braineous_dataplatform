@@ -56,7 +56,10 @@ public class StoreOrchestrator {
     public void receiveData(SecurityToken securityToken,
                             SystemStore systemStore,
                             SchemalessMapper schemalessMapper,
-                            String pipeId, String entity, String data) {
+                            String pipeId,
+                            long offset,
+                            String entity,
+                            String data) {
         if(!this.performanceReport.started){
             this.performanceReport.started = true;
             this.performanceReport.start = System.currentTimeMillis();
@@ -94,6 +97,7 @@ public class StoreOrchestrator {
                     this.orchestrate(securityToken,
                             stagingStore,
                             pipeId,
+                            offset,
                             entity,
                             schemalessMapper,
                             data);
@@ -104,6 +108,7 @@ public class StoreOrchestrator {
                 this.orchestrate(securityToken,
                         stagingStore,
                         pipeId,
+                        offset,
                         entity,
                         schemalessMapper,
                         data);
@@ -114,6 +119,7 @@ public class StoreOrchestrator {
     private void orchestrate(SecurityToken securityToken,
                              StagingStore stagingStore,
                              String pipeId,
+                             long offset,
                              String entity,
                              SchemalessMapper schemalessMapper,
                              String data){
@@ -126,6 +132,7 @@ public class StoreOrchestrator {
                 securityToken,
                 stagingStore,
                 pipeId,
+                offset,
                 entity,
                 mapped);
 
@@ -173,6 +180,7 @@ public class StoreOrchestrator {
 
     private void storeDataToTarget(SecurityToken securityToken, StagingStore stagingStore,
                                    String pipeId,
+                                   long offset,
                                    String entity,
                                    JsonArray mapped){
 
@@ -182,6 +190,7 @@ public class StoreOrchestrator {
                 securityToken,
                 stagingStore,
                 pipeId,
+                offset,
                 entity,
                 data);
 

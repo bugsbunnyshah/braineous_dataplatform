@@ -32,6 +32,7 @@ public class StagingArea {
     public List<Record> receiveDataForStorage(SecurityToken securityToken,
                                       StagingStore stagingStore,
                                       String pipeId,
+                                      long offset,
                                       String entity,
                                       String data){
         try {
@@ -41,6 +42,7 @@ public class StagingArea {
             List<Record> records = this.recordGenerator.parsePayload(
                     tenant,
                     pipeId,
+                    offset,
                     entity,
                     data);
 

@@ -90,6 +90,7 @@ public class EventHandler implements KafkaMessageHandler {
                 this.systemStore,
                 this.schemalessMapper,
                 pipeId,
+                offset,
                 entity,
                 jsonPayloadString);
     }
@@ -110,12 +111,13 @@ public class EventHandler implements KafkaMessageHandler {
     private void executeTargetSystemDelivery(SecurityToken securityToken,
                                              SystemStore systemStore,
                                              SchemalessMapper schemalessMapper,
-                                             String pipeId, String entity, String jsonPayloadString){
+                                             String pipeId, long offset, String entity, String jsonPayloadString){
         this.threadpool.execute(() -> {
             this.storeOrchestrator.receiveData(securityToken,
                     systemStore,
                     schemalessMapper,
                     pipeId,
+                    offset,
                     entity,
                     jsonPayloadString);
         });

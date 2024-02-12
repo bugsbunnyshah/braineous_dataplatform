@@ -21,24 +21,39 @@ import java.util.List;
 public class RecordGenerator {
     private static Logger logger = LoggerFactory.getLogger(RecordGenerator.class);
 
-    public List<Record> parsePayload(Tenant tenant, String pipeId, String entity, String payload) throws Exception{
+    public List<Record> parsePayload(Tenant tenant,
+                                     String pipeId,
+                                     long offset,
+                                     String entity,
+                                     String payload) throws Exception{
         JsonElement jsonElement = JsonParser.parseString(payload);
         List<Record> input = new ArrayList<>();
         if(jsonElement.isJsonArray()) {
             JsonArray jsonArray = jsonElement.getAsJsonArray();
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject inputJson = jsonArray.get(i).getAsJsonObject();
-                Record record = this.generateRecord(tenant, pipeId, entity,inputJson);
+                Record record = this.generateRecord(tenant,
+                        pipeId,
+                        offset,
+                        entity,
+                        inputJson);
                 input.add(record);
             }
         }else if(jsonElement.isJsonObject()){
-            Record record = this.generateRecord(tenant, pipeId, entity,jsonElement.getAsJsonObject());
+            Record record = this.generateRecord(tenant,
+                    pipeId,
+                    offset,
+                    entity,
+                    jsonElement.getAsJsonObject());
             input.add(record);
         }
         return input;
     }
 
-    private Record generateRecord(Tenant tenant, String pipeId, String entity,
+    private Record generateRecord(Tenant tenant,
+                                  String pipeId,
+                                  long offset,
+                                  String entity,
                                   JsonObject jsonObject) throws Exception{
 
         JsonObject metadata = new JsonObject();
@@ -63,6 +78,8 @@ public class RecordGenerator {
 
         //entity
         metadata.addProperty("entity", entity);
+
+        metadata.addProperty("kafka_offset", offset);
 
         RecordMetaData recordMetaData = new RecordMetaData();
         recordMetaData.setMetadata(metadata);

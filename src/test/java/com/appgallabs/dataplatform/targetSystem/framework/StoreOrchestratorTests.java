@@ -74,6 +74,7 @@ public class StoreOrchestratorTests extends BaseTest {
 
         String pipeId = pipeConfig.get("pipeId").getAsString();
         String entity = pipeConfig.get("entity").getAsString();
+        long offset = 0l;
 
         SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
 
@@ -89,6 +90,7 @@ public class StoreOrchestratorTests extends BaseTest {
                 systemStore,
                 this.schemalessMapper,
                 pipeId,
+                offset,
                 entity,
                 jsonString);
 
@@ -137,6 +139,7 @@ public class StoreOrchestratorTests extends BaseTest {
 
         String pipeId = pipeConfig.get("pipeId").getAsString();
         String entity = pipeConfig.get("entity").getAsString();
+        long offset = 0l;
 
         SystemStore systemStore = this.mongoDBJsonStore.getSystemStore();
 
@@ -153,6 +156,7 @@ public class StoreOrchestratorTests extends BaseTest {
                 systemStore,
                 this.schemalessMapper,
                 pipeId,
+                offset,
                 entity,
                 jsonString);
 

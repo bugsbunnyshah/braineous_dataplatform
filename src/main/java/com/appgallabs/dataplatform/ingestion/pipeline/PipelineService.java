@@ -66,9 +66,6 @@ public class PipelineService {
 
     private ExecutorService threadpool = Executors.newCachedThreadPool();
 
-    //TODO: Make this a Offset based implementation (NOW)
-    private Map<String, List<String>> readyBuffer = new HashMap<>();
-
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
