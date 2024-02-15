@@ -1,5 +1,6 @@
 {
   "pipeId": "scenario1_store",
+  "entity": "scenario1",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
@@ -8,16 +9,6 @@
         "connectionString": "mongodb://localhost:27017",
         "database": "scenario1_store",
         "collection": "data",
-        "jsonpathExpressions": []
-      }
-    },
-    {
-      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStagingStore",
-      "name": "scenario1_store_mysql",
-      "config": {
-        "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
-        "username": "root",
-        "password": "",
         "jsonpathExpressions": []
       }
     }

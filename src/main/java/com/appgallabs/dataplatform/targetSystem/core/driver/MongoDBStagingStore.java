@@ -60,7 +60,7 @@ public class MongoDBStagingStore implements StagingStore {
 
     @Override
     public List<Record> getData(Tenant tenant, String pipeId, String entity) {
-        return null;
+        return new ArrayList<>();
     }
 
     //------------------------------------------------------------------------------------
