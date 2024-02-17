@@ -126,5 +126,10 @@ public class FlinkTableCreationTests {
         // we need to wait until the insertion has been completed,
         // an exception is thrown in case of an error
         insertionResult.await();
+
+        String queryTable = "scenariowitharray" + "." + "scenariowitharray";
+        String sql = "select * from "+queryTable;
+        Table result = tableEnv.sqlQuery(sql);
+        result.execute().print();
     }
 }

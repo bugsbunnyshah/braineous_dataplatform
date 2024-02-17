@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSessionManager;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
@@ -13,15 +14,33 @@ import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.List;
 
 @QuarkusTest
 public class UsageScenario1Tests {
     private static Logger logger = LoggerFactory.getLogger(UsageScenario1Tests.class);
+
+    @Inject
+    private DataLakeSessionManager dataLakeSessionManager;
+
+    private StreamExecutionEnvironment env;
+
+    public UsageScenario1Tests() {
+        this.env = StreamExecutionEnvironment.createRemoteEnvironment(
+                "localhost",
+                Integer.parseInt("8081"),
+                "dataplatform-1.0.0-cr2-runner.jar"
+        );
+    }
 
     /**
      * Scenario: A single MongoDB data source starts ingestion
@@ -62,7 +81,9 @@ public class UsageScenario1Tests {
                 pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(registeredStores.toString()));
 
-        //DataPipeline.sendData(pipeId, entity,datasetElement.toString());
+        DataPipeline.sendData(pipeId, entity,datasetElement.toString());
+
+        Thread.sleep(5000);
 
         //assert data is received on the receiver data store
         for(StagingStore stagingStore: registeredStores){
@@ -73,6 +94,11 @@ public class UsageScenario1Tests {
         }
 
         //assert data is stored in the data lake
+        TableEnvironment tableEnv = this.getTableEnvironment();
+        String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
+        String sql = "select * from "+table;
+        Table result = tableEnv.sqlQuery(sql);
+        result.execute().print();
 
         //confirm ingestion and delivery statistics
     }
@@ -111,6 +137,17 @@ public class UsageScenario1Tests {
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
         //confirm data is received on the receiver data store
+    }
+
+
+    private StreamTableEnvironment getTableEnvironment(){
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.env,
+                name
+        );
+
+        return tableEnv;
     }
 
 }

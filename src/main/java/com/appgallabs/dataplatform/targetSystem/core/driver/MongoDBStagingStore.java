@@ -2,17 +2,19 @@ package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
-
+import com.appgallabs.dataplatform.targetSystem.framework.staging.RecordGenerator;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
+import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+
+import com.mongodb.client.*;
 import com.mongodb.client.model.InsertOneModel;
 import com.mongodb.client.model.WriteModel;
+
 import org.bson.Document;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,14 +62,32 @@ public class MongoDBStagingStore implements StagingStore {
 
     @Override
     public List<Record> getData(Tenant tenant, String pipeId, String entity) {
-        return new ArrayList<>();
+        try {
+            JsonArray data = this.readData(tenant, pipeId, entity);
+
+            RecordGenerator recordGenerator = new RecordGenerator();
+            long offset = 0l;
+            List<Record> records = recordGenerator.parsePayload(
+                    tenant,
+                    pipeId,
+                    offset,
+                    entity,
+                    data.toString()
+            );
+
+            return records;
+        }catch(Exception e){
+            logger.error(e.getMessage());
+            //TODO: (CR2) report to the pipeline monitoring service
+
+            throw new RuntimeException(e);
+        }
     }
 
     //------------------------------------------------------------------------------------
     private void storeData(JsonArray dataSet) {
         try {
             //get the driver configuration
-            String connectionString = this.configJson.get("connectionString").getAsString();
             String database = this.configJson.get("database").getAsString();
             String collection = this.configJson.get("collection").getAsString();
 
@@ -96,6 +116,42 @@ public class MongoDBStagingStore implements StagingStore {
         finally{
             System.out.println(
                     "MONGODB: STORED_SUCCESSFULLY");
+        }
+    }
+
+    private JsonArray readData(Tenant tenant, String pipeId, String entity){
+        try{
+            //get the driver configuration
+            String database = this.configJson.get("database").getAsString();
+            String collection = this.configJson.get("collection").getAsString();
+
+            //setup driver components
+            MongoDatabase db = this.mongoClient.getDatabase(database);
+            MongoCollection<Document> dbCollection = db.getCollection(collection);
+
+            FindIterable<Document> iterable = dbCollection.find();
+            MongoCursor<Document> cursor = iterable.cursor();
+            JsonArray data  = new JsonArray();
+            while(cursor.hasNext())
+            {
+                Document document = cursor.next();
+                String documentJson = document.toJson();
+                JsonObject dataObject = JsonUtil.validateJson(documentJson).getAsJsonObject();
+                dataObject.remove("_id");
+
+                data.add(dataObject);
+            }
+
+            return data;
+        }catch(Exception e){
+            logger.error(e.getMessage());
+            //TODO: (CR2) report to the pipeline monitoring service
+
+            throw new RuntimeException(e);
+        }
+        finally{
+            System.out.println(
+                    "MONGODB: READ_SUCCESSFULLY");
         }
     }
 }
