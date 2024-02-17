@@ -89,15 +89,17 @@ public class UsageScenario1Tests {
             List<Record> records = stagingStore.getData(tenant,
                     pipeId,
                     entity);
-            JsonUtil.printStdOut(JsonUtil.validateJson(records.toString()));
-        }
+            logger.info("*****************************************");
+            logger.info("NUMBER_OF_RECORDS: "+ records.size());
+            logger.info("*****************************************");
 
-        //assert data is stored in the data lake
-        TableEnvironment tableEnv = this.getTableEnvironment();
-        String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
-        String sql = "select * from "+table;
-        Table result = tableEnv.sqlQuery(sql);
-        result.execute().print();
+            //assert data is stored in the data lake
+            TableEnvironment tableEnv = this.getTableEnvironment();
+            String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
+            String sql = "select * from "+table;
+            Table result = tableEnv.sqlQuery(sql);
+            result.execute().print();
+        }
 
         //confirm ingestion and delivery statistics
     }
