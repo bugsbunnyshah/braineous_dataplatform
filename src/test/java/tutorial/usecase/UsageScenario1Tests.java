@@ -82,9 +82,8 @@ public class UsageScenario1Tests {
         JsonUtil.printStdOut(JsonUtil.validateJson(registeredStores.toString()));
 
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
-
+        //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
         Thread.sleep(5000);
-
         //assert data is received on the receiver data store
         for(StagingStore stagingStore: registeredStores){
             List<Record> records = stagingStore.getData(tenant,
