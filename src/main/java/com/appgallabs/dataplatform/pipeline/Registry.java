@@ -95,7 +95,6 @@ public class Registry {
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
         RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
         String pipeId = pipeRegistration.get("pipeId").getAsString();
-        JsonArray storeDrivers = pipeRegistration.getAsJsonArray("configuration");
 
         //persist
         registryStore.registerPipe(

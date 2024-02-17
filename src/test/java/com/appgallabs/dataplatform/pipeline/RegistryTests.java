@@ -27,11 +27,12 @@ public class RegistryTests extends BaseTest {
 
     @Test
     public void registerPipe() throws Exception{
-        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
-        String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
-
         Tenant tenant = this.securityTokenContainer.getTenant();
         String principal = tenant.getPrincipal();
+
+        //register pipe
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
+        String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
         Registry registry = Registry.getInstance();
         String pipeId = registry.registerPipe(tenant,JsonUtil.validateJson(jsonString).getAsJsonObject());
@@ -42,25 +43,21 @@ public class RegistryTests extends BaseTest {
         //asserts
         assertEquals(inputPipeId, pipeId);
         assertFalse(stagingStores.isEmpty());
-    }
+        assertEquals(1, stagingStores.size());
 
-    @Test
-    public void registerCorePipeline() throws Exception{
-        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
-        String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
+        //update pipe
+        jsonString = Util.loadResource("pipeline/mongodb_config_2.json");
+        inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
 
-        Tenant tenant = this.securityTokenContainer.getTenant();
-        String principal = tenant.getPrincipal();
+        pipeId = registry.registerPipe(tenant,JsonUtil.validateJson(jsonString).getAsJsonObject());
 
-        Registry registry = Registry.getInstance();
-        String pipeId = registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
-
-        List<StagingStore> stagingStores = registry.findStagingStores(principal, pipeId);
+        stagingStores = registry.findStagingStores(principal, pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(stagingStores.toString()));
 
         //asserts
         assertEquals(inputPipeId, pipeId);
         assertFalse(stagingStores.isEmpty());
+        assertEquals(2, stagingStores.size());
     }
 
     @Test
