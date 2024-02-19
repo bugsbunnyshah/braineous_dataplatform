@@ -1,7 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProducer;
 import com.appgallabs.dataplatform.infrastructure.kafka.KafkaSession;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
@@ -19,6 +18,7 @@ import org.json.XML;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.PostConstruct;
@@ -38,9 +38,6 @@ public class DataIngestion {
     private KafkaSession kafkaSession;
 
     @Inject
-    private EventConsumer eventConsumer;
-
-    @Inject
     private EventProducer eventProducer;
 
     @Inject
@@ -49,11 +46,8 @@ public class DataIngestion {
     @PostConstruct
     public void start(){
         try {
-            JsonObject response = this.eventConsumer.checkStatus();
+            JsonObject response = this.eventProducer.checkStatus();
             logger.info(response.toString());
-
-            this.eventProducer.start();
-            this.eventConsumer.start();
         }catch(Exception e){
             throw new RuntimeException(e);
         }

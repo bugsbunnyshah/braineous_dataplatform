@@ -16,9 +16,7 @@ import javax.inject.Singleton;
 import org.apache.kafka.clients.admin.TopicListing;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @Singleton
 public class EventProducer {
@@ -30,11 +28,9 @@ public class EventProducer {
     @Inject
     private KafkaSession kafkaSession;
 
-    private Map<String, TopicListing> topicListing;
-
 
     public EventProducer() {
-        this.topicListing = new HashMap<>();
+
     }
 
     @PostConstruct
@@ -51,6 +47,12 @@ public class EventProducer {
         }
     }
 
+    public JsonObject checkStatus(){
+        JsonObject response = new JsonObject();
+        response.addProperty("status", "LISTENING...");
+        return response;
+    }
+
     public JsonObject processEvent(String pipeId, String entity, JsonElement json) {
         try{
             JsonObject response = new JsonObject();
@@ -61,26 +63,6 @@ public class EventProducer {
 
             return response;
         }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void registerPipe(String pipeId){
-        try {
-            if(this.topicListing.get(pipeId) == null) {
-                String pipeTopic = pipeId;
-
-                TopicListing topicListing = null;
-                try {
-                    topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
-                }catch(Exception ex){}
-
-                if(topicListing != null) {
-                    this.topicListing.put(pipeTopic, topicListing);
-                    this.kafkaSession.bootstrap(pipeId);
-                }
-            }
-        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
