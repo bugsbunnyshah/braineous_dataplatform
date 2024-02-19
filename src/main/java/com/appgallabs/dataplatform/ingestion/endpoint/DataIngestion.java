@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.ingestion.endpoint;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProducer;
+import com.appgallabs.dataplatform.infrastructure.kafka.KafkaSession;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
@@ -34,10 +35,13 @@ public class DataIngestion {
     private CSVDataUtil csvDataUtil = new CSVDataUtil();
 
     @Inject
-    private EventProducer eventProducer;
+    private KafkaSession kafkaSession;
 
     @Inject
     private EventConsumer eventConsumer;
+
+    @Inject
+    private EventProducer eventProducer;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
@@ -73,11 +77,8 @@ public class DataIngestion {
             //registry
             registry.registerPipe(tenant,pipeRegistration);
 
-            //event producer
-            this.eventProducer.registerPipe(pipeId);
-
-            //event consumer
-            this.eventConsumer.registerPipe(pipeId);
+            //kafka register
+            this.kafkaSession.registerPipe(pipeId);
 
             responseJson.addProperty("pipeId",pipeId);
             responseJson.addProperty("message", "PIPE_SUCCESSFULLY_REGISTERED");
