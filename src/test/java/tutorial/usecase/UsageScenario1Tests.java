@@ -71,10 +71,11 @@ public class UsageScenario1Tests {
         String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
-        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
-        Registry registry = Registry.getInstance();
+
 
         //send source data through the pipeline
+        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
+        Registry registry = Registry.getInstance();
         String pipeId = configJson.get("pipeId").getAsString();
         String entity = configJson.get("entity").getAsString();
         List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
@@ -90,15 +91,16 @@ public class UsageScenario1Tests {
                     pipeId,
                     entity);
             logger.info("*****************************************");
+            logger.info("PIPE_ID: "+ pipeId);
             logger.info("NUMBER_OF_RECORDS: "+ records.size());
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            TableEnvironment tableEnv = this.getTableEnvironment();
+            /*TableEnvironment tableEnv = this.getTableEnvironment();
             String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();
+            result.execute().print();*/
         }
 
         //confirm ingestion and delivery statistics

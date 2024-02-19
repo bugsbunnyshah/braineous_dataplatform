@@ -73,11 +73,11 @@ public class DataIngestion {
             //registry
             registry.registerPipe(tenant,pipeRegistration);
 
-            //event consumer
-            this.eventConsumer.registerPipe(pipeId);
-
             //event producer
             this.eventProducer.registerPipe(pipeId);
+
+            //event consumer
+            this.eventConsumer.registerPipe(pipeId);
 
             responseJson.addProperty("pipeId",pipeId);
             responseJson.addProperty("message", "PIPE_SUCCESSFULLY_REGISTERED");

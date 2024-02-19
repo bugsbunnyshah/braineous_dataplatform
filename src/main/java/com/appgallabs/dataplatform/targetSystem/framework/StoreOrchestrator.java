@@ -95,6 +95,7 @@ public class StoreOrchestrator {
             //fan out storage to each store
             registeredStores.parallelStream().forEach(stagingStore -> {
                     this.orchestrate(securityToken,
+                            systemStore,
                             stagingStore,
                             pipeId,
                             offset,
@@ -106,6 +107,7 @@ public class StoreOrchestrator {
         }else{
             for(StagingStore stagingStore: registeredStores) {
                 this.orchestrate(securityToken,
+                        systemStore,
                         stagingStore,
                         pipeId,
                         offset,
@@ -117,6 +119,7 @@ public class StoreOrchestrator {
     }
 
     private void orchestrate(SecurityToken securityToken,
+                             SystemStore systemStore,
                              StagingStore stagingStore,
                              String pipeId,
                              long offset,
@@ -136,13 +139,12 @@ public class StoreOrchestrator {
                 entity,
                 mapped);
 
-        //TODO: (CR2)
-        /*postProcess(securityToken,
+        postProcess(securityToken,
                 systemStore,
-                storeDriver,
+                stagingStore,
                 pipeId,
                 data
-                );*/
+                );
     }
 
     private JsonArray mapDataSet(StagingStore stagingStore, SchemalessMapper schemalessMapper, JsonArray dataset){
@@ -219,7 +221,6 @@ public class StoreOrchestrator {
         SizeOf sizeOf = SizeOf.newInstance();
         long dataStreamSize = sizeOf.deepSizeOf(queue);
 
-        //TODO: (CR2)
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("targetSystem", stagingStore.getName());
         jsonObject.addProperty("pipeId", pipeId);

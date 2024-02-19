@@ -27,17 +27,19 @@ public class EventProducer {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @Inject
+    private KafkaSession kafkaSession;
+
     private Map<String, TopicListing> topicListing;
 
-    private Set<String> registeredPipes;
 
     public EventProducer() {
         this.topicListing = new HashMap<>();
-        this.registeredPipes = new HashSet<>();
     }
 
     @PostConstruct
     public void start(){
+        this.kafkaSession.setEventProducer(this);
     }
 
     @PreDestroy
@@ -53,11 +55,9 @@ public class EventProducer {
         try{
             JsonObject response = new JsonObject();
 
-
             SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
                     pipeId, entity, json.toString());
             response.addProperty("statusCode", 200);
-
 
             return response;
         }catch(Exception e){
@@ -67,10 +67,9 @@ public class EventProducer {
 
     public void registerPipe(String pipeId){
         try {
-            if(!this.registeredPipes.contains(pipeId)) {
+            if(this.topicListing.get(pipeId) == null) {
                 String pipeTopic = pipeId;
 
-                //TODO: (CR2) dig deeper
                 TopicListing topicListing = null;
                 try {
                     topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
@@ -78,7 +77,7 @@ public class EventProducer {
 
                 if(topicListing != null) {
                     this.topicListing.put(pipeTopic, topicListing);
-                    this.registeredPipes.add(pipeId);
+                    this.kafkaSession.bootstrap(pipeId);
                 }
             }
         }catch (Exception e){

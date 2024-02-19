@@ -1,5 +1,11 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -15,17 +21,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SimpleConsumer extends AbstractSimpleKafka{
     private static Logger log = LoggerFactory.getLogger(SimpleConsumer.class);
 
-    private static SimpleConsumer singleton;
-
     //TODO: make this configurable and find the optimal polling period (CR1)
     private final int TIME_OUT_MS = 30000;
+
+    private KafkaSession kafkaSession;
     private KafkaConsumer<String, String> kafkaConsumer = null;
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     private Thread t;
 
-    private SimpleConsumer() {
+    public SimpleConsumer(KafkaSession kafkaSession) {
         super();
+
+        this.kafkaSession = kafkaSession;
         Properties props;
         try {
             props = PropertiesHelper.getProperties();
@@ -33,13 +41,6 @@ public class SimpleConsumer extends AbstractSimpleKafka{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static SimpleConsumer getInstance(){
-        if(SimpleConsumer.singleton == null){
-            SimpleConsumer.singleton = new SimpleConsumer();
-        }
-        return SimpleConsumer.singleton;
     }
 
     public KafkaConsumer<String, String> getKafkaConsumer() {
@@ -67,9 +68,46 @@ public class SimpleConsumer extends AbstractSimpleKafka{
                         continue;
                     }
 
-                    for (ConsumerRecord<String, String> record : records) {
-                        callback.processMessage(topicName, record);
+                    System.out.println("*****************");
+                    System.out.println("RECORDS_RECEIVED: "+records.count());
+                    System.out.println("*****************");
+                    for (ConsumerRecord<String, String> record : records){
+                        String messageValue = record.value();
+                        JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
+                        JsonUtil.printStdOut(json);
+
+                        /*String payload = json.get("message").getAsString();
+                        JsonElement payloadElem = JsonParser.parseString(payload);
+                        JsonUtil.printStdOut(payloadElem);*/
                     }
+
+
+                    /*if(isBootstrapped) {
+                        for (ConsumerRecord<String, String> record : records) {
+                            callback.processMessage(topicName, record);
+                        }
+                    }else{
+                        try {
+                            for (ConsumerRecord<String, String> record : records) {
+                                String messageValue = record.value();
+                                JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
+                                String payload = json.get("message").getAsString();
+                                JsonElement payloadElem = JsonParser.parseString(payload);
+                                JsonUtil.printStdOut(payloadElem);
+                                if (payloadElem.getAsJsonObject()
+                                        .has("handshake_received")) {
+                                    isBootstrapped = true;
+                                }
+                            }
+                        }catch(Exception e){
+
+                        }finally {
+                            System.out.println("****************");
+                            System.out.println("PIPE_ID: "+this.pipeId);
+                            System.out.println("BOOTSTRAPPED: "+isBootstrapped);
+                            System.out.println("****************");
+                        }
+                    }*/
                 }
             }catch (Exception e){
                 throw new RuntimeException(e);
