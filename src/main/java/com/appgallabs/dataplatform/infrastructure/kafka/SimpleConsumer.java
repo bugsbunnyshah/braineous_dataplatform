@@ -21,14 +21,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SimpleConsumer extends AbstractSimpleKafka{
     private static Logger log = LoggerFactory.getLogger(SimpleConsumer.class);
 
-    //TODO: (NOW)
-    private final int TIME_OUT_MS = 30000;
-
     private KafkaSession kafkaSession;
     private KafkaConsumer<String, String> kafkaConsumer = null;
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     private Thread t;
+
+    private String pipeId;
+    private KafkaMessageHandler callback;
 
     public SimpleConsumer(KafkaSession kafkaSession) {
         super();
@@ -51,19 +51,25 @@ public class SimpleConsumer extends AbstractSimpleKafka{
         this.kafkaConsumer = kafkaConsumer;
     }
 
+    public KafkaMessageHandler getCallback() {
+        return callback;
+    }
+
     public void close() throws Exception {
         this.kafkaConsumer.close();
     }
 
     public void runAlways(String topicName, KafkaMessageHandler callback) throws Exception {
         this.kafkaConsumer.subscribe(List.of(topicName));
+        this.pipeId = topicName;
+        this.callback = callback;
 
         this.t = new Thread(() -> {
             //keep running forever or until shutdown() is called from another thread.
             try {
                 while (!closed.get()) {
                     ConsumerRecords<String, String> records =
-                            this.kafkaConsumer.poll(Duration.ofMillis(TIME_OUT_MS));
+                            this.kafkaConsumer.poll(Duration.ofMillis(kafkaSession.getTimeOut()));
                     if (records.count() == 0) {
                         continue;
                     }

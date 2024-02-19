@@ -12,6 +12,8 @@ import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
@@ -22,6 +24,9 @@ import java.util.Set;
 @Singleton
 public class KafkaSession {
     private static Logger logger = LoggerFactory.getLogger(KafkaSession.class);
+
+    //TODO: (NOW)
+    private final int TIME_OUT_MS = 30000;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
@@ -60,6 +65,23 @@ public class KafkaSession {
         this.eventConsumer = eventConsumer;
     }
 
+    public int getTimeOut() {
+        return TIME_OUT_MS;
+    }
+
+    //lifecyle------
+    @PostConstruct
+    public void start(){
+        //TODO: (NOW)
+    }
+
+    @PreDestroy
+    public void stop(){
+        //TODO: (NOW)
+    }
+
+    //-------------------------------------------
+
     public void registerPipe(String pipeId){
         String tenant = this.securityTokenContainer.getTenant().getPrincipal();
         Set<String> tenantPipes = this.bootstrappedPipes.get(tenant);
@@ -68,16 +90,22 @@ public class KafkaSession {
         }
 
         tenantPipes = this.bootstrappedPipes.get(tenant);
+        if(tenantPipes.contains(pipeId)){
+            //its registed and live with the kafka system
+            return;
+        }
+
+
         tenantPipes.add(pipeId);
 
         //make sure pipe is registered and live at the broker
         this.registerWithProducer(pipeId, tenantPipes);
 
         //register the consumer
-        this.registerConsumer(pipeId, tenantPipes);
+        SimpleConsumer simpleConsumer = this.registerConsumer(pipeId, tenantPipes);
 
         //make sure producer, broker, and consumer are ready
-        this.bootstrap(pipeId);
+        this.bootstrap(pipeId, simpleConsumer);
     }
     //-----------------------------------------------------------------------------------------------------
     private void registerWithProducer(String pipeId, Set<String> registeredPipes){
@@ -99,7 +127,7 @@ public class KafkaSession {
         }
     }
 
-    private void registerConsumer(String pipeId, Set<String> registeredPipes){
+    private SimpleConsumer registerConsumer(String pipeId, Set<String> registeredPipes){
         try {
             String pipeTopic = pipeId;
 
@@ -113,17 +141,39 @@ public class KafkaSession {
                         this.storeOrchestrator)
                 );
             }catch (Exception ex){}
+
+            return consumer;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    private void bootstrap(String pipeId){
-        //TODO: (NOW)
+    private void bootstrap(String pipeId, SimpleConsumer simpleConsumer){
+        String topicName = pipeId;
         try {
-            Thread.sleep(30000);
+            Thread.sleep(TIME_OUT_MS);
         }catch(Exception e){
             throw new RuntimeException(e);
         }
+
+        /*try {
+            KafkaMessageHandler callback = simpleConsumer.getCallback();
+            while (true) {
+                ConsumerRecords<String, String> records = simpleConsumer.getKafkaConsumer().
+                        poll(Duration.ofMillis(TIME_OUT_MS));
+
+                if (records.count() == 0) {
+                    continue;
+                }
+
+                for (ConsumerRecord<String, String> record : records) {
+                    callback.processMessage(topicName, record);
+                }
+
+                break;
+            }
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }*/
     }
 }

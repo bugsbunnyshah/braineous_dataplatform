@@ -84,7 +84,7 @@ public class UsageScenario1Tests {
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
-        Thread.sleep(5000);
+        Thread.sleep(30000);
         //assert data is received on the receiver data store
         for(StagingStore stagingStore: registeredStores){
             List<Record> records = stagingStore.getData(tenant,

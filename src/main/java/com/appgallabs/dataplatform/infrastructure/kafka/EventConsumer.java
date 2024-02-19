@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -29,15 +28,5 @@ public class EventConsumer {
     @PostConstruct
     public void start(){
         this.kafkaSession.setEventConsumer(this);
-    }
-
-    @PreDestroy
-    public void stop(){
-        //TODO: (NOW)
-        /*try {
-            SimpleConsumer.getInstance().shutdown();
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }*/
     }
 }
