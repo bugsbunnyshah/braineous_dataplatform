@@ -67,7 +67,7 @@ public class UsageScenario1Tests {
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
-        //register a pipeline
+        //register/or connect an existing pipeline
         String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
@@ -81,8 +81,8 @@ public class UsageScenario1Tests {
         List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
                 pipeId);
         JsonUtil.printStdOut(JsonUtil.validateJson(registeredStores.toString()));
-
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
+
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
         Thread.sleep(5000);
         //assert data is received on the receiver data store
@@ -96,11 +96,11 @@ public class UsageScenario1Tests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            /*TableEnvironment tableEnv = this.getTableEnvironment();
+            TableEnvironment tableEnv = this.getTableEnvironment();
             String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();*/
+            result.execute().print();
         }
 
         //confirm ingestion and delivery statistics

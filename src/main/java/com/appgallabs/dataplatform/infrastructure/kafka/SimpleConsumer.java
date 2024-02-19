@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SimpleConsumer extends AbstractSimpleKafka{
     private static Logger log = LoggerFactory.getLogger(SimpleConsumer.class);
 
-    //TODO: make this configurable and find the optimal polling period (CR1)
+    //TODO: (NOW)
     private final int TIME_OUT_MS = 30000;
 
     private KafkaSession kafkaSession;
@@ -68,6 +68,8 @@ public class SimpleConsumer extends AbstractSimpleKafka{
                         continue;
                     }
 
+                    //For debugging only
+                    /*
                     System.out.println("*****************");
                     System.out.println("RECORDS_RECEIVED: "+records.count());
                     System.out.println("*****************");
@@ -75,42 +77,17 @@ public class SimpleConsumer extends AbstractSimpleKafka{
                         String messageValue = record.value();
                         JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
                         JsonUtil.printStdOut(json);
-
-                        /*String payload = json.get("message").getAsString();
-                        JsonElement payloadElem = JsonParser.parseString(payload);
-                        JsonUtil.printStdOut(payloadElem);*/
                     }
+                    */
 
 
-                    /*if(isBootstrapped) {
-                        for (ConsumerRecord<String, String> record : records) {
-                            callback.processMessage(topicName, record);
-                        }
-                    }else{
-                        try {
-                            for (ConsumerRecord<String, String> record : records) {
-                                String messageValue = record.value();
-                                JsonObject json = JsonParser.parseString(messageValue).getAsJsonObject();
-                                String payload = json.get("message").getAsString();
-                                JsonElement payloadElem = JsonParser.parseString(payload);
-                                JsonUtil.printStdOut(payloadElem);
-                                if (payloadElem.getAsJsonObject()
-                                        .has("handshake_received")) {
-                                    isBootstrapped = true;
-                                }
-                            }
-                        }catch(Exception e){
-
-                        }finally {
-                            System.out.println("****************");
-                            System.out.println("PIPE_ID: "+this.pipeId);
-                            System.out.println("BOOTSTRAPPED: "+isBootstrapped);
-                            System.out.println("****************");
-                        }
-                    }*/
+                    for (ConsumerRecord<String, String> record : records) {
+                        callback.processMessage(topicName, record);
+                    }
                 }
             }catch (Exception e){
-                throw new RuntimeException(e);
+                //TODO: (CR2), integrated with failure reports
+                log.error(e.getMessage(), e);
             }
         });
 

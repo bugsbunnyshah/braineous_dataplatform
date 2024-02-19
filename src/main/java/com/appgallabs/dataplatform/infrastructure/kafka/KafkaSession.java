@@ -70,17 +70,14 @@ public class KafkaSession {
         tenantPipes = this.bootstrappedPipes.get(tenant);
         tenantPipes.add(pipeId);
 
+        //make sure pipe is registered and live at the broker
         this.registerWithProducer(pipeId, tenantPipes);
-        this.registerConsumer(pipeId, tenantPipes);
-    }
 
-    public void bootstrap(String pipeId){
-        //TODO: (CR2)
-        try {
-            Thread.sleep(5000);
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
+        //register the consumer
+        this.registerConsumer(pipeId, tenantPipes);
+
+        //make sure producer, broker, and consumer are ready
+        this.bootstrap(pipeId);
     }
     //-----------------------------------------------------------------------------------------------------
     private void registerWithProducer(String pipeId, Set<String> registeredPipes){
@@ -117,6 +114,15 @@ public class KafkaSession {
                 );
             }catch (Exception ex){}
         }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void bootstrap(String pipeId){
+        //TODO: (NOW)
+        try {
+            Thread.sleep(30000);
+        }catch(Exception e){
             throw new RuntimeException(e);
         }
     }

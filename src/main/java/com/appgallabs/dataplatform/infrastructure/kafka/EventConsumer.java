@@ -33,7 +33,7 @@ public class EventConsumer {
 
     @PreDestroy
     public void stop(){
-        //TODO: (CR2)
+        //TODO: (NOW)
         /*try {
             SimpleConsumer.getInstance().shutdown();
         }catch(Exception e){
