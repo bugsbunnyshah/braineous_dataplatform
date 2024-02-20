@@ -11,6 +11,7 @@ import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.quarkus.test.junit.QuarkusTest;
@@ -101,6 +102,74 @@ public class UsageScenario1Tests {
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
             result.execute().print();
+        }
+
+        //confirm ingestion and delivery statistics
+    }
+
+    /**
+     * Scenario: A single MongoDB data source starts ingestion
+     * into a Braineous pipeline and expects the receiving
+     * datastore also MongoDB to receive the data into its
+     * store
+     *
+     * @throws Exception
+     */
+    @Test
+    public void largePayload() throws Exception{
+        String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
+        Tenant tenant = new Tenant(principal);
+
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                ingestionHostUrl("http://localhost:8080/").
+                apiKey(principal).
+                apiSecret("5960253b-6645-41bf-b520-eede5754196e").
+                streamSizeInBytes(80);
+        DataPipeline.configure(configuration);
+
+        String datasetLocation = "performance/flight.json";
+        String json = Util.loadResource(datasetLocation);
+        JsonObject flightJson = JsonUtil.validateJson(json).getAsJsonObject();
+        JsonArray datasetElement = new JsonArray();
+        for(int i=0; i<50; i++){
+            datasetElement.add(flightJson);
+        }
+
+        //register/or connect an existing pipeline
+        String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config_large_payload.json";
+        json = Util.loadResource(configLocation);
+        DataPipeline.registerPipe(json);
+
+
+        //send source data through the pipeline
+        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
+        Registry registry = Registry.getInstance();
+        String pipeId = configJson.get("pipeId").getAsString();
+        String entity = configJson.get("entity").getAsString();
+        List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
+                pipeId);
+        JsonUtil.printStdOut(JsonUtil.validateJson(registeredStores.toString()));
+        DataPipeline.sendData(pipeId, entity,datasetElement.toString());
+
+        //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
+        Thread.sleep(30000);
+        //assert data is received on the receiver data store
+        for(StagingStore stagingStore: registeredStores){
+            List<Record> records = stagingStore.getData(tenant,
+                    pipeId,
+                    entity);
+            logger.info("*****************************************");
+            logger.info("PIPE_ID: "+ pipeId);
+            logger.info("NUMBER_OF_RECORDS: "+ records.size());
+            logger.info("*****************************************");
+
+            //assert data is stored in the data lake
+            /*TableEnvironment tableEnv = this.getTableEnvironment();
+            String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
+            String sql = "select * from "+table;
+            Table result = tableEnv.sqlQuery(sql);
+            result.execute().print();*/
         }
 
         //confirm ingestion and delivery statistics

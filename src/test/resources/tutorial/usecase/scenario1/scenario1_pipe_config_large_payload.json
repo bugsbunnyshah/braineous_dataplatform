@@ -1,0 +1,16 @@
+{
+  "pipeId": "azbycxdwevfugthsirjqflight",
+  "entity": "azbycxdwevfugthsirjqflight",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "azbycxdwevfugthsirjqflight",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "azbycxdwevfugthsirjqflight",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

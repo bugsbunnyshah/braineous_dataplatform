@@ -78,4 +78,12 @@ public class JsonUtil {
         System.out.println(gson.toJson(jsonElement));
         System.out.println("**********************");
     }
+
+    public static void printStdOut(JsonElement[] jsonElements)
+    {
+        int length = jsonElements.length;
+        for(int i=0; i<length; i++){
+            JsonUtil.printStdOut(jsonElements[i]);
+        }
+    }
 }
