@@ -1,6 +1,5 @@
 package tutorial.usecase;
 
-import com.appgallabs.dataplatform.TestConstants;
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
@@ -11,9 +10,9 @@ import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
@@ -27,15 +26,15 @@ import javax.inject.Inject;
 import java.util.List;
 
 @QuarkusTest
-public class UsageScenario1Tests {
-    private static Logger logger = LoggerFactory.getLogger(UsageScenario1Tests.class);
+public class UsageScenarioTests {
+    private static Logger logger = LoggerFactory.getLogger(UsageScenarioTests.class);
 
     @Inject
     private DataLakeSessionManager dataLakeSessionManager;
 
     private StreamExecutionEnvironment env;
 
-    public UsageScenario1Tests() {
+    public UsageScenarioTests() {
         this.env = StreamExecutionEnvironment.createRemoteEnvironment(
                 "localhost",
                 Integer.parseInt("8081"),
@@ -44,15 +43,15 @@ public class UsageScenario1Tests {
     }
 
     /**
-     * Scenario: A single MongoDB data source starts ingestion
+     * Scenario1 : A data source starts ingestion
      * into a Braineous pipeline and expects the receiving
-     * datastore also MongoDB to receive the data into its
-     * store
+     * MongoDB database to receive the data into its
+     * staging store
      *
      * @throws Exception
      */
     @Test
-    public void scenario1Array() throws Exception{
+    public void singleStore() throws Exception{
         String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
         Tenant tenant = new Tenant(principal);
 
@@ -64,12 +63,12 @@ public class UsageScenario1Tests {
                 streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
-        String datasetLocation = "tutorial/usecase/scenario1/scenario1Array.json";
+        String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
         //register/or connect an existing pipeline
-        String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
+        String configLocation = "tutorial/usecase/scenario1/single_store_pipe_config.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
 
@@ -85,6 +84,7 @@ public class UsageScenario1Tests {
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
+        logger.info("********ASSERTION_PHASE_STARTED....***********");
         Thread.sleep(30000);
         //assert data is received on the receiver data store
         for(StagingStore stagingStore: registeredStores){
@@ -102,21 +102,20 @@ public class UsageScenario1Tests {
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
             result.execute().print();
-        }
 
-        //confirm ingestion and delivery statistics
+            //TODO: (NOW) confirm ingestion and delivery statistics
+        }
     }
 
     /**
-     * Scenario: A single MongoDB data source starts ingestion
+     * Scenario: A data source starts ingestion
      * into a Braineous pipeline and expects the receiving
-     * datastore also MongoDB to receive the data into its
-     * store
+     * to multiple stores
      *
      * @throws Exception
      */
     @Test
-    public void largePayload() throws Exception{
+    public void multipleStores() throws Exception{
         String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
         Tenant tenant = new Tenant(principal);
 
@@ -128,16 +127,12 @@ public class UsageScenario1Tests {
                 streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
-        String datasetLocation = "performance/flight.json";
+        String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
         String json = Util.loadResource(datasetLocation);
-        JsonObject flightJson = JsonUtil.validateJson(json).getAsJsonObject();
-        JsonArray datasetElement = new JsonArray();
-        for(int i=0; i<50; i++){
-            datasetElement.add(flightJson);
-        }
+        JsonElement datasetElement = JsonUtil.validateJson(json);
 
         //register/or connect an existing pipeline
-        String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config_large_payload.json";
+        String configLocation = "tutorial/usecase/scenario1/multiple_stores_pipe_config.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
 
@@ -153,6 +148,7 @@ public class UsageScenario1Tests {
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
+        logger.info("********ASSERTION_PHASE_STARTED....***********");
         Thread.sleep(30000);
         //assert data is received on the receiver data store
         for(StagingStore stagingStore: registeredStores){
@@ -165,53 +161,74 @@ public class UsageScenario1Tests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            /*TableEnvironment tableEnv = this.getTableEnvironment();
+            TableEnvironment tableEnv = this.getTableEnvironment();
             String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();*/
-        }
+            result.execute().print();
 
-        //confirm ingestion and delivery statistics
+            //TODO: (NOW) confirm ingestion and delivery statistics
+        }
     }
 
-    /**
-     * Scenario: A single MongoDB data source starts ingestion
-     * into a Braineous pipeline and expects the receiving
-     * datastore also MongoDB to receive the data into its
-     * store
-     *
-     * @throws Exception
-     */
     @Test
-    public void scenario1Object() throws Exception{
+    public void singleStoreWithTransformation() throws Exception{
+        String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
+        Tenant tenant = new Tenant(principal);
+
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
                 ingestionHostUrl("http://localhost:8080/").
-                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
-                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                apiKey(principal).
+                apiSecret("5960253b-6645-41bf-b520-eede5754196e").
                 streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
-        String datasetLocation = "tutorial/usecase/scenario1/scenario1Object.json";
+        String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
-        //register a pipeline
-        String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
+        //register/or connect an existing pipeline
+        String configLocation = "tutorial/usecase/scenario1/single_store_pipe_config_with_transformation.json";
         json = Util.loadResource(configLocation);
         DataPipeline.registerPipe(json);
-        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
+
 
         //send source data through the pipeline
+        JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
+        Registry registry = Registry.getInstance();
         String pipeId = configJson.get("pipeId").getAsString();
-        String entity = TestConstants.ENTITY;
+        String entity = configJson.get("entity").getAsString();
+        List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
+                pipeId);
+        JsonUtil.printStdOut(JsonUtil.validateJson(registeredStores.toString()));
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
-        //confirm data is received on the receiver data store
+        //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
+        logger.info("********ASSERTION_PHASE_STARTED....***********");
+        Thread.sleep(30000);
+        //assert data is received on the receiver data store
+        for(StagingStore stagingStore: registeredStores){
+            List<Record> records = stagingStore.getData(tenant,
+                    pipeId,
+                    entity);
+            logger.info("*****************************************");
+            logger.info("PIPE_ID: "+ pipeId);
+            logger.info("NUMBER_OF_RECORDS: "+ records.size());
+            JsonUtil.printStdOut(JsonParser.parseString(records.toString()));
+            logger.info("*****************************************");
+
+            //assert data is stored in the data lake
+            TableEnvironment tableEnv = this.getTableEnvironment();
+            String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
+            String sql = "select * from "+table;
+            Table result = tableEnv.sqlQuery(sql);
+            result.execute().print();
+
+            //TODO: (NOW) confirm ingestion and delivery statistics
+        }
     }
-
-
+    //----------------------------------------------------------------------------------
     private StreamTableEnvironment getTableEnvironment(){
         String name  = "myhive";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
@@ -221,5 +238,4 @@ public class UsageScenario1Tests {
 
         return tableEnv;
     }
-
 }

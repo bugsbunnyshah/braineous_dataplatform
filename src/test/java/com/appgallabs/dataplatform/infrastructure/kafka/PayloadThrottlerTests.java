@@ -6,7 +6,6 @@ import com.appgallabs.dataplatform.util.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 

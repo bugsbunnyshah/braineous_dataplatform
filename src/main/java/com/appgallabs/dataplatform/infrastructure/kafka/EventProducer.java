@@ -1,7 +1,9 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -16,6 +18,7 @@ import javax.inject.Singleton;
 import org.apache.kafka.clients.admin.TopicListing;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Singleton
@@ -27,6 +30,9 @@ public class EventProducer {
 
     @Inject
     private KafkaSession kafkaSession;
+
+    @Inject
+    private PayloadThrottler throttler;
 
 
     public EventProducer() {
@@ -57,8 +63,16 @@ public class EventProducer {
         try{
             JsonObject response = new JsonObject();
 
-            SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
-                    pipeId, entity, json.toString());
+            //Throttle payload to manage data packet size in the Kafka cluster
+            JsonArray ingestion = IngestionUtil.generationIngestionArray(json);
+            List<JsonArray> throttled = this.throttler.throttle(ingestion);
+
+            for(JsonArray bucket: throttled) {
+                SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
+                        pipeId, entity, bucket.toString());
+            }
+
+
             response.addProperty("statusCode", 200);
 
             return response;

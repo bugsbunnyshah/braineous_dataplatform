@@ -11,7 +11,10 @@ import com.google.gson.JsonObject;
 import org.ehcache.sizeof.SizeOf;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StreamingAgent {
     private static StreamingAgent singleton = new StreamingAgent();
@@ -19,6 +22,8 @@ public class StreamingAgent {
     private DataPipelineClient dataPipelineClient;
 
     private ListenableQueue<String> queueStream;
+
+    private ExecutorService threadpool = Executors.newCachedThreadPool();
 
     private StreamingAgent(){
         this.dataPipelineClient = DataPipelineClient.getInstance();
@@ -64,13 +69,21 @@ public class StreamingAgent {
             if(batch.size() > 0) {
                 String batchJsonString = batch.toString();
                 JsonArray payloadArray = JsonUtil.validateJson(batchJsonString).getAsJsonArray();
+
+                //array or object
                 JsonElement payload = payloadArray.get(0);
-                String payloadString = payload.toString();
+                List<JsonArray> throttled = PayloadThrottler.generatePayload(payload);
 
-                JsonObject response = sendDataToCloud(pipeId, entity, payloadString);
+                for(JsonArray throttle: throttled) {
+                    String payloadString = throttle.toString();
 
-                //TODO: integrate with reporting service (CR2)
-                //JsonUtil.printStdOut(response);
+                    this.threadpool.execute(() -> {
+                        JsonObject response = sendDataToCloud(pipeId, entity, payloadString);
+
+                        //TODO: integrate with reporting service (CR2)
+                        //JsonUtil.printStdOut(response);
+                    });
+                }
             }
         }else{
             System.out.println("***SENDING_DATA_QUEUED*****");

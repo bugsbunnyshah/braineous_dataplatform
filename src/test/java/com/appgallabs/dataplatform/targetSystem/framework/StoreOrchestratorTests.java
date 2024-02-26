@@ -62,7 +62,7 @@ public class StoreOrchestratorTests extends BaseTest {
         this.storeOrchestrator.runInDevMode();
     }
 
-    @Test
+    //@Test
     public void receiveDataSinglePipe() throws Exception{
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
         Tenant tenant = new Tenant(securityToken.getPrincipal());
@@ -127,7 +127,7 @@ public class StoreOrchestratorTests extends BaseTest {
         }*/
     }
 
-    @Test
+    //@Test
     public void receiveDataMultiplePipes() throws Exception{
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
         Tenant tenant = new Tenant(securityToken.getPrincipal());

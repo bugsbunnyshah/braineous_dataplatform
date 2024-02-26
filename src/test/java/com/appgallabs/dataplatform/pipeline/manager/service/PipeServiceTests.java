@@ -1157,7 +1157,7 @@ public class PipeServiceTests extends BaseTest
             JsonElement datasetElement = JsonUtil.validateJson(json);
 
             //register a pipeline
-            String configLocation = "tutorial/usecase/scenario1/scenario1_pipe_config.json";
+            String configLocation = "tutorial/usecase/scenario1/single_store_pipe_config.json";
             json = Util.loadResource(configLocation);
             JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
             configJson.addProperty("pipeId", pipeId);

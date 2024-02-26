@@ -76,7 +76,7 @@ public class EventHandler implements KafkaMessageHandler {
         String entity = json.get("entity").getAsString();
 
 
-        //Deliver to DataLake
+        //Deliver to DataLake (asynchronously)
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
         this.executeIngestion(securityToken,
                 datalakeDriverConfiguration.toString(),
@@ -85,7 +85,7 @@ public class EventHandler implements KafkaMessageHandler {
                 entity,
                 jsonPayloadString);
 
-        //Deliver to Target System
+        //Deliver to Target System (asynchronously)
         this.executeTargetSystemDelivery(securityToken,
                 this.systemStore,
                 this.schemalessMapper,

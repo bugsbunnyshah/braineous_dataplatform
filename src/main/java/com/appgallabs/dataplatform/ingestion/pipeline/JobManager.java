@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.ingestion.pipeline;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
+import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.google.gson.JsonArray;
@@ -83,12 +84,7 @@ public class JobManager {
 
             JsonElement jsonElement = JsonParser.parseString(jsonString);
 
-            JsonArray ingestion = new JsonArray();
-            if (jsonElement.isJsonArray()) {
-                ingestion = jsonElement.getAsJsonArray();
-            } else if (jsonElement.isJsonObject()) {
-                ingestion.add(jsonElement);
-            }
+            JsonArray ingestion = IngestionUtil.generationIngestionArray(jsonElement);
 
             //ingestion array
             List<Map<String, Object>> flatArray = new ArrayList();

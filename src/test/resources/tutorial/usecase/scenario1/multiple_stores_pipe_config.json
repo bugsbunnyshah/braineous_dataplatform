@@ -1,0 +1,26 @@
+{
+  "pipeId": "multiplestores",
+  "entity": "books",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "multiplestores0",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "multi0",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    },
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "multiplestores1",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "multi1",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}
