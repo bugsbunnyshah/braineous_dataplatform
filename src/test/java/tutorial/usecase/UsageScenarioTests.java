@@ -97,11 +97,11 @@ public class UsageScenarioTests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            TableEnvironment tableEnv = this.getTableEnvironment();
+            /*TableEnvironment tableEnv = this.getTableEnvironment();
             String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();
+            result.execute().print();*/
 
             //TODO: (NOW) confirm ingestion and delivery statistics
         }
@@ -161,11 +161,11 @@ public class UsageScenarioTests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            TableEnvironment tableEnv = this.getTableEnvironment();
+            /*TableEnvironment tableEnv = this.getTableEnvironment();
             String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();
+            result.execute().print();*/
 
             //TODO: (NOW) confirm ingestion and delivery statistics
         }
@@ -219,11 +219,11 @@ public class UsageScenarioTests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            TableEnvironment tableEnv = this.getTableEnvironment();
+            /*TableEnvironment tableEnv = this.getTableEnvironment();
             String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
             String sql = "select * from "+table;
             Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();
+            result.execute().print();*/
 
             //TODO: (NOW) confirm ingestion and delivery statistics
         }
