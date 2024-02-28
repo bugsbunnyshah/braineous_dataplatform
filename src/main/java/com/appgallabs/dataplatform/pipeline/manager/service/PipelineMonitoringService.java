@@ -25,6 +25,7 @@ public class PipelineMonitoringService {
     private MongoDBJsonStore mongoDBJsonStore;
 
     public JsonObject preProcess(PipelineServiceType pipelineServiceType,
+                                 JsonObject metaData,
                                  SecurityToken securityToken,
                                  String pipeId,
                                  String entity,
@@ -44,6 +45,7 @@ public class PipelineMonitoringService {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("pipelineServiceType", pipelineServiceType.name());
+        jsonObject.add("metadata", metaData);
         jsonObject.addProperty("entity", entity);
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", jsonString);
@@ -56,7 +58,7 @@ public class PipelineMonitoringService {
     }
 
     public JsonObject postProcess(PipelineServiceType pipelineServiceType,
-                                  StagingStore stagingStore,
+                                  JsonObject metaData,
                                 SecurityToken securityToken,
                                 String pipeId,
                                 String entity,
@@ -77,8 +79,7 @@ public class PipelineMonitoringService {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("pipelineServiceType", pipelineServiceType.name());
         jsonObject.addProperty("entity", entity);
-        jsonObject.add("stagingStore", stagingStore.getConfiguration());
-        jsonObject.addProperty("targetSystem", stagingStore.getName());
+        jsonObject.add("metadata", metaData);
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", jsonString);
         jsonObject.addProperty("sizeInBytes", dataStreamSize);

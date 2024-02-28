@@ -6,8 +6,8 @@ import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
-
 import com.appgallabs.dataplatform.util.Util;
+
 import com.google.gson.JsonObject;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -33,6 +33,10 @@ public class PipelineMonitoringServiceTests extends BaseTest {
 
     @Test
     public void ingestionProcessMonitoring() throws Exception{
+        this.testPipelineMonitoring(PipelineServiceType.INGESTION);
+    }
+
+    private void testPipelineMonitoring(PipelineServiceType pipelineServiceType) throws Exception{
         Registry registry = Registry.getInstance();
         String configLocation = "pipeline/manager/service/pipe_config.json";
         String json = Util.loadResource(configLocation);
@@ -41,7 +45,6 @@ public class PipelineMonitoringServiceTests extends BaseTest {
         String datasetLocation = "pipeline/manager/service/data.json";
         String jsonString = Util.loadResource(datasetLocation);
 
-        PipelineServiceType pipelineServiceType = PipelineServiceType.INGESTION;
         SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
         Tenant tenant = new Tenant(securityToken.getPrincipal());
         registry.registerPipe(tenant, configJson);
@@ -53,6 +56,7 @@ public class PipelineMonitoringServiceTests extends BaseTest {
 
         JsonObject preProcessResult = this.pipelineMonitoringService.preProcess(
                 pipelineServiceType,
+                configJson,
                 securityToken,
                 pipeId,
                 entity,
@@ -65,7 +69,7 @@ public class PipelineMonitoringServiceTests extends BaseTest {
         //post_process
         JsonObject postProcessResult = this.pipelineMonitoringService.postProcess(
                 pipelineServiceType,
-                stagingStore,
+                configJson,
                 securityToken,
                 pipeId,
                 entity,
