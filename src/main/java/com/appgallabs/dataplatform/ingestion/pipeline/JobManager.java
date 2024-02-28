@@ -191,7 +191,8 @@ public class JobManager {
     //-----------------------------------------------------------------------------------------------------------
     private void preProcess(String value,
                             SecurityToken securityToken,
-                            String pipeId){
+                            String pipeId
+                            ){
         String principal = securityToken.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
 
