@@ -4,6 +4,8 @@ import com.appgallabs.dataplatform.container.RuntimeMode;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.pipeline.manager.service.PipelineMonitoringService;
+import com.appgallabs.dataplatform.pipeline.manager.service.PipelineServiceType;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingArea;
@@ -14,25 +16,19 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import org.bson.Document;
-import org.ehcache.sizeof.SizeOf;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 @Singleton
 public class StoreOrchestrator {
 
     @Inject
     private StagingArea stagingArea;
+
+    @Inject
+    private PipelineMonitoringService pipelineMonitoringService;
 
     PerformanceReport performanceReport;
 
@@ -143,6 +139,7 @@ public class StoreOrchestrator {
                 systemStore,
                 stagingStore,
                 pipeId,
+                entity,
                 data
                 );
     }
@@ -207,27 +204,27 @@ public class StoreOrchestrator {
     private void postProcess(SecurityToken securityToken, SystemStore systemStore,
                              StagingStore stagingStore,
                              String pipeId,
+                             String entity,
                              String data){
-        String principal = securityToken.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
+        PipelineServiceType pipelineServiceType = PipelineServiceType.INGESTION;
+        JsonObject metaData = stagingStore.getConfiguration();
 
-        //setup driver components
-        MongoClient mongoClient = systemStore.getMongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
+        this.pipelineMonitoringService.preProcess(
+            pipelineServiceType,
+                metaData,
+                securityToken,
+                pipeId,
+                entity,
+                data
+        );
 
-        Queue<String> queue = new LinkedList<>();
-        queue.add(data);
-        SizeOf sizeOf = SizeOf.newInstance();
-        long dataStreamSize = sizeOf.deepSizeOf(queue);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("targetSystem", stagingStore.getName());
-        jsonObject.addProperty("pipeId", pipeId);
-        jsonObject.addProperty("message", data);
-        jsonObject.addProperty("sizeInBytes", dataStreamSize);
-        jsonObject.addProperty("outgoing", true);
-
-        collection.insertOne(Document.parse(jsonObject.toString()));
+        this.pipelineMonitoringService.postProcess(
+                pipelineServiceType,
+                metaData,
+                securityToken,
+                pipeId,
+                entity,
+                data
+        );
     }
 }

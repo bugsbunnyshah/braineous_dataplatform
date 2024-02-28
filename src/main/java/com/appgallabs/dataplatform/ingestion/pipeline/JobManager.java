@@ -4,8 +4,11 @@ import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
+import com.appgallabs.dataplatform.pipeline.manager.service.PipelineMonitoringService;
+import com.appgallabs.dataplatform.pipeline.manager.service.PipelineServiceType;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -45,6 +48,9 @@ public class JobManager {
     private MongoDBJsonStore mongoDBJsonStore;
 
     @Inject
+    private PipelineMonitoringService pipelineMonitoringService;
+
+    @Inject
     private SchemalessMapper schemalessMapper;
 
     @Inject
@@ -72,7 +78,7 @@ public class JobManager {
                        String pipeId, long offset, String jsonString){
         try {
             //pre-process for pipeline monitor
-            this.preProcess(jsonString, securityToken, pipeId);
+            this.preProcess(jsonString, driverConfiguration, securityToken, pipeId, entity);
 
             //tenant
             Tenant tenant = new Tenant(securityToken.getPrincipal());
@@ -189,30 +195,23 @@ public class JobManager {
         insertionResult.await();
     }
     //-----------------------------------------------------------------------------------------------------------
-    private void preProcess(String value,
+    private void preProcess(String data,
+                            String driverConfiguration,
                             SecurityToken securityToken,
-                            String pipeId
+                            String pipeId,
+                            String entity
                             ){
-        String principal = securityToken.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
+        PipelineServiceType pipelineServiceType = PipelineServiceType.DATALAKE;
+        JsonObject metaData = JsonUtil.validateJson(driverConfiguration).getAsJsonObject();
 
-        //setup driver components
-        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
-
-        Queue<String> queue = new LinkedList<>();
-        queue.add(value);
-        SizeOf sizeOf = SizeOf.newInstance();
-        long dataStreamSize = sizeOf.deepSizeOf(queue);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("pipeId", pipeId);
-        jsonObject.addProperty("message", value);
-        jsonObject.addProperty("sizeInBytes", dataStreamSize);
-        jsonObject.addProperty("incoming", true);
-
-        collection.insertOne(Document.parse(jsonObject.toString()));
+        this.pipelineMonitoringService.postProcess(
+                pipelineServiceType,
+                metaData,
+                securityToken,
+                pipeId,
+                entity,
+                data
+        );
     }
 
 }

@@ -2,11 +2,13 @@ package com.appgallabs.dataplatform.pipeline.manager.service;
 
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
-import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
+
 import com.google.gson.JsonObject;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+
 import org.bson.Document;
 import org.ehcache.sizeof.SizeOf;
 import org.slf4j.Logger;
@@ -78,8 +80,8 @@ public class PipelineMonitoringService {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("pipelineServiceType", pipelineServiceType.name());
-        jsonObject.addProperty("entity", entity);
         jsonObject.add("metadata", metaData);
+        jsonObject.addProperty("entity", entity);
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", jsonString);
         jsonObject.addProperty("sizeInBytes", dataStreamSize);

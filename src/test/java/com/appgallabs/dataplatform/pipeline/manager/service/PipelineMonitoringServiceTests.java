@@ -36,6 +36,11 @@ public class PipelineMonitoringServiceTests extends BaseTest {
         this.testPipelineMonitoring(PipelineServiceType.INGESTION);
     }
 
+    @Test
+    public void dataLakeProcessMonitoring() throws Exception{
+        this.testPipelineMonitoring(PipelineServiceType.DATALAKE);
+    }
+
     private void testPipelineMonitoring(PipelineServiceType pipelineServiceType) throws Exception{
         Registry registry = Registry.getInstance();
         String configLocation = "pipeline/manager/service/pipe_config.json";
