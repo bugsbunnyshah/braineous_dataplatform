@@ -203,14 +203,16 @@ public class JobManager {
                             ){
         PipelineServiceType pipelineServiceType = PipelineServiceType.DATALAKE;
         JsonObject metaData = JsonUtil.validateJson(driverConfiguration).getAsJsonObject();
+        boolean incoming = true;
 
-        this.pipelineMonitoringService.postProcess(
+        this.pipelineMonitoringService.record(
                 pipelineServiceType,
                 metaData,
                 securityToken,
                 pipeId,
                 entity,
-                data
+                data,
+                incoming
         );
     }
 

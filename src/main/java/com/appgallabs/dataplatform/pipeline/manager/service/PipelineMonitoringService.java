@@ -26,12 +26,13 @@ public class PipelineMonitoringService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    public JsonObject preProcess(PipelineServiceType pipelineServiceType,
+    public JsonObject record(PipelineServiceType pipelineServiceType,
                                  JsonObject metaData,
                                  SecurityToken securityToken,
                                  String pipeId,
                                  String entity,
-                                 String jsonString){
+                                 String jsonString,
+                                 boolean isIncoming){
         String principal = securityToken.getPrincipal();
         String databaseName = principal + "_" + "aiplatform";
 
@@ -52,40 +53,11 @@ public class PipelineMonitoringService {
         jsonObject.addProperty("pipeId", pipeId);
         jsonObject.addProperty("message", jsonString);
         jsonObject.addProperty("sizeInBytes", dataStreamSize);
-        jsonObject.addProperty("incoming", true);
-
-        collection.insertOne(Document.parse(jsonObject.toString()));
-
-        return jsonObject;
-    }
-
-    public JsonObject postProcess(PipelineServiceType pipelineServiceType,
-                                  JsonObject metaData,
-                                SecurityToken securityToken,
-                                String pipeId,
-                                String entity,
-                                  String jsonString){
-        String principal = securityToken.getPrincipal();
-        String databaseName = principal + "_" + "aiplatform";
-
-        //setup driver components
-        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
-        MongoDatabase db = mongoClient.getDatabase(databaseName);
-        MongoCollection<Document> collection = db.getCollection("pipeline_monitoring");
-
-        Queue<String> queue = new LinkedList<>();
-        queue.add(jsonString);
-        SizeOf sizeOf = SizeOf.newInstance();
-        long dataStreamSize = sizeOf.deepSizeOf(queue);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("pipelineServiceType", pipelineServiceType.name());
-        jsonObject.add("metadata", metaData);
-        jsonObject.addProperty("entity", entity);
-        jsonObject.addProperty("pipeId", pipeId);
-        jsonObject.addProperty("message", jsonString);
-        jsonObject.addProperty("sizeInBytes", dataStreamSize);
-        jsonObject.addProperty("outgoing", true);
+        if(isIncoming) {
+            jsonObject.addProperty("incoming", true);
+        }else{
+            jsonObject.addProperty("outgoing", true);
+        }
 
         collection.insertOne(Document.parse(jsonObject.toString()));
 

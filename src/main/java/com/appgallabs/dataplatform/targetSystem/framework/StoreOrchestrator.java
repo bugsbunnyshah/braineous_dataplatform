@@ -209,22 +209,24 @@ public class StoreOrchestrator {
         PipelineServiceType pipelineServiceType = PipelineServiceType.INGESTION;
         JsonObject metaData = stagingStore.getConfiguration();
 
-        this.pipelineMonitoringService.preProcess(
+        this.pipelineMonitoringService.record(
             pipelineServiceType,
                 metaData,
                 securityToken,
                 pipeId,
                 entity,
-                data
+                data,
+                true //incoming
         );
 
-        this.pipelineMonitoringService.postProcess(
+        this.pipelineMonitoringService.record(
                 pipelineServiceType,
                 metaData,
                 securityToken,
                 pipeId,
                 entity,
-                data
+                data,
+                false //outgoing
         );
     }
 }

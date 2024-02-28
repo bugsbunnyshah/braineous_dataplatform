@@ -55,33 +55,34 @@ public class PipelineMonitoringServiceTests extends BaseTest {
         registry.registerPipe(tenant, configJson);
         String pipeId = configJson.get("pipeId").getAsString();
         String entity = configJson.get("entity").getAsString();
-        List<StagingStore> registeredStores = registry.findStagingStores(securityToken.getPrincipal(),
-                pipeId);
-        StagingStore stagingStore = registeredStores.get(0);
 
-        JsonObject preProcessResult = this.pipelineMonitoringService.preProcess(
+        JsonObject preProcessResult = this.pipelineMonitoringService.record(
                 pipelineServiceType,
                 configJson,
                 securityToken,
                 pipeId,
                 entity,
-                jsonString
+                jsonString,
+                true //incoming
         );
 
         //Assertions
         JsonUtil.printStdOut(preProcessResult);
 
-        //post_process
-        JsonObject postProcessResult = this.pipelineMonitoringService.postProcess(
-                pipelineServiceType,
-                configJson,
-                securityToken,
-                pipeId,
-                entity,
-                jsonString
-        );
+        if(pipelineServiceType == PipelineServiceType.INGESTION) {
+            //post_process
+            JsonObject postProcessResult = this.pipelineMonitoringService.record(
+                    pipelineServiceType,
+                    configJson,
+                    securityToken,
+                    pipeId,
+                    entity,
+                    jsonString,
+                    false //outgoing
+            );
 
-        //Assertions
-        JsonUtil.printStdOut(postProcessResult);
+            //Assertions
+            JsonUtil.printStdOut(postProcessResult);
+        }
     }
 }
