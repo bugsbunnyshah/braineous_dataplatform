@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+
 @QuarkusTest
 public class FlinkTableCreationTests {
     private static Logger logger = LoggerFactory.getLogger(FlinkTableCreationTests.class);
@@ -46,8 +47,6 @@ public class FlinkTableCreationTests {
     private DataLakeSqlGenerator dataLakeSqlGenerator;
 
     private StreamExecutionEnvironment env;
-
-    private String tableName = "unit_test";
 
     @Test
     public void testDynamicSchema() throws Exception{
@@ -70,15 +69,19 @@ public class FlinkTableCreationTests {
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
             Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
             flatArray.add(flatJson);
+            break;
         }
 
         Map<String, Object> row = flatArray.get(0);
 
-        String table = this.createTable(this.tableName,row);
-        this.addData(table, flatArray);
+        for(int i=0; i<3; i++) {
+            String table = this.createTable(row);
+            this.updateTable(table, row);
+            this.addData(table, flatArray);
+        }
     }
 
-    private String createTable(String tableName, Map<String,Object> row) throws Exception{
+    private String createTable(Map<String,Object> row) throws Exception{
         String name  = "myhive";
         String database = "mydatabase";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
@@ -88,7 +91,7 @@ public class FlinkTableCreationTests {
         );
 
 
-        tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
         String table = name + "." + database + "." + tableName;
         String objectPath = database + "." + tableName;
         String filePath = "file:///Users/babyboy/datalake/"+tableName;
@@ -98,14 +101,29 @@ public class FlinkTableCreationTests {
         Optional<Catalog> catalog = tableEnv.getCatalog(currentCatalog);
         boolean tableExists = catalog.get().tableExists(ObjectPath.fromString(objectPath));
 
+        System.out.println("TABLE: "+table);
         if(!tableExists) {
-            System.out.println("TABLE: "+table);
             TableDescriptor tableDescriptor = this.dataLakeTableGenerator.createFileSystemTable(row,
                     filePath,
                     format);
 
             tableEnv.createTable(table, tableDescriptor);
         }
+
+        return table;
+    }
+
+    private String updateTable(String table, Map<String,Object> row) throws Exception{
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.env,
+                name
+        );
+
+
+        String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        tableEnv.executeSql("ALTER TABLE "+table+" ADD `" +newColumn+ "` String NULL");
+        row.put(newColumn, "");
 
         return table;
     }
@@ -117,7 +135,11 @@ public class FlinkTableCreationTests {
                 name
         );
 
+        Table data = tableEnv.from(table);
+        System.out.println(data.getResolvedSchema().toString());
+
         String insertSql = this.dataLakeSqlGenerator.generateInsertSql(table, rows);
+        System.out.println(insertSql);
         // insert some example data into the table
         final TableResult insertionResult =
                 tableEnv.executeSql(insertSql);
@@ -127,9 +149,6 @@ public class FlinkTableCreationTests {
         // an exception is thrown in case of an error
         insertionResult.await();
 
-        String queryTable = "scenariowitharray" + "." + "scenariowitharray";
-        String sql = "select * from "+queryTable;
-        Table result = tableEnv.sqlQuery(sql);
-        result.execute().print();
+        data.execute().print();
     }
 }

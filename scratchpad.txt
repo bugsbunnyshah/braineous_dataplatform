@@ -123,3 +123,17 @@ CREATE TABLE hudi_table(ts BIGINT, uuid VARCHAR(40) PRIMARY KEY NOT ENFORCED, ri
 
 -- insert data using values
 INSERT INTO hudi_table VALUES (1695159649087,'334e26e9-8355-45cc-97c6-c31daf0df330','rider-A','driver-K',19.10,'san_francisco');
+
+
+
+
+//CatalogBaseTable orders = catalog.get().getTable(ObjectPath.fromString(objectPath));
+        /*Table orders = tableEnv.from(table);
+
+        CatalogTable alteredTable = (CatalogTable) orders;
+        String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        Table result = orders.addColumns($("new_column").as(newColumn));
+
+        System.out.println(result.getResolvedSchema().toString());
+        catalog.get().alterTable(ObjectPath.fromString(objectPath),
+                (CatalogBaseTable) result, false);*/
