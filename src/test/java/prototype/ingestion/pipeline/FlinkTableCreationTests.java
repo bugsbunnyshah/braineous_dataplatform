@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSessionManager;
 import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSqlGenerator;
 import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeTableGenerator;
+import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
@@ -12,7 +13,6 @@ import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
@@ -46,17 +46,13 @@ public class FlinkTableCreationTests {
     @Inject
     private DataLakeSqlGenerator dataLakeSqlGenerator;
 
-    private StreamExecutionEnvironment env;
+    @Inject
+    private PipelineService pipelineService;
+
+    private String tableName = "updt_i";
 
     @Test
-    public void testDynamicSchema() throws Exception{
-        this.env = StreamExecutionEnvironment.createRemoteEnvironment(
-                "localhost",
-                Integer.parseInt("8081"),
-                "dataplatform-1.0.0-cr2-runner.jar"
-        );
-
-
+    public void testCreateTable() throws Exception{
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
                 StandardCharsets.UTF_8
@@ -74,27 +70,67 @@ public class FlinkTableCreationTests {
 
         Map<String, Object> row = flatArray.get(0);
 
-        for(int i=0; i<3; i++) {
-            String table = this.createTable(row);
-            this.updateTable(table, row);
-            this.addData(table, flatArray);
+        this.createTable(row);
+    }
+
+    @Test
+    public void testUpdateTable() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
+                StandardCharsets.UTF_8
+        );
+
+        JsonArray jsonArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
+
+        List<Map<String, Object>> flatArray = new ArrayList();
+        for(int i=0; i<jsonArray.size(); i++) {
+            JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
+            Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
+            flatArray.add(flatJson);
+            break;
         }
+
+        Map<String, Object> row = flatArray.get(0);
+
+        this.createTable(row);
+
+        for(int i=0; i<1; i++) {
+            this.updateTable(row);
+        }
+
+        String table = this.getTable();
+        for(int i=0; i<3; i++){
+            this.addData(table, flatArray);
+            this.printData(table);
+        }
+    }
+
+    @Test
+    public void testSelectTable() throws Exception{
+        String table = this.getTable();
+        this.printData(table);
+    }
+
+    private String getTable(){
+        String name  = "myhive";
+        String database = "mydatabase";
+        String table = name + "." + database + "." + this.tableName;
+        return table;
     }
 
     private String createTable(Map<String,Object> row) throws Exception{
         String name  = "myhive";
         String database = "mydatabase";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
-                this.env,
+                this.pipelineService.getEnv(),
                 name,
                 database
         );
 
-
-        String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-        String table = name + "." + database + "." + tableName;
-        String objectPath = database + "." + tableName;
-        String filePath = "file:///Users/babyboy/datalake/"+tableName;
+        //String tableName = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        String table = name + "." + database + "." + this.tableName;
+        String objectPath = database + "." + this.tableName;
+        String filePath = "file:///Users/babyboy/datalake/"+ this.tableName;
         String format = "csv";
 
         String currentCatalog = tableEnv.getCurrentCatalog();
@@ -113,17 +149,41 @@ public class FlinkTableCreationTests {
         return table;
     }
 
-    private String updateTable(String table, Map<String,Object> row) throws Exception{
+    private String updateTable(Map<String,Object> row) throws Exception{
+        String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+
         String name  = "myhive";
+        String database = "mydatabase";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
-                this.env,
+                this.pipelineService.getEnv(),
                 name
         );
 
+        String table = name + "." + database + "." + this.tableName;
+        String objectPath = database + "." + this.tableName;
 
-        String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-        tableEnv.executeSql("ALTER TABLE "+table+" ADD `" +newColumn+ "` String NULL");
-        row.put(newColumn, "");
+        String currentCatalog = tableEnv.getCurrentCatalog();
+        Optional<Catalog> catalog = tableEnv.getCatalog(currentCatalog);
+
+        final TableResult updateTableResult = tableEnv.
+                executeSql("ALTER TABLE "+table+" ADD `" +newColumn+ "` String NULL");
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        updateTableResult.await();
+
+        //CatalogBaseTable tableToBeAltered = catalog.get().getTable(ObjectPath.fromString(objectPath));
+        /*Table tableToBeAltered = tableEnv.from(table);
+
+        Table result = tableToBeAltered.addColumns($(newColumn).as(newColumn));
+        System.out.println(result.getResolvedSchema().toString());*/
+
+
+        //catalog.get().alterTable(ObjectPath.fromString(objectPath),
+        //        (CatalogBaseTable) result, false);
+
+
+        row.put(newColumn, "update_success");
 
         return table;
     }
@@ -131,7 +191,7 @@ public class FlinkTableCreationTests {
     private void addData(String table, List<Map<String,Object>> rows) throws Exception{
         String name  = "myhive";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
-                this.env,
+                this.pipelineService.getEnv(),
                 name
         );
 
@@ -148,7 +208,29 @@ public class FlinkTableCreationTests {
         // we need to wait until the insertion has been completed,
         // an exception is thrown in case of an error
         insertionResult.await();
+    }
 
+    private void printData(String table) throws Exception{
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.pipelineService.getEnv(),
+                name
+        );
+
+        Table data = tableEnv.from(table);
         data.execute().print();
+
+
+        /*String selectSql = "select * from "+table;
+        System.out.println(selectSql);
+        // insert some example data into the table
+        final TableResult result =
+                tableEnv.executeSql(selectSql);
+
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        result.await();
+        result.print();*/
     }
 }

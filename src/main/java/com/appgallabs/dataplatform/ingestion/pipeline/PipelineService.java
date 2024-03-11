@@ -86,4 +86,8 @@ public class PipelineService {
                        String pipeId, long offset, String entity, String jsonString){
         this.jobManager.submit(this.env, securityToken, driverConfiguration, entity, pipeId, offset, jsonString);
     }
+
+    public StreamExecutionEnvironment getEnv() {
+        return env;
+    }
 }
