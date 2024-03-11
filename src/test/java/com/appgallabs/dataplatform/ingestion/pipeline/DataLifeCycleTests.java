@@ -5,16 +5,18 @@ import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.quarkus.test.junit.QuarkusTest;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableDescriptor;
 import org.apache.flink.table.api.TableResult;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.catalog.Catalog;
 import org.apache.flink.table.catalog.ObjectPath;
+import org.apache.flink.table.catalog.ResolvedSchema;
+
+import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import test.components.BaseTest;
 
@@ -23,8 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @QuarkusTest
 public class DataLifeCycleTests extends BaseTest {
@@ -53,16 +54,11 @@ public class DataLifeCycleTests extends BaseTest {
                 StandardCharsets.UTF_8
         );
 
+
         //prepare a progressing payload
         JsonObject baseObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
         JsonArray payload = new JsonArray();
         payload.add(baseObject);
-        for(int i=0; i<3; i++) {
-            JsonObject jsonObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
-            this.preparePayload(payload, jsonObject, (i+1));
-        }
-        JsonUtil.printStdOut(payload);
-
         Map<String, Object> baseRow = this.schemalessMapper.mapAll(baseObject.toString());
 
         //create a table
@@ -70,18 +66,31 @@ public class DataLifeCycleTests extends BaseTest {
         String table = this.createTable(tableName, baseRow);
         this.printSchema(table);
 
-        //update the table
-        table = this.updateTable(table, baseRow);
-        this.printSchema(table);
+        for(int i=0; i<3; i++) {
+            int payloadSize = payload.size();
+            JsonObject jsonObject = payload.get(payloadSize-1).getAsJsonObject();
+            String columnValue = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+            String newColumn = this.preparePayload(payload, jsonObject, columnValue);
+
+            Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
+
+            //update the table
+            table = this.updateTable(table, newColumn);
+            this.printSchema(table);
+
+            //bridge and insert
+            this.unstructuredToStructureBridge(table, flatJson);
+        }
+
+        //print the data
+        this.printData(table);
     }
 
-    private void preparePayload(JsonArray payload, JsonObject jsonObject,
-                                     int numberOfNewColumns){
-        for(int i=0; i<numberOfNewColumns; i++) {
-            String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-            jsonObject.addProperty(newColumn, "update_success");
-        }
+    private String preparePayload(JsonArray payload, JsonObject jsonObject, String value){
+        String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        jsonObject.addProperty(newColumn, value);
         payload.add(jsonObject);
+        return newColumn;
     }
 
     private String createTable(String tableName, Map<String,Object> row) throws Exception{
@@ -127,12 +136,12 @@ public class DataLifeCycleTests extends BaseTest {
         );
 
         Table data = tableEnv.from(table);
+        ResolvedSchema resolvedSchema = data.getResolvedSchema();
+        List<String> columnNames = resolvedSchema.getColumnNames();
         System.out.println(data.getResolvedSchema().toString());
     }
 
-    private String updateTable(String table,Map<String,Object> row) throws Exception{
-        String newColumn = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-
+    private String updateTable(String table,String newColumn) throws Exception{
         String name  = "myhive";
         String database = "mydatabase";
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
@@ -163,5 +172,77 @@ public class DataLifeCycleTests extends BaseTest {
         //        (CatalogBaseTable) result, false);
 
         return table;
+    }
+
+    private void addData(String table, List<Map<String,Object>> rows) throws Exception{
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.pipelineService.getEnv(),
+                name
+        );
+
+        Table data = tableEnv.from(table);
+        System.out.println(data.getResolvedSchema().toString());
+
+        String insertSql = this.dataLakeSqlGenerator.generateInsertSql(table, rows);
+        System.out.println(insertSql);
+        // insert some example data into the table
+        final TableResult insertionResult =
+                tableEnv.executeSql(insertSql);
+
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        insertionResult.await();
+    }
+
+    private void printData(String table) throws Exception{
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.pipelineService.getEnv(),
+                name
+        );
+
+        /*Table data = tableEnv.from(table);
+        data.execute().print();*/
+
+
+        String selectSql = "select name,expensive from "+table;
+        System.out.println(selectSql);
+        // insert some example data into the table
+        final TableResult result =
+                tableEnv.executeSql(selectSql);
+
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        result.await();
+        result.print();
+    }
+
+    private void unstructuredToStructureBridge(String table, Map<String, Object> row) throws Exception{
+        String name  = "myhive";
+        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                this.pipelineService.getEnv(),
+                name
+        );
+
+        Table data = tableEnv.from(table);
+        ResolvedSchema resolvedSchema = data.getResolvedSchema();
+
+
+        //should contain all payloadColums via Alter table earlier
+        List<String> currentColumns = resolvedSchema.getColumnNames();
+
+        for(String currentColum: currentColumns){
+            if(!row.containsKey(currentColum)){
+                //missing data
+                row.put(currentColum, "empty_string");
+            }
+        }
+
+        List<Map<String, Object>> insert = new ArrayList<>();
+        insert.add(row);
+        this.addData(table, insert);
     }
 }
