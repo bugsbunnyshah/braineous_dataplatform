@@ -49,34 +49,53 @@ public class FlinkTableCreationTests {
     @Inject
     private PipelineService pipelineService;
 
-    private String tableName = "updt_l";
-
-    @Test
-    public void testCreateTable() throws Exception{
-        String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
-                StandardCharsets.UTF_8
-        );
-
-        JsonArray jsonArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
-
-        List<Map<String, Object>> flatArray = new ArrayList();
-        for(int i=0; i<jsonArray.size(); i++) {
-            JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
-            flatArray.add(flatJson);
-            break;
-        }
-
-        Map<String, Object> row = flatArray.get(0);
-
-        this.createTable(row);
-    }
+    private String tableName = "updt_s";
 
     @Test
     public void testUpdateTable() throws Exception{
         String jsonString = IOUtils.toString(Thread.currentThread().
-                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input_array.json"),
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/dynamic_table.json"),
+                StandardCharsets.UTF_8
+        );
+
+        JsonArray jsonArray = JsonUtil.validateJson(jsonString).getAsJsonArray();
+
+        List<Map<String, Object>> flatArray = new ArrayList();
+        for(int i=0; i<jsonArray.size(); i++) {
+            JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
+            Map<String, Object> flatJson = this.schemalessMapper.mapAll(jsonObject.toString());
+            flatArray.add(flatJson);
+            break;
+        }
+
+        String table = this.getTable();
+        Map<String, Object> row = flatArray.get(0);
+
+        this.createTable(row);
+
+        for(int i=0; i<2; i++) {
+            this.updateTable(row);
+
+            //insert record
+            this.addData(table, flatArray);
+        }
+
+        //insert record
+        /*for(int i=0; i<3; i++){
+            this.addData(table, flatArray);
+        }*/
+
+
+        //print the records
+        for(int i=0; i<2; i++){
+            this.printData(table);
+        }
+    }
+
+    @Test
+    public void testCreateTable() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/dynamic_table.json"),
                 StandardCharsets.UTF_8
         );
 
@@ -93,16 +112,6 @@ public class FlinkTableCreationTests {
         Map<String, Object> row = flatArray.get(0);
 
         this.createTable(row);
-
-        for(int i=0; i<1; i++) {
-            this.updateTable(row);
-        }
-
-        String table = this.getTable();
-        for(int i=0; i<10; i++){
-            this.addData(table, flatArray);
-            this.printData(table);
-        }
     }
 
     @Test
@@ -217,11 +226,11 @@ public class FlinkTableCreationTests {
                 name
         );
 
-        Table data = tableEnv.from(table);
-        data.execute().print();
+        /*Table data = tableEnv.from(table);
+        data.execute().print();*/
 
 
-        /*String selectSql = "select * from "+table;
+        String selectSql = "select name,expensive from "+table;
         System.out.println(selectSql);
         // insert some example data into the table
         final TableResult result =
@@ -231,6 +240,6 @@ public class FlinkTableCreationTests {
         // we need to wait until the insertion has been completed,
         // an exception is thrown in case of an error
         result.await();
-        result.print();*/
+        result.print();
     }
 }
