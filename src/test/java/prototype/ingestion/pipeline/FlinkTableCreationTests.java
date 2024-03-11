@@ -49,7 +49,7 @@ public class FlinkTableCreationTests {
     @Inject
     private PipelineService pipelineService;
 
-    private String tableName = "updt_i";
+    private String tableName = "updt_l";
 
     @Test
     public void testCreateTable() throws Exception{
@@ -99,7 +99,7 @@ public class FlinkTableCreationTests {
         }
 
         String table = this.getTable();
-        for(int i=0; i<3; i++){
+        for(int i=0; i<10; i++){
             this.addData(table, flatArray);
             this.printData(table);
         }
