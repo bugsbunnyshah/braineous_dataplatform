@@ -1,11 +1,15 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
 
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
+import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.flink.table.api.Table;
@@ -17,11 +21,13 @@ import org.apache.flink.table.catalog.ObjectPath;
 import org.apache.flink.table.catalog.ResolvedSchema;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import test.components.BaseTest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import test.components.Util;
 
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
@@ -45,6 +51,74 @@ public class DataLifeCycleTests extends BaseTest {
 
     @Inject
     private PipelineService pipelineService;
+
+    @Inject
+    private SecurityTokenContainer securityTokenContainer;
+
+    @BeforeEach
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+        Tenant tenant = this.securityTokenContainer.getTenant();
+
+        String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
+
+        Registry registry = Registry.getInstance();
+        registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
+    }
+
+    @Test
+    public void dataLifeCycle() throws Exception{
+        String originalObjectHash = null;
+        try {
+            //get base object
+            String jsonString = IOUtils.toString(Thread.currentThread().
+                            getContextClassLoader().getResourceAsStream("ingestion/pipeline/dynamic_table.json"),
+                    StandardCharsets.UTF_8
+            );
+            String pipeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+            String entity = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+            JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+
+
+            //create
+            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                    datalakeDriverConfiguration.toString(),
+                    pipeId, 0,
+                    entity, jsonString);
+
+            //prepare a progressing payload
+            JsonObject baseObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
+            JsonArray payload = new JsonArray();
+            payload.add(baseObject);
+            Map<String, Object> baseRow = this.schemalessMapper.mapAll(baseObject.toString());
+
+            //update
+            for(int i=0; i<3; i++) {
+                //Thread.sleep(5000);
+
+                int payloadSize = payload.size();
+                JsonObject jsonObject = payload.get(payloadSize-1).getAsJsonObject();
+                String columnValue = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+                String newColumn = this.preparePayload(payload, jsonObject, columnValue);
+
+                //update the table
+                String newObject = jsonObject.toString();
+                this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                        datalakeDriverConfiguration.toString(),
+                        pipeId, 0,
+                        entity, newObject);
+            }
+
+
+            while(true) {
+                Thread.sleep(120000l);
+            }
+        }finally{
+            System.out.println(originalObjectHash);
+        }
+    }
 
     @Test
     public void updateTableSchema() throws Exception{

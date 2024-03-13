@@ -8,6 +8,7 @@ import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.google.gson.JsonObject;
 import com.mongodb.client.MongoClient;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -70,6 +71,8 @@ public abstract class BaseTest
 
             tenant.setPrincipal(apiKey);
             tenant.setApiSecret(apiKeySecret);
+            String dataLakeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+            tenant.setDataLakeId(dataLakeId);
 
             Tenant adminTenant = tenant;
             tenantStore.createTenant(mongoClient,

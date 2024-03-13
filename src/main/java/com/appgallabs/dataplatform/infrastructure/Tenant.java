@@ -12,6 +12,8 @@ public class Tenant implements Serializable {
     private String principal;
     private String apiSecret;
 
+    private String dataLakeId;
+
     private String name;
 
     private String email;
@@ -63,6 +65,14 @@ public class Tenant implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDataLakeId() {
+        return dataLakeId;
+    }
+
+    public void setDataLakeId(String dataLakeId) {
+        this.dataLakeId = dataLakeId;
     }
 
     @Override
