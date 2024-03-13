@@ -112,9 +112,9 @@ public class DataLifeCycleTests extends BaseTest {
             }
 
 
-            while(true) {
+            /*while(true) {
                 Thread.sleep(120000l);
-            }
+            }*/
         }finally{
             System.out.println(originalObjectHash);
         }
