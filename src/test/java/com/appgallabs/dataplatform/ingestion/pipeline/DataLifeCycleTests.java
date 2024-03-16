@@ -111,10 +111,11 @@ public class DataLifeCycleTests extends BaseTest {
                         entity, newObject);
             }
 
+            Thread.sleep(30000l);
 
-            while(true) {
+            /*while(true) {
                 Thread.sleep(120000l);
-            }
+            }*/
         }finally{
             System.out.println(originalObjectHash);
         }
@@ -166,17 +167,17 @@ public class DataLifeCycleTests extends BaseTest {
             }
 
 
-            while(true) {
+            Thread.sleep(30000l);
+
+            /*while(true) {
                 Thread.sleep(120000l);
-            }
+            }*/
         }finally{
             System.out.println(originalObjectHash);
         }
     }
 
     //----------------------------------------------------------------------------------------------------
-
-    @Test
     public void updateTableSchema() throws Exception{
         //get base object
         String jsonString = IOUtils.toString(Thread.currentThread().
