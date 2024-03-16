@@ -8,26 +8,37 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @ApplicationScoped
 public class DataLakeSqlGenerator {
     private static Logger logger = LoggerFactory.getLogger(DataLakeTableGenerator.class);
 
-    public String generateInsertSql(String table, List<Map<String,Object>> rows){
+    public String generateInsertSql(String table,
+                                    List<String> columns,
+                                    List<Map<String,Object>> rows){
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("INSERT INTO " + table + " VALUES {0}");
         String insertSqlTemplate = sqlBuilder.toString();
 
         StringBuilder batchBuilder = new StringBuilder();
         for(Map<String,Object> row:rows) {
-            Collection<Object> values = row.values();
+            StringBuilder valueBuilder = new StringBuilder();
             StringBuilder rowBuilder = new StringBuilder();
             rowBuilder.append("(");
-            StringBuilder valueBuilder = new StringBuilder();
-            for (Object value : values) {
+            for(String column: columns){
+                Object value = row.get(column);
                 String insert = "'" + value + "',";
                 valueBuilder.append(insert);
             }
+
+            /*Set<Map.Entry<String, Object>> cartesian = row.entrySet();
+            for(Map.Entry<String, Object> cartesianInstance: cartesian) {
+                Object value = cartesianInstance.getValue();
+                String insert = "'" + value + "',";
+                valueBuilder.append(insert);
+            }*/
+
             String valueBuilderStr = valueBuilder.toString();
             String rowValue = valueBuilderStr.substring(0, valueBuilderStr.length()-1);
             rowBuilder.append(rowValue);

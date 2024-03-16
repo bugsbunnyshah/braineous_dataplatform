@@ -8,29 +8,19 @@ import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipelineMonitoringService;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipelineServiceType;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
-
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.flink.shaded.guava31.com.google.common.hash.Hashing;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.catalog.Catalog;
 import org.apache.flink.table.catalog.ObjectPath;
 import org.apache.flink.table.catalog.ResolvedSchema;
-import org.apache.flink.types.Row;
-
-import org.bson.Document;
-import org.ehcache.sizeof.SizeOf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +28,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -117,7 +105,7 @@ public class JobManager {
         }catch(Exception e){
             logger.error(e.getMessage(), e);
 
-            //TODO: handle system level errors
+            //TODO: handle system level errors (NOW)
         }
     }
 
@@ -128,19 +116,12 @@ public class JobManager {
         submitJobPool.execute(() -> {
             try {
                 this.addData(env,catalogName, table, flatArray);
-                logger.info("****JOB_SUCCESS*****");
+                logger.debug("****JOB_SUCCESS*****");
             }catch(Exception e){
-                e.printStackTrace();
-                //this.retryJob(env, catalogName, table, flatArray);
+                logger.error(e.getMessage(), e);
+                this.retryJob(env, catalogName, table, flatArray);
             }
         });
-        /*try {
-            this.addData(env,catalogName, table, flatArray);
-            logger.info("****JOB_SUCCESS*****");
-        }catch(Exception e){
-            e.printStackTrace();
-            //this.retryJob(env, catalogName, table, flatArray);
-        }*/
     }
 
     private void retryJob(StreamExecutionEnvironment env,
@@ -154,7 +135,8 @@ public class JobManager {
                     logger.info("****JOB_RETRY_SUCCESS*****");
                     break;
                 }catch(Exception e){
-
+                    logger.error(e.getMessage(), e);
+                    //TODO: handle system level errors (NOW)
                 }
             }
         });
@@ -170,35 +152,29 @@ public class JobManager {
                 catalogName
         );
 
-        JsonUtil.printStdOut(JsonUtil.validateJson(rows.toString()));
-
         //check if table should be altered to accomodate more columns
         List<String> newColumns = this.shouldAlterTable(
               tableEnv,
-              catalogName,
               table,
               rows
         );
         if(newColumns != null && !newColumns.isEmpty()){
-            System.out.println("*****UPDATE_TABLE********: true");
             this.updateTable(
                     tableEnv,
-                    catalogName,
                     table,
                     newColumns
             );
-        }else{
-            System.out.println("*****UPDATE_TABLE********: false");
         }
 
         Table data = tableEnv.from(table);
         System.out.println(data.getResolvedSchema().toString());
+        ResolvedSchema resolvedSchema = data.getResolvedSchema();
+        List<String> currentColumns = resolvedSchema.getColumnNames();
 
-
-        String insertSql = this.dataLakeSqlGenerator.generateInsertSql(table, rows);
-        System.out.println("*********INSERT_SQL************");
-        System.out.println(insertSql);
-        System.out.println("*******************************");
+        String insertSql = this.dataLakeSqlGenerator.generateInsertSql(table, currentColumns, rows);
+        logger.debug("*********INSERT_SQL************");
+        logger.debug(insertSql);
+        logger.debug("*******************************");
         // insert some example data into the table
         final TableResult insertionResult =
                 tableEnv.executeSql(insertSql);
@@ -220,7 +196,10 @@ public class JobManager {
         );
         String table = catalogName + "." + database + "." + tableName;
         String objectPath = database + "." + tableName;
+
+        //TODO: (NOW)
         String filePath = "file:///Users/babyboy/datalake/"+tableName;
+
         String format = "csv";
 
         String currentCatalog = tableEnv.getCurrentCatalog();
@@ -236,19 +215,19 @@ public class JobManager {
             tableEnv.createTable(table, tableDescriptor);
         }
 
-        System.out.println("TABLE_CREATED: " + !tableExists);
+        logger.debug("TABLE_CREATED: " + !tableExists);
 
         return table;
     }
 
     private List<String> shouldAlterTable(
             StreamTableEnvironment tableEnv,
-            String catalogName,
             String table,
             List<Map<String, Object>> rows
 
     ){
         List<String> newColumns = new ArrayList<>();
+
         Table data = tableEnv.from(table);
         ResolvedSchema resolvedSchema = data.getResolvedSchema();
 
@@ -256,18 +235,26 @@ public class JobManager {
         List<String> currentColumns = resolvedSchema.getColumnNames();
 
         for(Map<String, Object> row: rows) {
-            for (String currentColumn : currentColumns) {
-                if (!row.containsKey(currentColumn)) {
-                    //missing data
-                    row.put(currentColumn, "empty_string");
-                }
-            }
-
             Set<String> payloadColumns = row.keySet();
+
+            //add new columns, update the schema
             for(String payloadColumn: payloadColumns){
                 if(!currentColumns.contains(payloadColumn)){
                     newColumns.add(payloadColumn);
+                    currentColumns.add(payloadColumn);
                 }
+            }
+
+            for(String currentColumn: currentColumns){
+                if(!row.containsKey(currentColumn)){
+                    row.put(currentColumn, "");
+                }
+            }
+
+            //reorient the row
+            for(String currentColumn: currentColumns){
+                Object value = row.get(currentColumn);
+                row.put(currentColumn, value);
             }
         }
 
@@ -276,7 +263,6 @@ public class JobManager {
 
     private String updateTable(
             StreamTableEnvironment tableEnv,
-            String catalogName,
             String table,
             List<String> newColumns) throws Exception{
         //String objectPath = database + "." + this.tableName;
@@ -292,16 +278,6 @@ public class JobManager {
             // an exception is thrown in case of an error
             updateTableResult.await();
         }
-
-        //CatalogBaseTable tableToBeAltered = catalog.get().getTable(ObjectPath.fromString(objectPath));
-        /*Table tableToBeAltered = tableEnv.from(table);
-
-        Table result = tableToBeAltered.addColumns($(newColumn).as(newColumn));
-        System.out.println(result.getResolvedSchema().toString());*/
-
-
-        //catalog.get().alterTable(ObjectPath.fromString(objectPath),
-        //        (CatalogBaseTable) result, false);
 
         return table;
     }
