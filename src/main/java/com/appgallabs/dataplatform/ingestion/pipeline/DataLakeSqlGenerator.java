@@ -32,13 +32,6 @@ public class DataLakeSqlGenerator {
                 valueBuilder.append(insert);
             }
 
-            /*Set<Map.Entry<String, Object>> cartesian = row.entrySet();
-            for(Map.Entry<String, Object> cartesianInstance: cartesian) {
-                Object value = cartesianInstance.getValue();
-                String insert = "'" + value + "',";
-                valueBuilder.append(insert);
-            }*/
-
             String valueBuilderStr = valueBuilder.toString();
             String rowValue = valueBuilderStr.substring(0, valueBuilderStr.length()-1);
             rowBuilder.append(rowValue);
