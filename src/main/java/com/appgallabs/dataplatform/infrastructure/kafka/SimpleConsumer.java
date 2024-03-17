@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonElement;
@@ -92,8 +93,13 @@ public class SimpleConsumer extends AbstractSimpleKafka{
                     }
                 }
             }catch (Exception e){
-                //TODO: (CR2), integrated with failure reports
                 log.error(e.getMessage(), e);
+
+                //integrated with failure reports
+                JsonObject error = new JsonObject();
+                IngestionReportingService reportingService =
+                        this.kafkaSession.getIngestionReportingService();
+                reportingService.reportDataError(error);
             }
         });
 

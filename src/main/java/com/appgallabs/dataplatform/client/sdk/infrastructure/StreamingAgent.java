@@ -58,7 +58,7 @@ public class StreamingAgent {
                 String element = this.queueStream.remove();
                 JsonElement batchElement = JsonUtil.validateJson(element);
                 if(batchElement == null){
-                    //TODO: integrate with reporting service (CR2)
+                    //integrate with reporting service
                     JsonObject reportingError = new JsonObject();
                     ReportingService reportingService = ReportingService.getInstance();
                     reportingService.reportDataError(reportingError);
@@ -83,7 +83,7 @@ public class StreamingAgent {
                     this.threadpool.execute(() -> {
                         JsonObject response = sendDataToCloud(pipeId, entity, payloadString);
 
-                        //TODO: integrate with reporting service (CR2)
+                        //integrate with reporting service
                         JsonObject reportingError = new JsonObject();
                         ReportingService reportingService = ReportingService.getInstance();
                         reportingService.reportDataError(reportingError);

@@ -19,6 +19,6 @@ public class ReportingService {
     }
 
     public void reportDataError(JsonElement jsonElement){
-
+        //TODO: IMPLEMENT_ME (NOW)
     }
 }

@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
+import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.targetSystem.framework.StoreOrchestrator;
 
 import org.apache.kafka.clients.admin.TopicListing;
@@ -43,6 +44,9 @@ public class KafkaSession {
     @Inject
     private PipelineService pipelineService;
 
+    @Inject
+    private IngestionReportingService ingestionReportingService;
+
     private EventProducer eventProducer;
 
     private EventConsumer eventConsumer;
@@ -63,6 +67,10 @@ public class KafkaSession {
 
     public void setEventConsumer(EventConsumer eventConsumer) {
         this.eventConsumer = eventConsumer;
+    }
+
+    public IngestionReportingService getIngestionReportingService() {
+        return ingestionReportingService;
     }
 
     public int getTimeOut() {
