@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.RecordGenerator;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
@@ -26,6 +27,9 @@ public class MongoDBStagingStore implements StagingStore {
 
     private JsonObject configJson;
     private MongoClient mongoClient;
+
+    //TODO: (NOW) - thread it in
+    private IngestionReportingService ingestionReportingService;
 
 
 
@@ -78,7 +82,10 @@ public class MongoDBStagingStore implements StagingStore {
             return records;
         }catch(Exception e){
             logger.error(e.getMessage());
-            //TODO: (CR2) report to the pipeline monitoring service
+
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
         }
@@ -111,7 +118,10 @@ public class MongoDBStagingStore implements StagingStore {
 
         }catch(Exception e){
             logger.error(e.getMessage());
-            //TODO: (CR2) report to the pipeline monitoring service
+
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
         }
         finally{
             System.out.println(
@@ -145,7 +155,10 @@ public class MongoDBStagingStore implements StagingStore {
             return data;
         }catch(Exception e){
             logger.error(e.getMessage());
-            //TODO: (CR2) report to the pipeline monitoring service
+
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
         }

@@ -87,7 +87,7 @@ public class StoreOrchestrator {
 
 
         if(this.runtimeMode == RuntimeMode.PROD) {
-            //TODO: make this transactional (GA)
+            //TODO: make this transactional (GA) - long term
             //fan out storage to each store
             registeredStores.parallelStream().forEach(stagingStore -> {
                     this.orchestrate(securityToken,

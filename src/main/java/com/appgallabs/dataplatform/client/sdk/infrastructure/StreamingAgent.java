@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.client.sdk.infrastructure;
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
+import com.appgallabs.dataplatform.client.sdk.service.ReportingService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
@@ -12,7 +13,6 @@ import org.ehcache.sizeof.SizeOf;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,23 +42,26 @@ public class StreamingAgent {
         Configuration configuration = DataPipeline.getConfiguration();
         int windowSize = configuration.streamSizeInBytes();
 
-        System.out.println("***SENDING_DATA_HANDLE*****");
+        //System.out.println("***SENDING_DATA_HANDLE*****");
         SizeOf sizeOf = SizeOf.newInstance();
         long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
 
-        System.out.println("**********");
-        System.out.println(this.queueStream);
-        System.out.println("SIZE: "+dataStreamSize);
-        System.out.println("**********");
+        //System.out.println("**********");
+        //System.out.println(this.queueStream);
+        //System.out.println("SIZE: "+dataStreamSize);
+        //System.out.println("**********");
 
         if (dataStreamSize >= windowSize) {
-            System.out.println("***SENDING_DATA_HANDLED*****");
+            //System.out.println("***SENDING_DATA_HANDLED*****");
             JsonArray batch = new JsonArray();
             for (int i = 0; i < this.queueStream.size(); i++) {
                 String element = this.queueStream.remove();
                 JsonElement batchElement = JsonUtil.validateJson(element);
                 if(batchElement == null){
                     //TODO: integrate with reporting service (CR2)
+                    JsonObject reportingError = new JsonObject();
+                    ReportingService reportingService = ReportingService.getInstance();
+                    reportingService.reportDataError(reportingError);
                     continue;
                 }
 
@@ -81,17 +84,19 @@ public class StreamingAgent {
                         JsonObject response = sendDataToCloud(pipeId, entity, payloadString);
 
                         //TODO: integrate with reporting service (CR2)
-                        //JsonUtil.printStdOut(response);
+                        JsonObject reportingError = new JsonObject();
+                        ReportingService reportingService = ReportingService.getInstance();
+                        reportingService.reportDataError(reportingError);
                     });
                 }
             }
         }else{
-            System.out.println("***SENDING_DATA_QUEUED*****");
+            //System.out.println("***SENDING_DATA_QUEUED*****");
         }
     }
 
     public synchronized void sendData(String pipeId, String entity,String json){
-        System.out.println("***SENDING_DATA_ASYNC*****");
+        //System.out.println("***SENDING_DATA_ASYNC*****");
 
         // register a listener which polls a queue and prints an element
         this.queueStream.registerListener(e -> {
@@ -101,7 +106,7 @@ public class StreamingAgent {
     }
 
     private JsonObject sendDataToCloud(String pipeId, String entity,String payload){
-        System.out.println("***SENDING_DATA_START_SEND_TO_CLOUD*****");
+        //System.out.println("***SENDING_DATA_START_SEND_TO_CLOUD*****");
 
         //validate and prepare rest payload
         JsonElement jsonElement = JsonUtil.validateJson(payload);

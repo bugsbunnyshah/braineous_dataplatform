@@ -1,6 +1,7 @@
 package com.appgallabs.dataplatform.targetSystem.core.driver;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
@@ -22,6 +23,9 @@ public class MySqlStagingStore implements StagingStore {
 
     private Connection connection;
     private JsonObject configJson;
+
+    //TODO: (NOW) - thread it in
+    private IngestionReportingService ingestionReportingService;
 
     @Override
     public void configure(JsonObject configJson) {
@@ -53,7 +57,10 @@ public class MySqlStagingStore implements StagingStore {
             }
         }catch(Exception e){
             logger.error(e.getMessage());
-            //TODO: (CR2) report to the pipeline monitoring service
+
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
         }
     }
 
@@ -120,7 +127,10 @@ public class MySqlStagingStore implements StagingStore {
         }catch(Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());
-            //TODO: (CR2) report to the pipeline monitoring service
+
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
         }
     }
 }

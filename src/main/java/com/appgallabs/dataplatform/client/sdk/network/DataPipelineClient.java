@@ -2,18 +2,15 @@ package com.appgallabs.dataplatform.client.sdk.network;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
+import com.appgallabs.dataplatform.client.sdk.service.ReportingService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.apache.commons.io.IOUtils;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 public class DataPipelineClient {
     private static DataPipelineClient singleton = new DataPipelineClient();
@@ -31,7 +28,7 @@ public class DataPipelineClient {
     }
 
     public JsonObject sendData(String pipeId, String entity, JsonElement jsonElement){
-        System.out.println("***SENDING_DATA_NETWORK*****");
+        //System.out.println("***SENDING_DATA_NETWORK*****");
         try {
             Configuration configuration = DataPipeline.getConfiguration();
             String baseUrl = configuration.ingestionHostUrl();
@@ -106,9 +103,9 @@ public class DataPipelineClient {
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String statusCode = "" + httpResponse.statusCode();
 
-            //TODO: (CR2), for pipeline report service
+            //report error for pipeline report service
             JsonElement responseJson = JsonUtil.validateJson(httpResponse.body());
-            JsonUtil.printStdOut(responseJson);
+            ReportingService.getInstance().reportDataError(responseJson);
 
             response.addProperty("httpResponseCode", statusCode);
 
@@ -138,9 +135,9 @@ public class DataPipelineClient {
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String statusCode = "" + httpResponse.statusCode();
 
-            //TODO: (CR2), for pipeline report service
+            //report error for pipeline report service
             JsonElement responseJson = JsonUtil.validateJson(httpResponse.body());
-            JsonUtil.printStdOut(responseJson);
+            ReportingService.getInstance().reportDataError(responseJson);
 
             response.addProperty("httpResponseCode", statusCode);
             response.addProperty("registerPipeResult", httpResponse.body());

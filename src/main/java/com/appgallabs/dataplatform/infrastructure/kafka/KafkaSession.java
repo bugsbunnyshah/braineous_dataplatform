@@ -25,7 +25,7 @@ import java.util.Set;
 public class KafkaSession {
     private static Logger logger = LoggerFactory.getLogger(KafkaSession.class);
 
-    //TODO: (NOW)
+    //TODO: integrate with configuration.ConfigurationService
     private final int TIME_OUT_MS = 30000;
 
     @Inject
@@ -72,12 +72,10 @@ public class KafkaSession {
     //lifecyle------
     @PostConstruct
     public void start(){
-        //TODO: (NOW)
     }
 
     @PreDestroy
     public void stop(){
-        //TODO: (NOW)
     }
 
     //-------------------------------------------
@@ -140,7 +138,9 @@ public class KafkaSession {
                         this.schemalessMapper,
                         this.storeOrchestrator)
                 );
-            }catch (Exception ex){}
+            }catch (Exception ex){
+                throw new RuntimeException(ex);
+            }
 
             return consumer;
         }catch (Exception e){

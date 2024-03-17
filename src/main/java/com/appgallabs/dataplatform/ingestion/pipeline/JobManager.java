@@ -8,6 +8,7 @@ import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipelineMonitoringService;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipelineServiceType;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
@@ -59,8 +60,14 @@ public class JobManager {
 
     private Map<String,Long> pipeToOffset = new HashMap<>();
 
-    private ExecutorService submitJobPool = Executors.newFixedThreadPool(25);
-    private ExecutorService retryJobPool = Executors.newFixedThreadPool(25);
+    //TODO: integrate with configuration.ConfigurationService (NOW)
+    private int threadPoolSize = 25;
+
+    private ExecutorService submitJobPool = Executors.newFixedThreadPool(threadPoolSize);
+    private ExecutorService retryJobPool = Executors.newFixedThreadPool(threadPoolSize);
+
+    @Inject
+    private IngestionReportingService ingestionReportingService;
 
 
     @PostConstruct
@@ -105,7 +112,10 @@ public class JobManager {
         }catch(Exception e){
             logger.error(e.getMessage(), e);
 
-            //TODO: handle system level errors (NOW)
+            //handle system level errors
+            JsonObject error = new JsonObject();
+            this.ingestionReportingService.reportDataError(error);
+
         }
     }
 
@@ -136,7 +146,10 @@ public class JobManager {
                     break;
                 }catch(Exception e){
                     logger.error(e.getMessage(), e);
-                    //TODO: handle system level errors (NOW)
+
+                    //handle system level errors
+                    JsonObject error = new JsonObject();
+                    this.ingestionReportingService.reportDataError(error);
                 }
             }
         });
@@ -197,7 +210,7 @@ public class JobManager {
         String table = catalogName + "." + database + "." + tableName;
         String objectPath = database + "." + tableName;
 
-        //TODO: (NOW)
+        //TODO: make it part of configuration.ConfigurationService (NOW)
         String filePath = "file:///Users/babyboy/datalake/"+tableName;
 
         String format = "csv";

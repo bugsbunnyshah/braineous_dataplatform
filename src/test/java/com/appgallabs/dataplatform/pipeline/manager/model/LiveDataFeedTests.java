@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class LiveDataFeedTests {
 
-    //TODO: activate_me (1.0.0-CR2)
+    //TODO: activate_me (NOW)
     /*@Test
     public void testReadSnapShot() throws Exception{
         String clientIp = UUID.randomUUID().toString();

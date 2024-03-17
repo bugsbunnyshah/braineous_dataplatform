@@ -50,7 +50,7 @@ public class PipeService {
     private Pipe movePipeStage(Pipe pipe, PipeStage pipeStage){
         String pipeName = pipe.getPipeName();
 
-        //TODO: validate pipeName
+        //TODO: validate pipeName (NOW)
 
         Tenant tenant = this.securityTokenContainer.getTenant();
         PipelineStore pipelineStore = this.mongoDBJsonStore.getPipelineStore();

@@ -3,6 +3,8 @@ package com.appgallabs.dataplatform.targetSystem.framework.staging;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
+import com.appgallabs.dataplatform.reporting.IngestionReportingService;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +23,9 @@ public class StagingArea {
 
     @Inject
     private RecordGenerator recordGenerator;
+
+    @Inject
+    private IngestionReportingService ingestionReportingService;
 
     @PostConstruct
     public void start(){
@@ -51,7 +56,9 @@ public class StagingArea {
 
             return records;
         }catch (Exception e){
-            //TODO: reporting (CR2)
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
         }
@@ -73,7 +80,9 @@ public class StagingArea {
 
             return stagingStore;
         }catch(Exception e){
-            //TODO: reporting (CR2)
+            //report to the pipeline monitoring service
+            JsonObject jsonObject = new JsonObject();
+            this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
         }

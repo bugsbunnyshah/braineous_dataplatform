@@ -19,7 +19,6 @@ import javax.enterprise.inject.spi.CDI;
 
 import java.util.*;
 
-//TODO: persist Registry (CR1)
 public class Registry {
     private static Logger logger = LoggerFactory.getLogger(Registry.class);
 

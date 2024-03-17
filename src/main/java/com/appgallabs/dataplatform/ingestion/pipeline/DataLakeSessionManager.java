@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class DataLakeSessionManager {
     private static Logger logger = LoggerFactory.getLogger(DataLakeSessionManager.class);
 
-    //TODO: make it part of configuration (NOW)
+    //TODO: make it part of configuration.ConfigurationService (NOW)
     private String hiveConfDirectory = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
 
     public StreamTableEnvironment newDataLakeCatalogSession(StreamExecutionEnvironment env,
