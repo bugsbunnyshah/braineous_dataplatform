@@ -22,9 +22,39 @@ public class ConfigurationServiceTests extends BaseTest {
         String confLocation = "localhost-services/braineous/conf/braineous.config";
         this.configurationService.configure(confLocation);
 
-        String property = "colors.background";
+        String property = "mongodbHost";
         String value = this.configurationService.getProperty(property);
         logger.info(value);
-        assertEquals("#FFFFFF", value);
+        assertEquals("localhost", value);
+
+        property = "poll_beat";
+        value = this.configurationService.getProperty(property);
+        logger.info(value);
+        assertEquals("30000", value);
+
+        property = "hive_conf_directory";
+        value = this.configurationService.getProperty(property);
+        logger.info(value);
+        assertEquals("/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf", value);
+
+        property = "table_directory";
+        value = this.configurationService.getProperty(property);
+        logger.info(value);
+        assertEquals("file:///Users/babyboy/datalake/", value);
+
+        property = "thread_pool_size";
+        value = this.configurationService.getProperty(property);
+        logger.info(value);
+        assertEquals("25", value);
+
+        property = "flink_host";
+        value = this.configurationService.getProperty(property);
+        logger.info(value);
+        assertEquals("127.0.0.1", value);
+
+        property = "flink_port";
+        value = this.configurationService.getProperty(property);
+        logger.info(value);
+        assertEquals("8081", value);
     }
 }
