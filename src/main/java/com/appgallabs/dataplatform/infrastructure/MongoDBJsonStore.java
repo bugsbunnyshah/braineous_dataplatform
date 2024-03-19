@@ -41,7 +41,7 @@ public class MongoDBJsonStore
     @ConfigProperty(name = "mongodbPort")
     private String mongodbPort;
 
-    //TODO: cleanup (CR1)
+    //TODO: cleanup (NOW)
     private String database = "ian_qa";
     private String password = "jen";
 

@@ -70,111 +70,102 @@ public class DataLifeCycleTests extends BaseTest {
 
     @Test
     public void progressingPayload() throws Exception{
-        String originalObjectHash = null;
-        try {
-            //get base object
-            String jsonString = IOUtils.toString(Thread.currentThread().
-                            getContextClassLoader().getResourceAsStream("ingestion/pipeline/dynamic_table.json"),
-                    StandardCharsets.UTF_8
-            );
-            String pipeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-            String entity = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-            JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+        //get base object
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/pipeline/dynamic_table.json"),
+                StandardCharsets.UTF_8
+        );
+        String pipeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        String entity = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
 
 
-            //create
+        //create
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                datalakeDriverConfiguration.toString(),
+                pipeId, 0,
+                entity, jsonString);
+
+        //prepare a progressing payload
+        JsonObject baseObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
+        JsonArray payload = new JsonArray();
+        payload.add(baseObject);
+        Map<String, Object> baseRow = this.schemalessMapper.mapAll(baseObject.toString());
+
+        //update
+        for(int i=0; i<3; i++) {
+            //Thread.sleep(5000);
+
+            int payloadSize = payload.size();
+            JsonObject jsonObject = payload.get(payloadSize-1).getAsJsonObject();
+            String columnValue = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+            this.preparePayload(payload, jsonObject, columnValue);
+
+            //update the table
+            String newObject = jsonObject.toString();
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
                     datalakeDriverConfiguration.toString(),
                     pipeId, 0,
-                    entity, jsonString);
-
-            //prepare a progressing payload
-            JsonObject baseObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
-            JsonArray payload = new JsonArray();
-            payload.add(baseObject);
-            Map<String, Object> baseRow = this.schemalessMapper.mapAll(baseObject.toString());
-
-            //update
-            for(int i=0; i<3; i++) {
-                //Thread.sleep(5000);
-
-                int payloadSize = payload.size();
-                JsonObject jsonObject = payload.get(payloadSize-1).getAsJsonObject();
-                String columnValue = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-                this.preparePayload(payload, jsonObject, columnValue);
-
-                //update the table
-                String newObject = jsonObject.toString();
-                this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
-                        datalakeDriverConfiguration.toString(),
-                        pipeId, 0,
-                        entity, newObject);
-            }
-
-            Thread.sleep(30000l);
-
-            /*while(true) {
-                Thread.sleep(120000l);
-            }*/
-        }finally{
-            System.out.println(originalObjectHash);
+                    entity, newObject);
         }
+
+        Thread.sleep(30000l);
+
+        /*while(true) {
+            Thread.sleep(120000l);
+        }*/
     }
 
     @Test
     public void exclusivePayload() throws Exception{
-        String originalObjectHash = null;
-        try {
-            //get base object
-            String jsonString = IOUtils.toString(Thread.currentThread().
-                            getContextClassLoader().getResourceAsStream("ingestion/pipeline/dynamic_table.json"),
-                    StandardCharsets.UTF_8
-            );
-            String pipeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-            String entity = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-            JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
+        //get base object
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/pipeline/dynamic_table.json"),
+                StandardCharsets.UTF_8
+        );
+        String pipeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        String entity = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+        JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
 
 
-            //create
+        //create
+        this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
+                datalakeDriverConfiguration.toString(),
+                pipeId, 0,
+                entity, jsonString);
+
+        //prepare a progressing payload
+        JsonObject baseObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
+        JsonArray payload = new JsonArray();
+        payload.add(baseObject);
+        Map<String, Object> baseRow = this.schemalessMapper.mapAll(baseObject.toString());
+
+        //update
+        for(int i=0; i<3; i++) {
+            //Thread.sleep(5000);
+
+            int payloadSize = payload.size();
+            JsonObject jsonObject = payload.get(payloadSize-1).getAsJsonObject();
+            String columnValue = RandomStringUtils.randomAlphabetic(5).toLowerCase();
+            this.preparePayload(payload, jsonObject, columnValue);
+
+            //make it exclusive
+            jsonObject.remove("expensive");
+
+            //update the table
+            String newObject = jsonObject.toString();
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
                     datalakeDriverConfiguration.toString(),
                     pipeId, 0,
-                    entity, jsonString);
-
-            //prepare a progressing payload
-            JsonObject baseObject = JsonUtil.validateJson(jsonString).getAsJsonObject();
-            JsonArray payload = new JsonArray();
-            payload.add(baseObject);
-            Map<String, Object> baseRow = this.schemalessMapper.mapAll(baseObject.toString());
-
-            //update
-            Thread.sleep(5000);
-            for(int i=0; i<1; i++) {
-                int payloadSize = payload.size();
-                JsonObject jsonObject = payload.get(payloadSize-1).getAsJsonObject();
-                String columnValue = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-                this.preparePayload(payload, jsonObject, columnValue);
-
-                //make it exclusive
-                jsonObject.remove("expensive");
-
-                //update the table
-                String newObject = jsonObject.toString();
-                this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
-                        datalakeDriverConfiguration.toString(),
-                        pipeId, 0,
-                        entity, newObject);
-            }
-
-
-            Thread.sleep(30000l);
-
-            /*while(true) {
-                Thread.sleep(120000l);
-            }*/
-        }finally{
-            System.out.println(originalObjectHash);
+                    entity, newObject);
         }
+
+
+        Thread.sleep(30000l);
+
+        /*while(true) {
+            Thread.sleep(120000l);
+        }*/
     }
 
     //----------------------------------------------------------------------------------------------------

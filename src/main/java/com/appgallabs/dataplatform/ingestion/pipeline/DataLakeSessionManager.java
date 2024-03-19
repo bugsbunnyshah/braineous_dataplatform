@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.configuration.ConfigurationService;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.catalog.CatalogDatabaseImpl;
@@ -9,6 +10,7 @@ import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
 
@@ -16,14 +18,19 @@ import java.util.HashMap;
 public class DataLakeSessionManager {
     private static Logger logger = LoggerFactory.getLogger(DataLakeSessionManager.class);
 
-    //TODO: make it part of configuration.ConfigurationService (NOW)
-    private String hiveConfDirectory = "/Users/babyboy/mumma/braineous/infrastructure/apache-hive-3.1.3-bin/conf";
+    @Inject
+    private ConfigurationService configurationService;
+
+
+    public String getHiveConfDirectory() {
+        return this.configurationService.getProperty("hive_conf_directory");
+    }
 
     public StreamTableEnvironment newDataLakeCatalogSession(StreamExecutionEnvironment env,
-                                                     String catalog){
+                                                            String catalog){
         final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-        HiveCatalog hive = new HiveCatalog(catalog, null, this.hiveConfDirectory);
+        HiveCatalog hive = new HiveCatalog(catalog, null, this.getHiveConfDirectory());
         tableEnv.registerCatalog(catalog, hive);
 
         // set the HiveCatalog as the current catalog of the session
@@ -38,7 +45,7 @@ public class DataLakeSessionManager {
         try {
             final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-            HiveCatalog hive = new HiveCatalog(catalog, null, this.hiveConfDirectory);
+            HiveCatalog hive = new HiveCatalog(catalog, null, this.getHiveConfDirectory());
             tableEnv.registerCatalog(catalog, hive);
 
             // set the HiveCatalog as the current catalog of the session

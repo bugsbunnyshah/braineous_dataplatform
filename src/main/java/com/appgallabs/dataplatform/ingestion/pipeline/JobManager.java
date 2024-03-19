@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.configuration.ConfigurationService;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.TenantService;
@@ -58,21 +59,29 @@ public class JobManager {
     @Inject
     private TenantService tenantService;
 
+    @Inject
+    private ConfigurationService configurationService;
+
     private Map<String,Long> pipeToOffset = new HashMap<>();
 
-    //TODO: integrate with configuration.ConfigurationService (NOW)
-    private int threadPoolSize = 25;
-
-    private ExecutorService submitJobPool = Executors.newFixedThreadPool(threadPoolSize);
-    private ExecutorService retryJobPool = Executors.newFixedThreadPool(threadPoolSize);
+    private ExecutorService submitJobPool;
+    private ExecutorService retryJobPool;
 
     @Inject
     private IngestionReportingService ingestionReportingService;
 
+    public int getThreadPoolSize() {
+        return Integer.parseInt(this.configurationService.getProperty("thread_pool_size"));
+    }
+
+    public String getTableDirectory(){
+        return this.configurationService.getProperty("table_directory");
+    }
 
     @PostConstruct
     public void start(){
-
+        this.submitJobPool = Executors.newFixedThreadPool(this.getThreadPoolSize());
+        this.retryJobPool = Executors.newFixedThreadPool(this.getThreadPoolSize());
     }
 
     public synchronized void submit(StreamExecutionEnvironment env, SecurityToken securityToken,
@@ -210,8 +219,7 @@ public class JobManager {
         String table = catalogName + "." + database + "." + tableName;
         String objectPath = database + "." + tableName;
 
-        //TODO: make it part of configuration.ConfigurationService (NOW)
-        String filePath = "file:///Users/babyboy/datalake/"+tableName;
+        String filePath = this.getTableDirectory()+tableName;
 
         String format = "csv";
 
@@ -316,7 +324,7 @@ public class JobManager {
         );
     }
 
-    private void printData(StreamTableEnvironment tableEnv, String table) throws Exception{
+    void printData(StreamTableEnvironment tableEnv, String table) throws Exception{
         String selectSql = "select name,expensive from "+table;
         System.out.println(selectSql);
 
@@ -328,6 +336,9 @@ public class JobManager {
         // we need to wait until the insertion has been completed,
         // an exception is thrown in case of an error
         result.await();
+
+        System.out.println("********DATA**********");
         result.print();
+        System.out.println("**********************");
     }
 }

@@ -19,10 +19,7 @@ public class ConfigurationServiceTests extends BaseTest {
 
     @Test
     public void testConfigurationService() throws Exception{
-        String confLocation = "localhost-services/braineous/conf/braineous.config";
-        this.configurationService.configure(confLocation);
-
-        String property = "mongodbHost";
+        String property = "mongodb_host";
         String value = this.configurationService.getProperty(property);
         logger.info(value);
         assertEquals("localhost", value);

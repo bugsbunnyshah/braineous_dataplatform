@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.configuration.ConfigurationService;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
@@ -26,9 +27,6 @@ import java.util.Set;
 public class KafkaSession {
     private static Logger logger = LoggerFactory.getLogger(KafkaSession.class);
 
-    //TODO: integrate with configuration.ConfigurationService
-    private final int TIME_OUT_MS = 30000;
-
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
@@ -46,6 +44,9 @@ public class KafkaSession {
 
     @Inject
     private IngestionReportingService ingestionReportingService;
+
+    @Inject
+    private ConfigurationService configurationService;
 
     private EventProducer eventProducer;
 
@@ -74,7 +75,7 @@ public class KafkaSession {
     }
 
     public int getTimeOut() {
-        return TIME_OUT_MS;
+        return Integer.parseInt(this.configurationService.getProperty("poll_beat"));
     }
 
     //lifecyle------
@@ -159,7 +160,7 @@ public class KafkaSession {
     private void bootstrap(String pipeId, SimpleConsumer simpleConsumer){
         String topicName = pipeId;
         try {
-            Thread.sleep(TIME_OUT_MS);
+            Thread.sleep(this.getTimeOut());
         }catch(Exception e){
             throw new RuntimeException(e);
         }

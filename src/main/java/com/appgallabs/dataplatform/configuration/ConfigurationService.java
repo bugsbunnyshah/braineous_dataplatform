@@ -8,19 +8,28 @@ import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ConfigurationService {
     private static Logger logger = LoggerFactory.getLogger(ConfigurationService.class);
 
+    String confLocation = "conf/braineous.config";
+
     private Configuration config;
 
     public ConfigurationService() {
     }
 
-    public void configure(String confLocation){
+    @PostConstruct
+    public void start(){
+        this.configure();
+    }
+
+    public void configure(){
         try {
+            String confLocation = this.findConfLocation();
             Parameters params = new Parameters();
             FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
                     new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
@@ -34,5 +43,11 @@ public class ConfigurationService {
 
     public String getProperty(String property){
         return this.config.getProperty(property).toString();
+    }
+
+    private String findConfLocation(){
+
+        //TODO: (NOW)
+        return this.confLocation;
     }
 }
