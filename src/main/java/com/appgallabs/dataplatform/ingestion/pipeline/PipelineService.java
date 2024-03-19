@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.ingestion.pipeline;
 
+import com.appgallabs.dataplatform.configuration.ConfigurationService;
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
@@ -10,7 +11,6 @@ import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class PipelineService {
     private static Logger logger = LoggerFactory.getLogger(PipelineService.class);
     private SchemalessMapper mapper;
+
     @Inject
     private FrameworkServices frameworkServices;
 
@@ -37,44 +37,36 @@ public class PipelineService {
     @Inject
     private JobManager jobManager;
 
-    @ConfigProperty(name = "flinkHost")
-    private String flinkHost;
-
-    @ConfigProperty(name = "flinkPort")
-    private String flinkPort;
-
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    public String getFlinkHost() {
-        return flinkHost;
-    }
-
-    public void setFlinkHost(String flinkHost) {
-        this.flinkHost = flinkHost;
-    }
-
-    public String getFlinkPort() {
-        return flinkPort;
-    }
-
-    public void setFlinkPort(String flinkPort) {
-        this.flinkPort = flinkPort;
-    }
+    @Inject
+    private ConfigurationService configurationService;
 
     private StreamExecutionEnvironment env;
 
     private ExecutorService threadpool = Executors.newCachedThreadPool();
 
+    public String getFlinkHost() {
+        return this.configurationService.getProperty("flink_host");
+    }
+
+    public String getFlinkPort() {
+        return this.configurationService.getProperty("flink_port");
+    }
+
+    public String getStreamComponents(){
+        return this.configurationService.getProperty("braineous_stream_components");
+    }
+
     @PostConstruct
     public void start(){
         this.mapper = new SchemalessMapper();
 
-        //TODO: pull implementation from configuration (NOW)
         this.env = StreamExecutionEnvironment.createRemoteEnvironment(
-                this.flinkHost,
-                Integer.parseInt(this.flinkPort),
-                "dataplatform-1.0.0-cr2-runner.jar"
+                this.getFlinkHost(),
+                Integer.parseInt(this.getFlinkPort()),
+                this.getStreamComponents()
         );
         this.env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
                 3, // number of restart attempts
