@@ -1,5 +1,5 @@
 {
-  "pipeId": "ingestion_pipe_mon",
+  "pipeId": "ingestionpipemon",
   "entity": "books",
   "configuration": [
     {
