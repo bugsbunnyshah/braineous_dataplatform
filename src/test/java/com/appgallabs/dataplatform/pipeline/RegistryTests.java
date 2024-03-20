@@ -61,6 +61,29 @@ public class RegistryTests extends BaseTest {
     }
 
     @Test
+    public void validatePipe() throws Exception{
+        Tenant tenant = this.securityTokenContainer.getTenant();
+        String principal = tenant.getPrincipal();
+
+        //register pipe
+        String jsonString = Util.loadResource("pipeline/invalid_pipeid_config.json");
+        String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
+
+        Registry registry = Registry.getInstance();
+
+        boolean isValid = true;
+        try {
+            registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+            isValid = false;
+        }
+
+        //asserts
+        assertFalse(isValid);
+    }
+
+    @Test
     public void findDriverConfiguration() throws Exception{
         String jsonString = Util.loadResource("pipeline/mongodb_config_1.json");
         String inputPipeId = JsonUtil.validateJson(jsonString).getAsJsonObject().get("pipeId").getAsString();
@@ -69,6 +92,8 @@ public class RegistryTests extends BaseTest {
 
         Registry registry = Registry.getInstance();
         String pipeId = registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
+
+
 
         JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
 

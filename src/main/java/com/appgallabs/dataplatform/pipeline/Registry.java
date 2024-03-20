@@ -3,6 +3,8 @@ package com.appgallabs.dataplatform.pipeline;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.pipeline.manager.InvalidPipeIdException;
+import com.appgallabs.dataplatform.pipeline.manager.util.ValidationUtil;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
@@ -90,10 +92,15 @@ public class Registry {
         }
     }
     //write operations------------------------------------------------------------------
-    public String registerPipe(Tenant tenant, JsonObject pipeRegistration) {
+    public String registerPipe(Tenant tenant, JsonObject pipeRegistration)
+    throws InvalidPipeIdException
+    {
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
         RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
         String pipeId = pipeRegistration.get("pipeId").getAsString();
+
+        //validate pipe id specification
+        ValidationUtil.validatePipeId(pipeId);
 
         //persist
         registryStore.registerPipe(

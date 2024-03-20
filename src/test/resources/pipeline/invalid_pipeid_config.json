@@ -1,5 +1,5 @@
 {
-  "pipeId": "scenariopipe",
+  "pipeId": "scenario_pipe_1",
   "entity": "scenario",
   "configuration": [
     {
@@ -14,16 +14,6 @@
           "$.store.bicycle",
           "$.expensive"
         ]
-      }
-    },
-    {
-      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStagingStore",
-      "name": "scenario_pipe",
-      "config": {
-        "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
-        "username": "root",
-        "password": "",
-        "jsonpathExpressions": []
       }
     }
   ]
