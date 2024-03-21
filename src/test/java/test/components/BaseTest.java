@@ -72,7 +72,7 @@ public abstract class BaseTest
             tenant.setPrincipal(apiKey);
             tenant.setApiSecret(apiKeySecret);
             String dataLakeId = RandomStringUtils.randomAlphabetic(5).toLowerCase();
-            tenant.setDataLakeId(dataLakeId);
+            //tenant.setDataLakeId(dataLakeId);
 
             Tenant adminTenant = tenant;
             tenantStore.createTenant(mongoClient,

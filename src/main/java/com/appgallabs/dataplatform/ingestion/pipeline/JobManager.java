@@ -93,11 +93,13 @@ public class JobManager {
 
             //tenant
             String apiKey = securityToken.getPrincipal();
-            Tenant tenant = this.tenantService.getTenant(apiKey);
+            Tenant tenant = this.tenantService.getTenant(apiKey,
+                    Tenant.createInContextTenantInstance(apiKey));
 
-            String catalog = tenant.getDataLakeId();
+            //String catalog = tenant.getDataLakeId();
             String database = pipeId.replaceAll("-", "").toLowerCase();
             String tableName = entity.replaceAll("-", "").toLowerCase();
+            String catalog = database;
 
 
 
@@ -206,7 +208,9 @@ public class JobManager {
         // an exception is thrown in case of an error
         insertionResult.await();
 
-        this.printData(tableEnv, table);
+        try {
+            this.printData(tableEnv, table);
+        }catch(Exception e){}
     }
 
     private String createTable(StreamExecutionEnvironment env, String catalogName,
@@ -323,8 +327,8 @@ public class JobManager {
                 incoming
         );
     }
-
-    void printData(StreamTableEnvironment tableEnv, String table) throws Exception{
+    //-------------------------------------------------------------
+    private void printData(StreamTableEnvironment tableEnv, String table) throws Exception{
         String selectSql = "select name,expensive from "+table;
         System.out.println(selectSql);
 

@@ -104,4 +104,12 @@ public class Tenant implements Serializable {
 
         return parsed;
     }
+
+    public static Tenant createInContextTenantInstance(String apiKey){
+        Tenant tenant = new Tenant();
+
+        tenant.setPrincipal(apiKey);
+
+        return tenant;
+    }
 }

@@ -136,4 +136,16 @@ public class TenantService {
 
         return tenant;
     }
+
+    public Tenant getTenant(String apiKey, Tenant adminTenant){
+        TenantStore tenantStore = this.mongoDBJsonStore.getTenantStore();
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+
+        //get from tenant store
+        Tenant tenant = tenantStore.getTenant(adminTenant,
+                mongoClient,
+                apiKey);
+
+        return tenant;
+    }
 }
