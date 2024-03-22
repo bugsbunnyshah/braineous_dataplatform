@@ -22,7 +22,7 @@ public class PerformanceTests {
                 ingestionHostUrl("http://localhost:8080/").
                 apiKey("ffb2969c-5182-454f-9a0b-f3f2fb0ebf75").
                 apiSecret("5960253b-6645-41bf-b520-eede5754196e").
-                streamSizeInBytes(80);
+                streamSizeInObjects(80);
         DataPipeline.configure(configuration);
 
         String datasetLocation = "performance/small_object.json";
@@ -62,7 +62,7 @@ public class PerformanceTests {
                 ingestionHostUrl("http://localhost:8080/").
                 apiKey("ffb2969c-5182-454f-9a0b-f3f2fb0ebf75").
                 apiSecret("5960253b-6645-41bf-b520-eede5754196e").
-                streamSizeInBytes(80);
+                streamSizeInObjects(80);
         DataPipeline.configure(configuration);
 
         String datasetLocation = "performance/flight.json";

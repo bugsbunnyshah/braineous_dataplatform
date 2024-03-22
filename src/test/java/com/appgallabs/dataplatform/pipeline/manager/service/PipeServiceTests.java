@@ -1148,7 +1148,7 @@ public class PipeServiceTests extends BaseTest
             //configure the DataPipeline Client
             //configure the DataPipeline Client
             Configuration configuration = new Configuration().
-                    streamSizeInBytes(80).
+                    streamSizeInObjects(80).
                     ingestionHostUrl("http://localhost:8080/");
             DataPipeline.configure(configuration);
 

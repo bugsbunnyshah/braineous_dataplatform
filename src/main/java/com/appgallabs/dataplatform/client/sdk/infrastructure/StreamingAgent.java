@@ -9,7 +9,6 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.ehcache.sizeof.SizeOf;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,21 +37,22 @@ public class StreamingAgent {
         return StreamingAgent.singleton;
     }
 
+    public synchronized void sendData(String pipeId, String entity,String json){
+        // register a listener which polls a queue and prints an element
+        this.queueStream.registerListener(e -> {
+            handleStreamEvent(pipeId,entity);
+        });
+        this.queueStream.add(json);
+    }
+
+    //-----------------------------------------------------------------------------------------------------
     private void handleStreamEvent(String pipeId, String entity){
         Configuration configuration = DataPipeline.getConfiguration();
-        int windowSize = configuration.streamSizeInBytes();
+        int windowSize = configuration.getStreamSizeInObjects();
 
-        //System.out.println("***SENDING_DATA_HANDLE*****");
-        SizeOf sizeOf = SizeOf.newInstance();
-        long dataStreamSize = sizeOf.deepSizeOf(this.queueStream);
-
-        //System.out.println("**********");
-        //System.out.println(this.queueStream);
-        //System.out.println("SIZE: "+dataStreamSize);
-        //System.out.println("**********");
+        int dataStreamSize = this.queueStream.size();
 
         if (dataStreamSize >= windowSize) {
-            //System.out.println("***SENDING_DATA_HANDLED*****");
             JsonArray batch = new JsonArray();
             for (int i = 0; i < this.queueStream.size(); i++) {
                 String element = this.queueStream.remove();
@@ -90,23 +90,11 @@ public class StreamingAgent {
                     });
                 }
             }
-        }else{
-            //System.out.println("***SENDING_DATA_QUEUED*****");
         }
     }
 
-    public synchronized void sendData(String pipeId, String entity,String json){
-        //System.out.println("***SENDING_DATA_ASYNC*****");
-
-        // register a listener which polls a queue and prints an element
-        this.queueStream.registerListener(e -> {
-            handleStreamEvent(pipeId,entity);
-        });
-        this.queueStream.add(json);
-    }
-
+    //-----------------------------------------------------------------------------------------------------
     private JsonObject sendDataToCloud(String pipeId, String entity,String payload){
-        //System.out.println("***SENDING_DATA_START_SEND_TO_CLOUD*****");
 
         //validate and prepare rest payload
         JsonElement jsonElement = JsonUtil.validateJson(payload);

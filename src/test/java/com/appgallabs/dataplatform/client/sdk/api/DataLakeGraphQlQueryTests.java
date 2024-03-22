@@ -54,7 +54,7 @@ public class DataLakeGraphQlQueryTests extends BaseTest {
     public void sendQuery() throws Exception{
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
-                streamSizeInBytes(80).
+                streamSizeInObjects(80).
                 ingestionHostUrl("http://localhost:8080");
         DataPipeline.configure(configuration);
 

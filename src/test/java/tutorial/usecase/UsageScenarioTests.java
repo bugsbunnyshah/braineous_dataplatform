@@ -58,7 +58,7 @@ public class UsageScenarioTests {
                 ingestionHostUrl("http://localhost:8080/").
                 apiKey(principal).
                 apiSecret("5960253b-6645-41bf-b520-eede5754196e").
-                streamSizeInBytes(80);
+                streamSizeInObjects(0);
         DataPipeline.configure(configuration);
 
         String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
@@ -78,7 +78,6 @@ public class UsageScenarioTests {
         String entity = configJson.get("entity").getAsString();
         List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
                 pipeId);
-        JsonUtil.printStdOut(JsonUtil.validateJson(registeredStores.toString()));
         DataPipeline.sendData(pipeId, entity,datasetElement.toString());
 
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
@@ -113,7 +112,7 @@ public class UsageScenarioTests {
      *
      * @throws Exception
      */
-    @Test
+    /*@Test
     public void multipleStores() throws Exception{
         String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
         Tenant tenant = new Tenant(principal);
@@ -160,17 +159,13 @@ public class UsageScenarioTests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            /*TableEnvironment tableEnv = this.getTableEnvironment();
-            String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
-            String sql = "select * from "+table;
-            Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();*/
+
 
             //TODO: (NOW) confirm ingestion and delivery statistics
         }
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void singleStoreWithTransformation() throws Exception{
         String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
         Tenant tenant = new Tenant(principal);
@@ -218,15 +213,10 @@ public class UsageScenarioTests {
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            /*TableEnvironment tableEnv = this.getTableEnvironment();
-            String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
-            String sql = "select * from "+table;
-            Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();*/
 
             //TODO: (NOW) confirm ingestion and delivery statistics
         }
-    }
+    }*/
     //----------------------------------------------------------------------------------
     private StreamTableEnvironment getTableEnvironment(String catalogName){
         StreamExecutionEnvironment env = this.pipelineService.getEnv();

@@ -3,7 +3,7 @@ package com.appgallabs.dataplatform.client.sdk.api;
 import java.io.Serializable;
 
 public class Configuration implements Serializable {
-    private int streamSizeInBytes;
+    private int streamSizeInObjects;
     private String ingestionHostUrl;
 
     private String apiKey;
@@ -20,8 +20,8 @@ public class Configuration implements Serializable {
         return this;
     }
 
-    public Configuration streamSizeInBytes(int streamSizeInBytes){
-        this.streamSizeInBytes = streamSizeInBytes;
+    public Configuration streamSizeInObjects(int streamSizeInObjects){
+        this.streamSizeInObjects = streamSizeInObjects;
         return this;
     }
 
@@ -35,8 +35,8 @@ public class Configuration implements Serializable {
         return this;
     }
 
-    public int streamSizeInBytes(){
-        return this.streamSizeInBytes;
+    public int getStreamSizeInObjects(){
+        return this.streamSizeInObjects;
     }
 
     public String ingestionHostUrl(){
