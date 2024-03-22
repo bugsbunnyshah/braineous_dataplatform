@@ -1,13 +1,13 @@
 {
-  "pipeId": "addressbook",
-  "entity": "contact",
+  "pipeId": "abcd",
+  "entity": "efgh",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
-      "name": "addressbook",
+      "name": "abcd",
       "config": {
         "connectionString": "mongodb://localhost:27017",
-        "database": "addressbook",
+        "database": "abcd",
         "collection": "data",
         "jsonpathExpressions": []
       }
