@@ -6,6 +6,7 @@ import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.TenantService;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
+import com.appgallabs.dataplatform.ingestion.util.JobManagerUtil;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipelineMonitoringService;
 import com.appgallabs.dataplatform.pipeline.manager.service.PipelineServiceType;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
@@ -96,10 +97,10 @@ public class JobManager {
             Tenant tenant = this.tenantService.getTenant(apiKey,
                     Tenant.createInContextTenantInstance(apiKey));
 
-            //String catalog = tenant.getDataLakeId();
-            String database = pipeId.replaceAll("-", "").toLowerCase();
-            String tableName = entity.replaceAll("-", "").toLowerCase();
-            String catalog = database;
+            String catalog = JobManagerUtil.getCatalog(apiKey, pipeId);
+            String database = JobManagerUtil.getDatabase(apiKey, pipeId);
+            String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
+            String tableName = JobManagerUtil.getTableName(entity);
 
 
 
@@ -116,7 +117,7 @@ public class JobManager {
             }
 
             Map<String, Object> row = flatArray.get(0);
-            String table = this.createTable(env, catalog, database, tableName, row);
+            table = this.createTable(env, tableName, catalog, database, table, row);
 
             //asynchronous
             this.submitJob(env, catalog, table, flatArray);
@@ -213,14 +214,13 @@ public class JobManager {
         }catch(Exception e){}
     }
 
-    private String createTable(StreamExecutionEnvironment env, String catalogName,
-                               String database, String tableName, Map<String,Object> row) throws Exception{
+    private String createTable(StreamExecutionEnvironment env, String tableName, String catalogName,
+                               String database, String table, Map<String,Object> row) throws Exception{
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeSessionWithNewDatabase(
                 env,
                 catalogName,
                 database
         );
-        String table = catalogName + "." + database + "." + tableName;
         String objectPath = database + "." + tableName;
 
         String filePath = this.getTableDirectory()+tableName;

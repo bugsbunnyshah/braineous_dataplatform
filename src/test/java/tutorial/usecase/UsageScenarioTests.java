@@ -4,6 +4,8 @@ import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSessionManager;
+import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
+import com.appgallabs.dataplatform.ingestion.util.JobManagerUtil;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
@@ -15,8 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.Table;
-import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.TableResult;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -32,14 +33,10 @@ public class UsageScenarioTests {
     @Inject
     private DataLakeSessionManager dataLakeSessionManager;
 
-    private StreamExecutionEnvironment env;
+    @Inject
+    private PipelineService pipelineService;
 
     public UsageScenarioTests() {
-        this.env = StreamExecutionEnvironment.createRemoteEnvironment(
-                "localhost",
-                Integer.parseInt("8081"),
-                "dataplatform-1.0.0-cr2-runner.jar"
-        );
     }
 
     /**
@@ -53,6 +50,7 @@ public class UsageScenarioTests {
     @Test
     public void singleStore() throws Exception{
         String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
+        String apiKey = principal;
         Tenant tenant = new Tenant(principal);
 
         //configure the DataPipeline Client
@@ -93,15 +91,16 @@ public class UsageScenarioTests {
                     entity);
             logger.info("*****************************************");
             logger.info("PIPE_ID: "+ pipeId);
+            logger.info("ENTITY: "+ entity);
             logger.info("NUMBER_OF_RECORDS: "+ records.size());
             logger.info("*****************************************");
 
             //assert data is stored in the data lake
-            /*TableEnvironment tableEnv = this.getTableEnvironment();
-            String table = pipeId.toLowerCase() + "." + entity.toLowerCase();
-            String sql = "select * from "+table;
-            Table result = tableEnv.sqlQuery(sql);
-            result.execute().print();*/
+            String catalog = JobManagerUtil.getCatalog(apiKey, pipeId);
+            String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
+            StreamTableEnvironment tableEnv = this.getTableEnvironment(catalog);
+            String selectSql = "select * from "+table;
+            this.printData(tableEnv, table, selectSql);
 
             //TODO: (NOW) confirm ingestion and delivery statistics
         }
@@ -229,13 +228,28 @@ public class UsageScenarioTests {
         }
     }
     //----------------------------------------------------------------------------------
-    private StreamTableEnvironment getTableEnvironment(){
-        String name  = "myhive";
+    private StreamTableEnvironment getTableEnvironment(String catalogName){
+        StreamExecutionEnvironment env = this.pipelineService.getEnv();
         final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
-                this.env,
-                name
+                env,
+                catalogName
         );
 
         return tableEnv;
+    }
+
+    private void printData(StreamTableEnvironment tableEnv, String table, String selectSql) throws Exception{
+        // insert some example data into the table
+        final TableResult result =
+                tableEnv.executeSql(selectSql);
+
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        result.await();
+
+        System.out.println("********DATA**********");
+        result.print();
+        System.out.println("**********************");
     }
 }
