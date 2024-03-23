@@ -1,12 +1,10 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
-import com.appgallabs.dataplatform.client.sdk.api.GraphQlQueryException;
 import com.appgallabs.dataplatform.client.sdk.api.RegisterPipeException;
 import com.appgallabs.dataplatform.client.sdk.infrastructure.StreamingAgent;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
