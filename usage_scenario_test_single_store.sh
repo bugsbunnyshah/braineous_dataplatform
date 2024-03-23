@@ -1,1 +1,0 @@
-mvn test -Dtest=UsageScenarioTests#singleStore

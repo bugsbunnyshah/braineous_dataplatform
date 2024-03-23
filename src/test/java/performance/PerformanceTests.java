@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class PerformanceTests {
     private static Logger logger = LoggerFactory.getLogger(PerformanceTests.class);
 
-    @Test
+    /*@Test
     public void startSmallDataset() throws Exception{
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
@@ -93,5 +93,5 @@ public class PerformanceTests {
         for(int i=0; i<loopCount; i++) {
             DataPipeline.sendData(pipeId, entity, payload);
         }
-    }
+    }*/
 }

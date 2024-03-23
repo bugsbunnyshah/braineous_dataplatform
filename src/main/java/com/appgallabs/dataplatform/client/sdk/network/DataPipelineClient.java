@@ -27,10 +27,9 @@ public class DataPipelineClient {
         return DataPipelineClient.singleton;
     }
 
-    public JsonObject sendData(String pipeId, String entity, JsonElement jsonElement){
+    public JsonObject sendData(Configuration configuration, String pipeId, String entity, JsonElement jsonElement){
         //System.out.println("***SENDING_DATA_NETWORK*****");
         try {
-            Configuration configuration = DataPipeline.getConfiguration();
             String baseUrl = configuration.ingestionHostUrl();
             String restUrl = baseUrl+"ingestion/json/";
 
@@ -55,9 +54,8 @@ public class DataPipelineClient {
         }
     }
 
-    public JsonObject registerPipe(JsonElement jsonElement){
+    public JsonObject registerPipe(Configuration configuration, JsonElement jsonElement){
         try {
-            Configuration configuration = DataPipeline.getConfiguration();
             String baseUrl = configuration.ingestionHostUrl();
             String restUrl = baseUrl+"ingestion/register_pipe/";
             String payload = jsonElement.toString();

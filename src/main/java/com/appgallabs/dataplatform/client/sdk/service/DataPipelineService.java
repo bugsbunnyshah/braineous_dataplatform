@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.GraphQlQueryException;
 import com.appgallabs.dataplatform.client.sdk.api.RegisterPipeException;
 import com.appgallabs.dataplatform.client.sdk.infrastructure.StreamingAgent;
@@ -26,13 +27,15 @@ public class DataPipelineService {
         return DataPipelineService.singleton;
     }
 
-    public void sendData(String pipeId, String entity,String payload){
-        StreamingAgent.getInstance().sendData(pipeId, entity, payload);
+    public void sendData(Configuration configuration, String pipeId, String entity, String payload){
+        StreamingAgent.getInstance().sendData(configuration, pipeId, entity, payload);
     }
 
-    public JsonObject registerPipe(String payload) throws RegisterPipeException {
+    public JsonObject registerPipe(Configuration configuration, String payload) throws RegisterPipeException {
         //send query
-        JsonObject response = this.dataPipelineClient.registerPipe(JsonUtil.validateJson(payload));
+        JsonObject response = this.dataPipelineClient.registerPipe(
+                configuration,
+                JsonUtil.validateJson(payload));
 
         //process response
         String queryStatusMessage = null;

@@ -37,17 +37,16 @@ public class StreamingAgent {
         return StreamingAgent.singleton;
     }
 
-    public synchronized void sendData(String pipeId, String entity,String json){
+    public synchronized void sendData(Configuration configuration, String pipeId, String entity,String json){
         // register a listener which polls a queue and prints an element
         this.queueStream.registerListener(e -> {
-            handleStreamEvent(pipeId,entity);
+            handleStreamEvent(configuration, pipeId,entity);
         });
         this.queueStream.add(json);
     }
 
     //-----------------------------------------------------------------------------------------------------
-    private void handleStreamEvent(String pipeId, String entity){
-        Configuration configuration = DataPipeline.getConfiguration();
+    private void handleStreamEvent(Configuration configuration, String pipeId, String entity){
         int windowSize = configuration.getStreamSizeInObjects();
 
         int dataStreamSize = this.queueStream.size();
@@ -81,7 +80,7 @@ public class StreamingAgent {
                     String payloadString = throttle.toString();
 
                     this.threadpool.execute(() -> {
-                        JsonObject response = sendDataToCloud(pipeId, entity, payloadString);
+                        JsonObject response = sendDataToCloud(configuration, pipeId, entity, payloadString);
 
                         //integrate with reporting service
                         JsonObject reportingError = new JsonObject();
@@ -94,7 +93,7 @@ public class StreamingAgent {
     }
 
     //-----------------------------------------------------------------------------------------------------
-    private JsonObject sendDataToCloud(String pipeId, String entity,String payload){
+    private JsonObject sendDataToCloud(Configuration configuration, String pipeId, String entity,String payload){
 
         //validate and prepare rest payload
         JsonElement jsonElement = JsonUtil.validateJson(payload);
@@ -103,7 +102,7 @@ public class StreamingAgent {
         }
 
         //send data for ingestion
-        JsonObject response = this.dataPipelineClient.sendData(pipeId, entity,jsonElement);
+        JsonObject response = this.dataPipelineClient.sendData(configuration, pipeId, entity,jsonElement);
 
         //process response
         String ingestionStatusMessage = null;
