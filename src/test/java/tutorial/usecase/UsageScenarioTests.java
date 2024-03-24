@@ -1,7 +1,6 @@
 package tutorial.usecase;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
-import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.client.sdk.api.DataPlatformService;
 import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
@@ -52,14 +51,23 @@ public class UsageScenarioTests {
         String json = Util.loadResource(datasetLocation);
         JsonElement datasetElement = JsonUtil.validateJson(json);
 
-        //register pipe
-        dataPlatformService.registerPipe(configLocation);
-
-        //send source data through the pipeline
         json = Util.loadResource(configLocation);
         JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
         String pipeId = configJson.get("pipeId").getAsString();
         String entity = configJson.get("entity").getAsString();
+
+        //configure the DataPipeline Client
+        Configuration configuration = new Configuration().
+                ingestionHostUrl("http://localhost:8080/").
+                apiKey(principal).
+                apiSecret("5960253b-6645-41bf-b520-eede5754196e").
+                streamSizeInObjects(0);
+        dataPlatformService.configure(configuration);
+
+        //register pipe
+        dataPlatformService.registerPipe(configJson);
+
+        //send source data through the pipeline
         dataPlatformService.sendData(pipeId, entity,datasetElement.toString());
 
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------

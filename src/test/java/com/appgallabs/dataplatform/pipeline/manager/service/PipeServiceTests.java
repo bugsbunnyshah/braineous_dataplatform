@@ -1,7 +1,6 @@
 package com.appgallabs.dataplatform.pipeline.manager.service;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
-import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.pipeline.manager.model.*;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;

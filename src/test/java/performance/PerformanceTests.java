@@ -1,7 +1,6 @@
 package performance;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
-import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 

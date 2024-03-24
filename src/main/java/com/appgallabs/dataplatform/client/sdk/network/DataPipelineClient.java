@@ -1,7 +1,6 @@
 package com.appgallabs.dataplatform.client.sdk.network;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
-import com.appgallabs.dataplatform.client.sdk.api.DataPipeline;
 import com.appgallabs.dataplatform.client.sdk.service.ReportingService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonElement;

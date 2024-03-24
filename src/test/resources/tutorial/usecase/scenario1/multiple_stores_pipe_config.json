@@ -1,6 +1,6 @@
 {
   "pipeId": "zzza",
-  "entity": "jhoomjhoom",
+  "entity": "abcd",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",

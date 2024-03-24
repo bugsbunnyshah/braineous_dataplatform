@@ -1,6 +1,6 @@
 {
   "pipeId": "yyya",
-  "entity": "yxazyt",
+  "entity": "abc",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
