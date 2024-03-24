@@ -1,23 +1,23 @@
 {
-  "pipeId": "ijkl",
-  "entity": "mnop",
+  "pipeId": "zzza",
+  "entity": "jhoomjhoom",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
-      "name": "ijkl0",
+      "name": "zzza0",
       "config": {
         "connectionString": "mongodb://localhost:27017",
-        "database": "ijkl0",
+        "database": "zzza0",
         "collection": "data",
         "jsonpathExpressions": []
       }
     },
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
-      "name": "ijkl1",
+      "name": "zzza1",
       "config": {
         "connectionString": "mongodb://localhost:27017",
-        "database": "ijkl1",
+        "database": "zzza1",
         "collection": "data",
         "jsonpathExpressions": []
       }
