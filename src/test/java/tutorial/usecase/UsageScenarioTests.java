@@ -44,8 +44,9 @@ public class UsageScenarioTests {
 
     private void execute(String datasetLocation, String configLocation) throws Exception{
         DataPlatformService dataPlatformService = DataPlatformService.getInstance();
-        String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
-        String apiKey = principal;
+        String apiKey = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
+        String apiSecret = "5960253b-6645-41bf-b520-eede5754196e";
+        String principal = apiKey;
         Tenant tenant = new Tenant(principal);
 
         String json = Util.loadResource(datasetLocation);
@@ -59,8 +60,8 @@ public class UsageScenarioTests {
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
                 ingestionHostUrl("http://localhost:8080/").
-                apiKey(principal).
-                apiSecret("5960253b-6645-41bf-b520-eede5754196e").
+                apiKey(apiKey).
+                apiSecret(apiSecret).
                 streamSizeInObjects(0);
         dataPlatformService.configure(configuration);
 

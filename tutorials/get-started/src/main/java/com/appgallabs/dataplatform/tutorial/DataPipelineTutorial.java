@@ -7,21 +7,24 @@ import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonObject;
 
-import java.util.UUID;
-
-public class DataIngestionTutorial {
+public class DataPipelineTutorial {
 
     public static void main(String[] args) throws RegisterPipeException, InterruptedException {
+        DataPlatformService dataPlatformService = DataPlatformService.getInstance();
+        String apiKey = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
+        String apiSecret = "5960253b-6645-41bf-b520-eede5754196e";
+        String principal = apiKey;
+
         //configure the DataPipeline Client
         Configuration configuration = new Configuration().
                 ingestionHostUrl("http://localhost:8080/").
-                apiKey("0132d8be-c85c-423a-a168-4767f4dd638b").
-                apiSecret("d8e452ea-9968-434c-b84c-5276781a60b6").
+                apiKey(apiKey).
+                apiSecret(apiSecret).
                 streamSizeInBytes(80);
         DataPipeline.configure(configuration);
 
         //setup data pipe configuration json
-        String pipeId = UUID.randomUUID().toString();
+        String pipeId = "yya";
         String dataPipeConfiguration = "{\n" +
                 "  \"pipeId\": \""+pipeId+"\",\n" +
                 "  \"configuration\": [\n" +
