@@ -45,6 +45,7 @@ jar -xvf ./dataplatform-1.0.0-cr2-runner.jar
 
 cp -r oauth/* ../release-1.0.0-cr2/oauth
 cp -r com/appgallabs/dataplatform/util/JsonUtil.class ../com/appgallabs/dataplatform/util
+cp -r com/appgallabs/dataplatform/util/Util.class ../com/appgallabs/dataplatform/util
 cp -r com/appgallabs/dataplatform/client/sdk/api/* ../com/appgallabs/dataplatform/client/sdk/api
 cp -r com/appgallabs/dataplatform/client/sdk/infrastructure/* ../com/appgallabs/dataplatform/client/sdk/infrastructure
 cp -r com/appgallabs/dataplatform/client/sdk/network/* ../com/appgallabs/dataplatform/client/sdk/network
