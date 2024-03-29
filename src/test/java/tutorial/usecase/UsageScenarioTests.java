@@ -2,7 +2,6 @@ package tutorial.usecase;
 
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPlatformService;
-import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.pipeline.DataLakeSessionManager;

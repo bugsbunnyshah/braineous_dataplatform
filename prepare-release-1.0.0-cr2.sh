@@ -42,6 +42,7 @@ cp -r cli/pipemon releases/braineous-1.0.0-cr2/pipeline_monitor
 cd releases
 zip -r braineous-1.0.0-cr2.zip braineous-1.0.0-cr2
 rm -rf braineous-1.0.0-cr2
+unzip braineous-1.0.0-cr2.zip
 cd ..
 
 pwd
