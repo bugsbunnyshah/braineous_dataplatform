@@ -24,13 +24,14 @@ class MovePipeToDeployedCommand {
 
 Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async {
   Session session = Session.session;
+  String usingPipe = session.usingPipe;
   String host = session.host;
   String port = session.port;
   String hostUrl = "$host:$port";
   final url = Uri.http(hostUrl, '/pipeline_manager/move_to_deployed/');
 
   Map<String,dynamic> jsonMap = {};
-  jsonMap['pipeName'] = arguments[2];
+  jsonMap['pipeName'] = usingPipe;
   String json = jsonEncode(jsonMap);
 
   final response = await http.post(url,

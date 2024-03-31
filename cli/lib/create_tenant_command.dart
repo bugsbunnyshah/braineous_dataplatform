@@ -18,6 +18,11 @@ class CreateTenantCommand {
       String apiSecret = result['apiSecret'];
       session.apiKey = apiKey;
       session.apiSecret = apiSecret;
+
+      print("***TENANT_CREATION_SUCCESS***");
+      print(result);
+      print("Please keep the API secret safe for Braineous Data Platform usage. This will not be displayed in the future for security reasons");
+      print("*****************************");
     }on RestInvocationException catch (_, e){
       print(_.json);
     }

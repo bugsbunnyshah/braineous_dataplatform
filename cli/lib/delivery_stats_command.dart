@@ -26,7 +26,7 @@ Future<RestInvocationResponse> invokeRestEndpoint(List<dynamic> arguments) async
   String host = session.host;
   String port = session.port;
   String hostUrl = "$host:$port";
-  String pipeName = arguments[2];
+  String pipeName = session.usingPipe;
   final url = Uri.http(hostUrl, '/pipeline_manager/delivery_stats/$pipeName/');
 
   final response = await http.get(url,headers: {
