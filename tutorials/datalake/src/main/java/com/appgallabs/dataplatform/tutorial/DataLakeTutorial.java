@@ -7,6 +7,8 @@ import com.appgallabs.dataplatform.ingestion.util.JobManagerUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
+import org.apache.flink.api.common.restartstrategy.RestartStrategies;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableResult;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
@@ -14,6 +16,8 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
+
+import java.util.concurrent.TimeUnit;
 
 public class DataLakeTutorial {
 
@@ -56,6 +60,7 @@ public class DataLakeTutorial {
         //check for datalake record
         Thread.sleep(15000);
 
+        System.out.println("*****CHECK_DATALAKE*******");
         String catalog = JobManagerUtil.getCatalog(apiKey, pipeId);
         String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
         StreamTableEnvironment tableEnv = getTableEnvironment(catalog);
@@ -64,7 +69,16 @@ public class DataLakeTutorial {
     }
     //----------------------------------------------------------------------------------------------------------
     private static StreamExecutionEnvironment getStreamExecutionEnvironment(){
-        return null;
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
+                "127.0.0.1",
+                Integer.parseInt("8081"),
+                "dataplatform-1.0.0-cr2-runner.jar"
+        );
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+                3, // number of restart attempts
+                Time.of(10, TimeUnit.SECONDS) // delay
+        ));
+        return env;
     }
 
     private static StreamTableEnvironment newDataLakeCatalogSession(StreamExecutionEnvironment env,
