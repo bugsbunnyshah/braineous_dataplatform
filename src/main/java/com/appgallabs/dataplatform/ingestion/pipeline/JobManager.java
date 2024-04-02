@@ -210,7 +210,8 @@ public class JobManager {
         insertionResult.await();
 
         try {
-            this.printData(tableEnv, table);
+            String selectSql = "select * from "+table;
+            this.printData(tableEnv, table, selectSql);
         }catch(Exception e){}
     }
 
@@ -328,8 +329,7 @@ public class JobManager {
         );
     }
     //-------------------------------------------------------------
-    private void printData(StreamTableEnvironment tableEnv, String table) throws Exception{
-        String selectSql = "select name,expensive from "+table;
+    private void printData(StreamTableEnvironment tableEnv, String table, String selectSql) throws Exception{
         System.out.println(selectSql);
 
         // insert some example data into the table
