@@ -66,7 +66,6 @@ cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/get-started/lib
 cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/create-connector/client/lib
 cp ../dataplatform-1.0.0-cr2-runner.jar ../tutorials/create-connector/server/lib
 cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/datalake/lib
-cp ../dataplatform-1.0.0-cr2-runner.jar ../tutorials/datalake/lib
 cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../
 
 rm -rf ./tmp

@@ -209,10 +209,10 @@ public class JobManager {
         // an exception is thrown in case of an error
         insertionResult.await();
 
-        try {
+        /*try {
             String selectSql = "select * from "+table;
             this.printData(tableEnv, table, selectSql);
-        }catch(Exception e){}
+        }catch(Exception e){}*/
     }
 
     private String createTable(StreamExecutionEnvironment env, String tableName, String catalogName,
