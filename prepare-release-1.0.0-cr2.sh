@@ -37,6 +37,7 @@ cp -r braineous-dataingestion-sdk-1.0.0-cr2.jar releases/braineous-1.0.0-cr2/cli
 cp -r releases/dependency/* releases/braineous-1.0.0-cr2/bin
 cp -r tutorials/get-started/* releases/braineous-1.0.0-cr2/tutorials/get-started
 cp -r tutorials/create-connector/* releases/braineous-1.0.0-cr2/tutorials/create-connector
+cp -r tutorials/datalake/* releases/braineous-1.0.0-cr2/tutorials/datalake
 cp -r cli/pipemon releases/braineous-1.0.0-cr2/pipeline_monitor
 
 cd releases

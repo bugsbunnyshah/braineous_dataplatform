@@ -3,11 +3,17 @@ package com.appgallabs.dataplatform.tutorial;
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPlatformService;
 
+import com.appgallabs.dataplatform.ingestion.util.JobManagerUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableResult;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.flink.table.catalog.hive.HiveCatalog;
 
 public class DataLakeTutorial {
 
@@ -46,11 +52,37 @@ public class DataLakeTutorial {
         //send source data through the pipeline
         dataPlatformService.sendData(pipeId, entity,datasetElement.toString());
         System.out.println("*****DATA_INGESTION_SUCCESS******");
+
+        //check for datalake record
+        Thread.sleep(15000);
+
+        String catalog = JobManagerUtil.getCatalog(apiKey, pipeId);
+        String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
+        StreamTableEnvironment tableEnv = getTableEnvironment(catalog);
+        String selectSql = "select * from "+table;
+        printData(tableEnv, table, selectSql);
     }
     //----------------------------------------------------------------------------------------------------------
-    /*private StreamTableEnvironment getTableEnvironment(String catalogName){
-        StreamExecutionEnvironment env = this.pipelineService.getEnv();
-        final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+    private static StreamExecutionEnvironment getStreamExecutionEnvironment(){
+        return null;
+    }
+
+    private static StreamTableEnvironment newDataLakeCatalogSession(StreamExecutionEnvironment env,
+                                                            String catalog){
+        final StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+        HiveCatalog hive = new HiveCatalog(catalog, null, "./services/hive_3.1.3/conf");
+        tableEnv.registerCatalog(catalog, hive);
+
+        // set the HiveCatalog as the current catalog of the session
+        tableEnv.useCatalog(catalog);
+
+        return tableEnv;
+    }
+
+    private static StreamTableEnvironment getTableEnvironment(String catalogName){
+        StreamExecutionEnvironment env = getStreamExecutionEnvironment();
+        final StreamTableEnvironment tableEnv = newDataLakeCatalogSession(
                 env,
                 catalogName
         );
@@ -58,7 +90,7 @@ public class DataLakeTutorial {
         return tableEnv;
     }
 
-    private void printData(StreamTableEnvironment tableEnv, String table, String selectSql) throws Exception{
+    private static void printData(StreamTableEnvironment tableEnv, String table, String selectSql) throws Exception{
         // insert some example data into the table
         final TableResult result =
                 tableEnv.executeSql(selectSql);
@@ -72,5 +104,5 @@ public class DataLakeTutorial {
         System.out.println(selectSql);
         result.print();
         System.out.println("**********************");
-    }*/
+    }
 }
