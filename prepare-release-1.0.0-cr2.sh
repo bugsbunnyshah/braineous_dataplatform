@@ -20,6 +20,7 @@ mkdir pipeline_monitor
 cd tutorials
 mkdir get-started
 mkdir create-connector
+mkdir datalake
 
 
 cd ..

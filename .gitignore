@@ -60,7 +60,9 @@ compare/
 /tutorials/create-connector.zip
 /dataplatform-1.0.1-cr1-runner.jar
 /releases/
-/tutorials/create-connector/server/lib/dataplatform-1.0.0-cr2-runner.jar
 /cli/pipemon
 /localhost-services/hive/metastore_db/
 /localhost-services/hive/derby.log
+
+/tutorials/create-connector/server/lib/dataplatform-1.0.0-cr2-runner.jar
+/tutorials/datalake/lib/dataplatform-1.0.0-cr2-runner.jar
