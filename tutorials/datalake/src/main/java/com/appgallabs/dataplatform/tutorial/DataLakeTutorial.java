@@ -3,6 +3,7 @@ package com.appgallabs.dataplatform.tutorial;
 import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.DataPlatformService;
 
+import com.appgallabs.dataplatform.ingestion.util.JobManagerUtil;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
@@ -47,5 +48,16 @@ public class DataLakeTutorial {
         //send source data through the pipeline
         dataPlatformService.sendData(pipeId, entity,datasetElement.toString());
         System.out.println("*****DATA_INGESTION_SUCCESS******");
+
+        System.out.println("********DATALAKE_ASSERTION_PHASE_STARTED....***********");
+        Thread.sleep(15000);
+
+        String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
+        String selectSql = "select * from "+table;
+        dataPlatformService.print(
+                pipeId,
+                entity,
+                selectSql
+        );
     }
 }

@@ -79,11 +79,8 @@ public class UsageScenarioTests {
         List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
                 pipeId);
         //assert data is stored in the data lake
-        String catalog = JobManagerUtil.getCatalog(apiKey, pipeId);
         String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
-        StreamTableEnvironment tableEnv = this.getTableEnvironment(catalog);
         String selectSql = "select * from "+table;
-        //this.printData(tableEnv, table, selectSql);
         dataPlatformService.print(
                 pipeId,
                 entity,
