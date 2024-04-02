@@ -83,7 +83,12 @@ public class UsageScenarioTests {
         String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
         StreamTableEnvironment tableEnv = this.getTableEnvironment(catalog);
         String selectSql = "select * from "+table;
-        this.printData(tableEnv, table, selectSql);
+        //this.printData(tableEnv, table, selectSql);
+        dataPlatformService.print(
+                pipeId,
+                entity,
+                selectSql
+        );
 
         //assert data is received on the receiver data store
         for(StagingStore stagingStore: registeredStores){

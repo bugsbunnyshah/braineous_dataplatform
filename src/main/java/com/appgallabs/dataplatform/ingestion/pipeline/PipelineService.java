@@ -79,6 +79,16 @@ public class PipelineService {
         this.jobManager.submit(this.env, securityToken, driverConfiguration, entity, pipeId, offset, jsonString);
     }
 
+    public void executeSelectQuery(SecurityToken securityToken,
+                       String pipeId, String entity, String selectSql){
+        this.jobManager.executeSelectQuery(this.env,
+                securityToken,
+                entity,
+                pipeId,
+                selectSql
+        );
+    }
+
     public StreamExecutionEnvironment getEnv() {
         return env;
     }

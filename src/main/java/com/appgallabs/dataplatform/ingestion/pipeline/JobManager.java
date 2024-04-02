@@ -131,6 +131,53 @@ public class JobManager {
         }
     }
 
+    public synchronized void executeSelectQuery(StreamExecutionEnvironment env,
+                                                SecurityToken securityToken,
+                                                String entity,
+                                                String pipeId,
+                                                String selectSql)
+    {
+        try {
+            //tenant
+            String apiKey = securityToken.getPrincipal();
+
+            String catalog = JobManagerUtil.getCatalog(apiKey, pipeId);
+            String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
+
+            final StreamTableEnvironment tableEnv = this.dataLakeSessionManager.newDataLakeCatalogSession(
+                    env,
+                    catalog
+            );
+
+            this.printData(tableEnv, table, selectSql);
+
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+
+            //handle system level errors
+            JsonObject error = new JsonObject();
+            this.ingestionReportingService.reportDataError(error);
+
+        }
+    }
+
+    private void printData(StreamTableEnvironment tableEnv, String table, String selectSql) throws Exception{
+        System.out.println(selectSql);
+
+        // insert some example data into the table
+        final TableResult result =
+                tableEnv.executeSql(selectSql);
+
+        // since all cluster operations of the Table API are executed asynchronously,
+        // we need to wait until the insertion has been completed,
+        // an exception is thrown in case of an error
+        result.await();
+
+        System.out.println("********DATA**********");
+        result.print();
+        System.out.println("**********************");
+    }
+    //-----------------------------------------------------------------------------------
     private synchronized void submitJob(StreamExecutionEnvironment env,
                                         String catalogName,
                                         String table,
@@ -328,21 +375,5 @@ public class JobManager {
                 incoming
         );
     }
-    //-------------------------------------------------------------
-    private void printData(StreamTableEnvironment tableEnv, String table, String selectSql) throws Exception{
-        System.out.println(selectSql);
-
-        // insert some example data into the table
-        final TableResult result =
-                tableEnv.executeSql(selectSql);
-
-        // since all cluster operations of the Table API are executed asynchronously,
-        // we need to wait until the insertion has been completed,
-        // an exception is thrown in case of an error
-        result.await();
-
-        System.out.println("********DATA**********");
-        result.print();
-        System.out.println("**********************");
-    }
+    //------------------------------------------------------------
 }

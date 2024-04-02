@@ -3,7 +3,9 @@ package com.appgallabs.dataplatform.ingestion.endpoint;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProducer;
 import com.appgallabs.dataplatform.infrastructure.kafka.KafkaSession;
+import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -43,6 +45,9 @@ public class DataIngestion {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @Inject
+    private PipelineService pipelineService;
+
     @PostConstruct
     public void start(){
         try {
@@ -50,6 +55,44 @@ public class DataIngestion {
             logger.info(response.toString());
         }catch(Exception e){
             throw new RuntimeException(e);
+        }
+    }
+
+    @Path("print")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response print(@RequestBody String input)
+    {
+        try
+        {
+            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            String selectSql = jsonObject.get("select_sql").getAsString();
+            String entity = jsonObject.get("entity").getAsString();
+            String pipeId = jsonObject.get("pipeId").getAsString();
+
+            //execute
+            this.pipelineService.executeSelectQuery(
+                    securityToken,
+                    pipeId,
+                    entity,
+                    selectSql
+            );
+
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("message", "SUCCESS");
+
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
         }
     }
 

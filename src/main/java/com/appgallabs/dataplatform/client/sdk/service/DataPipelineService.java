@@ -36,6 +36,15 @@ public class DataPipelineService {
                 payload);
     }
 
+    public void print(Configuration configuration, String pipeId, String entity, String selectSql){
+        this.dataPipelineClient.print(
+                configuration,
+                pipeId,
+                entity,
+                selectSql
+        );
+    }
+
     public JsonObject registerPipe(Configuration configuration, String payload) throws RegisterPipeException {
         //send query
         JsonObject response = this.dataPipelineClient.registerPipe(

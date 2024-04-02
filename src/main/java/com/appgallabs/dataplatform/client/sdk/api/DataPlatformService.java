@@ -30,4 +30,8 @@ public class DataPlatformService {
     public void sendData(String pipeId, String entity, String payload){
         DataPipeline.sendData(this.configuration, pipeId, entity, payload);
     }
+
+    public void print(String pipeId, String entity, String selectSql){
+        DataPipeline.print(this.configuration, pipeId, entity, selectSql);
+    }
 }

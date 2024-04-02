@@ -7,6 +7,11 @@ import java.util.UUID;
 
 class DataPipeline {
 
+    public static void print(Configuration configuration, String pipeId, String entity, String selectSql){
+        System.out.println("***SENDING_PRINT_QUERY*****");
+        DataPipelineService.getInstance().print(configuration, pipeId, entity, selectSql);
+    }
+
     public static void sendData(Configuration configuration, String pipeId, String entity, String payload){
         System.out.println("***SENDING_DATA_START*****");
         DataPipelineService.getInstance().sendData(configuration, pipeId, entity, payload);
