@@ -66,8 +66,3 @@ compare/
 
 /tutorials/create-connector/server/lib/dataplatform-1.0.0-cr2-runner.jar
 /tutorials/datalake/lib/dataplatform-1.0.0-cr2-runner.jar
-
-/braineous-dataingestion-sdk-1.0.0-cr2.jar
-/tutorials/create-connector/client/lib/braineous-dataingestion-sdk-1.0.0-cr2.jar
-/tutorials/datalake/lib/braineous-dataingestion-sdk-1.0.0-cr2.jar
-/tutorials/get-started/lib/braineous-dataingestion-sdk-1.0.0-cr2.jar
