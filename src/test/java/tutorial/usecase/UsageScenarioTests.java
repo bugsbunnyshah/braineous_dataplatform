@@ -44,8 +44,8 @@ public class UsageScenarioTests {
 
     private void execute(String datasetLocation, String configLocation) throws Exception{
         DataPlatformService dataPlatformService = DataPlatformService.getInstance();
-        String apiKey = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
-        String apiSecret = "5960253b-6645-41bf-b520-eede5754196e";
+        String apiKey = "6ca06059-aebb-43a6-ba47-306d2469c059";
+        String apiSecret = "5929f027-189f-466f-94ab-5076cd5166ec";
         String principal = apiKey;
         Tenant tenant = new Tenant(principal);
 

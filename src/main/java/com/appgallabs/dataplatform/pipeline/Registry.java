@@ -4,6 +4,11 @@ import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.pipeline.manager.InvalidPipeIdException;
+import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscriber;
+import com.appgallabs.dataplatform.pipeline.manager.model.SubscriberGroup;
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
+import com.appgallabs.dataplatform.pipeline.manager.service.SubscriptionService;
 import com.appgallabs.dataplatform.pipeline.manager.util.ValidationUtil;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -28,12 +33,15 @@ public class Registry {
 
     private MongoDBJsonStore mongoDBJsonStore;
 
+    private SubscriptionService subscriptionService;
+
     private JsonObject datalakeConfiguration;
 
     private Registry() {
         try {
             //find from the Quarkus registry
             this.mongoDBJsonStore = CDI.current().select(MongoDBJsonStore.class).get();
+            this.subscriptionService = CDI.current().select(SubscriptionService.class).get();
 
             String jsonString = Util.loadResource("datalake/datalake_config.json");
             this.datalakeConfiguration = JsonUtil.validateJson(jsonString).getAsJsonObject();
@@ -95,6 +103,8 @@ public class Registry {
     public String registerPipe(Tenant tenant, JsonObject pipeRegistration)
     throws InvalidPipeIdException
     {
+        String principal = tenant.getPrincipal();
+
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
         RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
         String pipeId = pipeRegistration.get("pipeId").getAsString();
@@ -108,6 +118,14 @@ public class Registry {
                 mongoClient,
                 pipeRegistration
         );
+
+        //create a subscription
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber(principal));
+        Pipe newPipe = new Pipe(pipeId,pipeId);
+        Subscription subscription = new Subscription(UUID.randomUUID().toString(), group,
+                newPipe);
+        this.subscriptionService.createSubscription(subscription);
 
         return pipeId;
     }
