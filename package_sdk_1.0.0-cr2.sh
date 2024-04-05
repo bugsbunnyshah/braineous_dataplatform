@@ -62,12 +62,14 @@ cd ..
 
 jar -cvf braineous-dataingestion-sdk-1.0.0-cr2.jar com oauth
 jar -tvf braineous-dataingestion-sdk-1.0.0-cr2.jar
+
+cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../
+
 cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/get-started/lib
 cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/create-connector/client/lib
 cp ../dataplatform-1.0.0-cr2-runner.jar ../tutorials/create-connector/server/lib
 cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/datalake/lib
-cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../
+cp braineous-dataingestion-sdk-1.0.0-cr2.jar ../tutorials/data-transformation/lib
+
 
 rm -rf ./tmp
-
-
