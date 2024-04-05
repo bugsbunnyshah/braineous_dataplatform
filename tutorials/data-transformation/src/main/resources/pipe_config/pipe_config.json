@@ -1,13 +1,13 @@
 {
-  "pipeId": "iyjyjy",
-  "entity": "iyjyjy",
+  "pipeId": "xmlyxyy",
+  "entity": "xmlyxyy",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
-      "name": "iyjyjy",
+      "name": "xmlyxyy",
       "config": {
         "connectionString": "mongodb://localhost:27017",
-        "database": "iyjyjy",
+        "database": "xmlyxyy",
         "collection": "data",
         "jsonpathExpressions": [
           "$.name",
