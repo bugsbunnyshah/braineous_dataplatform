@@ -132,6 +132,14 @@ public class UsageScenarioTests {
         this.execute(datasetLocation, configLocation);
     }
 
+    @Test
+    public void singleStoreWithTransformation() throws Exception{
+        System.out.println("****RUNNING*****: SINGLE_STORE_WITH_TRANSFORMATION");
+        String datasetLocation = "tutorial/usecase/scenario1/scenario1.json";
+        String configLocation = "tutorial/usecase/scenario1/single_store_pipe_config_with_transformation.json";
+        this.execute(datasetLocation, configLocation);
+    }
+
     /*@Test
     public void singleStoreWithTransformation() throws Exception{
         String principal = "ffb2969c-5182-454f-9a0b-f3f2fb0ebf75";
