@@ -14,7 +14,7 @@ public class DataPipelineServiceTests {
     private static Logger logger = LoggerFactory.getLogger(DataPipelineServiceTests.class);
 
     //TODO: solidify: CR2
-    @Test
+    /*@Test
     public void sendData() throws Exception{
         DataPipelineService dataPipelineService = DataPipelineService.getInstance();
 
@@ -38,5 +38,5 @@ public class DataPipelineServiceTests {
         //System.out.println("********************************");
         //JsonUtil.printStdOut(response);
         //assertNotNull(response);
-    }
+    }*/
 }

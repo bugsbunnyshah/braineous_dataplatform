@@ -1,9 +1,11 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractSimpleKafka {
-    private final Logger log = Logger.getLogger(AbstractSimpleKafka.class);
+    private final Logger log = LoggerFactory.getLogger(AbstractSimpleKafka.class);
 
     public AbstractSimpleKafka(){
         /*Runtime.getRuntime().addShutdownHook(new Thread() {

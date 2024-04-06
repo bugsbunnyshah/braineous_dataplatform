@@ -47,6 +47,57 @@ public class SchemalessMapperTests {
     }
 
     @Test
+    public void mapAllDataset() throws Exception{
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonObject inputJson = JsonParser.parseString(jsonString).getAsJsonObject();
+
+        JsonObject ingestedJson = this.schemalessMapper.mapAllDataset(jsonString);
+
+        assertEquals(JsonUtil.getJsonHash(inputJson),JsonUtil.getJsonHash(ingestedJson));
+    }
+
+    @Test
+    public void mapSubsetDataset() throws Exception{
+        List<String> queries = Arrays.asList(
+                "$.store.book[?(@.price >20)]",
+                "$.store.bicycle",
+                "$.expensive"
+        );
+
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonObject inputJson = JsonParser.parseString(jsonString).getAsJsonObject();
+
+        JsonObject ingestedJson = this.schemalessMapper.mapSubsetDataset(jsonString, queries);
+        JsonUtil.printStdOut(ingestedJson);
+
+        //assertEquals(JsonUtil.getJsonHash(inputJson),JsonUtil.getJsonHash(ingestedJson));
+    }
+
+    @Test
+    public void mapSubsetDatasetFiner() throws Exception{
+        List<String> queries = Arrays.asList(
+                "$.expensive"
+        );
+
+        String jsonString = IOUtils.toString(Thread.currentThread().
+                        getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),
+                StandardCharsets.UTF_8
+        );
+        JsonObject inputJson = JsonParser.parseString(jsonString).getAsJsonObject();
+
+        JsonObject ingestedJson = this.schemalessMapper.mapSubsetDataset(jsonString, queries);
+        JsonUtil.printStdOut(ingestedJson);
+
+        //assertEquals(JsonUtil.getJsonHash(inputJson),JsonUtil.getJsonHash(ingestedJson));
+    }
+
+    @Test
     public void mapSubset() throws Exception{
         String jsonString = IOUtils.toString(Thread.currentThread().
                         getContextClassLoader().getResourceAsStream("ingestion/algorithm/input.json"),

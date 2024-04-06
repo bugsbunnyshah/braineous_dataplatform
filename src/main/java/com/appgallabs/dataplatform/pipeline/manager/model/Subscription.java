@@ -36,6 +36,10 @@ public class Subscription implements Serializable {
         return subscriptionId;
     }
 
+    public void setSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+    }
+
     public Pipe getPipe() {
         return pipe;
     }

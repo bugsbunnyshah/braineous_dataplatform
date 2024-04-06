@@ -1,7 +1,9 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.ingestion.util.IngestionUtil;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -16,9 +18,8 @@ import javax.inject.Singleton;
 import org.apache.kafka.clients.admin.TopicListing;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Singleton
 public class EventProducer {
@@ -27,17 +28,20 @@ public class EventProducer {
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
-    private Map<String, TopicListing> topicListing;
+    @Inject
+    private KafkaSession kafkaSession;
 
-    private Set<String> registeredPipes;
+    @Inject
+    private PayloadThrottler throttler;
+
 
     public EventProducer() {
-        this.topicListing = new HashMap<>();
-        this.registeredPipes = new HashSet<>();
+
     }
 
     @PostConstruct
     public void start(){
+        this.kafkaSession.setEventProducer(this);
     }
 
     @PreDestroy
@@ -49,33 +53,30 @@ public class EventProducer {
         }
     }
 
+    public JsonObject checkStatus(){
+        JsonObject response = new JsonObject();
+        response.addProperty("status", "LISTENING...");
+        return response;
+    }
+
     public JsonObject processEvent(String pipeId, String entity, JsonElement json) {
         try{
             JsonObject response = new JsonObject();
 
+            //Throttle payload to manage data packet size in the Kafka cluster
+            JsonArray ingestion = IngestionUtil.generationIngestionArray(json);
+            List<JsonArray> throttled = this.throttler.throttle(ingestion);
 
-            SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
-                    pipeId, entity, json.toString());
+            for(JsonArray bucket: throttled) {
+                SimpleProducer.getInstance().publishToBroker(this.securityTokenContainer,
+                        pipeId, entity, bucket.toString());
+            }
+
+
             response.addProperty("statusCode", 200);
-
 
             return response;
         }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void registerPipe(String pipeId){
-        try {
-            if(!this.registeredPipes.contains(pipeId)) {
-                String pipeTopic = pipeId;
-
-                TopicListing topicListing = KafkaTopicHelper.createFixedTopic(pipeTopic);
-                this.topicListing.put(pipeTopic, topicListing);
-
-                this.registeredPipes.add(pipeId);
-            }
-        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }

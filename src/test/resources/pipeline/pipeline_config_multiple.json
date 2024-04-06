@@ -1,0 +1,28 @@
+{
+  "pipeId": "flight_pipe_multiple",
+  "entity": "flight",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStagingStore",
+      "name": "flight_pipe_in_memory_store",
+      "config": {
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
+    },
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStagingStore",
+      "name": "flight_pipe_in_memory_store",
+      "config": {
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
+    }
+  ]
+}

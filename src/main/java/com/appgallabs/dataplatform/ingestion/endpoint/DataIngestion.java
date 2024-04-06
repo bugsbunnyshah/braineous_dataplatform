@@ -1,9 +1,11 @@
 package com.appgallabs.dataplatform.ingestion.endpoint;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.infrastructure.kafka.EventConsumer;
 import com.appgallabs.dataplatform.infrastructure.kafka.EventProducer;
+import com.appgallabs.dataplatform.infrastructure.kafka.KafkaSession;
+import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.ingestion.util.CSVDataUtil;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
 import com.appgallabs.dataplatform.preprocess.SecurityTokenContainer;
 import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.util.JsonUtil;
@@ -18,6 +20,7 @@ import org.json.XML;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.PostConstruct;
@@ -34,24 +37,62 @@ public class DataIngestion {
     private CSVDataUtil csvDataUtil = new CSVDataUtil();
 
     @Inject
-    private EventProducer eventProducer;
+    private KafkaSession kafkaSession;
 
     @Inject
-    private EventConsumer eventConsumer;
+    private EventProducer eventProducer;
 
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @Inject
+    private PipelineService pipelineService;
+
     @PostConstruct
     public void start(){
         try {
-            JsonObject response = this.eventConsumer.checkStatus();
+            JsonObject response = this.eventProducer.checkStatus();
             logger.info(response.toString());
-
-            this.eventProducer.start();
-            this.eventConsumer.start();
         }catch(Exception e){
             throw new RuntimeException(e);
+        }
+    }
+
+    @Path("print")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response print(@RequestBody String input)
+    {
+        try
+        {
+            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+
+            SecurityToken securityToken = this.securityTokenContainer.getSecurityToken();
+            String selectSql = jsonObject.get("select_sql").getAsString();
+            String entity = jsonObject.get("entity").getAsString();
+            String pipeId = jsonObject.get("pipeId").getAsString();
+
+            //execute
+            this.pipelineService.executeSelectQuery(
+                    securityToken,
+                    pipeId,
+                    entity,
+                    selectSql
+            );
+
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("message", "SUCCESS");
+
+
+            Response response = Response.ok(responseJson.toString()).build();
+            return response;
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            JsonObject error = new JsonObject();
+            error.addProperty("exception", e.getMessage());
+            return Response.status(500).entity(error.toString()).build();
         }
     }
 
@@ -73,11 +114,8 @@ public class DataIngestion {
             //registry
             registry.registerPipe(tenant,pipeRegistration);
 
-            //event consumer
-            this.eventConsumer.registerPipe(pipeId);
-
-            //event producer
-            this.eventProducer.registerPipe(pipeId);
+            //kafka register
+            this.kafkaSession.registerPipe(pipeId);
 
             responseJson.addProperty("pipeId",pipeId);
             responseJson.addProperty("message", "PIPE_SUCCESSFULLY_REGISTERED");

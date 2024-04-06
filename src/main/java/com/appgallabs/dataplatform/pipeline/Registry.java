@@ -3,7 +3,14 @@ package com.appgallabs.dataplatform.pipeline;
 import com.appgallabs.dataplatform.infrastructure.MongoDBJsonStore;
 import com.appgallabs.dataplatform.infrastructure.RegistryStore;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
-import com.appgallabs.dataplatform.targetSystem.framework.StoreDriver;
+import com.appgallabs.dataplatform.pipeline.manager.InvalidPipeIdException;
+import com.appgallabs.dataplatform.pipeline.manager.model.Pipe;
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscriber;
+import com.appgallabs.dataplatform.pipeline.manager.model.SubscriberGroup;
+import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
+import com.appgallabs.dataplatform.pipeline.manager.service.SubscriptionService;
+import com.appgallabs.dataplatform.pipeline.manager.util.ValidationUtil;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
 
@@ -16,9 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.inject.spi.CDI;
+
 import java.util.*;
 
-//TODO: persist Registry (CR1)
 public class Registry {
     private static Logger logger = LoggerFactory.getLogger(Registry.class);
 
@@ -26,12 +33,15 @@ public class Registry {
 
     private MongoDBJsonStore mongoDBJsonStore;
 
+    private SubscriptionService subscriptionService;
+
     private JsonObject datalakeConfiguration;
 
     private Registry() {
         try {
             //find from the Quarkus registry
             this.mongoDBJsonStore = CDI.current().select(MongoDBJsonStore.class).get();
+            this.subscriptionService = CDI.current().select(SubscriptionService.class).get();
 
             String jsonString = Util.loadResource("datalake/datalake_config.json");
             this.datalakeConfiguration = JsonUtil.validateJson(jsonString).getAsJsonObject();
@@ -54,13 +64,13 @@ public class Registry {
 
 
     //read operations---------------------------------------------------------
-    public List<StoreDriver> findStoreDrivers(String tenant, String pipeId){
+    public List<StagingStore> findStagingStores(String tenant, String pipeId){
         try {
-            List<StoreDriver> result = new ArrayList<>();
+            List<StagingStore> result = new ArrayList<>();
             MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
             RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
 
-            JsonArray jsonArray = registryStore.findStoreDrivers(
+            JsonArray jsonArray = registryStore.findStagingStores(
                 tenant,
                 mongoClient,
                 pipeId
@@ -74,13 +84,13 @@ public class Registry {
                 JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
                 JsonObject storeConfigJson = configurationJson.getAsJsonObject("config");
 
-                String storeDriverClass = configurationJson.get("storeDriver").getAsString();
-                StoreDriver storeDriver = (StoreDriver) Thread.currentThread().getContextClassLoader().
+                String storeDriverClass = configurationJson.get("stagingStore").getAsString();
+                StagingStore stagingStore = (StagingStore) Thread.currentThread().getContextClassLoader().
                         loadClass(storeDriverClass).getDeclaredConstructor().newInstance();
 
-                storeDriver.configure(storeConfigJson);
+                stagingStore.configure(storeConfigJson);
 
-                result.add(storeDriver);
+                result.add(stagingStore);
             }
 
             return result;
@@ -90,11 +100,17 @@ public class Registry {
         }
     }
     //write operations------------------------------------------------------------------
-    public String registerPipe(Tenant tenant, JsonObject pipeRegistration) {
+    public String registerPipe(Tenant tenant, JsonObject pipeRegistration)
+    throws InvalidPipeIdException
+    {
+        String principal = tenant.getPrincipal();
+
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
         RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
         String pipeId = pipeRegistration.get("pipeId").getAsString();
-        JsonArray storeDrivers = pipeRegistration.getAsJsonArray("configuration");
+
+        //validate pipe id specification
+        ValidationUtil.validatePipeId(pipeId);
 
         //persist
         registryStore.registerPipe(
@@ -102,6 +118,14 @@ public class Registry {
                 mongoClient,
                 pipeRegistration
         );
+
+        //create a subscription
+        SubscriberGroup group = new SubscriberGroup();
+        group.addSubscriber(new Subscriber(principal));
+        Pipe newPipe = new Pipe(pipeId,pipeId);
+        Subscription subscription = new Subscription(UUID.randomUUID().toString(), group,
+                newPipe);
+        this.subscriptionService.createSubscription(subscription);
 
         return pipeId;
     }

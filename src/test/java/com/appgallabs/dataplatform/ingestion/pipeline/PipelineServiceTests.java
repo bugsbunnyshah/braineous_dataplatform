@@ -13,6 +13,9 @@ import com.google.gson.JsonParser;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.flink.table.api.TableResult;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +60,7 @@ public class PipelineServiceTests extends BaseTest {
     public void ingestArray() throws Exception{
         String originalObjectHash = null;
         try {
-            String pipeId = "123";
+            String pipeId = "my_pipe";
 
             String jsonString = IOUtils.toString(Thread.currentThread().
                             getContextClassLoader().getResourceAsStream("ingestion/pipeline/obj1_array.json"),
@@ -71,7 +74,7 @@ public class PipelineServiceTests extends BaseTest {
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
                     datalakeDriverConfiguration.toString(),
-                    pipeId,
+                    pipeId, 0,
                     entity, jsonString);
 
             /*
@@ -100,7 +103,7 @@ public class PipelineServiceTests extends BaseTest {
     public void ingestObject() throws Exception{
         String originalObjectHash = null;
         try {
-            String pipeId = "123";
+            String pipeId = "my_pipe";
 
             String jsonString = IOUtils.toString(Thread.currentThread().
                             getContextClassLoader().getResourceAsStream("ingestion/pipeline/obj1.json"),
@@ -113,7 +116,7 @@ public class PipelineServiceTests extends BaseTest {
             JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
             this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
                     datalakeDriverConfiguration.toString(),
-                    pipeId,
+                    pipeId, 0,
                     entity, jsonString);
 
             /*

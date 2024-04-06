@@ -6,7 +6,7 @@
 
   <groupId>com.appgallabs</groupId>
   <artifactId>dataplatform</artifactId>
-  <version>1.0.1-cr1</version>
+  <version>1.0.0-cr2</version>
 
   <name>dataplatform</name>
   <url>https://bugsbunnyshah.github.io/braineous/</url>
@@ -29,13 +29,17 @@
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>2.4.2.Final</quarkus.platform.version>
+    <quarkus.platform.version>2.16.12.Final</quarkus.platform.version>
     <dl4j-master.version>1.0.0-beta7</dl4j-master.version>
     <jcommon.version>1.0.23</jcommon.version>
     <jfreechart.version>1.0.13</jfreechart.version>
     <nd4j.backend>nd4j-native</nd4j.backend>
     <akka.version>2.6.10</akka.version>
-    <scala.binary.version>2.13</scala.binary.version>
+    <scala.main.version>2.12</scala.main.version>
+    <delta-connectors-version>3.0.0</delta-connectors-version>
+    <connectors-version>3.0.0</connectors-version>
+    <flink-version>1.17.1</flink-version>
+    <hadoop-version>3.1.0</hadoop-version>
   </properties>
 
   <dependencyManagement>
@@ -62,7 +66,17 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mongodb-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -96,27 +110,15 @@
     </dependency>
 
     <!-- MongoDB storage related -->
+    <!--
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
-      <version>4.3.3</version>
+      <version>4.3.4</version>
     </dependency>
-    <dependency>
-      <groupId>org.neo4j.driver</groupId>
-      <artifactId>neo4j-java-driver</artifactId>
-      <version>4.4.3</version>
-    </dependency>
+    -->
 
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-streaming_2.11</artifactId>
-      <version>2.4.8</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>2.11.11</version>
-    </dependency>
+
 
     <dependency>
       <groupId>com.github.wnameless.json</groupId>
@@ -127,46 +129,6 @@
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
       <version>2.8.0</version>
-    </dependency>
-
-    <!-- Automatic Ingestion Mapping related...Very Important -->
-    <dependency>
-      <groupId>org.apache.axis</groupId>
-      <artifactId>axis</artifactId>
-      <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.xml.rpc</groupId>
-      <artifactId>javax.xml.rpc-api</artifactId>
-      <version>1.1.2</version>
-    </dependency>
-    <dependency>
-      <groupId>eclipse-swt-macos</groupId>
-      <artifactId>eclipse-swt-macos</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/thirdpartylibs/eclipse-swt-macos.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>porters</groupId>
-      <artifactId>porters</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/thirdpartylibs/porters.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>SchemaStoreClient</groupId>
-      <artifactId>SchemaStoreClient</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/thirdpartylibs/SchemaStoreClient.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>GoogleTranslate</groupId>
-      <artifactId>GoogleTranslate</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/thirdpartylibs/GoogleTranslate.jar</systemPath>
     </dependency>
 
     <!-- DataScience related -->
@@ -180,41 +142,6 @@
       <artifactId>jfreechart</artifactId>
       <version>1.0.13</version>
     </dependency>
-
-
-    <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
-      <artifactId>gremlin-core</artifactId>
-      <version>3.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
-      <artifactId>gremlin-driver</artifactId>
-      <version>3.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
-      <artifactId>tinkergraph-gremlin</artifactId>
-      <version>3.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tinkerpop</groupId>
-      <artifactId>sparql-gremlin</artifactId>
-      <version>3.5.2</version>
-    </dependency>
-
-    <!--
-    <dependency>
-      <groupId>org.janusgraph</groupId>
-      <artifactId>janusgraph-core</artifactId>
-      <version>0.5.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.janusgraph</groupId>
-      <artifactId>janusgraph-inmemory</artifactId>
-      <version>0.5.3</version>
-    </dependency>
-    -->
 
     <!-- security integration -->
     <dependency>
@@ -241,46 +168,112 @@
       <!--<scope>provided</scope> -->
     </dependency>
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>7.5</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- flink_based_data_processor -->
-    <dependency>
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>1.1.1</version>
     </dependency>
     <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.5</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- flink_based_data_processor -->
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.12.18</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-java</artifactId>
-      <version>1.17.1</version>
+      <artifactId>flink-core</artifactId>
+      <version>1.18.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-clients</artifactId>
-      <version>1.17.1</version>
-    </dependency>
-
-    <!-- graphql -->
-    <!--
-    <dependency>
-      <groupId>com.graphql-java</groupId>
-      <artifactId>graphql-java</artifactId>
-      <version>20.6</version>
+      <version>1.18.0</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework.graphql</groupId>
-      <artifactId>spring-graphql</artifactId>
-      <version>1.2.3</version>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-api-java-bridge</artifactId>
+      <version>1.18.0</version>
     </dependency>
     <dependency>
-      <groupId>com.graphql-java</groupId>
-      <artifactId>graphql-java-spring-boot-starter-webmvc</artifactId>
-      <version>2.0</version>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-runtime</artifactId>
+      <version>1.18.0</version>
     </dependency>
-    -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-planner_2.12</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-files</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-csv</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-sql-gateway-api</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-hive_2.12</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>libthrift</artifactId>
+      <version>0.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-hadoop-fs</artifactId>
+      <version>1.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop.hive</groupId>
+      <artifactId>hive-common</artifactId>
+      <version>3.1.3</version>
+      <systemPath>${project.basedir}/thirdpartylibs/hive/hive-common-3.1.3.jar</systemPath>
+      <scope>system</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <version>3.1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-metastore</artifactId>
+      <version>3.1.3</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <version>3.3.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-test-utils</artifactId>
+      <version>1.18.0</version>
+      <scope>test</scope>
+    </dependency>
 
     <!-- quarkus graphql integration -->
     <dependency>
@@ -291,42 +284,6 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-graphql-client</artifactId>
     </dependency>
-
-    <!-- Add logging framework, to produce console output when running in the IDE. -->
-    <!-- These dependencies are excluded from the application JAR by default. -->
-    <!--
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.1</version>
-    </dependency>
-    -->
-    <!--
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>log4j-over-slf4j</artifactId>
-      <version>2.0.7</version>
-    </dependency>
-    -->
-    <!--
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.20.0</version>
-    </dependency>
-    -->
-    <!--
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.20.0</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -349,14 +306,16 @@
       <version>3.10.8</version>
     </dependency>
 
-    <!-- source and target connector drivers -->
-    <!--
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.6.0</version>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.16.0</version>
     </dependency>
-    -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20231013</version>
+    </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -372,32 +331,12 @@
       <artifactId>mysql-connector-j</artifactId>
       <version>8.2.0</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>10.13.1.1</version>
-    </dependency>
-    -->
 
-    <!-- java 11 issues -->
-    <!--
     <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.4.0-b180830.0359</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>32.1.3-jre</version>
     </dependency>
-    <dependency>
-      <groupId>jakarta.xml.bind</groupId>
-      <artifactId>jakarta.xml.bind-api</artifactId>
-      <version>4.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>4.0.4</version>
-    </dependency>
-    -->
   </dependencies>
 
   <build>
@@ -422,6 +361,7 @@
         <version>${compiler-plugin.version}</version>
         <configuration>
           <parameters>${maven.compiler.parameters}</parameters>
+          <forceJavacCompilerUse>true</forceJavacCompilerUse>
         </configuration>
       </plugin>
       <plugin>
@@ -430,6 +370,8 @@
         <configuration>
           <excludes>
             <exclude>prototype/**/*.java</exclude>
+            <exclude>performance/**/*.java</exclude>
+            <exclude>tutorial/**/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>

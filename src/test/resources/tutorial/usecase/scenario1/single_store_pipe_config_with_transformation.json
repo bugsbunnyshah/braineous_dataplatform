@@ -1,0 +1,19 @@
+{
+  "pipeId": "bbba",
+  "entity": "bbc",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "bbba",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "bbba",
+        "collection": "data",
+        "jsonpathExpressions": [
+          "$.name",
+          "$.addr"
+        ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 https://stackoverflow.com/questions/59481878/unable-to-start-kafka-with-zookeeper-kafka-common-inconsistentclusteridexceptio
+solution: rm -rf /tmp/kafka-logs/*
 
 https://stackoverflow.com/questions/59694099/zookeeper-java-io-ioexception-no-snapshot-found-but-there-are-log-entries-so
+solution: rm -rf /tmp/zookeeper
 

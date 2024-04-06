@@ -1,0 +1,26 @@
+{
+  "pipeId": "zzza",
+  "entity": "abcd",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "zzza",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "zzza",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    },
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.tutorial.CustomMySqlStagingStore",
+      "name": "zzza",
+      "config": {
+        "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
+        "username": "root",
+        "password": "",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

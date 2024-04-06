@@ -1,0 +1,16 @@
+{
+  "pipeId": "jbdxyz",
+  "entity": "ybyyby",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "jbdxyz",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "jbdxyz",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

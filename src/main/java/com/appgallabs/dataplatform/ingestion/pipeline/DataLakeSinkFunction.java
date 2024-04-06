@@ -20,8 +20,14 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
 
     private String entity;
 
-    public DataLakeSinkFunction(SecurityToken securityToken,String driverConfiguration,String pipeId, String entity) {
+    private SystemStore systemStore;
+
+    public DataLakeSinkFunction(SecurityToken securityToken,SystemStore systemStore,
+                                String driverConfiguration,
+                                String pipeId,
+                                String entity) {
         this.securityToken = securityToken;
+        this.systemStore = systemStore;
         this.driverConfiguration = driverConfiguration;
         this.pipeId = pipeId;
         this.entity = entity;
@@ -30,6 +36,10 @@ public class DataLakeSinkFunction implements SinkFunction<String> {
     //processes a json object
     @Override
     public void invoke(String value, Context context) throws Exception {
+        System.out.println("****TASK_RUNNING****");
+        System.out.println(value);
+        System.out.println("********************");
+
         MongoDBDataLakeDriver driver = new MongoDBDataLakeDriver();
         driver.configure(this.driverConfiguration);
 

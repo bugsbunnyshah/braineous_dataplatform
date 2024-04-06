@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.preprocess;
 
+import com.appgallabs.dataplatform.infrastructure.security.ApiKeyManager;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
@@ -21,34 +23,48 @@ public class SecurityTokenProcessor implements ContainerRequestFilter
     @Inject
     private SecurityTokenContainer securityTokenContainer;
 
+    @Inject
+    private ApiKeyManager apiKeyManager;
+
 
     @Override
     public void filter(ContainerRequestContext context) throws IOException
     {
-        String tenant = context.getHeaderString("tenant");
-        if(tenant != null)
+        String requestUri = String.valueOf(context.getUriInfo().getRequestUri());
+        boolean allowed = UnauthenticatedRequests.isAllowed(requestUri);
+        if(allowed){
+            return;
+        }
+
+        String apiKey = context.getHeaderString("x-api-key");
+        String apiKeySecret = context.getHeaderString("x-api-key-secret");
+        if(apiKey != null && apiKeySecret != null)
         {
-            String token = context.getHeaderString("token");
-            String[] array = token.split(" ");
-            String bearerToken = array[1];
-            JsonObject json = new JsonObject();
-            json.addProperty("access_token", bearerToken);
-            json.addProperty("principal", tenant);
-            SecurityToken securityToken = SecurityToken.fromJson(json.toString());
+            SecurityToken securityToken = new SecurityToken();
+            securityToken.setPrincipal(apiKey);
+            securityToken.setToken(apiKeySecret);
             this.securityTokenContainer.setSecurityToken(securityToken);
 
-            /*
-            logger.info("*****************************************************************");
-            logger.info("(SecurityTokenContainer): " + this.securityTokenContainer);
-            logger.info("(SecurityToken): " + this.securityTokenContainer.getSecurityToken());
-            logger.info("(Principal): " + this.securityTokenContainer.getSecurityToken().getPrincipal());
-            logger.info("(ClientId): " + tenant);
-            logger.info("*****************************************************************");
-             */
+            boolean success = this.apiKeyManager.authenticate(apiKey, apiKeySecret);
+
+            if(success) {
+                /*logger.info("*************************SERVER_COMPONENT****************************************");
+                logger.info("(SecurityTokenContainer): " + this.securityTokenContainer);
+                logger.info("(Principal): " + this.securityTokenContainer.getSecurityToken().getPrincipal());
+                logger.info("(Token): " + this.securityTokenContainer.getSecurityToken().getToken());
+                logger.info("*****************************************************************");*/
+            }else{
+                this.unauthorized(context);
+            }
+
         }else{
-            Response.Status status = Response.Status.UNAUTHORIZED;
-            Response response = Response.status(status).build();
-            context.abortWith(response);
+            this.unauthorized(context);
         }
+    }
+
+    private void unauthorized(ContainerRequestContext context){
+        Response.Status status = Response.Status.UNAUTHORIZED;
+        Response response = Response.status(status).build();
+        context.abortWith(response);
     }
 }

@@ -1,11 +1,11 @@
 package com.appgallabs.dataplatform.client.sdk.service;
 
-import com.appgallabs.dataplatform.client.sdk.api.GraphQlQueryException;
+import com.appgallabs.dataplatform.client.sdk.api.Configuration;
 import com.appgallabs.dataplatform.client.sdk.api.RegisterPipeException;
 import com.appgallabs.dataplatform.client.sdk.infrastructure.StreamingAgent;
 import com.appgallabs.dataplatform.client.sdk.network.DataPipelineClient;
 import com.appgallabs.dataplatform.util.JsonUtil;
-import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -26,13 +26,30 @@ public class DataPipelineService {
         return DataPipelineService.singleton;
     }
 
-    public void sendData(String pipeId, String entity,String payload){
-        StreamingAgent.getInstance().sendData(pipeId, entity, payload);
+    public void sendData(Configuration configuration, String pipeId, String entity, String payload){
+        //StreamingAgent.getInstance().sendData(configuration, pipeId, entity, payload);
+
+
+        this.sendDataToCloud(configuration,
+                pipeId,
+                entity,
+                payload);
     }
 
-    public JsonObject registerPipe(String payload) throws RegisterPipeException {
+    public void print(Configuration configuration, String pipeId, String entity, String selectSql){
+        this.dataPipelineClient.print(
+                configuration,
+                pipeId,
+                entity,
+                selectSql
+        );
+    }
+
+    public JsonObject registerPipe(Configuration configuration, String payload) throws RegisterPipeException {
         //send query
-        JsonObject response = this.dataPipelineClient.registerPipe(JsonUtil.validateJson(payload));
+        JsonObject response = this.dataPipelineClient.registerPipe(
+                configuration,
+                JsonUtil.validateJson(payload));
 
         //process response
         String queryStatusMessage = null;
@@ -51,5 +68,28 @@ public class DataPipelineService {
         }
 
         throw new RegisterPipeException(response.toString());
+    }
+    //----------------------------
+    private JsonObject sendDataToCloud(Configuration configuration, String pipeId, String entity,String payload){
+
+        //validate and prepare rest payload
+        JsonElement jsonElement = JsonUtil.validateJson(payload);
+        if(jsonElement == null){
+            throw new RuntimeException("payload_not_in_json_format");
+        }
+
+        //send data for ingestion
+        JsonObject response = this.dataPipelineClient.sendData(configuration, pipeId, entity,jsonElement);
+
+        //process response
+        String ingestionStatusMessage = null;
+        if(response.has("ingestionError")){
+            ingestionStatusMessage = response.get("ingestionError").getAsString();
+        }else{
+            ingestionStatusMessage = response.get("ingestionStatusCode").getAsString();
+        }
+        response.addProperty("status",ingestionStatusMessage);
+
+        return response;
     }
 }

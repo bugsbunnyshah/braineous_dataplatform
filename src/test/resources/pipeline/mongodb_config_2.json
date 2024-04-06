@@ -1,0 +1,30 @@
+{
+  "pipeId": "scenariopipe",
+  "entity": "scenario",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "scenario_pipe",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "scenario_pipe",
+        "collection": "data",
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
+    },
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStagingStore",
+      "name": "scenario_pipe",
+      "config": {
+        "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
+        "username": "root",
+        "password": "",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

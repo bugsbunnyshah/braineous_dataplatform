@@ -1,0 +1,15 @@
+{
+  "pipeId": "small_pipe",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "perf_store_mongodb",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "perf_store",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

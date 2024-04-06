@@ -45,12 +45,14 @@ public class SubscriptionService {
         return subscription;
     }
 
-    public void createSubscription(Subscription subscription){
+    public Subscription createSubscription(Subscription subscription){
         PipelineStore pipelineStore = this.mongoDBJsonStore.getPipelineStore();
         Tenant tenant = this.securityTokenContainer.getTenant();
         MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
 
         pipelineStore.createSubscription(tenant, mongoClient, subscription);
+
+        return subscription;
     }
 
     public Subscription updateSubscription(Subscription subscription){

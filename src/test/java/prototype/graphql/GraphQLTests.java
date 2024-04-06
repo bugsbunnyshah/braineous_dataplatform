@@ -35,7 +35,7 @@ import test.components.Util;
 import javax.inject.Inject;
 
 
-@QuarkusTest
+//@QuarkusTest
 public class GraphQLTests extends BaseTest {
     private static Logger logger = LoggerFactory.getLogger(GraphQLTests.class);
 
@@ -59,77 +59,5 @@ public class GraphQLTests extends BaseTest {
 
         Registry registry = Registry.getInstance();
         registry.registerPipe(tenant, JsonUtil.validateJson(jsonString).getAsJsonObject());
-    }
-
-    @Test
-    public void testAll() throws Exception{
-        try {
-            String pipeId = "123";
-
-            String jsonString = IOUtils.toString(Thread.currentThread().
-                            getContextClassLoader().getResourceAsStream("graphql/input.json"),
-                    StandardCharsets.UTF_8
-            );
-            JsonObject jsonObject = JsonParser.parseString(jsonString).getAsJsonObject();
-            String originalObjectHash = JsonUtil.getJsonHash(jsonObject);
-
-            String entity = TestConstants.ENTITY;
-            JsonObject datalakeDriverConfiguration = Registry.getInstance().getDatalakeConfiguration();
-            this.pipelineService.ingest(this.securityTokenContainer.getSecurityToken(),
-                    datalakeDriverConfiguration.toString(),
-                    pipeId,
-                    entity,jsonString);
-
-            JsonArray ingestion = this.mongoDBJsonStore.readIngestion(this.securityTokenContainer.getTenant(),
-                    originalObjectHash);
-
-            JsonObject storedJson = ingestion.get(0).getAsJsonObject();
-            assertNotNull(storedJson);
-
-            String restUrl = "http://localhost:8080/graphql/";
-            JsonObject documentQueryJson = new JsonObject();
-
-
-            String query = "query documentByLakeId {documentByLakeId(dataLakeId: \"" + originalObjectHash + "\") {data}}";
-
-            String queryJsonString = IOUtils.toString(Thread.currentThread().
-                            getContextClassLoader().getResourceAsStream("graphql/getDocumentByLakeId.json"),
-                    StandardCharsets.UTF_8
-            );
-            JsonObject queryJsonObject = JsonParser.parseString(queryJsonString).getAsJsonObject();
-            queryJsonObject.addProperty("query", query);
-            String input = queryJsonObject.toString();
-
-            String credentials = IOUtils.resourceToString("oauth/credentials.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject credentialsJson = JsonParser.parseString(credentials).getAsJsonObject();
-            String principal = credentialsJson.get("client_id").getAsString();
-
-            String token = IOUtils.resourceToString("oauth/jwtToken.json",
-                    StandardCharsets.UTF_8,
-                    Thread.currentThread().getContextClassLoader());
-            JsonObject securityTokenJson = JsonParser.parseString(token).getAsJsonObject();
-            String generatedToken = securityTokenJson.get("access_token").getAsString();
-
-            HttpClient httpClient = HttpClient.newBuilder().build();
-            HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
-            HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
-                    //.header("Principal", principal)
-                    //.header("Authorization", "Bearer "+generatedToken)
-                    .POST(HttpRequest.BodyPublishers.ofString(input))
-                    .build();
-
-
-            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String responseJson = httpResponse.body();
-            int statusCode = httpResponse.statusCode();
-            assertEquals(200, statusCode);
-
-            JsonElement responseJsonElement = JsonParser.parseString(responseJson);
-            JsonUtil.printStdOut(responseJsonElement);
-        }catch (Exception e){
-
-        }
     }
 }

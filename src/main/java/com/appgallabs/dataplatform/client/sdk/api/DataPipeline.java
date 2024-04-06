@@ -1,39 +1,24 @@
 package com.appgallabs.dataplatform.client.sdk.api;
 
-import com.appgallabs.dataplatform.client.sdk.service.DataLakeGraphQlQueryService;
 import com.appgallabs.dataplatform.client.sdk.service.DataPipelineService;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
-public class DataPipeline {
-    private static Configuration configuration;
+class DataPipeline {
 
-    /*static{
-        configuration = new HashMap<>();
-
-        configuration.put("steamSizeInBytes", "80");
-        configuration.put("ingestionHostBaseUrl", "http://localhost:8080/");
-    }*/
-
-    public static Configuration configure(Configuration configuration){
-        DataPipeline.configuration = configuration;
-        return DataPipeline.configuration;
+    public static void print(Configuration configuration, String pipeId, String entity, String selectSql){
+        System.out.println("***SENDING_PRINT_QUERY*****");
+        DataPipelineService.getInstance().print(configuration, pipeId, entity, selectSql);
     }
 
-    public static Configuration getConfiguration() {
-        return DataPipeline.configuration;
-    }
-
-    public static void sendData(String pipeId, String entity, String payload){
+    public static void sendData(Configuration configuration, String pipeId, String entity, String payload){
         System.out.println("***SENDING_DATA_START*****");
-        DataPipelineService.getInstance().sendData(pipeId, entity, payload);
+        DataPipelineService.getInstance().sendData(configuration, pipeId, entity, payload);
     }
 
-    public static JsonObject registerPipe(String payload) throws RegisterPipeException{
-        JsonObject result = DataPipelineService.getInstance().registerPipe(payload);
+    public static JsonObject registerPipe(Configuration configuration, String pipeConf) throws RegisterPipeException{
+        JsonObject result = DataPipelineService.getInstance().registerPipe(configuration, pipeConf);
         if(result != null){
             return result;
         }

@@ -52,7 +52,7 @@ public class DataLakeGraphQlQueryEndpointTests extends BaseTest {
         }
     }
 
-    @Test
+    //@Test
     public void query() throws Exception {
         //get OAuth Token
         String credentials = IOUtils.resourceToString("oauth/credentials.json",

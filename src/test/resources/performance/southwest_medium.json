@@ -1,0 +1,5164 @@
+{
+  "data": [
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Thiruvananthapuram International",
+        "timezone": "Asia/Kolkata",
+        "iata": "TRV",
+        "icao": "VOTV",
+        "terminal": "I",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:35:00+00:00",
+        "estimated": "2022-09-24T04:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "304",
+        "delay": null,
+        "scheduled": "2022-09-24T07:05:00+00:00",
+        "estimated": "2022-09-24T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "523",
+        "iata": "EK523",
+        "icao": "UAE523",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Soekarno-Hatta International",
+        "timezone": "Asia/Jakarta",
+        "iata": "CGK",
+        "icao": "WIII",
+        "terminal": "3",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T00:40:00+00:00",
+        "estimated": "2022-09-24T00:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "305",
+        "delay": null,
+        "scheduled": "2022-09-24T05:30:00+00:00",
+        "estimated": "2022-09-24T05:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "359",
+        "iata": "EK359",
+        "icao": "UAE359",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Bandaranaike International",
+        "timezone": "Asia/Colombo",
+        "iata": "CMB",
+        "icao": "VCBI",
+        "terminal": "MAIN",
+        "gate": "08",
+        "delay": null,
+        "scheduled": "2022-09-24T03:15:00+00:00",
+        "estimated": "2022-09-24T03:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "313",
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "649",
+        "iata": "EK649",
+        "icao": "UAE649",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Forest Hill",
+        "timezone": "Australia/Sydney",
+        "iata": "WGA",
+        "icao": "YSWG",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:30:00+00:00",
+        "estimated": "2022-09-24T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T07:35:00+00:00",
+        "estimated": "2022-09-24T07:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5179",
+        "iata": "EK5179",
+        "icao": "UAE5179",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2220",
+          "flight_iata": "qf2220",
+          "flight_icao": "qfa2220"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Suvarnabhumi International",
+        "timezone": "Asia/Bangkok",
+        "iata": "BKK",
+        "icao": "VTBS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:35:00+00:00",
+        "estimated": "2022-09-24T01:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "309",
+        "delay": null,
+        "scheduled": "2022-09-24T04:45:00+00:00",
+        "estimated": "2022-09-24T04:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "385",
+        "iata": "EK385",
+        "icao": "UAE385",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Samarkand",
+        "timezone": "Asia/Samarkand",
+        "iata": "SKD",
+        "icao": "UTSS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:05:00+00:00",
+        "estimated": "2022-09-24T04:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:40:00+00:00",
+        "estimated": "2022-09-24T06:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2407",
+        "iata": "EK2407",
+        "icao": "UAE2407",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "770",
+          "flight_iata": "fz770",
+          "flight_icao": "fdb770"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Alice Springs",
+        "timezone": "Australia/Darwin",
+        "iata": "ASP",
+        "icao": "YBAS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:00:00+00:00",
+        "estimated": "2022-09-24T09:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Adelaide International Airport",
+        "timezone": "Australia/Adelaide",
+        "iata": "ADL",
+        "icao": "YPAD",
+        "terminal": "1",
+        "gate": "23",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T11:00:00+00:00",
+        "estimated": "2022-09-24T11:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5722",
+        "iata": "EK5722",
+        "icao": "UAE5722",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1955",
+          "flight_iata": "qf1955",
+          "flight_icao": "qfa1955"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:15:00+00:00",
+        "estimated": "2022-09-24T08:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T10:40:00+00:00",
+        "estimated": "2022-09-24T10:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5611",
+        "iata": "EK5611",
+        "icao": "UAE5611",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "611",
+          "flight_iata": "qf611",
+          "flight_icao": "qfa611"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Koltsovo International",
+        "timezone": "Asia/Yekaterinburg",
+        "iata": "SVX",
+        "icao": "USSS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:05:00+00:00",
+        "estimated": "2022-09-24T05:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Domodedovo",
+        "timezone": "Europe/Moscow",
+        "iata": "DME",
+        "icao": "UUDD",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:45:00+00:00",
+        "estimated": "2022-09-24T05:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7911",
+        "iata": "EK7911",
+        "icao": "UAE7911",
+        "codeshared": {
+          "airline_name": "s7 airlines",
+          "airline_iata": "s7",
+          "airline_icao": "sbi",
+          "flight_number": "1174",
+          "flight_iata": "s71174",
+          "flight_icao": "sbi1174"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": "F4",
+        "delay": null,
+        "scheduled": "2022-09-24T07:06:00+00:00",
+        "estimated": "2022-09-24T07:06:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Vnukovo",
+        "timezone": "Europe/Moscow",
+        "iata": "VKO",
+        "icao": "UUWW",
+        "terminal": "A",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:10:00+00:00",
+        "estimated": "2022-09-24T06:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2143",
+        "iata": "EK2143",
+        "icao": "UAE2143",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "8273",
+          "flight_iata": "fz8273",
+          "flight_icao": "fdb8273"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "delay": null,
+        "scheduled": "2022-09-24T08:35:00+00:00",
+        "estimated": "2022-09-24T08:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Armidale",
+        "timezone": "Australia/Sydney",
+        "iata": "ARM",
+        "icao": "YARM",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:55:00+00:00",
+        "estimated": "2022-09-24T09:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5169",
+        "iata": "EK5169",
+        "icao": "UAE5169",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2020",
+          "flight_iata": "qf2020",
+          "flight_icao": "qfa2020"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Cairo International Airport",
+        "timezone": "Africa/Cairo",
+        "iata": "CAI",
+        "icao": "HECA",
+        "terminal": "2",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:30:00+00:00",
+        "estimated": "2022-09-24T01:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "309",
+        "delay": null,
+        "scheduled": "2022-09-24T07:10:00+00:00",
+        "estimated": "2022-09-24T07:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "926",
+        "iata": "EK926",
+        "icao": "UAE926",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Devonport",
+        "timezone": "Australia/Hobart",
+        "iata": "DPO",
+        "icao": "YDPO",
+        "terminal": null,
+        "gate": null,
+        "delay": 30,
+        "scheduled": "2022-09-24T06:30:00+00:00",
+        "estimated": "2022-09-24T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:45:00+00:00",
+        "estimated": "2022-09-24T07:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5380",
+        "iata": "EK5380",
+        "icao": "UAE5380",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2050",
+          "flight_iata": "qf2050",
+          "flight_icao": "qfa2050"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Suvarnabhumi International",
+        "timezone": "Asia/Bangkok",
+        "iata": "BKK",
+        "icao": "VTBS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:00:00+00:00",
+        "estimated": "2022-09-24T07:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Sukhothai",
+        "timezone": "Asia/Bangkok",
+        "iata": "THS",
+        "icao": "VTPO",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:20:00+00:00",
+        "estimated": "2022-09-24T08:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "4474",
+        "iata": "EK4474",
+        "icao": "UAE4474",
+        "codeshared": {
+          "airline_name": "bangkok airways",
+          "airline_iata": "pg",
+          "airline_icao": "bkp",
+          "flight_number": "211",
+          "flight_iata": "pg211",
+          "flight_icao": "bkp211"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:30:00+00:00",
+        "estimated": "2022-09-24T07:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:05:00+00:00",
+        "estimated": "2022-09-24T09:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5415",
+        "iata": "EK5415",
+        "icao": "UAE5415",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "415",
+          "flight_iata": "qf415",
+          "flight_icao": "qfa415"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Perth International",
+        "timezone": "Australia/Perth",
+        "iata": "PER",
+        "icao": "YPPH",
+        "terminal": "3",
+        "gate": "19",
+        "delay": null,
+        "scheduled": "2022-09-24T06:05:00+00:00",
+        "estimated": "2022-09-24T06:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T11:30:00+00:00",
+        "estimated": "2022-09-24T11:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5187",
+        "iata": "EK5187",
+        "icao": "UAE5187",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "772",
+          "flight_iata": "qf772",
+          "flight_icao": "qfa772"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Perth International",
+        "timezone": "Australia/Perth",
+        "iata": "PER",
+        "icao": "YPPH",
+        "terminal": "3",
+        "gate": "18",
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D02",
+        "delay": null,
+        "scheduled": "2022-09-24T12:20:00+00:00",
+        "estimated": "2022-09-24T12:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5594",
+        "iata": "EK5594",
+        "icao": "UAE5594",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "932",
+          "flight_iata": "qf932",
+          "flight_icao": "qfa932"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Avalon",
+        "timezone": "Australia/Melbourne",
+        "iata": "AVV",
+        "icao": "YMAV",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:10:00+00:00",
+        "estimated": "2022-09-24T09:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "2",
+        "gate": "A56",
+        "baggage": "D5",
+        "delay": null,
+        "scheduled": "2022-09-24T10:35:00+00:00",
+        "estimated": "2022-09-24T10:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7575",
+        "iata": "EK7575",
+        "icao": "UAE7575",
+        "codeshared": {
+          "airline_name": "jetstar",
+          "airline_iata": "jq",
+          "airline_icao": "jst",
+          "flight_number": "604",
+          "flight_iata": "jq604",
+          "flight_icao": "jst604"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Guangzhou Baiyun International",
+        "timezone": "Asia/Shanghai",
+        "iata": "CAN",
+        "icao": "ZGGG",
+        "terminal": "2",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:15:00+00:00",
+        "estimated": "2022-09-24T07:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Shuangliu",
+        "timezone": "Asia/Shanghai",
+        "iata": "CTU",
+        "icao": "ZUUU",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:40:00+00:00",
+        "estimated": "2022-09-24T09:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7442",
+        "iata": "EK7442",
+        "icao": "UAE7442",
+        "codeshared": {
+          "airline_name": "china southern airlines",
+          "airline_iata": "cz",
+          "airline_icao": "csn",
+          "flight_number": "3403",
+          "flight_iata": "cz3403",
+          "flight_icao": "csn3403"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Guangzhou Baiyun International",
+        "timezone": "Asia/Shanghai",
+        "iata": "CAN",
+        "icao": "ZGGG",
+        "terminal": "2",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:15:00+00:00",
+        "estimated": "2022-09-24T07:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Xianyang",
+        "timezone": "Asia/Shanghai",
+        "iata": "XIY",
+        "icao": "ZLXY",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:50:00+00:00",
+        "estimated": "2022-09-24T09:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7446",
+        "iata": "EK7446",
+        "icao": "UAE7446",
+        "codeshared": {
+          "airline_name": "china southern airlines",
+          "airline_iata": "cz",
+          "airline_icao": "csn",
+          "flight_number": "3201",
+          "flight_iata": "cz3201",
+          "flight_icao": "csn3201"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Perth International",
+        "timezone": "Australia/Perth",
+        "iata": "PER",
+        "icao": "YPPH",
+        "terminal": "4",
+        "gate": "10",
+        "delay": null,
+        "scheduled": "2022-09-24T07:15:00+00:00",
+        "estimated": "2022-09-24T07:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Karratha",
+        "timezone": "Australia/Perth",
+        "iata": "KTA",
+        "icao": "YPKA",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:15:00+00:00",
+        "estimated": "2022-09-24T09:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5432",
+        "iata": "EK5432",
+        "icao": "UAE5432",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1828",
+          "flight_iata": "qf1828",
+          "flight_icao": "qfa1828"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Perth International",
+        "timezone": "Australia/Perth",
+        "iata": "PER",
+        "icao": "YPPH",
+        "terminal": "4",
+        "gate": "14",
+        "delay": null,
+        "scheduled": "2022-09-24T08:05:00+00:00",
+        "estimated": "2022-09-24T08:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T13:30:00+00:00",
+        "estimated": "2022-09-24T13:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5461",
+        "iata": "EK5461",
+        "icao": "UAE5461",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "774",
+          "flight_iata": "qf774",
+          "flight_icao": "qfa774"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": "C37",
+        "delay": null,
+        "scheduled": "2022-09-24T01:40:00+00:00",
+        "estimated": "2022-09-24T01:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "304",
+        "delay": null,
+        "scheduled": "2022-09-24T04:30:00+00:00",
+        "estimated": "2022-09-24T04:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "449",
+        "iata": "EK449",
+        "icao": "UAE449",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Gladstone",
+        "timezone": "Australia/Brisbane",
+        "iata": "GLT",
+        "icao": "YGLA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:55:00+00:00",
+        "estimated": "2022-09-24T07:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D03",
+        "delay": null,
+        "scheduled": "2022-09-24T09:00:00+00:00",
+        "estimated": "2022-09-24T09:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5263",
+        "iata": "EK5263",
+        "icao": "UAE5263",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2337",
+          "flight_iata": "qf2337",
+          "flight_icao": "qfa2337"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Indira Gandhi International",
+        "timezone": "Asia/Kolkata",
+        "iata": "DEL",
+        "icao": "VIDP",
+        "terminal": "3",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:20:00+00:00",
+        "estimated": "2022-09-24T04:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2022-09-24T07:00:00+00:00",
+        "estimated": "2022-09-24T07:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2125",
+        "iata": "EK2125",
+        "icao": "UAE2125",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "432",
+          "flight_iata": "fz432",
+          "flight_icao": "fdb432"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Indira Gandhi International",
+        "timezone": "Asia/Kolkata",
+        "iata": "DEL",
+        "icao": "VIDP",
+        "terminal": "3",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:15:00+00:00",
+        "estimated": "2022-09-24T04:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "301",
+        "delay": null,
+        "scheduled": "2022-09-24T06:20:00+00:00",
+        "estimated": "2022-09-24T06:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "513",
+        "iata": "EK513",
+        "icao": "UAE513",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "2",
+        "gate": "A58",
+        "delay": null,
+        "scheduled": "2022-09-24T08:15:00+00:00",
+        "estimated": "2022-09-24T08:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Avalon",
+        "timezone": "Australia/Melbourne",
+        "iata": "AVV",
+        "icao": "YMAV",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:50:00+00:00",
+        "estimated": "2022-09-24T09:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7576",
+        "iata": "EK7576",
+        "icao": "UAE7576",
+        "codeshared": {
+          "airline_name": "jetstar",
+          "airline_iata": "jq",
+          "airline_icao": "jst",
+          "flight_number": "605",
+          "flight_iata": "jq605",
+          "flight_icao": "jst605"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Bangalore International Airport",
+        "timezone": "Asia/Kolkata",
+        "iata": "BLR",
+        "icao": "VOBL",
+        "terminal": "1",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:30:00+00:00",
+        "estimated": "2022-09-24T04:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "C",
+        "delay": null,
+        "scheduled": "2022-09-24T06:50:00+00:00",
+        "estimated": "2022-09-24T06:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "569",
+        "iata": "EK569",
+        "icao": "UAE569",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Cairns",
+        "timezone": "Australia/Brisbane",
+        "iata": "CNS",
+        "icao": "YBCS",
+        "terminal": "2",
+        "gate": "22",
+        "delay": null,
+        "scheduled": "2022-09-24T09:10:00+00:00",
+        "estimated": "2022-09-24T09:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D01",
+        "delay": null,
+        "scheduled": "2022-09-24T11:15:00+00:00",
+        "estimated": "2022-09-24T11:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5649",
+        "iata": "EK5649",
+        "icao": "UAE5649",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "711",
+          "flight_iata": "qf711",
+          "flight_icao": "qfa711"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": "24",
+        "delay": null,
+        "scheduled": "2022-09-24T06:05:00+00:00",
+        "estimated": "2022-09-24T06:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Canberra",
+        "timezone": "Australia/Sydney",
+        "iata": "CBR",
+        "icao": "YSCB",
+        "terminal": "1",
+        "gate": "11",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:10:00+00:00",
+        "estimated": "2022-09-24T07:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5498",
+        "iata": "EK5498",
+        "icao": "UAE5498",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1510",
+          "flight_iata": "qf1510",
+          "flight_icao": "qfa1510"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": "8",
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D02",
+        "delay": null,
+        "scheduled": "2022-09-24T08:10:00+00:00",
+        "estimated": "2022-09-24T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5600",
+        "iata": "EK5600",
+        "icao": "UAE5600",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "600",
+          "flight_iata": "qf600",
+          "flight_icao": "qfa600"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2022-09-24T09:10:00+00:00",
+        "estimated": "2022-09-24T09:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Bundaberg",
+        "timezone": "Australia/Brisbane",
+        "iata": "BDB",
+        "icao": "YBUD",
+        "terminal": "D",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T10:05:00+00:00",
+        "estimated": "2022-09-24T10:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5558",
+        "iata": "EK5558",
+        "icao": "UAE5558",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2322",
+          "flight_iata": "qf2322",
+          "flight_icao": "qfa2322"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Bundaberg",
+        "timezone": "Australia/Brisbane",
+        "iata": "BDB",
+        "icao": "YBUD",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T10:30:00+00:00",
+        "estimated": "2022-09-24T10:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D03",
+        "delay": null,
+        "scheduled": "2022-09-24T11:20:00+00:00",
+        "estimated": "2022-09-24T11:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5561",
+        "iata": "EK5561",
+        "icao": "UAE5561",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2323",
+          "flight_iata": "qf2323",
+          "flight_icao": "qfa2323"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Hong Kong International",
+        "timezone": "Asia/Hong_Kong",
+        "iata": "HKG",
+        "icao": "VHHH",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:00:00+00:00",
+        "estimated": "2022-09-24T05:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": null,
+        "timezone": null,
+        "iata": "DWC",
+        "icao": "OMDW",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:45:00+00:00",
+        "estimated": "2022-09-24T08:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "9845",
+        "iata": "EK9845",
+        "icao": "UAE9845",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "delay": null,
+        "scheduled": "2022-09-24T08:05:00+00:00",
+        "estimated": "2022-09-24T08:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D02",
+        "delay": null,
+        "scheduled": "2022-09-24T09:35:00+00:00",
+        "estimated": "2022-09-24T09:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5508",
+        "iata": "EK5508",
+        "icao": "UAE5508",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "508",
+          "flight_iata": "qf508",
+          "flight_icao": "qfa508"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kuching",
+        "timezone": "Asia/Kuching",
+        "iata": "KCH",
+        "icao": "WBGG",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:40:00+00:00",
+        "estimated": "2022-09-24T05:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:30:00+00:00",
+        "estimated": "2022-09-24T07:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3409",
+        "iata": "EK3409",
+        "icao": "UAE3409",
+        "codeshared": {
+          "airline_name": "malaysia airlines",
+          "airline_iata": "mh",
+          "airline_icao": "mas",
+          "flight_number": "2547",
+          "flight_iata": "mh2547",
+          "flight_icao": "mas2547"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "D",
+        "gate": "23",
+        "delay": null,
+        "scheduled": "2022-09-24T10:40:00+00:00",
+        "estimated": "2022-09-24T10:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Wellington International",
+        "timezone": "Pacific/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": null,
+        "gate": "22",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T11:45:00+00:00",
+        "estimated": "2022-09-24T11:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7479",
+        "iata": "EK7479",
+        "icao": "UAE7479",
+        "codeshared": {
+          "airline_name": "jetstar",
+          "airline_iata": "jq",
+          "airline_icao": "jst",
+          "flight_number": "259",
+          "flight_iata": "jq259",
+          "flight_icao": "jst259"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": "18",
+        "delay": null,
+        "scheduled": "2022-09-24T06:15:00+00:00",
+        "estimated": "2022-09-24T06:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Mount Isa",
+        "timezone": "Australia/Brisbane",
+        "iata": "ISA",
+        "icao": "YBMA",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:55:00+00:00",
+        "estimated": "2022-09-24T08:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5166",
+        "iata": "EK5166",
+        "icao": "UAE5166",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1760",
+          "flight_iata": "qf1760",
+          "flight_icao": "qfa1760"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": "23",
+        "delay": null,
+        "scheduled": "2022-09-24T06:15:00+00:00",
+        "estimated": "2022-09-24T06:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:40:00+00:00",
+        "estimated": "2022-09-24T08:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5605",
+        "iata": "EK5605",
+        "icao": "UAE5605",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "605",
+          "flight_iata": "qf605",
+          "flight_icao": "qfa605"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": "B1",
+        "delay": null,
+        "scheduled": "2022-09-24T00:25:00+00:00",
+        "estimated": "2022-09-24T00:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kisauni",
+        "timezone": "Africa/Dar_es_Salaam",
+        "iata": "ZNZ",
+        "icao": "HTZA",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:00:00+00:00",
+        "estimated": "2022-09-24T05:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2187",
+        "iata": "EK2187",
+        "icao": "UAE2187",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "1685",
+          "flight_iata": "fz1685",
+          "flight_icao": "fdb1685"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Domodedovo",
+        "timezone": "Europe/Moscow",
+        "iata": "DME",
+        "icao": "UUDD",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T02:05:00+00:00",
+        "estimated": "2022-09-24T02:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Novy Urengoy",
+        "timezone": "Asia/Yekaterinburg",
+        "iata": "NUX",
+        "icao": "USMU",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:35:00+00:00",
+        "estimated": "2022-09-24T07:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7949",
+        "iata": "EK7949",
+        "icao": "UAE7949",
+        "codeshared": {
+          "airline_name": "s7 airlines",
+          "airline_iata": "s7",
+          "airline_icao": "sbi",
+          "flight_number": "2571",
+          "flight_iata": "s72571",
+          "flight_icao": "sbi2571"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Soekarno-Hatta International",
+        "timezone": "Asia/Jakarta",
+        "iata": "CGK",
+        "icao": "WIII",
+        "terminal": "2",
+        "gate": "C22",
+        "delay": null,
+        "scheduled": "2022-09-24T04:30:00+00:00",
+        "estimated": "2022-09-24T04:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Ngurah Rai International",
+        "timezone": "Asia/Makassar",
+        "iata": "DPS",
+        "icao": "WADD",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D.4",
+        "delay": null,
+        "scheduled": "2022-09-24T07:20:00+00:00",
+        "estimated": "2022-09-24T07:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3562",
+        "iata": "EK3562",
+        "icao": "UAE3562",
+        "codeshared": {
+          "airline_name": "batik air",
+          "airline_iata": "id",
+          "airline_icao": "btk",
+          "flight_number": "6500",
+          "flight_iata": "id6500",
+          "flight_icao": "btk6500"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "I",
+        "gate": "78",
+        "delay": null,
+        "scheduled": "2022-09-24T08:00:00+00:00",
+        "estimated": "2022-09-24T08:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Queenstown",
+        "timezone": "Pacific/Auckland",
+        "iata": "ZQN",
+        "icao": "NZQN",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T13:30:00+00:00",
+        "estimated": "2022-09-24T13:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5029",
+        "iata": "EK5029",
+        "icao": "UAE5029",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "185",
+          "flight_iata": "qf185",
+          "flight_icao": "qfa185"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Mohammad Bin Abdulaziz",
+        "timezone": "Asia/Riyadh",
+        "iata": "MED",
+        "icao": "OEMA",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:05:00+00:00",
+        "estimated": "2022-09-24T01:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "1",
+        "delay": null,
+        "scheduled": "2022-09-24T04:50:00+00:00",
+        "estimated": "2022-09-24T04:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2305",
+        "iata": "EK2305",
+        "icao": "UAE2305",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "840",
+          "flight_iata": "fz840",
+          "flight_icao": "fdb840"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Noibai International",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "iata": "HAN",
+        "icao": "VVNB",
+        "terminal": "2",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:30:00+00:00",
+        "estimated": "2022-09-24T01:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "304",
+        "delay": null,
+        "scheduled": "2022-09-24T05:05:00+00:00",
+        "estimated": "2022-09-24T05:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "395",
+        "iata": "EK395",
+        "icao": "UAE395",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": null,
+        "timezone": null,
+        "iata": "DWC",
+        "icao": "OMDW",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:45:00+00:00",
+        "estimated": "2022-09-24T01:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Hong Kong International",
+        "timezone": "Asia/Hong_Kong",
+        "iata": "HKG",
+        "icao": "VHHH",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T13:20:00+00:00",
+        "estimated": "2022-09-24T13:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "9284",
+        "iata": "EK9284",
+        "icao": "UAE9284",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Miri",
+        "timezone": "Asia/Kuching",
+        "iata": "MYY",
+        "icao": "WBGR",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:15:00+00:00",
+        "estimated": "2022-09-24T08:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3411",
+        "iata": "EK3411",
+        "icao": "UAE3411",
+        "codeshared": {
+          "airline_name": "malaysia airlines",
+          "airline_iata": "mh",
+          "airline_icao": "mas",
+          "flight_number": "2551",
+          "flight_iata": "mh2551",
+          "flight_icao": "mas2551"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Ninoy Aquino International",
+        "timezone": "Asia/Manila",
+        "iata": "MNL",
+        "icao": "RPLL",
+        "terminal": "3",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:40:00+00:00",
+        "estimated": "2022-09-24T07:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T12:10:00+00:00",
+        "estimated": "2022-09-24T12:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "337",
+        "iata": "EK337",
+        "icao": "UAE337",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Avalon",
+        "timezone": "Australia/Melbourne",
+        "iata": "AVV",
+        "icao": "YMAV",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "2",
+        "gate": "A58",
+        "baggage": "D5",
+        "delay": null,
+        "scheduled": "2022-09-24T07:25:00+00:00",
+        "estimated": "2022-09-24T07:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7573",
+        "iata": "EK7573",
+        "icao": "UAE7573",
+        "codeshared": {
+          "airline_name": "jetstar",
+          "airline_iata": "jq",
+          "airline_icao": "jst",
+          "flight_number": "602",
+          "flight_iata": "jq602",
+          "flight_icao": "jst602"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Soekarno-Hatta International",
+        "timezone": "Asia/Jakarta",
+        "iata": "CGK",
+        "icao": "WIII",
+        "terminal": "3",
+        "gate": null,
+        "delay": 4,
+        "scheduled": "2022-09-24T00:15:00+00:00",
+        "estimated": "2022-09-24T00:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Hasanudin",
+        "timezone": "Asia/Makassar",
+        "iata": "UPG",
+        "icao": "WAAA",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "2",
+        "delay": null,
+        "scheduled": "2022-09-24T03:50:00+00:00",
+        "estimated": "2022-09-24T03:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7300",
+        "iata": "EK7300",
+        "icao": "UAE7300",
+        "codeshared": {
+          "airline_name": "garuda indonesia",
+          "airline_iata": "ga",
+          "airline_icao": "gia",
+          "flight_number": "640",
+          "flight_iata": "ga640",
+          "flight_icao": "gia640"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Singapore Changi",
+        "timezone": "Asia/Singapore",
+        "iata": "SIN",
+        "icao": "WSSS",
+        "terminal": "1",
+        "gate": "C18",
+        "delay": 21,
+        "scheduled": "2022-09-24T00:20:00+00:00",
+        "estimated": "2022-09-24T00:20:00+00:00",
+        "actual": "2022-09-24T00:41:00+00:00",
+        "estimated_runway": "2022-09-24T00:41:00+00:00",
+        "actual_runway": "2022-09-24T00:41:00+00:00"
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "2",
+        "gate": "7",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:45:00+00:00",
+        "estimated": "2022-09-24T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5032",
+        "iata": "EK5032",
+        "icao": "UAE5032",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "38",
+          "flight_iata": "qf38",
+          "flight_icao": "qfa38"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Domodedovo",
+        "timezone": "Europe/Moscow",
+        "iata": "DME",
+        "icao": "UUDD",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:15:00+00:00",
+        "estimated": "2022-09-24T01:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Chelyabinsk",
+        "timezone": "Asia/Yekaterinburg",
+        "iata": "CEK",
+        "icao": "USCC",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:45:00+00:00",
+        "estimated": "2022-09-24T05:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7853",
+        "iata": "EK7853",
+        "icao": "UAE7853",
+        "codeshared": {
+          "airline_name": "s7 airlines",
+          "airline_iata": "s7",
+          "airline_icao": "sbi",
+          "flight_number": "1141",
+          "flight_iata": "s71141",
+          "flight_icao": "sbi1141"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Penang International",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "PEN",
+        "icao": "WMKP",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:35:00+00:00",
+        "estimated": "2022-09-24T06:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": null,
+        "baggage": "K",
+        "delay": null,
+        "scheduled": "2022-09-24T07:40:00+00:00",
+        "estimated": "2022-09-24T07:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3315",
+        "iata": "EK3315",
+        "icao": "UAE3315",
+        "codeshared": {
+          "airline_name": "malaysia airlines",
+          "airline_iata": "mh",
+          "airline_icao": "mas",
+          "flight_number": "1137",
+          "flight_iata": "mh1137",
+          "flight_icao": "mas1137"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "I",
+        "gate": "17",
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "2",
+        "gate": "9",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:15:00+00:00",
+        "estimated": "2022-09-24T08:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5011",
+        "iata": "EK5011",
+        "icao": "UAE5011",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "152",
+          "flight_iata": "qf152",
+          "flight_icao": "qfa152"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Auckland International",
+        "timezone": "Pacific/Auckland",
+        "iata": "AKL",
+        "icao": "NZAA",
+        "terminal": "I",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "1",
+        "gate": "31",
+        "baggage": "5",
+        "delay": null,
+        "scheduled": "2022-09-24T07:40:00+00:00",
+        "estimated": "2022-09-24T07:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5050",
+        "iata": "EK5050",
+        "icao": "UAE5050",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "140",
+          "flight_iata": "qf140",
+          "flight_icao": "qfa140"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": "C32",
+        "delay": null,
+        "scheduled": "2022-09-24T02:40:00+00:00",
+        "estimated": "2022-09-24T02:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "305",
+        "delay": null,
+        "scheduled": "2022-09-24T05:30:00+00:00",
+        "estimated": "2022-09-24T05:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "343",
+        "iata": "EK343",
+        "icao": "UAE343",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Quaid-e-azam International",
+        "timezone": "Asia/Karachi",
+        "iata": "KHI",
+        "icao": "OPKC",
+        "terminal": "M",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T03:25:00+00:00",
+        "estimated": "2022-09-24T03:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2022-09-24T04:40:00+00:00",
+        "estimated": "2022-09-24T04:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2109",
+        "iata": "EK2109",
+        "icao": "UAE2109",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "332",
+          "flight_iata": "fz332",
+          "flight_icao": "fdb332"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Manas (Bishkek)",
+        "timezone": "Asia/Bishkek",
+        "iata": "FRU",
+        "icao": "UCFM",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T05:50:00+00:00",
+        "estimated": "2022-09-24T05:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "301",
+        "delay": null,
+        "scheduled": "2022-09-24T08:10:00+00:00",
+        "estimated": "2022-09-24T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2344",
+        "iata": "EK2344",
+        "icao": "UAE2344",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "1462",
+          "flight_iata": "fz1462",
+          "flight_icao": "fdb1462"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Wellington International",
+        "timezone": "Pacific/Auckland",
+        "iata": "WLG",
+        "icao": "NZWN",
+        "terminal": null,
+        "gate": "48",
+        "delay": null,
+        "scheduled": "2022-09-24T06:45:00+00:00",
+        "estimated": "2022-09-24T06:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "1",
+        "gate": "54",
+        "baggage": "5",
+        "delay": null,
+        "scheduled": "2022-09-24T08:30:00+00:00",
+        "estimated": "2022-09-24T08:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5064",
+        "iata": "EK5064",
+        "icao": "UAE5064",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "162",
+          "flight_iata": "qf162",
+          "flight_icao": "qfa162"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Domodedovo",
+        "timezone": "Europe/Moscow",
+        "iata": "DME",
+        "icao": "UUDD",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T00:45:00+00:00",
+        "estimated": "2022-09-24T00:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Gorno-Altaysk",
+        "timezone": "Asia/Omsk",
+        "iata": "RGK",
+        "icao": "UNBG",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:05:00+00:00",
+        "estimated": "2022-09-24T09:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7967",
+        "iata": "EK7967",
+        "icao": "UAE7967",
+        "codeshared": {
+          "airline_name": "s7 airlines",
+          "airline_iata": "s7",
+          "airline_icao": "sbi",
+          "flight_number": "2629",
+          "flight_iata": "s72629",
+          "flight_icao": "sbi2629"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Madras International (Meenambakkam)",
+        "timezone": "Asia/Kolkata",
+        "iata": "MAA",
+        "icao": "VOMM",
+        "terminal": "4",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:55:00+00:00",
+        "estimated": "2022-09-24T04:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2022-09-24T07:50:00+00:00",
+        "estimated": "2022-09-24T07:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2139",
+        "iata": "EK2139",
+        "icao": "UAE2139",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "448",
+          "flight_iata": "fz448",
+          "flight_icao": "fdb448"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Hasanudin",
+        "timezone": "Asia/Makassar",
+        "iata": "UPG",
+        "icao": "WAAA",
+        "terminal": "D",
+        "gate": "5",
+        "delay": null,
+        "scheduled": "2022-09-24T07:15:00+00:00",
+        "estimated": "2022-09-24T07:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Soekarno-Hatta International",
+        "timezone": "Asia/Jakarta",
+        "iata": "CGK",
+        "icao": "WIII",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:35:00+00:00",
+        "estimated": "2022-09-24T08:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7265",
+        "iata": "EK7265",
+        "icao": "UAE7265",
+        "codeshared": {
+          "airline_name": "garuda indonesia",
+          "airline_iata": "ga",
+          "airline_icao": "gia",
+          "flight_number": "617",
+          "flight_iata": "ga617",
+          "flight_icao": "gia617"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Henri Coanda International",
+        "timezone": "Europe/Bucharest",
+        "iata": "OTP",
+        "icao": "LROP",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T00:30:00+00:00",
+        "estimated": "2022-09-24T00:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "309",
+        "delay": null,
+        "scheduled": "2022-09-24T06:25:00+00:00",
+        "estimated": "2022-09-24T06:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2380",
+        "iata": "EK2380",
+        "icao": "UAE2380",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "1796",
+          "flight_iata": "fz1796",
+          "flight_icao": "fdb1796"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Canberra",
+        "timezone": "Australia/Sydney",
+        "iata": "CBR",
+        "icao": "YSCB",
+        "terminal": null,
+        "gate": "9",
+        "delay": null,
+        "scheduled": "2022-09-24T07:50:00+00:00",
+        "estimated": "2022-09-24T07:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:00:00+00:00",
+        "estimated": "2022-09-24T09:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5339",
+        "iata": "EK5339",
+        "icao": "UAE5339",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1513",
+          "flight_iata": "qf1513",
+          "flight_icao": "qfa1513"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Canberra",
+        "timezone": "Australia/Sydney",
+        "iata": "CBR",
+        "icao": "YSCB",
+        "terminal": null,
+        "gate": "14",
+        "delay": null,
+        "scheduled": "2022-09-24T07:10:00+00:00",
+        "estimated": "2022-09-24T07:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T08:05:00+00:00",
+        "estimated": "2022-09-24T08:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5269",
+        "iata": "EK5269",
+        "icao": "UAE5269",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1422",
+          "flight_iata": "qf1422",
+          "flight_icao": "qfa1422"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "delay": null,
+        "scheduled": "2022-09-24T08:20:00+00:00",
+        "estimated": "2022-09-24T08:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Coffs Harbour",
+        "timezone": "Australia/Sydney",
+        "iata": "CFS",
+        "icao": "YCFS",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:35:00+00:00",
+        "estimated": "2022-09-24T09:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5265",
+        "iata": "EK5265",
+        "icao": "UAE5265",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2104",
+          "flight_iata": "qf2104",
+          "flight_icao": "qfa2104"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Samratulangi",
+        "timezone": "Asia/Makassar",
+        "iata": "MDC",
+        "icao": "WAMM",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:55:00+00:00",
+        "estimated": "2022-09-24T07:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Soekarno-Hatta International",
+        "timezone": "Asia/Jakarta",
+        "iata": "CGK",
+        "icao": "WIII",
+        "terminal": "3",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T10:05:00+00:00",
+        "estimated": "2022-09-24T10:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7257",
+        "iata": "EK7257",
+        "icao": "UAE7257",
+        "codeshared": {
+          "airline_name": "garuda indonesia",
+          "airline_iata": "ga",
+          "airline_icao": "gia",
+          "flight_number": "601",
+          "flight_iata": "ga601",
+          "flight_icao": "gia601"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": "C14",
+        "delay": null,
+        "scheduled": "2022-09-24T02:25:00+00:00",
+        "estimated": "2022-09-24T02:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "King Fahd International Airport",
+        "timezone": "Asia/Riyadh",
+        "iata": "DMM",
+        "icao": "OEDF",
+        "terminal": "MAIN",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T02:45:00+00:00",
+        "estimated": "2022-09-24T02:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "823",
+        "iata": "EK823",
+        "icao": "UAE823",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Armidale",
+        "timezone": "Australia/Sydney",
+        "iata": "ARM",
+        "icao": "YARM",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:30:00+00:00",
+        "estimated": "2022-09-24T06:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T07:50:00+00:00",
+        "estimated": "2022-09-24T07:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5154",
+        "iata": "EK5154",
+        "icao": "UAE5154",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2019",
+          "flight_iata": "qf2019",
+          "flight_icao": "qfa2019"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": "28",
+        "delay": null,
+        "scheduled": "2022-09-24T07:05:00+00:00",
+        "estimated": "2022-09-24T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Canberra",
+        "timezone": "Australia/Sydney",
+        "iata": "CBR",
+        "icao": "YSCB",
+        "terminal": "1",
+        "gate": "9",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:10:00+00:00",
+        "estimated": "2022-09-24T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5499",
+        "iata": "EK5499",
+        "icao": "UAE5499",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1512",
+          "flight_iata": "qf1512",
+          "flight_icao": "qfa1512"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": "3",
+        "delay": null,
+        "scheduled": "2022-09-24T07:05:00+00:00",
+        "estimated": "2022-09-24T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Adelaide International Airport",
+        "timezone": "Australia/Adelaide",
+        "iata": "ADL",
+        "icao": "YPAD",
+        "terminal": "1",
+        "gate": "24",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:55:00+00:00",
+        "estimated": "2022-09-24T07:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5701",
+        "iata": "EK5701",
+        "icao": "UAE5701",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "673",
+          "flight_iata": "qf673",
+          "flight_icao": "qfa673"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "17",
+        "delay": null,
+        "scheduled": "2022-09-24T07:05:00+00:00",
+        "estimated": "2022-09-24T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Canberra",
+        "timezone": "Australia/Sydney",
+        "iata": "CBR",
+        "icao": "YSCB",
+        "terminal": "1",
+        "gate": "14",
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:00:00+00:00",
+        "estimated": "2022-09-24T08:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5251",
+        "iata": "EK5251",
+        "icao": "UAE5251",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "1425",
+          "flight_iata": "qf1425",
+          "flight_icao": "qfa1425"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": "F12",
+        "delay": null,
+        "scheduled": "2022-09-24T01:35:00+00:00",
+        "estimated": "2022-09-24T01:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kozhikode Airport",
+        "timezone": "Asia/Kolkata",
+        "iata": "CCJ",
+        "icao": "VOCL",
+        "terminal": null,
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:05:00+00:00",
+        "estimated": "2022-09-24T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2163",
+        "iata": "EK2163",
+        "icao": "UAE2163",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "429",
+          "flight_iata": "fz429",
+          "flight_icao": "fdb429"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "1",
+        "gate": "D13",
+        "delay": null,
+        "scheduled": "2022-09-24T02:00:00+00:00",
+        "estimated": "2022-09-24T02:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Mohamed V",
+        "timezone": "Africa/Casablanca",
+        "iata": "CMN",
+        "icao": "GMMN",
+        "terminal": "2",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:00:00+00:00",
+        "estimated": "2022-09-24T07:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3521",
+        "iata": "EK3521",
+        "icao": "UAE3521",
+        "codeshared": {
+          "airline_name": "royal air maroc",
+          "airline_iata": "at",
+          "airline_icao": "ram",
+          "flight_number": "245",
+          "flight_iata": "at245",
+          "flight_icao": "ram245"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Mackay",
+        "timezone": "Australia/Brisbane",
+        "iata": "MKY",
+        "icao": "YBMK",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:50:00+00:00",
+        "estimated": "2022-09-24T06:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D01",
+        "delay": null,
+        "scheduled": "2022-09-24T08:10:00+00:00",
+        "estimated": "2022-09-24T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5728",
+        "iata": "EK5728",
+        "icao": "UAE5728",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "983",
+          "flight_iata": "qf983",
+          "flight_icao": "qfa983"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Hyderabad Airport",
+        "timezone": "Asia/Kolkata",
+        "iata": "HYD",
+        "icao": "VOHS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T03:00:00+00:00",
+        "estimated": "2022-09-24T03:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "3",
+        "delay": null,
+        "scheduled": "2022-09-24T05:30:00+00:00",
+        "estimated": "2022-09-24T05:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2129",
+        "iata": "EK2129",
+        "icao": "UAE2129",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "436",
+          "flight_iata": "fz436",
+          "flight_icao": "fdb436"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Singapore Changi",
+        "timezone": "Asia/Singapore",
+        "iata": "SIN",
+        "icao": "WSSS",
+        "terminal": "1",
+        "gate": "C23",
+        "delay": 35,
+        "scheduled": "2022-09-24T00:50:00+00:00",
+        "estimated": "2022-09-24T00:50:00+00:00",
+        "actual": "2022-09-24T01:22:00+00:00",
+        "estimated_runway": "2022-09-24T01:22:00+00:00",
+        "actual_runway": "2022-09-24T01:22:00+00:00"
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "310",
+        "delay": null,
+        "scheduled": "2022-09-24T04:15:00+00:00",
+        "estimated": "2022-09-24T04:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "353",
+        "iata": "EK353",
+        "icao": "UAE353",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Almaty",
+        "timezone": "Asia/Almaty",
+        "iata": "ALA",
+        "icao": "UAAA",
+        "terminal": null,
+        "gate": "1A",
+        "delay": null,
+        "scheduled": "2022-09-24T06:05:00+00:00",
+        "estimated": "2022-09-24T06:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "302",
+        "delay": null,
+        "scheduled": "2022-09-24T08:40:00+00:00",
+        "estimated": "2022-09-24T08:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2061",
+        "iata": "EK2061",
+        "icao": "UAE2061",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "1740",
+          "flight_iata": "fz1740",
+          "flight_icao": "fdb1740"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Coffs Harbour",
+        "timezone": "Australia/Sydney",
+        "iata": "CFS",
+        "icao": "YCFS",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T10:00:00+00:00",
+        "estimated": "2022-09-24T10:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T11:15:00+00:00",
+        "estimated": "2022-09-24T11:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5348",
+        "iata": "EK5348",
+        "icao": "UAE5348",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2105",
+          "flight_iata": "qf2105",
+          "flight_icao": "qfa2105"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Adelaide International Airport",
+        "timezone": "Australia/Adelaide",
+        "iata": "ADL",
+        "icao": "YPAD",
+        "terminal": "1",
+        "gate": "24",
+        "delay": null,
+        "scheduled": "2022-09-24T08:35:00+00:00",
+        "estimated": "2022-09-24T08:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T10:25:00+00:00",
+        "estimated": "2022-09-24T10:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5674",
+        "iata": "EK5674",
+        "icao": "UAE5674",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "674",
+          "flight_iata": "qf674",
+          "flight_icao": "qfa674"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": "B27",
+        "delay": null,
+        "scheduled": "2022-09-24T01:20:00+00:00",
+        "estimated": "2022-09-24T01:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": null,
+        "timezone": null,
+        "iata": "IKA",
+        "icao": "OIIE",
+        "terminal": "MAIN",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T03:00:00+00:00",
+        "estimated": "2022-09-24T03:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "977",
+        "iata": "EK977",
+        "icao": "UAE977",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "2",
+        "delay": null,
+        "scheduled": "2022-09-24T07:05:00+00:00",
+        "estimated": "2022-09-24T07:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "baggage": "D02",
+        "delay": null,
+        "scheduled": "2022-09-24T08:35:00+00:00",
+        "estimated": "2022-09-24T08:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5504",
+        "iata": "EK5504",
+        "icao": "UAE5504",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "504",
+          "flight_iata": "qf504",
+          "flight_icao": "qfa504"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Domodedovo",
+        "timezone": "Europe/Moscow",
+        "iata": "DME",
+        "icao": "UUDD",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T00:05:00+00:00",
+        "estimated": "2022-09-24T00:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Ufa International Airport",
+        "timezone": "Asia/Yekaterinburg",
+        "iata": "UFA",
+        "icao": "UWUU",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:15:00+00:00",
+        "estimated": "2022-09-24T04:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "7849",
+        "iata": "EK7849",
+        "icao": "UAE7849",
+        "codeshared": {
+          "airline_name": "s7 airlines",
+          "airline_iata": "s7",
+          "airline_icao": "sbi",
+          "flight_number": "1131",
+          "flight_iata": "s71131",
+          "flight_icao": "sbi1131"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Christchurch International",
+        "timezone": "Pacific/Auckland",
+        "iata": "CHC",
+        "icao": "NZCH",
+        "terminal": null,
+        "gate": "I29",
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "1",
+        "gate": "37",
+        "baggage": "9",
+        "delay": null,
+        "scheduled": "2022-09-24T07:35:00+00:00",
+        "estimated": "2022-09-24T07:35:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5046",
+        "iata": "EK5046",
+        "icao": "UAE5046",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "138",
+          "flight_iata": "qf138",
+          "flight_icao": "qfa138"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Adelaide International Airport",
+        "timezone": "Australia/Adelaide",
+        "iata": "ADL",
+        "icao": "YPAD",
+        "terminal": "1",
+        "gate": "25",
+        "delay": null,
+        "scheduled": "2022-09-24T08:55:00+00:00",
+        "estimated": "2022-09-24T08:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T11:15:00+00:00",
+        "estimated": "2022-09-24T11:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5736",
+        "iata": "EK5736",
+        "icao": "UAE5736",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "736",
+          "flight_iata": "qf736",
+          "flight_icao": "qfa736"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Adelaide International Airport",
+        "timezone": "Australia/Adelaide",
+        "iata": "ADL",
+        "icao": "YPAD",
+        "terminal": "1",
+        "gate": "26",
+        "delay": null,
+        "scheduled": "2022-09-24T07:45:00+00:00",
+        "estimated": "2022-09-24T07:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T10:05:00+00:00",
+        "estimated": "2022-09-24T10:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5732",
+        "iata": "EK5732",
+        "icao": "UAE5732",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "732",
+          "flight_iata": "qf732",
+          "flight_icao": "qfa732"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Madras International (Meenambakkam)",
+        "timezone": "Asia/Kolkata",
+        "iata": "MAA",
+        "icao": "VOMM",
+        "terminal": "4",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:00:00+00:00",
+        "estimated": "2022-09-24T04:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "310",
+        "delay": null,
+        "scheduled": "2022-09-24T06:40:00+00:00",
+        "estimated": "2022-09-24T06:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "543",
+        "iata": "EK543",
+        "icao": "UAE543",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Bahrain International",
+        "timezone": "Asia/Bahrain",
+        "iata": "BAH",
+        "icao": "OBBI",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T01:45:00+00:00",
+        "estimated": "2022-09-24T01:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "1",
+        "delay": null,
+        "scheduled": "2022-09-24T04:05:00+00:00",
+        "estimated": "2022-09-24T04:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2217",
+        "iata": "EK2217",
+        "icao": "UAE2217",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "30",
+          "flight_iata": "fz30",
+          "flight_icao": "fdb30"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": "B14",
+        "delay": null,
+        "scheduled": "2022-09-24T01:20:00+00:00",
+        "estimated": "2022-09-24T01:20:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kuwait International",
+        "timezone": "Asia/Kuwait",
+        "iata": "KWI",
+        "icao": "OKBK",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T02:05:00+00:00",
+        "estimated": "2022-09-24T02:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "853",
+        "iata": "EK853",
+        "icao": "UAE853",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Tashkent International",
+        "timezone": "Asia/Tashkent",
+        "iata": "TAS",
+        "icao": "UTTT",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:05:00+00:00",
+        "estimated": "2022-09-24T04:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "305",
+        "delay": null,
+        "scheduled": "2022-09-24T06:50:00+00:00",
+        "estimated": "2022-09-24T06:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2087",
+        "iata": "EK2087",
+        "icao": "UAE2087",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "1942",
+          "flight_iata": "fz1942",
+          "flight_icao": "fdb1942"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Kuching",
+        "timezone": "Asia/Kuching",
+        "iata": "KCH",
+        "icao": "WBGG",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T06:50:00+00:00",
+        "estimated": "2022-09-24T06:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:40:00+00:00",
+        "estimated": "2022-09-24T08:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3385",
+        "iata": "EK3385",
+        "icao": "UAE3385",
+        "codeshared": {
+          "airline_name": "malaysia airlines",
+          "airline_iata": "mh",
+          "airline_icao": "mas",
+          "flight_number": "2505",
+          "flight_iata": "mh2505",
+          "flight_icao": "mas2505"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Vnukovo",
+        "timezone": "Europe/Moscow",
+        "iata": "VKO",
+        "icao": "UUWW",
+        "terminal": "A",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T00:40:00+00:00",
+        "estimated": "2022-09-24T00:40:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "4",
+        "delay": null,
+        "scheduled": "2022-09-24T07:30:00+00:00",
+        "estimated": "2022-09-24T07:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2323",
+        "iata": "EK2323",
+        "icao": "UAE2323",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "918",
+          "flight_iata": "fz918",
+          "flight_icao": "fdb918"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Istanbul Airport",
+        "timezone": "Europe/Istanbul",
+        "iata": "IST",
+        "icao": "LTFM",
+        "terminal": null,
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T02:15:00+00:00",
+        "estimated": "2022-09-24T02:15:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": null,
+        "baggage": "5",
+        "delay": null,
+        "scheduled": "2022-09-24T07:30:00+00:00",
+        "estimated": "2022-09-24T07:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2215",
+        "iata": "EK2215",
+        "icao": "UAE2215",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "756",
+          "flight_iata": "fz756",
+          "flight_icao": "fdb756"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Chhatrapati Shivaji International (Sahar International)",
+        "timezone": "Asia/Kolkata",
+        "iata": "BOM",
+        "icao": "VABB",
+        "terminal": "2",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T04:30:00+00:00",
+        "estimated": "2022-09-24T04:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "311",
+        "delay": null,
+        "scheduled": "2022-09-24T06:00:00+00:00",
+        "estimated": "2022-09-24T06:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "501",
+        "iata": "EK501",
+        "icao": "UAE501",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": "1",
+        "delay": null,
+        "scheduled": "2022-09-24T08:30:00+00:00",
+        "estimated": "2022-09-24T08:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Rockhampton",
+        "timezone": "Australia/Brisbane",
+        "iata": "ROK",
+        "icao": "YBRK",
+        "terminal": "D",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T09:50:00+00:00",
+        "estimated": "2022-09-24T09:50:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5201",
+        "iata": "EK5201",
+        "icao": "UAE5201",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "2364",
+          "flight_iata": "qf2364",
+          "flight_icao": "qfa2364"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Brisbane International",
+        "timezone": "Australia/Brisbane",
+        "iata": "BNE",
+        "icao": "YBBN",
+        "terminal": "D",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:10:00+00:00",
+        "estimated": "2022-09-24T08:10:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T09:45:00+00:00",
+        "estimated": "2022-09-24T09:45:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5509",
+        "iata": "EK5509",
+        "icao": "UAE5509",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "509",
+          "flight_iata": "qf509",
+          "flight_icao": "qfa509"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Tullamarine",
+        "timezone": "Australia/Melbourne",
+        "iata": "MEL",
+        "icao": "YMML",
+        "terminal": "1",
+        "gate": "2",
+        "delay": null,
+        "scheduled": "2022-09-24T08:30:00+00:00",
+        "estimated": "2022-09-24T08:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Kingsford Smith",
+        "timezone": "Australia/Sydney",
+        "iata": "SYD",
+        "icao": "YSSY",
+        "terminal": "3",
+        "gate": "T3G",
+        "baggage": "QFR",
+        "delay": null,
+        "scheduled": "2022-09-24T09:55:00+00:00",
+        "estimated": "2022-09-24T09:55:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "5422",
+        "iata": "EK5422",
+        "icao": "UAE5422",
+        "codeshared": {
+          "airline_name": "qantas",
+          "airline_iata": "qf",
+          "airline_icao": "qfa",
+          "flight_number": "422",
+          "flight_iata": "qf422",
+          "flight_icao": "qfa422"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Phuket International",
+        "timezone": "Asia/Bangkok",
+        "iata": "HKT",
+        "icao": "VTSP",
+        "terminal": "1",
+        "gate": null,
+        "delay": 4,
+        "scheduled": "2022-09-24T00:10:00+00:00",
+        "estimated": "2022-09-24T00:10:00+00:00",
+        "actual": "2022-09-24T00:17:00+00:00",
+        "estimated_runway": "2022-09-24T00:17:00+00:00",
+        "actual_runway": "2022-09-24T00:17:00+00:00"
+      },
+      "arrival": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "3",
+        "gate": null,
+        "baggage": "303",
+        "delay": null,
+        "scheduled": "2022-09-24T03:05:00+00:00",
+        "estimated": "2022-09-24T03:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "379",
+        "iata": "EK379",
+        "icao": "UAE379",
+        "codeshared": null
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "cancelled",
+      "departure": {
+        "airport": "Kuala Lumpur International Airport (klia)",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "KUL",
+        "icao": "WMKK",
+        "terminal": "1",
+        "gate": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:00:00+00:00",
+        "estimated": "2022-09-24T07:00:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Alor Setar",
+        "timezone": "Asia/Kuala_Lumpur",
+        "iata": "AOR",
+        "icao": "WMKA",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T08:05:00+00:00",
+        "estimated": "2022-09-24T08:05:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "3336",
+        "iata": "EK3336",
+        "icao": "UAE3336",
+        "codeshared": {
+          "airline_name": "malaysia airlines",
+          "airline_iata": "mh",
+          "airline_icao": "mas",
+          "flight_number": "1204",
+          "flight_iata": "mh1204",
+          "flight_icao": "mas1204"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    },
+    {
+      "flight_date": "2022-09-24",
+      "flight_status": "scheduled",
+      "departure": {
+        "airport": "Dubai",
+        "timezone": "Asia/Dubai",
+        "iata": "DXB",
+        "icao": "OMDB",
+        "terminal": "2",
+        "gate": "F4",
+        "delay": null,
+        "scheduled": "2022-09-24T00:25:00+00:00",
+        "estimated": "2022-09-24T00:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "arrival": {
+        "airport": "Zia International",
+        "timezone": "Asia/Dhaka",
+        "iata": "DAC",
+        "icao": "VGHS",
+        "terminal": "1",
+        "gate": null,
+        "baggage": null,
+        "delay": null,
+        "scheduled": "2022-09-24T07:30:00+00:00",
+        "estimated": "2022-09-24T07:30:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "Emirates",
+        "iata": "EK",
+        "icao": "UAE"
+      },
+      "flight": {
+        "number": "2330",
+        "iata": "EK2330",
+        "icao": "UAE2330",
+        "codeshared": {
+          "airline_name": "flydubai",
+          "airline_iata": "fz",
+          "airline_icao": "fdb",
+          "flight_number": "585",
+          "flight_iata": "fz585",
+          "flight_icao": "fdb585"
+        }
+      },
+      "aircraft": null,
+      "live": null
+    }
+  ]
+}

@@ -22,12 +22,23 @@ public class RegistryStore implements Serializable {
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("registry");
 
+        String pipeId = pipeRegistration.get("pipeId").getAsString();
         pipeRegistration.addProperty("tenant", principal);
 
-        collection.insertOne(Document.parse(pipeRegistration.toString()));
+        JsonObject queryJson = new JsonObject();
+        queryJson.addProperty("pipeId",pipeId);
+        String queryJsonString = queryJson.toString();
+        Bson bson = Document.parse(queryJsonString);
+        Document document = Document.parse(pipeRegistration.toString());
+
+        if(collection.find(bson).first() == null) {
+            collection.insertOne(document);
+        }else {
+            collection.findOneAndReplace(bson, document);
+        }
     }
 
-    public JsonArray findStoreDrivers(String principal, MongoClient mongoClient, String pipeId){
+    public JsonArray findStagingStores(String principal, MongoClient mongoClient, String pipeId){
         String databaseName = principal + "_" + "aiplatform";
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         MongoCollection<Document> collection = database.getCollection("registry");

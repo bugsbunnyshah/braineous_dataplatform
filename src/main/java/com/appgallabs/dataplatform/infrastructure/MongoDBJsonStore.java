@@ -4,6 +4,7 @@ import com.appgallabs.dataplatform.configuration.AIPlatformConfig;
 import com.appgallabs.dataplatform.configuration.FrameworkServices;
 import com.appgallabs.dataplatform.datalake.DataLakeDriver;
 
+import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
 import com.github.wnameless.json.unflattener.JsonUnflattener;
 import com.google.gson.*;
 import com.mongodb.client.*;
@@ -40,7 +41,7 @@ public class MongoDBJsonStore
     @ConfigProperty(name = "mongodbPort")
     private String mongodbPort;
 
-    //TODO: cleanup (CR1)
+    //TODO: cleanup (NOW)
     private String database = "ian_qa";
     private String password = "jen";
 
@@ -52,6 +53,9 @@ public class MongoDBJsonStore
 
     @Inject
     private PipelineStore pipelineStore;
+
+    @Inject
+    private TenantStore tenantStore;
 
     @Inject
     private RegistryStore registryStore;
@@ -79,6 +83,26 @@ public class MongoDBJsonStore
 
     public RegistryStore getRegistryStore() {
         return registryStore;
+    }
+
+    public TenantStore getTenantStore() {
+        return tenantStore;
+    }
+
+    public SystemStore getSystemStore(){
+        String connectionString;
+        if(this.mongodbHost.equals("localhost"))
+        {
+            connectionString = this.mongodbConnectionString;
+        }
+        else
+        {
+            connectionString = MessageFormat.format(this.mongodbConnectionString,
+                    this.password,this.mongodbHost,
+                    this.database);
+        }
+        SystemStore systemStore = new SystemStore(connectionString);
+        return systemStore;
     }
 
     @PreDestroy

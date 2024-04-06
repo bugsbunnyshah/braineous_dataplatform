@@ -1,0 +1,17 @@
+{
+  "pipeId": "staging_pipe",
+  "entity": "staged_data",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStagingStore",
+      "name": "staging_pipe_store_mongodb",
+      "config": {
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
+    }
+  ]
+}
