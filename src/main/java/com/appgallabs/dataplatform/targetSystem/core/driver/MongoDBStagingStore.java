@@ -120,8 +120,8 @@ public class MongoDBStagingStore implements StagingStore {
             logger.error(e.getMessage());
 
             //report to the pipeline monitoring service
-            JsonObject jsonObject = new JsonObject();
-            this.ingestionReportingService.reportDataError(jsonObject);
+            //JsonObject jsonObject = new JsonObject();
+            //this.ingestionReportingService.reportDataError(jsonObject);
         }
         finally{
             System.out.println(
@@ -157,8 +157,8 @@ public class MongoDBStagingStore implements StagingStore {
             logger.error(e.getMessage());
 
             //report to the pipeline monitoring service
-            JsonObject jsonObject = new JsonObject();
-            this.ingestionReportingService.reportDataError(jsonObject);
+            //JsonObject jsonObject = new JsonObject();
+            //this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
         }

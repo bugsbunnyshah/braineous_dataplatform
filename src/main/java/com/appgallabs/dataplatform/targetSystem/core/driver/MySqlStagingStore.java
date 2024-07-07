@@ -125,12 +125,11 @@ public class MySqlStagingStore implements StagingStore {
                         "MYSQL: STORED_SUCCESSFULLY");
             }
         }catch(Exception e){
-            e.printStackTrace();
             logger.error(e.getMessage());
 
             //report to the pipeline monitoring service
-            JsonObject jsonObject = new JsonObject();
-            this.ingestionReportingService.reportDataError(jsonObject);
+            //JsonObject jsonObject = new JsonObject();
+            //this.ingestionReportingService.reportDataError(jsonObject);
         }
     }
 }

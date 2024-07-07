@@ -1,0 +1,20 @@
+{
+  "pipeId": "yyya",
+  "entity": "abc",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.ElasticSearchStagingStore",
+      "name": "yyya",
+      "config": {
+        "elasticSearchUrl": "http://localhost:9200/",
+        "index": "yyya",
+        "security": {
+          "type": "built_in_users",
+          "user": "elastic",
+          "password": "password"
+        },
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}
