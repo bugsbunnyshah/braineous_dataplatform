@@ -116,16 +116,16 @@ public class MongoDBStagingStore implements StagingStore {
             }
             dbCollection.bulkWrite(bulkOperations);
 
+
+            System.out.println(
+                    "MONGODB: DATA_STORED_SUCCESSFULLY");
+
         }catch(Exception e){
             logger.error(e.getMessage());
 
             //report to the pipeline monitoring service
             //JsonObject jsonObject = new JsonObject();
             //this.ingestionReportingService.reportDataError(jsonObject);
-        }
-        finally{
-            System.out.println(
-                    "MONGODB: STORED_SUCCESSFULLY");
         }
     }
 
@@ -152,6 +152,9 @@ public class MongoDBStagingStore implements StagingStore {
                 data.add(dataObject);
             }
 
+            System.out.println(
+                    "MONGODB: DATA_READ_SUCCESSFULLY");
+
             return data;
         }catch(Exception e){
             logger.error(e.getMessage());
@@ -161,10 +164,6 @@ public class MongoDBStagingStore implements StagingStore {
             //this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
-        }
-        finally{
-            System.out.println(
-                    "MONGODB: READ_SUCCESSFULLY");
         }
     }
 }

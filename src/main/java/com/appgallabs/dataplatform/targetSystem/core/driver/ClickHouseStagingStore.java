@@ -3,23 +3,23 @@ package com.appgallabs.dataplatform.targetSystem.core.driver;
 import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
-
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.clickhouse.jdbc.ClickHouseDataSource;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-public class MySqlStagingStore implements StagingStore {
-    private static Logger logger = LoggerFactory.getLogger(MySqlStagingStore.class);
+public class ClickHouseStagingStore implements StagingStore {
+    private static Logger logger = LoggerFactory.getLogger(ClickHouseStagingStore.class);
 
     private Connection connection;
     private JsonObject configJson;
@@ -35,18 +35,20 @@ public class MySqlStagingStore implements StagingStore {
             try {
                 String url = configJson.get("connectionString").getAsString();
                 String username = configJson.get("username").getAsString();
-
                 String password = configJson.get("password").getAsString();
 
-                this.connection = DriverManager.getConnection(
-                        url, username, password);
+                Properties properties = new Properties();
+                ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
+
+                this.connection = dataSource.getConnection(username, password);
 
                 //create schema and tables
-                String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data (\n" +
-                        "    id int NOT NULL AUTO_INCREMENT,\n" +
-                        "    data longtext NOT NULL,\n" +
-                        "    PRIMARY KEY (id)\n" +
-                        ")";
+                String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data\n" +
+                        "        (\n" +
+                        "                id String,\n" +
+                        "                data String\n" +
+                        "        )\n" +
+                        "        ENGINE = MergeTree";
                 createTableStatement = this.connection.createStatement();
                 createTableStatement.executeUpdate(createTableSql);
 
@@ -98,7 +100,9 @@ public class MySqlStagingStore implements StagingStore {
                 int size = dataSet.size();
                 for (int i = 0; i < size; i++) {
                     JsonElement record = dataSet.get(i);
-                    String insertSql = "insert into staged_data (data) values ('" + record.toString() + "')";
+                    String id = JsonUtil.getJsonHash(record.getAsJsonObject());
+
+                    String insertSql = "insert into staged_data (id, data) values ('"+id+"','" + record.toString() + "')";
                     insertStatement.addBatch(insertSql);
                 }
 
@@ -119,7 +123,7 @@ public class MySqlStagingStore implements StagingStore {
                 */
 
                 System.out.println(
-                        "MYSQL: DATA_STORED_SUCCESSFULLY");
+                        "CLICKHOUSE: DATA_STORED_SUCCESSFULLY");
 
             } finally {
                 insertStatement.close();
