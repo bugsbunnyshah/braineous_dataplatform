@@ -73,3 +73,5 @@ compare/
 /localhost-services/clickhouse/preprocessed_configs/
 /localhost-services/clickhouse/store/
 /localhost-services/clickhouse/uuid
+
+/localhost-services/iceberg/docker-spark-iceberg/
