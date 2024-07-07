@@ -36,6 +36,7 @@
     <nd4j.backend>nd4j-native</nd4j.backend>
     <akka.version>2.6.10</akka.version>
     <scala.main.version>2.12</scala.main.version>
+    <scala.binary.version>2.13</scala.binary.version>
     <delta-connectors-version>3.0.0</delta-connectors-version>
     <connectors-version>3.0.0</connectors-version>
     <flink-version>1.17.1</flink-version>
@@ -357,6 +358,17 @@
       <version>0.6.0</version>
       <!-- use uber jar with all dependencies included, change classifier to http for smaller jar -->
       <classifier>all</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.12</artifactId>
+      <version>3.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.12</artifactId>
+      <version>3.5.1</version>
     </dependency>
   </dependencies>
 
