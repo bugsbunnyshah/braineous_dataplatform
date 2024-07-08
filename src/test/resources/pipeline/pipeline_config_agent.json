@@ -4,6 +4,7 @@
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStagingStore",
+      "integrationAgent": "com.appgallabs.dataplatform.targetSystem.framework.CustomLogicRunner",
       "name": "flight_pipe_in_memory_store",
       "config": {
         "jsonpathExpressions": [

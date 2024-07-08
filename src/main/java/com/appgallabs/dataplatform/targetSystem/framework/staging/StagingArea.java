@@ -72,7 +72,7 @@ public class StagingArea {
         try {
             Tenant tenant = new Tenant(securityToken.getPrincipal());
 
-            this.dataIntegrationAgent.executeIntegrationRunner(stagingStore,
+            this.dataIntegrationAgent.executeIntegrationRunner(securityToken,
                     tenant,
                     pipeId,
                     entity,
