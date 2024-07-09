@@ -370,6 +370,13 @@
       <artifactId>spark-sql_2.12</artifactId>
       <version>3.5.1</version>
     </dependency>
+
+    <!-- csv support -->
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>5.9</version>
+    </dependency>
   </dependencies>
 
   <build>

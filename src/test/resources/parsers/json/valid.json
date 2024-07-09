@@ -1,0 +1,41 @@
+[
+  {
+    "0": "////"
+  },
+  {
+    "0": "This guide is maintained in the main Quarkus repository"
+  },
+  {
+    "0": "and pull requests should be submitted there:"
+  },
+  {
+    "0": "https://github.com/quarkusio/quarkus/tree/main/docs/src/main/asciidoc"
+  },
+  {
+    "0": "////"
+  },
+  {
+    "0": "\u003d Core Data Connector Support"
+  },
+  {
+    "0": "include::_attributes.adoc[]"
+  },
+  {
+    "0": ":categories: getting-started"
+  },
+  {
+    "0": ":summary: Core Data Connector Support"
+  },
+  {
+    "0": ":numbered:"
+  },
+  {
+    "0": ":sectnums:"
+  },
+  {
+    "0": ":sectnumlevels: 4"
+  },
+  {
+    "0": ":topics: getting-started"
+  }
+]
