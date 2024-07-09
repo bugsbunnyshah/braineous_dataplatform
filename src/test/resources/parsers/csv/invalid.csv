@@ -1,13 +1,2 @@
-////
-This guide is maintained in the main Quarkus repository
-and pull requests should be submitted there:
-https://github.com/quarkusio/quarkus/tree/main/docs/src/main/asciidoc
-////
-= Core Data Connector Support
-include::_attributes.adoc[]
-:categories: getting-started
-:summary: Core Data Connector Support
-:numbered:
-:sectnums:
-:sectnumlevels: 4
-:topics: getting-started
+"1","Terika","Burt","70","05/10/1988"
+"2","Matilde","Cristina","65"

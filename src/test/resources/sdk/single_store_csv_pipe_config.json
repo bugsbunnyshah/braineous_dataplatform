@@ -1,0 +1,16 @@
+{
+  "pipeId": "agnosticcsv",
+  "entity": "agnosticcsv",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
+      "name": "agnosticcsv",
+      "config": {
+        "connectionString": "mongodb://localhost:27017",
+        "database": "agnosticcsv",
+        "collection": "data",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

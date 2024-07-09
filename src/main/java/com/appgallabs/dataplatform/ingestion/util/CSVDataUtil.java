@@ -42,6 +42,29 @@ public class CSVDataUtil {
         return array;
     }
 
+    public static boolean isValid(String csvData){
+        int numberOfColumns = 0;
+        String[] lines = csvData.split("\n");
+        int length = lines.length;
+        for (int i = 0; i < length; i++) {
+            String line = lines[i];
+            String[] data = line.split(",");
+            if(data.length == 1){
+                return false;
+            }
+
+            if(numberOfColumns == 0){
+                numberOfColumns = data.length;
+                continue;
+            }
+
+            if(data.length != numberOfColumns){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static JsonObject convert(JsonArray data)
     {
         //logger.info("*********************************");

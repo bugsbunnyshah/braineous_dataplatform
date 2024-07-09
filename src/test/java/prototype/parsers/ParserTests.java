@@ -23,39 +23,22 @@ public class ParserTests {
 
     @Test
     public void testDetectXml() throws Exception{
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-
         String valid = Util.loadResource("parsers/xml/valid.xml");
         String invalid = Util.loadResource("parsers/xml/invalid.xml");
 
-        // parse valid XML file
-        builder.parse(new InputSource(new StringReader(valid)));
-        System.out.println("**************************************");
-        System.out.println("*****PARSE_SUCCESS**********");
-        System.out.println("**************************************");
-
-        //parse invalid XML file
-        builder.parse(new InputSource(new StringReader(invalid)));
+        System.out.println(JsonUtil.isXmlValid(valid));
+        System.out.println(JsonUtil.isXmlValid(invalid));
     }
 
     @Test
     public void testDetectCsv() throws Exception{
         String valid = Util.loadResource("parsers/csv/valid.csv");
         String invalid = Util.loadResource("parsers/csv/invalid.csv");
+        String random = Util.loadResource("parsers/csv/random.csv");
 
-        JsonArray validArray = CSVDataUtil.convert(valid);
-        JsonUtil.printStdOut(validArray);
 
-        JsonArray invalidArray = CSVDataUtil.convert(invalid);
-        JsonUtil.printStdOut(invalidArray);
-
-        CSVReader reader = new CSVReaderBuilder(new StringReader(invalid)).build();
-        String [] nextLine;
-        while ((nextLine = reader.readNext()) != null) {
-            // nextLine[] is an array of values from the line
-            System.out.println(nextLine[0]);
-        }
+        System.out.println(JsonUtil.isCsvValid(valid));
+        System.out.println(JsonUtil.isCsvValid(invalid));
     }
 
     @Test
@@ -63,12 +46,7 @@ public class ParserTests {
         String valid = Util.loadResource("parsers/json/valid.json");
         String invalid = Util.loadResource("parsers/json/invalid.json");
 
-        JsonUtil.printStdOut(JsonUtil.validateJson(valid));
-
-        System.out.println("**************************************");
-        System.out.println("*****PARSE_SUCCESS**********");
-        System.out.println("**************************************");
-
-        JsonUtil.printStdOut(JsonUtil.validateJson(invalid));
+        System.out.println(JsonUtil.isJsonValid(valid));
+        System.out.println(JsonUtil.isJsonValid(invalid));
     }
 }
