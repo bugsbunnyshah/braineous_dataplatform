@@ -1,13 +1,13 @@
 {
-  "pipeId": "agnosticcsv",
-  "entity": "agnosticcsv",
+  "pipeId": "csv",
+  "entity": "csv",
   "configuration": [
     {
       "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MongoDBStagingStore",
-      "name": "agnosticcsv",
+      "name": "csv",
       "config": {
         "connectionString": "mongodb://localhost:27017",
-        "database": "agnosticcsv",
+        "database": "csv",
         "collection": "data",
         "jsonpathExpressions": []
       }

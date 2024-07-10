@@ -208,6 +208,11 @@ public class DataIngestion {
                 array = sourceIngestion.getAsJsonArray();
             }
 
+
+            System.out.println("*********PAYLOAD***********");
+            JsonUtil.printStdOut(array);
+            System.out.println("***************************");
+
             JsonObject responseJson = this.eventProducer.processEvent(
                     pipeId,
                     entity,
@@ -245,7 +250,7 @@ public class DataIngestion {
         {
             JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
             String sourceData = jsonObject.get("sourceData").getAsString();
-            boolean hasHeader = jsonObject.get("hasHeader").getAsBoolean();
+            boolean hasHeader = jsonObject.has("hasHeader");
             String entity = jsonObject.get("entity").getAsString();
             String pipeId = jsonObject.get("pipeId").getAsString();
 

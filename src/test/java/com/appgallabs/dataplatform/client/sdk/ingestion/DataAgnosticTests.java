@@ -41,10 +41,9 @@ public class DataAgnosticTests {
         String principal = apiKey;
         Tenant tenant = new Tenant(principal);
 
-        String json = Util.loadResource(datasetLocation);
-        JsonElement datasetElement = JsonUtil.validateJson(json);
+        String payload = Util.loadResource(datasetLocation);
 
-        json = Util.loadResource(configLocation);
+        String json = Util.loadResource(configLocation);
         JsonObject configJson = JsonUtil.validateJson(json).getAsJsonObject();
         String pipeId = configJson.get("pipeId").getAsString();
         String entity = configJson.get("entity").getAsString();
@@ -61,7 +60,7 @@ public class DataAgnosticTests {
         dataPlatformService.registerPipe(configJson);
 
         //send source data through the pipeline
-        dataPlatformService.sendData(pipeId, entity,datasetElement.toString());
+        dataPlatformService.sendData(pipeId, entity,payload);
 
         //------TEST_ASSERTION_SECTION-----------------------------------------------------------------------
         logger.info("********ASSERTION_PHASE_STARTED....***********");
@@ -70,6 +69,7 @@ public class DataAgnosticTests {
         Registry registry = Registry.getInstance();
         List<StagingStore> registeredStores = registry.findStagingStores(tenant.getPrincipal(),
                 pipeId);
+
         //assert data is stored in the data lake
         String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
         String selectSql = "select * from "+table;
