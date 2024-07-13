@@ -377,6 +377,14 @@
       <artifactId>opencsv</artifactId>
       <version>5.9</version>
     </dependency>
+
+    <!-- snowflake integration -->
+    <!-- Add this to your Maven project's pom.xml -->
+    <dependency>
+      <groupId>net.snowflake</groupId>
+      <artifactId>snowflake-ingest-sdk</artifactId>
+      <version>2.1.1</version>
+    </dependency>
   </dependencies>
 
   <build>

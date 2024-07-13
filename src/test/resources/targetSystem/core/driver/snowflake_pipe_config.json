@@ -1,0 +1,16 @@
+{
+  "pipeId": "yyya",
+  "entity": "abc",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.SnowflakeStagingStore",
+      "name": "snowflake_staging_store",
+      "config": {
+        "connectionString": "jdbc:ch://localhost:8123/default",
+        "username": "default",
+        "password": "",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}
