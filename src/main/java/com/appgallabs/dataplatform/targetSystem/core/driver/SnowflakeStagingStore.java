@@ -66,6 +66,8 @@ public class SnowflakeStagingStore implements StagingStore {
         try {
             //Create a Staging Area
             final String fileLocationUrl = this.configJson.get("source_location").getAsString();
+
+            //TODO: generate a json file on the fly in the Local Staging Area
             final String fileName = "valid.json";
 
             KeyPair keypair = this.generateKeyPair();
@@ -93,6 +95,9 @@ public class SnowflakeStagingStore implements StagingStore {
     //-------------------------------------------------------------------------------------------------
     private void createStagingArea(Connection conn, KeyPair keypair, String filesLocation, String file)
             throws Exception{
+
+        //TODO: CREATE_STAGING on Snowflake if it does not exist
+
         String user = this.configJson.get("user").getAsString();
         String database = this.configJson.get("database").getAsString();
         String schema = this.configJson.get("schema").getAsString();
