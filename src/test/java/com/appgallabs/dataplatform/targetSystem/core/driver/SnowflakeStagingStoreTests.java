@@ -98,7 +98,7 @@ public class SnowflakeStagingStoreTests {
 
     @Test
     public void testStagingStoreLifeCycle() throws Exception{
-        logger.info("****RUNNING*****: CLICKHOUSE_STAGING_STORE_LIFECYCLE");
+        logger.info("****RUNNING*****: SNOWFLAKE_STAGING_STORE_LIFECYCLE");
         String datasetLocation = "targetSystem/core/driver/scenario1.json";
         String configLocation = "targetSystem/core/driver/snowflake_pipe_config.json";
         this.execute(datasetLocation, configLocation);

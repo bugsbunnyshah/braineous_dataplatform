@@ -53,7 +53,7 @@ public class SnowflakeStagingStore implements StagingStore {
 
     @Override
     public String getName() {
-        return this.configJson.get("connectionString").getAsString();
+        return this.configJson.get("stage").getAsString();
     }
 
     @Override
@@ -65,8 +65,9 @@ public class SnowflakeStagingStore implements StagingStore {
     public void storeData(Tenant tenant, String pipeId, String entity, List<Record> records) {
         try {
             //Create a Staging Area
-            final String fileLocationUrl = "file:///tmp/braineous/";
+            final String fileLocationUrl = this.configJson.get("source_location").getAsString();
             final String fileName = "valid.json";
+
             KeyPair keypair = this.generateKeyPair();
             this.createStagingArea(connection, keypair, fileLocationUrl, fileName);
             System.out.println("*****CREATE_STAGING_AREA*****");
@@ -74,8 +75,8 @@ public class SnowflakeStagingStore implements StagingStore {
 
             //Ingest a file
             this.ingestFile(fileName, keypair);
-            System.out.println("*****INGEST_FILE*****");
-            System.out.println("STATUS: " + "SUCCESS");
+            logger.info("*****INGEST_FILE*****");
+            logger.info("STATUS: " + "SUCCESS");
         }catch(Exception e){
             logger.error(e.getMessage());
 
@@ -92,12 +93,12 @@ public class SnowflakeStagingStore implements StagingStore {
     //-------------------------------------------------------------------------------------------------
     private void createStagingArea(Connection conn, KeyPair keypair, String filesLocation, String file)
             throws Exception{
-        String user = "bugsbunnyshah";
-        String database = "testdb";
-        String schema = "public";
-        String stage = "braineous_json_stage";
-        String table = "braineous_json_table";
-        String pipe = "braineous_json_pipe";
+        String user = this.configJson.get("user").getAsString();
+        String database = this.configJson.get("database").getAsString();
+        String schema = this.configJson.get("schema").getAsString();
+        String stage = this.configJson.get("stage").getAsString();
+        String table = this.configJson.get("table").getAsString();
+        String pipe = this.configJson.get("pipe").getAsString();
 
         // use the right database
         this.doQuery(conn, "use database " + database);
@@ -139,16 +140,18 @@ public class SnowflakeStagingStore implements StagingStore {
     }
 
     private void ingestFile(String filename, KeyPair keypair) throws Exception{
-        String account = "xxlpraf-ubb29207";
-        String user = "bugsbunnyshah";
-        String scheme = "https";
-        String host = "xxlpraf-ubb29207.snowflakecomputing.com";
-        int port = 443;
+        String account = this.configJson.get("account_identifier").getAsString();
+        String host = this.configJson.get("host").getAsString();
+        String user = this.configJson.get("user").getAsString();
+        int port = this.configJson.get("port").getAsInt();
 
-        String database = "testdb";
-        String schema = "public";
-        String pipe = "braineous_json_pipe";
+        String database = this.configJson.get("database").getAsString();
+        String schema = this.configJson.get("schema").getAsString();
+        String pipe = this.configJson.get("pipe").getAsString();
         String fqPipe = database + "." + schema + "." + pipe;
+
+        //TODO: decide scheme based on port
+        String scheme = "https";
 
         SimpleIngestManager manager = new SimpleIngestManager(account, user, fqPipe, keypair, scheme, host, port);
 
@@ -158,12 +161,14 @@ public class SnowflakeStagingStore implements StagingStore {
     }
 
     private Connection getConnection() throws Exception{
-        String account = "xxlpraf-ubb29207";
-        String user = "bugsbunnyshah";
-        String host = "xxlpraf-ubb29207.snowflakecomputing.com";
+        String account = this.configJson.get("account_identifier").getAsString();
+        String host = this.configJson.get("host").getAsString();
+        String user = this.configJson.get("user").getAsString();
+        String password = this.configJson.get("password").getAsString();
+        int port = this.configJson.get("port").getAsInt();
+
+        //TODO: decide scheme based on port
         String scheme = "https";
-        String password = "gagumaani@A61$";
-        int port = 443;
 
         // check first to see if we have the Snowflake JDBC
         Class.forName("net.snowflake.client.jdbc.SnowflakeDriver");
