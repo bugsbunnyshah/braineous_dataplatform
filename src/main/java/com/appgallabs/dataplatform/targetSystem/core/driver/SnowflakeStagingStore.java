@@ -5,6 +5,7 @@ import com.appgallabs.dataplatform.reporting.IngestionReportingService;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.Record;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.snowflake.ingest.SimpleIngestManager;
@@ -13,9 +14,12 @@ import net.snowflake.ingest.utils.StagedFileWrapper;
 
 import org.apache.commons.codec.binary.Base64;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -24,6 +28,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 public class SnowflakeStagingStore implements StagingStore {
     private static Logger logger = LoggerFactory.getLogger(SnowflakeStagingStore.class);
@@ -67,8 +72,20 @@ public class SnowflakeStagingStore implements StagingStore {
             //Create a Staging Area
             final String fileLocationUrl = this.configJson.get("source_location").getAsString();
 
-            //TODO: generate a json file on the fly in the Local Staging Area
-            final String fileName = "valid.json";
+            //generate a json file on the fly in the Local Staging Area
+            final String fileName = UUID.randomUUID() +".json";
+
+            JsonArray jsonArray = new JsonArray();
+            for(Record record: records){
+                JsonObject jsonObject = record.toJson();
+                jsonArray.add(jsonObject);
+            }
+            String jsonData = jsonArray.toString();
+
+            String localFsFileDirectory = fileLocationUrl.replaceAll("file://", "");
+            File file = new File(localFsFileDirectory + fileName);
+            file.createNewFile();
+            FileUtils.write(file, jsonData, StandardCharsets.UTF_8);
 
             KeyPair keypair = this.generateKeyPair();
             this.createStagingArea(connection, keypair, fileLocationUrl, fileName);
@@ -95,9 +112,6 @@ public class SnowflakeStagingStore implements StagingStore {
     //-------------------------------------------------------------------------------------------------
     private void createStagingArea(Connection conn, KeyPair keypair, String filesLocation, String file)
             throws Exception{
-
-        //TODO: CREATE_STAGING on Snowflake if it does not exist
-
         String user = this.configJson.get("user").getAsString();
         String database = this.configJson.get("database").getAsString();
         String schema = this.configJson.get("schema").getAsString();
@@ -111,25 +125,37 @@ public class SnowflakeStagingStore implements StagingStore {
         // use the right schema
         this.doQuery(conn, "use schema " + schema);
 
-        // create the target stage
-        this.doQuery(
-                conn, "create or replace stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
+        boolean doesStageExists = false;
+        try{
+            this.doQuery(
+                    conn, "create stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
+        }catch (Exception e){
+            System.out.println("******STAGING_AREA_EXISTS**********");
+            doesStageExists = true;
+        }
 
-        // create the target
-        this.doQuery(
-                conn,
-                "create or replace table " + table + " (src variant)"
-        );
-        // Create the pipe for subsequently ingesting files to.
-        this.doQuery(
-                conn,
-                "create or replace pipe "
-                        + pipe
-                        + " as copy into "
-                        + table
-                        + " from @"
-                        + stage
-                        + " file_format=(type='json')");
+        if(!doesStageExists) {
+            System.out.println("******CREATING_THE_STAGE_AREA**********");
+            // create the target stage
+            //this.doQuery(
+            //        conn, "create stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
+
+            // create the target
+            this.doQuery(
+                    conn,
+                    "create or replace table " + table + " (src variant)"
+            );
+            // Create the pipe for subsequently ingesting files to.
+            this.doQuery(
+                    conn,
+                    "create or replace pipe "
+                            + pipe
+                            + " as copy into "
+                            + table
+                            + " from @"
+                            + stage
+                            + " file_format=(type='json')");
+        }
 
         String pk = IngestExampleHelper.getPublicKeyString(keypair);
 
