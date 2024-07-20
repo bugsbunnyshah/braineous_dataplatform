@@ -181,8 +181,11 @@ public class SnowflakeStagingStore implements StagingStore {
         String pipe = this.configJson.get("pipe").getAsString();
         String fqPipe = database + "." + schema + "." + pipe;
 
-        //TODO: decide scheme based on port
+        //decide scheme based on port
         String scheme = "https";
+        if(port != 443){
+            scheme = "http";
+        }
 
         SimpleIngestManager manager = new SimpleIngestManager(account, user, fqPipe, keypair, scheme, host, port);
 
@@ -197,9 +200,6 @@ public class SnowflakeStagingStore implements StagingStore {
         String user = this.configJson.get("user").getAsString();
         String password = this.configJson.get("password").getAsString();
         int port = this.configJson.get("port").getAsInt();
-
-        //TODO: decide scheme based on port
-        String scheme = "https";
 
         // check first to see if we have the Snowflake JDBC
         Class.forName("net.snowflake.client.jdbc.SnowflakeDriver");
