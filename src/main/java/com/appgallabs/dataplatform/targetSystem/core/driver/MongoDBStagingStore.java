@@ -40,10 +40,10 @@ public class MongoDBStagingStore implements StagingStore {
 
         //get the driver configuration
         String connectionString = this.configJson.get("connectionString").getAsString();
-        String username = this.configJson.get("username").getAsString();
-        String password = this.configJson.get("password").getAsString();
         if(!connectionString.contains("localhost"))
         {
+            String username = this.configJson.get("username").getAsString();
+            String password = this.configJson.get("password").getAsString();
             connectionString = MessageFormat.format(connectionString,
                     username,
                     password
