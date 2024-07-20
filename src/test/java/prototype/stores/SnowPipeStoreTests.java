@@ -1,9 +1,13 @@
 package prototype.stores;
 
+import com.google.gson.JsonObject;
 import net.snowflake.ingest.example.IngestExampleHelper;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -11,6 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.UUID;
 
 import net.snowflake.ingest.SimpleIngestManager;
 import net.snowflake.ingest.utils.StagedFileWrapper;
@@ -18,18 +23,31 @@ import net.snowflake.ingest.utils.StagedFileWrapper;
 public class SnowPipeStoreTests {
     private static String ALGORITHM = "RSA";
 
+    private static String database = "braineous";
+    private static String pipe = "abcd";
+
+    private static String fileLocationUrl = "file:///tmp/braineous/";
+
     @Test
     public void testBulkWrite() throws Exception{
+        final String fileName = UUID.randomUUID().toString()+".json";
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("uuid", UUID.randomUUID().toString());
+        String jsonData = jsonObject.toString();
+
+        File file = new File("/tmp/braineous/" + fileName);
+        file.createNewFile();
+        FileUtils.write(file, jsonData, StandardCharsets.UTF_8);
+
         // Get Connection
         Connection connection = this.getConnection();
         System.out.println(connection);
 
         //Create a Staging Area
-        final String fileLocationUrl = "file:///tmp/braineous/";
-        final String fileName = "valid.json";
         KeyPair keypair = this.generateKeyPair();
         this.createStagingArea(connection, keypair, fileLocationUrl, fileName);
-        System.out.println("*****CREATE_STAGING_AREA*****");
+        System.out.println("*****LOAD_TO_STAGING_AREA*****");
         System.out.println("STATUS: "+"SUCCESS");
 
         //Ingest a file
@@ -44,40 +62,13 @@ public class SnowPipeStoreTests {
     }
 
     //-----------------------------------------------------------------
-    private Connection getConnection() throws Exception{
-        String account = "xxlpraf-ubb29207";
-        String user = "bugsbunnyshah";
-        String host = "xxlpraf-ubb29207.snowflakecomputing.com";
-        String scheme = "https";
-        String password = "gagumaani@A61$";
-        int port = 443;
-
-        // check first to see if we have the Snowflake JDBC
-        Class.forName("net.snowflake.client.jdbc.SnowflakeDriver");
-
-        // build our properties
-        Properties props = new Properties();
-        props.put("user", user);
-        props.put("password", password);
-        props.put("account", account);
-        //props.put("ssl", "on");
-
-        // the actual connection string
-        String connectString = "jdbc:snowflake://" + host + ":" + port;
-
-        Connection connection = DriverManager.getConnection(connectString, props);
-
-        return connection;
-    }
-
     private void createStagingArea(Connection conn, KeyPair keypair, String filesLocation, String file)
     throws Exception{
         String user = "bugsbunnyshah";
-        String database = "testdb";
         String schema = "public";
-        String stage = "braineous_json_stage";
-        String table = "braineous_json_table";
-        String pipe = "braineous_json_pipe";
+        String stage = "abcd";
+        String table = "abcd";
+        String pipe = "abcd";
 
         // use the right database
         this.doQuery(conn, "use database " + database);
@@ -85,25 +76,37 @@ public class SnowPipeStoreTests {
         // use the right schema
         this.doQuery(conn, "use schema " + schema);
 
-        // create the target stage
-        this.doQuery(
-                conn, "create or replace stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
+        boolean doesStageExists = false;
+        try{
+            this.doQuery(
+                    conn, "create stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
+        }catch (Exception e){
+            System.out.println("******STAGING_AREA_EXISTS**********");
+            doesStageExists = true;
+        }
 
-        // create the target
-        this.doQuery(
-                conn,
-                "create or replace table " + table + " (src variant)"
-        );
-        // Create the pipe for subsequently ingesting files to.
-        this.doQuery(
-                conn,
-                "create or replace pipe "
-                        + pipe
-                        + " as copy into "
-                        + table
-                        + " from @"
-                        + stage
-                        + " file_format=(type='json')");
+        if(!doesStageExists) {
+            System.out.println("******CREATING_THE_STAGE_AREA**********");
+            // create the target stage
+            //this.doQuery(
+            //        conn, "create stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
+
+            // create the target
+            this.doQuery(
+                    conn,
+                    "create or replace table " + table + " (src variant)"
+            );
+            // Create the pipe for subsequently ingesting files to.
+            this.doQuery(
+                    conn,
+                    "create or replace pipe "
+                            + pipe
+                            + " as copy into "
+                            + table
+                            + " from @"
+                            + stage
+                            + " file_format=(type='json')");
+        }
 
         String pk = IngestExampleHelper.getPublicKeyString(keypair);
 
@@ -135,9 +138,7 @@ public class SnowPipeStoreTests {
         String host = "xxlpraf-ubb29207.snowflakecomputing.com";
         int port = 443;
 
-        String database = "testdb";
         String schema = "public";
-        String pipe = "braineous_json_pipe";
         String fqPipe = database + "." + schema + "." + pipe;
 
         SimpleIngestManager manager = new SimpleIngestManager(account, user, fqPipe, keypair, scheme, host, port);
@@ -172,5 +173,31 @@ public class SnowPipeStoreTests {
         final PublicKey pk = keypair.getPublic();
         X509EncodedKeySpec spec = keyFactory.getKeySpec(pk, X509EncodedKeySpec.class);
         return Base64.encodeBase64String(spec.getEncoded());
+    }
+
+    private Connection getConnection() throws Exception{
+        String account = "xxlpraf-ubb29207";
+        String user = "bugsbunnyshah";
+        String host = "xxlpraf-ubb29207.snowflakecomputing.com";
+        String scheme = "https";
+        String password = "gagumaani@A61$";
+        int port = 443;
+
+        // check first to see if we have the Snowflake JDBC
+        Class.forName("net.snowflake.client.jdbc.SnowflakeDriver");
+
+        // build our properties
+        Properties props = new Properties();
+        props.put("user", user);
+        props.put("password", password);
+        props.put("account", account);
+        //props.put("ssl", "on");
+
+        // the actual connection string
+        String connectString = "jdbc:snowflake://" + host + ":" + port;
+
+        Connection connection = DriverManager.getConnection(connectString, props);
+
+        return connection;
     }
 }
