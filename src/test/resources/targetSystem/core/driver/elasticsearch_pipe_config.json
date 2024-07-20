@@ -11,9 +11,9 @@
         "security": {
           "type": "built_in_users",
           "user": "elastic",
-          "password": "password"
-        },
-        "jsonpathExpressions": []
+          "password": "password",
+          "jsonpathExpressions": []
+        }
       }
     }
   ]
