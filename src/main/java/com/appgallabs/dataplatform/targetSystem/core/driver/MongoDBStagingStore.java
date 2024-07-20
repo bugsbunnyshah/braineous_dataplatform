@@ -19,6 +19,7 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,15 @@ public class MongoDBStagingStore implements StagingStore {
 
         //get the driver configuration
         String connectionString = this.configJson.get("connectionString").getAsString();
+        String username = this.configJson.get("username").getAsString();
+        String password = this.configJson.get("password").getAsString();
+        if(!connectionString.contains("localhost"))
+        {
+            connectionString = MessageFormat.format(connectionString,
+                    username,
+                    password
+            );
+        }
 
         //setup driver components
         this.mongoClient = MongoClients.create(connectionString);
