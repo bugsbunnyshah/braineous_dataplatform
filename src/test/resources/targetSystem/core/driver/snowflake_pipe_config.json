@@ -8,7 +8,7 @@
       "config": {
         "account_identifier": "xxlpraf-ubb29207",
         "host": "xxlpraf-ubb29207.snowflakecomputing.com",
-        "user": "bugsbunnyshah",
+        "username": "bugsbunnyshah",
         "password": "gagumaani@A61$",
         "port": "443",
         "database": "testdb",

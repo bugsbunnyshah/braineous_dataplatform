@@ -112,7 +112,7 @@ public class SnowflakeStagingStore implements StagingStore {
     //-------------------------------------------------------------------------------------------------
     private void createStagingArea(Connection conn, KeyPair keypair, String filesLocation, String file)
             throws Exception{
-        String user = this.configJson.get("user").getAsString();
+        String username = this.configJson.get("username").getAsString();
         String database = this.configJson.get("database").getAsString();
         String schema = this.configJson.get("schema").getAsString();
         String stage = this.configJson.get("stage").getAsString();
@@ -163,7 +163,7 @@ public class SnowflakeStagingStore implements StagingStore {
         this.doQuery(conn, "use role accountadmin");
 
         // set the public key
-        this.doQuery(conn, "alter user " + user + " set RSA_PUBLIC_KEY='" + pk + "'");
+        this.doQuery(conn, "alter user " + username + " set RSA_PUBLIC_KEY='" + pk + "'");
         this.doQuery(
                 conn, "PUT " + filesLocation + file + " @" + stage + " AUTO_COMPRESS=FALSE");
 
@@ -173,7 +173,7 @@ public class SnowflakeStagingStore implements StagingStore {
     private void ingestFile(String filename, KeyPair keypair) throws Exception{
         String account = this.configJson.get("account_identifier").getAsString();
         String host = this.configJson.get("host").getAsString();
-        String user = this.configJson.get("user").getAsString();
+        String username = this.configJson.get("username").getAsString();
         int port = this.configJson.get("port").getAsInt();
 
         String database = this.configJson.get("database").getAsString();
@@ -187,7 +187,8 @@ public class SnowflakeStagingStore implements StagingStore {
             scheme = "http";
         }
 
-        SimpleIngestManager manager = new SimpleIngestManager(account, user, fqPipe, keypair, scheme, host, port);
+        SimpleIngestManager manager = new SimpleIngestManager(account, username,
+                fqPipe, keypair, scheme, host, port);
 
 
         StagedFileWrapper myFile = new StagedFileWrapper(filename, null);
@@ -197,7 +198,7 @@ public class SnowflakeStagingStore implements StagingStore {
     private Connection getConnection() throws Exception{
         String account = this.configJson.get("account_identifier").getAsString();
         String host = this.configJson.get("host").getAsString();
-        String user = this.configJson.get("user").getAsString();
+        String username = this.configJson.get("username").getAsString();
         String password = this.configJson.get("password").getAsString();
         int port = this.configJson.get("port").getAsInt();
 
@@ -206,7 +207,7 @@ public class SnowflakeStagingStore implements StagingStore {
 
         // build our properties
         Properties props = new Properties();
-        props.put("user", user);
+        props.put("user", username);
         props.put("password", password);
         props.put("account", account);
         //props.put("ssl", "on");
