@@ -77,7 +77,7 @@ public class ClickHouseStoreTests {
         ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
         Connection connection = dataSource.getConnection("default", "");
 
-        String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data\n" +
+        String createTableSql = "CREATE TABLE IF NOT EXISTS staging_store\n" +
                 "        (\n" +
                 "                id String,\n" +
                 "                data String\n" +
@@ -94,7 +94,7 @@ public class ClickHouseStoreTests {
             dataJson.addProperty("value", i);
             String id = JsonUtil.getJsonHash(dataJson);
 
-            String insertSql = "insert into staged_data (id, data) values ('"+id+"','" + dataJson.toString() + "')";
+            String insertSql = "insert into staging_store (id, data) values ('"+id+"','" + dataJson.toString() + "')";
             stmt.addBatch(insertSql);
         }
         stmt.executeBatch();
@@ -112,7 +112,7 @@ public class ClickHouseStoreTests {
         Statement stmt = connection.createStatement();
 
         String selectSql = "SELECT *\n" +
-                " FROM staged_data";
+                " FROM staging_store";
 
         ResultSet rs = stmt.executeQuery(selectSql);
         while(rs.next()) {

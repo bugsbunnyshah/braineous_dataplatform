@@ -36,6 +36,7 @@ public class ClickHouseStagingStore implements StagingStore {
                 String url = configJson.get("connectionString").getAsString();
                 String username = configJson.get("username").getAsString();
                 String password = configJson.get("password").getAsString();
+                String stagingTable = configJson.get("staging_table").getAsString();
 
                 Properties properties = new Properties();
                 ClickHouseDataSource dataSource = new ClickHouseDataSource(url, properties);
@@ -43,12 +44,13 @@ public class ClickHouseStagingStore implements StagingStore {
                 this.connection = dataSource.getConnection(username, password);
 
                 //create schema and tables
-                String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data\n" +
+                String createTableSql = "CREATE TABLE IF NOT EXISTS "+stagingTable+"\n" +
                         "        (\n" +
                         "                id String,\n" +
                         "                data String\n" +
                         "        )\n" +
-                        "        ENGINE = MergeTree";
+                        "        ENGINE = MergeTree\n" +
+                        "        PRIMARY KEY (id)";
                 createTableStatement = this.connection.createStatement();
                 createTableStatement.executeUpdate(createTableSql);
 
@@ -94,6 +96,7 @@ public class ClickHouseStagingStore implements StagingStore {
     //----------------------------------------------------------------------------------------------
     private void storeData(JsonArray dataSet) {
         try {
+            String stagingTable = configJson.get("staging_table").getAsString();
             Statement insertStatement = this.connection.createStatement();
             try {
                 //populate table
@@ -102,7 +105,7 @@ public class ClickHouseStagingStore implements StagingStore {
                     JsonElement record = dataSet.get(i);
                     String id = JsonUtil.getJsonHash(record.getAsJsonObject());
 
-                    String insertSql = "insert into staged_data (id, data) values ('"+id+"','" + record.toString() + "')";
+                    String insertSql = "insert into "+stagingTable+" (id, data) values ('"+id+"','" + record.toString() + "')";
                     insertStatement.addBatch(insertSql);
                 }
 
