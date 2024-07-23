@@ -83,14 +83,17 @@ public class SnowflakeStagingStore implements StagingStore {
             String jsonData = jsonArray.toString();
 
             String localFsFileDirectory = fileLocationUrl.replaceAll("file://", "");
+            File directory = new File(localFsFileDirectory);
+            FileUtils.forceMkdir(directory);
+
             File file = new File(localFsFileDirectory + fileName);
             file.createNewFile();
             FileUtils.write(file, jsonData, StandardCharsets.UTF_8);
 
             KeyPair keypair = this.generateKeyPair();
             this.createStagingArea(connection, keypair, fileLocationUrl, fileName);
-            System.out.println("*****CREATE_STAGING_AREA*****");
-            System.out.println("STATUS: " + "SUCCESS");
+            logger.info("*****STAGING_AREA*****");
+            logger.info("STATUS: " + "SUCCESS");
 
             //Ingest a file
             this.ingestFile(fileName, keypair);
@@ -130,12 +133,11 @@ public class SnowflakeStagingStore implements StagingStore {
             this.doQuery(
                     conn, "create stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
         }catch (Exception e){
-            System.out.println("******STAGING_AREA_EXISTS**********");
             doesStageExists = true;
         }
 
         if(!doesStageExists) {
-            System.out.println("******CREATING_THE_STAGE_AREA**********");
+            logger.info("******CREATING_THE_STAGE_AREA**********");
             // create the target stage
             //this.doQuery(
             //        conn, "create stage " + stage + " FILE_FORMAT=(type='json' COMPRESSION=NONE)");
