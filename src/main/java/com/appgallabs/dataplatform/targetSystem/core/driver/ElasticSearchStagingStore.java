@@ -147,6 +147,9 @@ public class ElasticSearchStagingStore implements StagingStore {
             resultJson.addProperty("status_code", statusCode);
             resultJson.add("response", JsonUtil.validateJson(result));
             JsonUtil.printStdOut(resultJson);
+
+
+
         }catch(Exception e){
             logger.error(e.getMessage());
 
