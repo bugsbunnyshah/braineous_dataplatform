@@ -75,3 +75,5 @@ compare/
 /localhost-services/clickhouse/uuid
 
 /localhost-services/iceberg/docker-spark-iceberg/
+/tutorials/create-connector/server/lib/dataplatform-1.0.0-cr3-runner.jar
+/dataplatform-1.0.0-cr3-runner.jar
