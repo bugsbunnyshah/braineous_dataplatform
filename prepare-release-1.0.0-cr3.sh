@@ -23,6 +23,7 @@ mkdir get-started
 mkdir datalake
 mkdir data-transformation
 mkdir create-connector
+mkdir mysql-connector
 mkdir clickhouse-connector
 mkdir elastic-connector
 mkdir snowflake-connector
@@ -62,6 +63,7 @@ cp -r tutorials/get-started/* releases/braineous-1.0.0-cr3/tutorials/get-started
 cp -r tutorials/create-connector/* releases/braineous-1.0.0-cr3/tutorials/create-connector
 cp -r tutorials/datalake/* releases/braineous-1.0.0-cr3/tutorials/datalake
 cp -r tutorials/data-transformation/* releases/braineous-1.0.0-cr3/tutorials/data-transformation
+cp -r tutorials/mysql-connector/* releases/braineous-1.0.0-cr3/tutorials/mysql-connector
 cp -r tutorials/clickhouse-connector/* releases/braineous-1.0.0-cr3/tutorials/clickhouse-connector
 cp -r tutorials/elastic-connector/* releases/braineous-1.0.0-cr3/tutorials/elastic-connector
 cp -r tutorials/snowflake-connector/* releases/braineous-1.0.0-cr3/tutorials/snowflake-connector

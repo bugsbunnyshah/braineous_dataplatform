@@ -86,6 +86,9 @@ rm -rf ../tutorials/create-connector/server/lib
 mkdir ../tutorials/create-connector/server/lib
 cp ../dataplatform-1.0.0-cr3-runner.jar ../tutorials/create-connector/server/lib/
 
+rm -rf ../tutorials/mysql-connector/lib
+mkdir ../tutorials/mysql-connector/lib
+cp ../braineous-dataingestion-sdk-1.0.0-cr3.jar ../tutorials/mysql-connector/lib/
 
 rm -rf ../tutorials/clickhouse-connector/lib
 mkdir ../tutorials/clickhouse-connector/lib
