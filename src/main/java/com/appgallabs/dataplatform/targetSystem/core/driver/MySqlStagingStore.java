@@ -38,11 +38,13 @@ public class MySqlStagingStore implements StagingStore {
 
                 String password = configJson.get("password").getAsString();
 
+                String stagingTable = configJson.get("staging_table").getAsString();
+
                 this.connection = DriverManager.getConnection(
                         url, username, password);
 
                 //create schema and tables
-                String createTableSql = "CREATE TABLE IF NOT EXISTS staged_data (\n" +
+                String createTableSql = "CREATE TABLE IF NOT EXISTS "+stagingTable+" (\n" +
                         "    id int NOT NULL AUTO_INCREMENT,\n" +
                         "    data longtext NOT NULL,\n" +
                         "    PRIMARY KEY (id)\n" +
@@ -92,13 +94,14 @@ public class MySqlStagingStore implements StagingStore {
     //----------------------------------------------------------------------------------------------
     private void storeData(JsonArray dataSet) {
         try {
+            String stagingTable = configJson.get("staging_table").getAsString();
             Statement insertStatement = this.connection.createStatement();
             try {
                 //populate table
                 int size = dataSet.size();
                 for (int i = 0; i < size; i++) {
                     JsonElement record = dataSet.get(i);
-                    String insertSql = "insert into staged_data (data) values ('" + record.toString() + "')";
+                    String insertSql = "insert into "+stagingTable+" (data) values ('" + record.toString() + "')";
                     insertStatement.addBatch(insertSql);
                 }
 
