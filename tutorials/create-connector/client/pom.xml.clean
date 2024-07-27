@@ -21,9 +21,9 @@
     <dependency>
       <groupId>com.appgallabs</groupId>
       <artifactId>dataplatform</artifactId>
-      <version>1.0.0-cr2</version>
+      <version>1.0.0-cr3</version>
       <scope>system</scope>
-      <systemPath>${project.basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr2.jar</systemPath>
+      <systemPath>${project.basedir}/lib/braineous-dataingestion-sdk-1.0.0-cr3.jar</systemPath>
     </dependency>
 
     <!-- client_sdk_dependencies -->
@@ -72,7 +72,7 @@
               <id>install-external</id>
               <phase>clean</phase>
               <configuration>
-                <file>lib/braineous-dataingestion-sdk-1.0.0-cr2.jar</file>
+                <file>lib/braineous-dataingestion-sdk-1.0.0-cr3.jar</file>
                 <repositoryLayout>default</repositoryLayout>
                 <groupId>com.appgallabs</groupId>
                 <artifactId>dataplatform</artifactId>

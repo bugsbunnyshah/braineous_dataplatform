@@ -26,9 +26,9 @@
     <dependency>
       <groupId>com.appgallabs</groupId>
       <artifactId>dataplatform</artifactId>
-      <version>1.0.0-cr2</version>
+      <version>1.0.0-cr3</version>
       <scope>system</scope>
-      <systemPath>${basedir}/lib/dataplatform-1.0.0-cr2-runner.jar</systemPath>
+      <systemPath>${basedir}/lib/dataplatform-1.0.0-cr3-runner.jar</systemPath>
     </dependency>
 
     <!-- client_sdk_dependencies -->
@@ -77,11 +77,11 @@
               <id>install-external</id>
               <phase>clean</phase>
               <configuration>
-                <file>${basedir}/lib/dataplatform-1.0.0-cr2-runner.jar</file>
+                <file>${basedir}/lib/dataplatform-1.0.0-cr3-runner.jar</file>
                 <repositoryLayout>default</repositoryLayout>
                 <groupId>com.appgallabs</groupId>
                 <artifactId>dataplatform</artifactId>
-                <version>1.0.0-cr2</version>
+                <version>1.0.0-cr3</version>
                 <packaging>jar</packaging>
                 <generatePom>true</generatePom>
               </configuration>
