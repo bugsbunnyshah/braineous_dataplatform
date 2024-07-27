@@ -81,10 +81,17 @@ rm -rf ../tutorials/create-connector/client/lib
 mkdir ../tutorials/create-connector/client/lib
 cp ../braineous-dataingestion-sdk-1.0.0-cr3.jar ../tutorials/create-connector/client/lib/
 
-
 rm -rf ../tutorials/create-connector/server/lib
 mkdir ../tutorials/create-connector/server/lib
 cp ../dataplatform-1.0.0-cr3-runner.jar ../tutorials/create-connector/server/lib/
+
+rm -rf ../tutorials/create-integration-runner/client/lib
+mkdir ../tutorials/create-integration-runner/client/lib
+cp ../braineous-dataingestion-sdk-1.0.0-cr3.jar ../tutorials/create-integration-runner/client/lib/
+
+rm -rf ../tutorials/create-integration-runner/server/lib
+mkdir ../tutorials/create-integration-runner/server/lib
+cp ../dataplatform-1.0.0-cr3-runner.jar ../tutorials/create-integration-runner/server/lib/
 
 rm -rf ../tutorials/mysql-connector/lib
 mkdir ../tutorials/mysql-connector/lib

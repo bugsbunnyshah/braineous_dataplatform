@@ -23,6 +23,7 @@ mkdir get-started
 mkdir datalake
 mkdir data-transformation
 mkdir create-connector
+mkdir create-integration-runner
 mkdir mysql-connector
 mkdir clickhouse-connector
 mkdir elastic-connector
@@ -61,6 +62,7 @@ cp -r pipeline_monitor/pipemon.sh releases/braineous-1.0.0-cr3/bin
 #tutorials
 cp -r tutorials/get-started/* releases/braineous-1.0.0-cr3/tutorials/get-started
 cp -r tutorials/create-connector/* releases/braineous-1.0.0-cr3/tutorials/create-connector
+cp -r tutorials/create-integration-runner/* releases/braineous-1.0.0-cr3/tutorials/create-integration-runner
 cp -r tutorials/datalake/* releases/braineous-1.0.0-cr3/tutorials/datalake
 cp -r tutorials/data-transformation/* releases/braineous-1.0.0-cr3/tutorials/data-transformation
 cp -r tutorials/mysql-connector/* releases/braineous-1.0.0-cr3/tutorials/mysql-connector
