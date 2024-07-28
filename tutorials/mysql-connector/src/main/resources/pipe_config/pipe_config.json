@@ -1,0 +1,17 @@
+{
+  "pipeId": "yyya",
+  "entity": "abc",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.MySqlStagingStore",
+      "name": "yyya",
+      "config": {
+        "connectionString": "jdbc:mysql://localhost:3306/braineous_staging_database",
+        "username": "root",
+        "password":  "",
+        "staging_table": "staging_store",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import com.appgallabs.dataplatform.pipeline.manager.model.SubscriberGroup;
 import com.appgallabs.dataplatform.pipeline.manager.model.Subscription;
 import com.appgallabs.dataplatform.pipeline.manager.service.SubscriptionService;
 import com.appgallabs.dataplatform.pipeline.manager.util.ValidationUtil;
+import com.appgallabs.dataplatform.targetSystem.framework.staging.IntegrationRunner;
 import com.appgallabs.dataplatform.targetSystem.framework.staging.StagingStore;
 import com.appgallabs.dataplatform.util.JsonUtil;
 import com.appgallabs.dataplatform.util.Util;
@@ -91,6 +92,42 @@ public class Registry {
                 stagingStore.configure(storeConfigJson);
 
                 result.add(stagingStore);
+            }
+
+            return result;
+        }catch(Exception e){
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<IntegrationRunner> findIntegrationRunners(String tenant, String pipeId){
+        try {
+            List<IntegrationRunner> result = new ArrayList<>();
+            MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+            RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
+
+            JsonArray jsonArray = registryStore.findStagingStores(
+                    tenant,
+                    mongoClient,
+                    pipeId
+            );
+
+            if (jsonArray == null || jsonArray.size() == 0) {
+                return null;
+            }
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonObject configurationJson = jsonArray.get(i).getAsJsonObject();
+                JsonObject storeConfigJson = configurationJson.getAsJsonObject("config");
+
+                if(configurationJson.has("integrationAgent")) {
+                    String agentClass = configurationJson.get("integrationAgent").getAsString();
+                    IntegrationRunner runner = (IntegrationRunner) Thread.currentThread().getContextClassLoader().
+                            loadClass(agentClass).getDeclaredConstructor().newInstance();
+
+                    result.add(runner);
+                }
             }
 
             return result;

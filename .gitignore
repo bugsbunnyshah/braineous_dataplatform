@@ -66,3 +66,15 @@ compare/
 
 /tutorials/create-connector/server/lib/dataplatform-1.0.0-cr2-runner.jar
 /tutorials/datalake/lib/dataplatform-1.0.0-cr2-runner.jar
+
+/localhost-services/clickhouse
+/localhost-services/clickhouse/data/
+/localhost-services/clickhouse/metadata/
+/localhost-services/clickhouse/preprocessed_configs/
+/localhost-services/clickhouse/store/
+/localhost-services/clickhouse/uuid
+
+/localhost-services/iceberg/docker-spark-iceberg/
+/tutorials/create-connector/server/lib/dataplatform-1.0.0-cr3-runner.jar
+/tutorials/create-integration-runner/server/lib/dataplatform-1.0.0-cr3-runner.jar
+/dataplatform-1.0.0-cr3-runner.jar

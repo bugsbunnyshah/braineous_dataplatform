@@ -48,16 +48,5 @@ public class DataLakeTutorial {
         //send source data through the pipeline
         dataPlatformService.sendData(pipeId, entity,datasetElement.toString());
         System.out.println("*****DATA_INGESTION_SUCCESS******");
-
-        System.out.println("********DATALAKE_ASSERTION_PHASE_STARTED....***********");
-        Thread.sleep(15000);
-
-        String table = JobManagerUtil.getTable(apiKey, pipeId, entity);
-        String selectSql = "select * from "+table;
-        dataPlatformService.print(
-                pipeId,
-                entity,
-                selectSql
-        );
     }
 }

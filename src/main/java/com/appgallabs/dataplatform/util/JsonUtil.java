@@ -5,7 +5,11 @@ import com.google.gson.*;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -77,5 +81,53 @@ public class JsonUtil {
         }
         System.out.println(gson.toJson(jsonElement));
         System.out.println("**********************");
+    }
+
+    public static boolean isCsvValid(String csvData){
+        int numberOfColumns = 0;
+        String[] lines = csvData.split("\n");
+        int length = lines.length;
+        for (int i = 0; i < length; i++) {
+            String line = lines[i];
+            String[] data = line.split(",");
+            if(data.length == 1){
+                return false;
+            }
+
+            if(numberOfColumns == 0){
+                numberOfColumns = data.length;
+                continue;
+            }
+
+            if(data.length != numberOfColumns){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isJsonValid(String jsonData){
+        JsonElement json = JsonUtil.validateJson(jsonData);
+        if(json == null){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isXmlValid(String xmlData){
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            try {
+                builder.parse(new InputSource(new StringReader(xmlData)));
+            }catch(Exception e){
+                return false;
+            }
+
+            return true;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }

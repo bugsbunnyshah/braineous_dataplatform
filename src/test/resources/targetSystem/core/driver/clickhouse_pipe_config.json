@@ -1,0 +1,17 @@
+{
+  "pipeId": "yyya",
+  "entity": "abc",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.ClickHouseStagingStore",
+      "name": "click_house_staging_store",
+      "config": {
+        "connectionString": "jdbc:ch://localhost:8123/default",
+        "username": "default",
+        "password": "",
+        "staging_table": "staging_store",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

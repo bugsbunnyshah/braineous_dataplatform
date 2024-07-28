@@ -16,8 +16,10 @@ public class LogicRunner implements IntegrationRunner {
 
     @Override
     public void process(Tenant tenant, String pipeId, String entity, List<Record> records) {
+        logger.info("*****LOGIC_RUNNER_LATEST********************");
         logger.info(InMemoryDB.getInstance().toString());
         logger.info("PROCESSING: # of records: "+ records.size());
+        logger.info("*************************************");
     }
 
     @Override

@@ -1,0 +1,25 @@
+{
+  "pipeId": "yyya",
+  "entity": "abc",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.core.driver.SnowflakeStagingStore",
+      "name": "snowflake_staging_store",
+      "config": {
+        "account_identifier": "xxlpraf-ubb29207",
+        "host": "xxlpraf-ubb29207.snowflakecomputing.com",
+        "username": "bugsbunnyshah",
+        "password": "gagumaani@A61$",
+        "port": "443",
+        "database": "testdb",
+        "schema": "public",
+        "stage": "abc",
+        "table": "abc",
+        "pipe": "yyya",
+        "source": "local_fs",
+        "source_location":"file:///tmp/braineous/",
+        "jsonpathExpressions": []
+      }
+    }
+  ]
+}

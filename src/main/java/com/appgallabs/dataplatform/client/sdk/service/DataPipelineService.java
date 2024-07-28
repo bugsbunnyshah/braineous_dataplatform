@@ -71,15 +71,8 @@ public class DataPipelineService {
     }
     //----------------------------
     private JsonObject sendDataToCloud(Configuration configuration, String pipeId, String entity,String payload){
-
-        //validate and prepare rest payload
-        JsonElement jsonElement = JsonUtil.validateJson(payload);
-        if(jsonElement == null){
-            throw new RuntimeException("payload_not_in_json_format");
-        }
-
         //send data for ingestion
-        JsonObject response = this.dataPipelineClient.sendData(configuration, pipeId, entity,jsonElement);
+        JsonObject response = this.dataPipelineClient.sendData(configuration, pipeId, entity, payload);
 
         //process response
         String ingestionStatusMessage = null;

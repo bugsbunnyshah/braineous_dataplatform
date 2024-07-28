@@ -19,6 +19,7 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,15 @@ public class MongoDBStagingStore implements StagingStore {
 
         //get the driver configuration
         String connectionString = this.configJson.get("connectionString").getAsString();
+        if(!connectionString.contains("localhost"))
+        {
+            String username = this.configJson.get("username").getAsString();
+            String password = this.configJson.get("password").getAsString();
+            connectionString = MessageFormat.format(connectionString,
+                    username,
+                    password
+            );
+        }
 
         //setup driver components
         this.mongoClient = MongoClients.create(connectionString);
@@ -116,16 +126,16 @@ public class MongoDBStagingStore implements StagingStore {
             }
             dbCollection.bulkWrite(bulkOperations);
 
+
+            System.out.println(
+                    "MONGODB: DATA_STORED_SUCCESSFULLY");
+
         }catch(Exception e){
             logger.error(e.getMessage());
 
             //report to the pipeline monitoring service
-            JsonObject jsonObject = new JsonObject();
-            this.ingestionReportingService.reportDataError(jsonObject);
-        }
-        finally{
-            System.out.println(
-                    "MONGODB: STORED_SUCCESSFULLY");
+            //JsonObject jsonObject = new JsonObject();
+            //this.ingestionReportingService.reportDataError(jsonObject);
         }
     }
 
@@ -152,19 +162,18 @@ public class MongoDBStagingStore implements StagingStore {
                 data.add(dataObject);
             }
 
+            System.out.println(
+                    "MONGODB: DATA_READ_SUCCESSFULLY");
+
             return data;
         }catch(Exception e){
             logger.error(e.getMessage());
 
             //report to the pipeline monitoring service
-            JsonObject jsonObject = new JsonObject();
-            this.ingestionReportingService.reportDataError(jsonObject);
+            //JsonObject jsonObject = new JsonObject();
+            //this.ingestionReportingService.reportDataError(jsonObject);
 
             throw new RuntimeException(e);
-        }
-        finally{
-            System.out.println(
-                    "MONGODB: READ_SUCCESSFULLY");
         }
     }
 }

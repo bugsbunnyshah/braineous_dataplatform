@@ -1,6 +1,10 @@
 package com.appgallabs.dataplatform.targetSystem.framework.staging;
 
 import com.appgallabs.dataplatform.infrastructure.Tenant;
+import com.appgallabs.dataplatform.pipeline.Registry;
+import com.appgallabs.dataplatform.preprocess.SecurityToken;
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,24 +15,30 @@ import java.util.List;
 public class DataIntegrationAgent{
     private static Logger logger = LoggerFactory.getLogger(DataIntegrationAgent.class);
 
-    private IntegrationRunner runner;
-
     public DataIntegrationAgent() {
-        this.runner = new LogicRunner();
     }
 
-    public void executeIntegrationRunner(StagingStore stagingStore,
+    public void executeIntegrationRunner(SecurityToken securityToken,
                                          Tenant tenant,
                                          String pipeId,
                                          String entity,
                                          List<Record> records) {
-        //pre-process
-        this.runner.preProcess(tenant, pipeId, entity);
+        String principal  = securityToken.getPrincipal();
 
-        //process
-        this.runner.process(tenant, pipeId, entity, records);
+        Registry registry = Registry.getInstance();
 
-        //post-process
-        this.runner.postProcess(tenant, pipeId, entity);
+        //find the registered store drivers for this pipe
+        List<IntegrationRunner> registeredRunners = registry.findIntegrationRunners(principal, pipeId);
+
+        for(IntegrationRunner runner:registeredRunners){
+            //pre-process
+            runner.preProcess(tenant, pipeId, entity);
+
+            //process
+            runner.process(tenant, pipeId, entity, records);
+
+            //post-process
+            runner.postProcess(tenant, pipeId, entity);
+        }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "pipeId": "flightpipe",
+  "entity": "flight",
+  "configuration": [
+    {
+      "stagingStore" : "com.appgallabs.dataplatform.targetSystem.framework.staging.InMemoryStagingStore",
+      "integrationAgent": "com.appgallabs.dataplatform.targetSystem.framework.CustomLogicRunner",
+      "name": "flight_pipe_in_memory_store",
+      "config": {
+        "jsonpathExpressions": [
+          "$.store.book[?(@.price >20)]",
+          "$.store.bicycle",
+          "$.expensive"
+        ]
+      }
+    }
+  ]
+}

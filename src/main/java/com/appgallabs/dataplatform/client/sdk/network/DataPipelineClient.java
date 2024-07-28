@@ -51,13 +51,31 @@ public class DataPipelineClient {
         }
     }
 
-    public JsonObject sendData(Configuration configuration, String pipeId, String entity, JsonElement jsonElement){
+    private String getIngestionUrl(Configuration configuration, String payload){
+        String baseUrl = configuration.ingestionHostUrl();
+        String restUrl = null;
+
+        System.out.println("******PAYLOAD**********");
+        System.out.println(payload);
+        System.out.println("***********************");
+
+        if(JsonUtil.isJsonValid(payload)){
+            restUrl = baseUrl+"ingestion/json/";
+        }else if(JsonUtil.isXmlValid(payload)){
+            restUrl = baseUrl+"ingestion/xml/";
+        }else if(JsonUtil.isCsvValid(payload)){
+            restUrl = baseUrl+"ingestion/csv/";
+        }else{
+            throw new RuntimeException("content_type_not_supported");
+        }
+
+        return restUrl;
+    }
+
+    public JsonObject sendData(Configuration configuration, String pipeId, String entity, String payload){
         //System.out.println("***SENDING_DATA_NETWORK*****");
         try {
-            String baseUrl = configuration.ingestionHostUrl();
-            String restUrl = baseUrl+"ingestion/json/";
-
-            String payload = jsonElement.toString();
+            String restUrl = this.getIngestionUrl(configuration, payload);
 
             //get apikey
             String apiKey = configuration.getApiKey();

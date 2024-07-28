@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,9 @@ public class DataLakeSqlGenerator {
             rowBuilder.append("(");
             for(String column: columns){
                 Object value = row.get(column);
+
+                value = this.cleanData(value);
+
                 String insert = "'" + value + "',";
                 valueBuilder.append(insert);
             }
@@ -43,5 +49,16 @@ public class DataLakeSqlGenerator {
         String insertSql = MessageFormat.format(insertSqlTemplate, insertValues);
 
         return insertSql;
+    }
+
+    private Object cleanData(Object value){
+        String valueStr = value.toString();
+
+        String singleQuoteValue = URLEncoder.encode("'", StandardCharsets.UTF_8);
+        valueStr = valueStr.replaceAll("'", singleQuoteValue);
+
+        //valueStr = URLEncoder.encode(valueStr, StandardCharsets.UTF_8);
+
+        return valueStr;
     }
 }
