@@ -59,9 +59,63 @@ public class AlgorithmTests {
     }
 
     private void executeCDCAlgorithm(JsonObject configJson, JsonArray sourceData){
+        try {
+            //get the destination data
+            JsonArray destinationData = this.getDestinationData(configJson);
 
+            //create insert bucket
+            Map<String, JsonObject> inserts = new HashMap<>();
+
+            //create update bucket
+            Map<String, JsonObject> updates = new HashMap();
+
+            //create delete bucket
+            Map<String, JsonObject> deletes = new HashMap<>();
+
+            //find the right bucket
+            for (int i = 0; i < sourceData.size(); i++) {
+                JsonObject left = this.matchSourceData(sourceData.get(0).getAsJsonObject());
+                String objectHash = JsonUtil.getJsonHash(left);
+
+                if (this.isInsert(left, destinationData)) {
+                    inserts.put(objectHash, left);
+                    break;
+                }else if(this.isUpdate(left, destinationData)){
+                    updates.put(objectHash, left);
+                    break;
+                }else if(this.isDelete(left, destinationData)){
+                    deletes.put(objectHash, left);
+                    break;
+                }
+            }
+
+            //print results
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
+    private JsonArray getDestinationData(JsonObject configJson){
+        JsonArray jsonArray = new JsonArray();
+
+        return jsonArray;
+    }
+
+    private JsonObject matchSourceData(JsonObject jsonObject){
+        return null;
+    }
+
+    public boolean isInsert(JsonObject sourceObject, JsonArray destinationData){
+        return false;
+    }
+
+    public boolean isUpdate(JsonObject sourceObject, JsonArray destinationData){
+        return false;
+    }
+
+    public boolean isDelete(JsonObject sourceObject, JsonArray destinationData){
+        return false;
+    }
     //-------------------------------------------------------------
     private List<String> generateSql(List<Map<String,String>> structuredData){
         List<String> sqls = new ArrayList<>();
