@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import test.components.Util;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.*;
@@ -74,42 +76,103 @@ public class AlgorithmTests {
 
             //find the right bucket
             for (int i = 0; i < sourceData.size(); i++) {
-                JsonObject left = this.matchSourceData(sourceData.get(0).getAsJsonObject());
+                JsonObject left = this.matchSourceData(sourceData.get(i).getAsJsonObject());
                 String objectHash = JsonUtil.getJsonHash(left);
 
-                if (this.isInsert(left, destinationData)) {
+                if (this.isInsert(left, objectHash, destinationData)) {
                     inserts.put(objectHash, left);
-                    break;
                 }else if(this.isUpdate(left, destinationData)){
                     updates.put(objectHash, left);
-                    break;
-                }else if(this.isDelete(left, destinationData)){
-                    deletes.put(objectHash, left);
-                    break;
                 }
+
+                //Delete operation not applicable in a agnostic data ingestion scenario
+                /*else if(this.isDelete(left, destinationData)){
+                    deletes.put(objectHash, left);
+                }*/
             }
 
             //print results
+            System.out.println("*****INSERTS***********");
+            JsonUtil.printStdOut(JsonUtil.validateJson(inserts.toString()));
+
+            System.out.println("******UPDATES***********");
+            JsonUtil.printStdOut(JsonUtil.validateJson(updates.toString()));
+
+            System.out.println("******DELETES***********");
+            JsonUtil.printStdOut(JsonUtil.validateJson(deletes.toString()));
         }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
-    private JsonArray getDestinationData(JsonObject configJson){
+    private JsonArray getDestinationData(JsonObject configJson) throws Exception{
         JsonArray jsonArray = new JsonArray();
-
+        Connection connection = null;
+        Statement statement = null;
+        try{
+            String query = "select * from cdc_test";
+            connection = JDBCHelper.getInstance().getConnection(configJson);
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            while(resultSet.next()){
+                JsonObject record = new JsonObject();
+                for(int i=1; i<=columnCount; i++){
+                   String columnName = metaData.getColumnName(i);
+                   String columnValue = resultSet.getString(i);
+                   record.addProperty(columnName, columnValue);
+                }
+                jsonArray.add(record);
+            }
+        }finally{
+            if(connection != null){
+                try{connection.close();}catch(Exception e){}
+            }
+            if(statement != null){
+                try{statement.close();}catch(Exception e){}
+            }
+        }
         return jsonArray;
     }
 
     private JsonObject matchSourceData(JsonObject jsonObject){
-        return null;
+        JsonObject matchedSourceData = new JsonObject();
+
+        //flatten
+        Map<String, Object> objMap = JsonFlattener.flattenAsMap(jsonObject.toString());
+
+        Set<Map.Entry<String,Object>> entrySet = objMap.entrySet();
+        for(Map.Entry<String,Object> property:entrySet){
+            String name = property.getKey();
+            if(name.indexOf(".") != -1) {
+                int lastIndex = name.lastIndexOf('.');
+                name = name.substring(lastIndex+1);
+            }
+
+            String value = property.getValue().toString();
+
+            matchedSourceData.addProperty(name, value);
+        }
+
+        return matchedSourceData;
     }
 
-    public boolean isInsert(JsonObject sourceObject, JsonArray destinationData){
-        return false;
+    public boolean isInsert(JsonObject sourceObject,String sourceHash, JsonArray destinationData) throws Exception
+    {
+        for(int i=0; i<destinationData.size(); i++){
+            JsonObject destinationObject = destinationData.get(i).getAsJsonObject();
+            String destinationHash = JsonUtil.getJsonHash(destinationObject);
+            if(sourceHash.equals(destinationHash)){
+                //object already exists in the store. avoid duplication
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isUpdate(JsonObject sourceObject, JsonArray destinationData){
+        //TODO: need concept of object identity and not object hash
         return false;
     }
 
