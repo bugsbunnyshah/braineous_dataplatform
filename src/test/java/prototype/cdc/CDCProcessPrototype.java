@@ -9,10 +9,11 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.junit.jupiter.api.Test;
 import test.components.Util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CDCProcessPrototype {
+public class CDCProcessPrototype implements Serializable {
 
     @Test
     public void process() throws Exception{
@@ -41,12 +42,14 @@ public class CDCProcessPrototype {
         DataStream<String> parallel = sourceData.map(new MapFunction<String, String>() {
             @Override
             public String map(String s) throws Exception {
-                //TODO: execute the CDC process/algorithm for each record
+                //execute the CDC process/algorithm for each record
                 boolean isInsert = isInsert();
                 if(isInsert){
                     //insert the record into the live target store
+                    insertRecord();
                 }else{
                     //update the record in the live target store
+                    updateRecord();
                 }
 
                 return s;
@@ -63,10 +66,12 @@ public class CDCProcessPrototype {
     }
 
     private void insertRecord(){
-
+        System.out.println("debug_point");
+        System.out.println("*****INSERT_RECORD*****");
     }
 
     private void updateRecord(){
-
+        System.out.println("debug_point");
+        System.out.println("*****UPDATE_RECORD*****");
     }
 }
