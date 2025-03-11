@@ -4,9 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
 
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import org.junit.jupiter.api.AfterEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,12 @@ import java.util.List;
 public class FlinkTests {
     private static Logger logger = LoggerFactory.getLogger(FlinkTests.class);
 
-    @Test
+    @AfterEach
+    public void tearDown() throws Exception{
+        Thread.sleep(15000);
+    }
+
+    /*@Test
     public void remoteStreamPrototype() throws Exception{
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
                 "127.0.0.1", 8081,
@@ -44,19 +51,26 @@ public class FlinkTests {
         System.out.println("***********");
         System.out.println("DONE....");
         System.out.println("***********");
-    }
+    }*/
 
-    /*@Test
+    @Test
     public void dataStreamPrototype() throws Exception{
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        //final StreamExecutionEnvironment env = StreamExecutionEnvironment.createRemoteEnvironment(
+        //        "127.0.0.1", 8081
+        //);
 
-        DataStream<Person> flintstones = env.fromElements(
-                new Person("Fred", 35),
-                new Person("Wilma", 35),
-                new Person("Pebbles", 2));
+        DataStream<String> flintstones = env.fromElements(
+                "Fred",  "Joe", "John"
+        );
 
-        DataStream<Person> adults = flintstones.filter(
-                new PersonFilter()
+        DataStream<String> adults = flintstones.filter(
+                new FilterFunction<String>() {
+                    @Override
+                    public boolean filter(String s) throws Exception {
+                        return true;
+                    }
+                }
         );
 
         adults.print();
@@ -66,7 +80,7 @@ public class FlinkTests {
         System.out.println("***********");
         System.out.println("DONE....");
         System.out.println("***********");
-    }*/
+    }
 
     @Test
     public void dataStreamJsonPrototype() throws Exception{

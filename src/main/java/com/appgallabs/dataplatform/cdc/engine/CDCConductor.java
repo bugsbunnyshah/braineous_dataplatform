@@ -13,5 +13,14 @@ public class CDCConductor {
         logger.info("*************************************");
         logger.info("CONDUCTOR_ORCHESTRATION_START_SUCCESS");
         logger.info("*************************************");
+
+        //1 - process the dataset
+
+        //1 - determine the destination dataset structure (structured/unstructured)
+        // from configuration
+
+        //2 - generate target store instructions to store the data such as sqls etc
+
+        //3- execute CDC process
     }
 }
