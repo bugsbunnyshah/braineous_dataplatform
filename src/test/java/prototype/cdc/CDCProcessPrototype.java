@@ -108,10 +108,10 @@ public class CDCProcessPrototype implements Serializable {
                 boolean isInsert = isInsert(configJson, dataKey, flatObject);
                 if(isInsert){
                     //insert the record into the live target store
-                    insertRecord();
+                    insertRecord(configJson, flatObject);
                 }else{
                     //update the record in the live target store
-                    updateRecord();
+                    updateRecord(configJson, flatObject);
                 }
 
                 return s;
@@ -163,17 +163,102 @@ public class CDCProcessPrototype implements Serializable {
         }
     }
 
-    private void insertRecord(){
+    private void insertRecord(JsonObject configJson, JsonObject record) throws Exception{
         System.out.println("debug_point");
         System.out.println("*****INSERT_RECORD*****");
 
-        //TODO: next
+        Connection connection = null;
+        Statement statement = null;
+        try{
+            String sql = "insert into cdc_test ";
+            sql += this.generateInsertSql(record);
+
+            connection = JDBCHelper.getInstance().getConnection(configJson);
+            statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        }finally{
+            if(connection != null){
+                try{connection.close();}catch(Exception e){}
+            }
+            if(statement != null){
+                try{statement.close();}catch(Exception e){}
+            }
+        }
     }
 
-    private void updateRecord(){
+    private void updateRecord(JsonObject configJson, JsonObject record) throws Exception{
         System.out.println("debug_point");
         System.out.println("*****UPDATE_RECORD*****");
 
-        //TODO: next
+        Connection connection = null;
+        Statement statement = null;
+        try{
+            String sql = "update cdc_test ";
+            sql += this.generateUpdateSql(record);
+
+            connection = JDBCHelper.getInstance().getConnection(configJson);
+            statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        }finally{
+            if(connection != null){
+                try{connection.close();}catch(Exception e){}
+            }
+            if(statement != null){
+                try{statement.close();}catch(Exception e){}
+            }
+        }
+    }
+
+    private String generateInsertSql(JsonObject record){
+        String sql = null;
+
+        //flatten
+        Map<String,Object> structuredData = JsonFlattener.flattenAsMap(record.toString());
+
+        Set<Map.Entry<String, Object>> entrySet = structuredData.entrySet();
+        StringBuilder columns = new StringBuilder("");
+        StringBuilder values = new StringBuilder("");
+        for(Map.Entry<String, Object> entry: entrySet){
+            String columnName = entry.getKey();
+            String value = entry.getValue().toString();
+
+            columns.append(columnName + ",");
+            values.append("'" + value + "'" + ",");
+        }
+
+        String columnsString = columns.toString();
+        columnsString = columnsString.substring(0, columnsString.length()-1);
+
+        String valuesString = values.toString();
+        valuesString = valuesString.substring(0, valuesString.length()-1);
+
+        sql = "(" + columnsString + ") values (" + valuesString +")";
+
+        return sql;
+    }
+
+    private String generateUpdateSql(JsonObject record){
+        String sql = null;
+
+        //flatten
+        Map<String,Object> structuredData = JsonFlattener.flattenAsMap(record.toString());
+
+        Set<Map.Entry<String, Object>> entrySet = structuredData.entrySet();
+        StringBuilder values = new StringBuilder("");
+        for(Map.Entry<String, Object> entry: entrySet){
+            String columnName = entry.getKey();
+            String value = entry.getValue().toString();
+            values.append(columnName + "=" + "'" + value + "'" + ",");
+        }
+
+        String valueToken = values.toString();
+        valueToken = valueToken.substring(0, valueToken.length()-1);
+
+        String valuesString = values.toString();
+        valuesString = valuesString.substring(0, valuesString.length()-1);
+
+        sql = "set" + " " + valueToken;
+
+        return sql;
     }
 }
