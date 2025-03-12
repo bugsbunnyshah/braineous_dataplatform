@@ -14,22 +14,49 @@ import test.components.Util;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.*;
 
 public class CDCProcessPrototype implements Serializable {
-
     @Test
-    public void process() throws Exception{
+    public void processUpdates() throws Exception{
         final String configJsonStr = Util.loadResource("cdc/conf/db_config.json");
         final String[] dataKey = {"name", "email"};
 
         //get the change dataset
-        String objStr = Util.loadResource("cdc/obj1_array.json");
+        String objStr = Util.loadResource("cdc/update_array.json");
         JsonArray objJsonArray = JsonUtil.validateJson(objStr).getAsJsonArray();
         JsonUtil.printStdOut(objJsonArray);
 
+        this.runTest(
+                configJsonStr,
+                dataKey,
+                objJsonArray
+        );
+    }
+
+    @Test
+    public void processInserts() throws Exception{
+        final String configJsonStr = Util.loadResource("cdc/conf/db_config.json");
+        final String[] dataKey = {"name", "email"};
+
+        //get the change dataset
+        String objStr = Util.loadResource("cdc/insert_array.json");
+        JsonArray objJsonArray = JsonUtil.validateJson(objStr).getAsJsonArray();
+        JsonUtil.printStdOut(objJsonArray);
+
+        this.runTest(
+                configJsonStr,
+                dataKey,
+                objJsonArray
+        );
+    }
+
+    private void runTest(
+            String configJsonStr,
+            String[] dataKey,
+            JsonArray objJsonArray
+    ) throws Exception{
         Collection<String> objCollection = new ArrayList<>();
         for(int i=0; i<objJsonArray.size(); i++){
             JsonObject objJson = objJsonArray.get(i).getAsJsonObject();
@@ -95,7 +122,7 @@ public class CDCProcessPrototype implements Serializable {
         //execute the job graph
         env.execute();
     }
-
+    //------------------------------------------------------------------------------------
     private boolean isInsert(JsonObject configJson, String[] dataKey, JsonObject record) throws Exception{
         Connection connection = null;
         Statement statement = null;
@@ -139,10 +166,14 @@ public class CDCProcessPrototype implements Serializable {
     private void insertRecord(){
         System.out.println("debug_point");
         System.out.println("*****INSERT_RECORD*****");
+
+        //TODO: next
     }
 
     private void updateRecord(){
         System.out.println("debug_point");
         System.out.println("*****UPDATE_RECORD*****");
+
+        //TODO: next
     }
 }

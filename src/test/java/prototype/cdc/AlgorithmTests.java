@@ -15,7 +15,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
-import java.text.MessageFormat;
 import java.util.*;
 
 public class AlgorithmTests {
@@ -25,7 +24,7 @@ public class AlgorithmTests {
         List<Map<String,String>> structuredData = new ArrayList<>();
 
         //get the dataset
-        String objStr = Util.loadResource("cdc/obj1_array.json");
+        String objStr = Util.loadResource("cdc/update_array.json");
         JsonArray objJsonArray = JsonUtil.validateJson(objStr).getAsJsonArray();
 
         for(int i=0; i<objJsonArray.size(); i++) {
