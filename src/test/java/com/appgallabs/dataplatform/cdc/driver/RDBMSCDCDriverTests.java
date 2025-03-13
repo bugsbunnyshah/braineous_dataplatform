@@ -56,4 +56,32 @@ public class RDBMSCDCDriverTests {
         System.out.println("***********");
         assertTrue(afterCount > beforeCount);
     }
+
+    @Test
+    public void update() throws Exception {
+        CDCDriver cdcDriver = RDBMSCDCDriver.getInstance();
+
+        //get storeConfig
+        final String configJsonStr = Util.loadResource("cdc/conf/db_config.json");
+        //execute the CDC process/algorithm for each record
+        JsonObject dbConfigJson = JsonUtil.validateJson(configJsonStr).getAsJsonObject();
+
+        //prepare CDCDataContext
+        String table = "cdc_test";
+        String objStr = Util.loadResource("cdc/update_array.json");
+        JsonArray objJsonArray = JsonUtil.validateJson(objStr).getAsJsonArray();
+        JsonObject record = objJsonArray.get(0).getAsJsonObject();
+        CDCDataContext dataContext = new CDCDataContext();
+        dataContext.setTable(table);
+        dataContext.setRecord(record);
+
+        //update the record
+        int updateCount = cdcDriver.update(dbConfigJson, dataContext);
+
+        //assert the result
+        System.out.println("***********");
+        System.out.println("UpdateCount: "+updateCount);
+        System.out.println("***********");
+        assertTrue(updateCount > 0);
+    }
 }

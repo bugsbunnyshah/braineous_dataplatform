@@ -6,5 +6,5 @@ public interface CDCDriver {
 
     void insert(JsonObject storeConfigJson, CDCDataContext cdcDataContext);
 
-    //boolean isUpdate(JsonObject storeConfigJson, String[] dataKey, JsonObject record);
+    int update(JsonObject storeConfigJson, CDCDataContext cdcDataContext);
 }

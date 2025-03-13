@@ -56,6 +56,43 @@ public class RDBMSCDCDriver implements CDCDriver {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int update(JsonObject storeConfigJson, CDCDataContext cdcDataContext) {
+        try{
+            String table = cdcDataContext.getTable();
+            JsonObject record = cdcDataContext.getRecord();
+            int updateCount = 0;
+
+            Connection connection = null;
+            Statement statement = null;
+            try {
+                String sql = "update" + " " + table + " ";
+                sql += this.generateUpdateSql(record);
+
+                connection = JDBCHelper.getInstance().getConnection(storeConfigJson);
+                statement = connection.createStatement();
+                updateCount = statement.executeUpdate(sql);
+            } finally {
+                if (statement != null) {
+                    try {
+                        statement.close();
+                    } catch (Exception e) {
+                    }
+                }
+
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (Exception e) {
+                    }
+                }
+            }
+            return updateCount;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     //--------------------------------------------------------------------------------
     private String generateInsertSql(JsonObject record){
         String sql = null;
@@ -86,6 +123,36 @@ public class RDBMSCDCDriver implements CDCDriver {
         valuesString = valuesString.substring(0, valuesString.length()-1);
 
         sql = "(" + columnsString + ") values (" + valuesString +")";
+
+        return sql;
+    }
+
+    private String generateUpdateSql(JsonObject record){
+        String sql = null;
+
+        //flatten
+        Map<String,Object> structuredData = JsonFlattener.flattenAsMap(record.toString());
+
+        Set<Map.Entry<String, Object>> entrySet = structuredData.entrySet();
+        StringBuilder values = new StringBuilder("");
+        for(Map.Entry<String, Object> entry: entrySet){
+            String columnName = entry.getKey();
+            if(columnName.indexOf(".") != -1) {
+                int lastIndex = columnName.lastIndexOf('.');
+                columnName = columnName.substring(lastIndex+1);
+            }
+
+            String value = entry.getValue().toString();
+            values.append(columnName + "=" + "'" + value + "'" + ",");
+        }
+
+        String valueToken = values.toString();
+        valueToken = valueToken.substring(0, valueToken.length()-1);
+
+        String valuesString = values.toString();
+        valuesString = valuesString.substring(0, valuesString.length()-1);
+
+        sql = "set" + " " + valueToken;
 
         return sql;
     }
