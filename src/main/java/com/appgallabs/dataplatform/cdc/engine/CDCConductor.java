@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.cdc.engine;
 
+import com.appgallabs.dataplatform.util.JsonUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -22,6 +23,8 @@ public class CDCConductor {
             logger.info("CONDUCTOR_ORCHESTRATION_START_SUCCESS");
             logger.info("*************************************");
 
+            final String cdcConfigStr = cdcConfig.toString();
+
             //1 - process the dataset
             Collection<String> dataSet = new ArrayList<>();
             for (int i = 0; i < sourceData.size(); i++) {
@@ -38,13 +41,23 @@ public class CDCConductor {
                     dataSet
             );
 
-            DataStream<String> parallel = sourceDataStream.map(new MapFunction<String, String>() {
+            DataStream<String> parallel = sourceDataStream.map(new MapFunction<String,String>() {
                 @Override
                 public String map(String s) throws Exception {
-                    //TODO: next
-                    // process the record
+                    CDCProcess cdcProcess = CDCProcess.getInstance();
 
-                    return s;
+                    //generate a unified input of configuration + record
+                    JsonObject input = new JsonObject();
+                    input.add("cdcConfig", JsonUtil.validateJson(cdcConfigStr).getAsJsonObject());
+                    input.add("record", JsonUtil.validateJson(s).getAsJsonObject());
+
+                    //process
+                    cdcProcess.process(input.toString());
+
+                    //provide response
+                    JsonObject response = new JsonObject();
+                    response.addProperty("status_code", 200);
+                    return response.toString();
                 }
             });
             parallel.print();
