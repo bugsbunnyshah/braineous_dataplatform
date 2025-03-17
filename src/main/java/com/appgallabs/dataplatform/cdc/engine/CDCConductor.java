@@ -60,7 +60,7 @@ public class CDCConductor {
                     return response.toString();
                 }
             });
-            parallel.print();
+            //parallel.print();
 
             //3- execute CDC process
             env.execute();
