@@ -2,10 +2,12 @@ package com.appgallabs.dataplatform.cdc.driver;
 
 import com.appgallabs.dataplatform.infrastructure.JDBCHelper;
 import com.github.wnameless.json.flattener.JsonFlattener;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,13 +64,22 @@ public class RDBMSCDCDriver implements CDCDriver {
         try{
             String table = cdcDataContext.getTable();
             JsonObject record = cdcDataContext.getRecord();
+
+            //dataKey
+            JsonArray dataKeyArray = storeConfigJson.getAsJsonArray("data_key");
+            Map<String, String> dataKeyMap = new HashMap<>();
+            for (int i = 0; i < dataKeyArray.size(); i++) {
+                String dataKey = dataKeyArray.get(i).getAsString();
+                dataKeyMap.put(dataKey, dataKey);
+            }
+
             int updateCount = 0;
 
             Connection connection = null;
             Statement statement = null;
             try {
                 String sql = "update" + " " + table + " ";
-                sql += this.generateUpdateSql(record);
+                sql += this.generateUpdateSql(record, dataKeyMap);
 
                 connection = JDBCHelper.getInstance().getConnection(storeConfigJson);
                 statement = connection.createStatement();
@@ -127,7 +138,7 @@ public class RDBMSCDCDriver implements CDCDriver {
         return sql;
     }
 
-    private String generateUpdateSql(JsonObject record){
+    private String generateUpdateSql(JsonObject record, Map<String, String> dataKeyMap){
         String sql = null;
 
         //flatten
@@ -135,6 +146,7 @@ public class RDBMSCDCDriver implements CDCDriver {
 
         Set<Map.Entry<String, Object>> entrySet = structuredData.entrySet();
         StringBuilder values = new StringBuilder("");
+        StringBuilder whereClause = new StringBuilder("");
         for(Map.Entry<String, Object> entry: entrySet){
             String columnName = entry.getKey();
             if(columnName.indexOf(".") != -1) {
@@ -144,15 +156,19 @@ public class RDBMSCDCDriver implements CDCDriver {
 
             String value = entry.getValue().toString();
             values.append(columnName + "=" + "'" + value + "'" + ",");
+
+            if(dataKeyMap.containsKey(columnName)) {
+                whereClause.append(columnName + "=" + "'" + value + "'" + " AND" + " ");
+            }
         }
 
         String valueToken = values.toString();
         valueToken = valueToken.substring(0, valueToken.length()-1);
 
-        String valuesString = values.toString();
-        valuesString = valuesString.substring(0, valuesString.length()-1);
+        String whereToken = whereClause.toString();
+        whereToken = whereToken.substring(0, whereToken.lastIndexOf(" AND"));
 
-        sql = "set" + " " + valueToken;
+        sql = "set" + " " + valueToken + " " + "where" + " " + whereToken;
 
         return sql;
     }
