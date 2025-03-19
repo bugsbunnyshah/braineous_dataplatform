@@ -1,5 +1,6 @@
 package com.appgallabs.dataplatform.cdc.engine;
 
+import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.util.JsonUtil;
 
 import com.google.gson.JsonArray;
@@ -18,10 +19,20 @@ import java.util.Collection;
 public class CDCConductor {
     private static Logger logger = LoggerFactory.getLogger(CDCConductor.class);
 
-    private static CDCConductor singleton = new CDCConductor();
+    private static CDCConductor singleton = null;
+
+    private PipelineService pipelineService;
 
     private CDCConductor(){
 
+    }
+
+    public static CDCConductor getInstance(PipelineService pipelineService){
+        if(CDCConductor.singleton == null){
+            CDCConductor.singleton = new CDCConductor();
+            CDCConductor.singleton.pipelineService = pipelineService;
+        }
+        return CDCConductor.singleton;
     }
 
     public static CDCConductor getInstance(){
@@ -49,7 +60,13 @@ public class CDCConductor {
 
             //2 - //process each record in parallel to achieve O(1) time complexity using Flink
             //TODo: convert to the actual remote flink environment (integration_phase)
-            final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+            StreamExecutionEnvironment env;
+            if(this.pipelineService == null){
+                env = StreamExecutionEnvironment.getExecutionEnvironment();
+            }else{
+                env = this.pipelineService.getEnv();
+            }
+
 
             DataStream<String> sourceDataStream = env.fromCollection(
                     dataSet

@@ -138,7 +138,7 @@ public class EventHandler implements KafkaMessageHandler {
         this.threadpool.execute(() -> {
             Registry registry = Registry.getInstance();
             String tenant = securityToken.getPrincipal();
-            CDCConductor cdcConductor = CDCConductor.getInstance();
+            CDCConductor cdcConductor = CDCConductor.getInstance(this.pipelineService);
 
             //get the cdcConfig
             JsonObject cdcConfig = registry.findCDCConfigonfig(
