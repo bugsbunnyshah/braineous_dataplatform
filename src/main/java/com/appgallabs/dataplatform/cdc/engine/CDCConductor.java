@@ -91,6 +91,8 @@ public class CDCConductor {
                     return response.toString();
                 }
             });
+
+            //debug
             //parallel.print();
 
             //3- execute CDC process
