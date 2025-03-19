@@ -25,7 +25,7 @@ public class CDCConductorTests {
 
     //TODO: (integration_phase)
     //@Inject
-    private CDCConductor cdcConductor = new CDCConductor();
+    private CDCConductor cdcConductor = CDCConductor.getInstance();
 
     @Test
     public void orchestrateInsert() throws Exception {

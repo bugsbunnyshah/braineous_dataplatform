@@ -136,6 +136,22 @@ public class Registry {
             throw new RuntimeException(e);
         }
     }
+
+    //find CDCConfiguration
+    public JsonObject findCDCConfigonfig(String tenant, String pipeId){
+        JsonObject cdcConfig = null;
+        MongoClient mongoClient = this.mongoDBJsonStore.getMongoClient();
+        RegistryStore registryStore = this.mongoDBJsonStore.getRegistryStore();
+
+        cdcConfig = registryStore.findCDCConfig(
+                tenant,
+                mongoClient,
+                pipeId
+        );
+
+        return cdcConfig;
+    }
+
     //write operations------------------------------------------------------------------
     public String registerPipe(Tenant tenant, JsonObject pipeRegistration)
     throws InvalidPipeIdException

@@ -1,21 +1,35 @@
 package com.appgallabs.dataplatform.cdc.engine;
 
 import com.appgallabs.dataplatform.util.JsonUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Singleton
 public class CDCConductor {
     private static Logger logger = LoggerFactory.getLogger(CDCConductor.class);
+
+    private static CDCConductor singleton = new CDCConductor();
+
+    private CDCConductor(){
+
+    }
+
+    public static CDCConductor getInstance(){
+        if(CDCConductor.singleton == null){
+            CDCConductor.singleton = new CDCConductor();
+        }
+        return CDCConductor.singleton;
+    }
 
     public void orchestrate(JsonObject cdcConfig, JsonArray sourceData){
         try {

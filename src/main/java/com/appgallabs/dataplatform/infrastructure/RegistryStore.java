@@ -63,4 +63,33 @@ public class RegistryStore implements Serializable {
 
         return new JsonArray();
     }
+
+    public JsonObject findCDCConfig(String principal, MongoClient mongoClient, String pipeId){
+        String databaseName = principal + "_" + "aiplatform";
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        MongoCollection<Document> collection = database.getCollection("registry");
+
+        JsonObject queryJson = new JsonObject();
+        queryJson.addProperty("pipeId",pipeId);
+        String queryJsonString = queryJson.toString();
+
+        Bson bson = Document.parse(queryJsonString);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        if(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+            JsonObject pipeRegistration = JsonUtil.validateJson(documentJson).getAsJsonObject();
+
+            JsonObject result = pipeRegistration.getAsJsonObject("cdc_config");
+            result.addProperty("status", 200);
+
+            return result;
+        }
+
+        JsonObject cdcConfigNotFound = new JsonObject();
+        cdcConfigNotFound.addProperty("status", 404);
+        return cdcConfigNotFound;
+    }
 }

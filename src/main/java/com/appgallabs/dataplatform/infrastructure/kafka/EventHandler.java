@@ -1,5 +1,7 @@
 package com.appgallabs.dataplatform.infrastructure.kafka;
 
+import com.appgallabs.dataplatform.cdc.engine.CDCConductor;
+import com.appgallabs.dataplatform.infrastructure.Tenant;
 import com.appgallabs.dataplatform.ingestion.algorithm.SchemalessMapper;
 import com.appgallabs.dataplatform.ingestion.pipeline.PipelineService;
 import com.appgallabs.dataplatform.ingestion.pipeline.SystemStore;
@@ -7,6 +9,8 @@ import com.appgallabs.dataplatform.pipeline.Registry;
 import com.appgallabs.dataplatform.preprocess.SecurityToken;
 
 import com.appgallabs.dataplatform.targetSystem.framework.StoreOrchestrator;
+import com.appgallabs.dataplatform.util.JsonUtil;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -93,6 +97,11 @@ public class EventHandler implements KafkaMessageHandler {
                 offset,
                 entity,
                 jsonPayloadString);
+
+        //Deliver to Target System Live CDC (asynchronously)
+        this.executeTargetCDCDelivery(securityToken,
+                pipeId,
+                jsonPayloadString);
     }
 
     private void executeIngestion(SecurityToken securityToken,
@@ -120,6 +129,38 @@ public class EventHandler implements KafkaMessageHandler {
                     offset,
                     entity,
                     jsonPayloadString);
+        });
+    }
+
+    private void executeTargetCDCDelivery(SecurityToken securityToken,
+                                          String pipeId, String jsonPayloadString
+                                            ){
+        this.threadpool.execute(() -> {
+            Registry registry = Registry.getInstance();
+            String tenant = securityToken.getPrincipal();
+            CDCConductor cdcConductor = CDCConductor.getInstance();
+
+            //get the cdcConfig
+            JsonObject cdcConfig = registry.findCDCConfigonfig(
+                    tenant,
+                    pipeId
+            );
+
+            //get source records
+            JsonArray records = new JsonArray();
+            JsonElement sourceDataElement = JsonUtil.validateJson(jsonPayloadString);
+            if (sourceDataElement.isJsonObject()) {
+                JsonObject record = sourceDataElement.getAsJsonObject();
+                records.add(record);
+            } else {
+                records = sourceDataElement.getAsJsonArray();
+            }
+
+            //submit to CDCConductor
+            cdcConductor.orchestrate(
+                    cdcConfig,
+                    records
+            );
         });
     }
 }
