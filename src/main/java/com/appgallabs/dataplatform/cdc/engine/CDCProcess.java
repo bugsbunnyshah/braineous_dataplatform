@@ -105,8 +105,9 @@ public class CDCProcess {
     private boolean isInsert(JsonObject configJson, JsonArray dataKey, JsonObject record) throws Exception{
         Connection connection = null;
         Statement statement = null;
+        String table = configJson.get("table").getAsString();
         try{
-            String query = "select * from cdc_test";
+            String query = "select * from" + " " + table;
 
             //where clause
             StringBuilder whereClause = new StringBuilder();
