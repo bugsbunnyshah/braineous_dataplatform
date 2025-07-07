@@ -27,13 +27,13 @@ public class DataPipelineService {
     }
 
     public void sendData(Configuration configuration, String pipeId, String entity, String payload){
-        //StreamingAgent.getInstance().sendData(configuration, pipeId, entity, payload);
+        StreamingAgent.getInstance().sendData(configuration, pipeId, entity, payload);
 
 
-        this.sendDataToCloud(configuration,
+        /*this.sendDataToCloud(configuration,
                 pipeId,
                 entity,
-                payload);
+                payload);*/
     }
 
     public void print(Configuration configuration, String pipeId, String entity, String selectSql){

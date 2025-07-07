@@ -47,7 +47,6 @@ public class StreamingAgent {
     //-----------------------------------------------------------------------------------------------------
     private void handleStreamEvent(Configuration configuration, String pipeId, String entity){
         int windowSize = configuration.getStreamSizeInObjects();
-
         int dataStreamSize = this.queueStream.size();
 
         if (dataStreamSize >= windowSize) {
@@ -87,12 +86,18 @@ public class StreamingAgent {
                         reportingService.reportDataError(reportingError);
                     });
                 }
+            }else{
+                //debug
+                System.out.println("*****WAITING_ON_BATCH*******");
             }
         }
     }
 
     //-----------------------------------------------------------------------------------------------------
     private JsonObject sendDataToCloud(Configuration configuration, String pipeId, String entity,String payload){
+        //debug
+        System.out.println("*****SENDING_BATCH*********");
+
         //send data for ingestion
         JsonObject response = this.dataPipelineClient.sendData(configuration, pipeId, entity,payload);
 
